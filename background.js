@@ -49,7 +49,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             /// open at center of screen
             dx = (window.screen.width / 2) - (width / 2), dy = (window.screen.height / 2) - (height / 2);
         }
-        // }
        
     
         /// check for screen overflow
