@@ -6,3 +6,5 @@ Privacy:
 This extension doesn't collect any private data. It requires access to currently open page in order to get mouse coordinates when context menu was opened.
 
 <img src="./screenshots/open-in-popup-screenshot.png">
+
+<img src="./screenshots/options_screenshot.png">
