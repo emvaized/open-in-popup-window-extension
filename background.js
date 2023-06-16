@@ -1,11 +1,9 @@
-let lastClientX, lastClientY, clientHeight, clientWidth, originWindowId;
+let lastClientX, lastClientY, originWindowId;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         lastClientX = request.lastClientX;
         lastClientY = request.lastClientY;
-        clientHeight = request.clientHeight;
-        clientWidth = request.clientWidth;
     }
 );
 
