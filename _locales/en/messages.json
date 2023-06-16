@@ -1,0 +1,23 @@
+{
+    "openInPopupWindow": {
+        "message": "Open in popup window"
+    },    
+    "extensionDescription": {
+        "message": "Adds context menu entry to open link in popup window"
+    },
+    "popupHeight": {
+        "message": "Popup height (px)"
+    },    
+    "closeWhenFocusedInitialWindow": {
+        "message": "Close popup when origin window is focused"
+    },    
+    "popupWidth": {
+        "message": "Popup width (px)"
+    },    
+    "tryOpenAtMousePosition": {
+        "message": "Try to open at mouse position (disabled — open at screen center)"
+    },    
+    "hideBrowserControls": {
+        "message": "Hide browser controls (addressbar, tabbar, etc)"
+    }
+}

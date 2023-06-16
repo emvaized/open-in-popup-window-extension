@@ -1,0 +1,23 @@
+{
+    "extensionDescription": {
+        "message": "Добавляет опцию в контекстное меню для ссылки для открытия её во вплывающем окне"
+    },
+    "closeWhenFocusedInitialWindow": {
+        "message": "Закрыть всплывающее окно, когда изначальное окно получает фокус"
+    },   
+    "openInPopupWindow": {
+        "message": "Открыть во всплывающем окне"
+    },    
+    "popupHeight": {
+        "message": "Высота окна (px)"
+    },    
+    "popupWidth": {
+        "message": "Ширина окна (px)"
+    },    
+    "tryOpenAtMousePosition": {
+        "message": "Пытаться открыть под курсором мыши (отключено — октрывать в центре экрана)"
+    },    
+    "hideBrowserControls": {
+        "message": "Прятать элементы управления браузера (панель адреса, вкладок, и тд)"
+    }
+}
