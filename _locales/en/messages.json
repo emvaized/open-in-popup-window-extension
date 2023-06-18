@@ -19,5 +19,8 @@
     },  
     "hideBrowserControls": {
         "message": "Hide browser controls (addressbar, tabbar, etc)"
+    },  
+    "openPageInMainWindow": {
+        "message": "Open page in main window"
     }
 }

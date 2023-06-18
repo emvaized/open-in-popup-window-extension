@@ -7,15 +7,42 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-const contextMenuItem = {
+const openLinkContextMenuItem = {
     "id": "openInPopupWindow",
     "title": chrome.i18n.getMessage('openInPopupWindow'),
     "contexts": ["link"]
 };
 
-chrome.contextMenus.create(contextMenuItem);
+const openInMainWindowContextMenuItem = {
+    "id": "openInMainWindow",
+    "title": chrome.i18n.getMessage('openPageInMainWindow'),
+    "visible": false,
+    "contexts": ["page"]
+};
+
+chrome.windows.onFocusChanged.addListener(
+    function(w){
+        chrome.windows.getCurrent(
+            function(w){
+                if (w.type == 'popup'){
+                    chrome.contextMenus.update("openInMainWindow", {"visible": true});
+                } else{
+                    chrome.contextMenus.update("openInMainWindow", {"visible": false});
+                }
+            },
+          );
+         }
+); 
+
+chrome.contextMenus.create(openLinkContextMenuItem);
+chrome.contextMenus.create(openInMainWindowContextMenuItem);
 
 chrome.contextMenus.onClicked.addListener(function(clickData) {
+    if (clickData.menuItemId == 'openInMainWindow') {
+        chrome.tabs.create({url: clickData.pageUrl, active:false });
+        return;
+    }
+
     /// load configs
     loadUserConfigs(function(){
         let originalWindowIsFullscreen = false;
@@ -47,7 +74,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             /// open at center of screen
             dx = (window.screen.width / 2) - (width / 2), dy = (window.screen.height / 2) - (height / 2);
         }
-       
     
         /// check for screen overflow
         if (dx < 0) dx = 0;

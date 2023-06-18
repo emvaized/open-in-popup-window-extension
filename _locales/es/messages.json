@@ -19,5 +19,8 @@
     }, 
     "hideBrowserControls": {
         "message": "Ocultar los controles del navegador (barra de direcciones, barra de pestañas, etc.)"
+    },  
+    "openLinkInMainWindow": {
+        "message": "Abrir página en la ventana principal"
     }
 }
