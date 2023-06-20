@@ -8,3 +8,8 @@
     transition: background-color 50ms ease-in-out;
     border-radius: 4px;
 }
+
+input[type="text"]{
+    min-width: 40%;
+    margin-right: 4px;
+}

@@ -22,5 +22,14 @@
     },  
     "openPageInMainWindow": {
         "message": "Open page in main window"
+    },  
+    "searchInPopupWindow": {
+        "message": "Search in popup window"
+    },  
+    "searchInPopupEnabled": {
+        "message": "Option to search selection in popup enabled"
+    },  
+    "popupSearchUrl": {
+        "message": "Search url (%s will be replaced with the search query)"
     }
 }

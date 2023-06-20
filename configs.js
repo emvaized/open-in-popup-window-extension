@@ -4,6 +4,8 @@ const configs = {
     'hideBrowserControls': true,
     'popupHeight': 800,
     'popupWidth': 600,
+    'searchInPopupEnabled': true,
+    'popupSearchUrl': 'https://www.google.com/search?q=%s',
 }
 
 function loadUserConfigs(callback) {
@@ -16,7 +18,6 @@ function loadUserConfigs(callback) {
 
                 if (userConfigs[key] !== null && userConfigs[key] !== undefined)
                     configs[key] = userConfigs[key];
-
             }
 
             if (callback) callback(userConfigs);

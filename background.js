@@ -18,6 +18,12 @@ const openInMainWindowContextMenuItem = {
     "title": chrome.i18n.getMessage('openPageInMainWindow'),
     "visible": false,
     "contexts": ["page"]
+}
+
+const searchInPopupWindowContextMenuItem = {
+    "id": "searchInPopupWindow",
+    "title": chrome.i18n.getMessage('searchInPopupWindow'),
+    "contexts": ["selection"]
 };
 
 chrome.windows.onFocusChanged.addListener(
@@ -34,8 +40,15 @@ chrome.windows.onFocusChanged.addListener(
          }
 ); 
 
+
+chrome.storage.onChanged.addListener((changes) => {
+    chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
+});
+
+
 chrome.contextMenus.create(openLinkContextMenuItem);
 chrome.contextMenus.create(openInMainWindowContextMenuItem);
+chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
 
 chrome.contextMenus.onClicked.addListener(function(clickData) {
     if (clickData.menuItemId == 'openInMainWindow') {
@@ -85,8 +98,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         /// create popup window
         setTimeout(function () {
             chrome.windows.create({
-                'url': clickData.linkUrl, 'type': configs.hideBrowserControls ? 'popup' : 'normal', 'width': width, 'height': height,
-                'top': dy, 'left': dx
+                'url': clickData.menuItemId == 'searchInPopupWindow' ? configs.popupSearchUrl.replace('%s', clickData.selectionText) : clickData.linkUrl, 
+                'type': configs.hideBrowserControls ? 'popup' : 'normal', 
+                'width': width, 'height': height, 'top': dy, 'left': dx
             }, function (popupWindow) {
                 /// set coordinates again (workaround for old firefox bug)
                 chrome.windows.update(popupWindow.id, {

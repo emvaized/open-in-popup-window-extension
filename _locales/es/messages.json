@@ -22,5 +22,14 @@
     },  
     "openLinkInMainWindow": {
         "message": "Abrir página en la ventana principal"
+    },  
+    "searchInPopupWindow": {
+        "message": "Buscar en ventana emergente"
+    },  
+    "searchInPopupEnabled": {
+        "message": "Opción para buscar selección en ventana emergente habilitada"
+    },  
+    "popupSearchUrl": {
+        "message": "URL de búsqueda (%s se reemplazará con la consulta de búsqueda)"
     }
 }

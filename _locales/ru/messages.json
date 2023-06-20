@@ -22,5 +22,14 @@
     },  
     "openPageInMainWindow": {
         "message": "Открыть страницу в основном окне"
+    },  
+    "searchInPopupWindow": {
+        "message": "Искать во всплывающем окне"
+    },  
+    "searchInPopupEnabled": {
+        "message": "Включить опцию поиска выделения во всплывающем окне"
+    },  
+    "popupSearchUrl": {
+        "message": "URL поиска (%s будет заменено поисковым запросом)"
     }
 }
