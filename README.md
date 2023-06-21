@@ -5,6 +5,8 @@ Extension provides several options for popup height/width, whether to show brows
 Privacy:
 This extension doesn't collect any private data. It requires access to currently open page in order to get mouse coordinates when context menu was opened.
 
+<img src="./screenshots/context-menu.png">
+
 <img src="./screenshots/open-in-popup-screenshot.png">
 
 <img src="./screenshots/options_screenshot.png">
