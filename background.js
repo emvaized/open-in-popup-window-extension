@@ -7,27 +7,35 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-const openLinkContextMenuItem = {
-    "id": "openInPopupWindow",
-    "title": chrome.i18n.getMessage('openInPopupWindow'),
-    "contexts": ["link"]
-};
+chrome.runtime.onInstalled.addListener(function(){
+    const openLinkContextMenuItem = {
+        "id": "openInPopupWindow",
+        "title": chrome.i18n.getMessage('openInPopupWindow'),
+        "contexts": ["link"]
+    };
+    
+    const openInMainWindowContextMenuItem = {
+        "id": "openInMainWindow",
+        "title": chrome.i18n.getMessage('openPageInMainWindow'),
+        "visible": false,
+        "contexts": ["page"]
+    }
+    
+    const searchInPopupWindowContextMenuItem = {
+        "id": "searchInPopupWindow",
+        "title": chrome.i18n.getMessage('searchInPopupWindow'),
+        "contexts": ["selection"]
+    };
 
-const openInMainWindowContextMenuItem = {
-    "id": "openInMainWindow",
-    "title": chrome.i18n.getMessage('openPageInMainWindow'),
-    "visible": false,
-    "contexts": ["page"]
-}
+    chrome.contextMenus.create(openLinkContextMenuItem);
+    chrome.contextMenus.create(openInMainWindowContextMenuItem);
+    chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
+})
 
-const searchInPopupWindowContextMenuItem = {
-    "id": "searchInPopupWindow",
-    "title": chrome.i18n.getMessage('searchInPopupWindow'),
-    "contexts": ["selection"]
-};
 
 chrome.windows.onFocusChanged.addListener(
     function(w){
+        if (w < 0) return; /// don't process when window lost focus
         chrome.windows.getCurrent(
             function(w){
                 if (w.type == 'popup'){
@@ -36,8 +44,8 @@ chrome.windows.onFocusChanged.addListener(
                     chrome.contextMenus.update("openInMainWindow", {"visible": false});
                 }
             },
-          );
-         }
+        );
+    }
 ); 
 
 
@@ -45,10 +53,6 @@ chrome.storage.onChanged.addListener((changes) => {
     chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
 });
 
-
-chrome.contextMenus.create(openLinkContextMenuItem);
-chrome.contextMenus.create(openInMainWindowContextMenuItem);
-chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
 
 chrome.contextMenus.onClicked.addListener(function(clickData) {
     if (clickData.menuItemId == 'openInMainWindow') {
