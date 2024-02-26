@@ -7,7 +7,7 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
-chrome.runtime.onInstalled.addListener(function(){
+// chrome.runtime.onInstalled.addListener(function(){
     const openLinkContextMenuItem = {
         "id": "openInPopupWindow",
         "title": chrome.i18n.getMessage('openInPopupWindow'),
@@ -30,7 +30,7 @@ chrome.runtime.onInstalled.addListener(function(){
     chrome.contextMenus.create(openLinkContextMenuItem);
     chrome.contextMenus.create(openInMainWindowContextMenuItem);
     chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
-})
+// })
 
 
 chrome.windows.onFocusChanged.addListener(

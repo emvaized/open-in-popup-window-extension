@@ -1,3 +1,6 @@
+0.0.5
+- reverted background script changes because Firefox kept loosing the context menu item
+
 0.0.4
 - optimized code for persistent background script
 - minified content script for better page load speed
