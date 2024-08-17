@@ -32,11 +32,18 @@ chrome.runtime.onMessage.addListener(
         "id": "searchInPopupWindow",
         "title": chrome.i18n.getMessage('searchInPopupWindow'),
         "contexts": ["selection"]
-    };
+    }
 
+    const viewImageContextMenuItem = {
+        "id": "viewInPopupWindow",
+        "title": 'View in popup window',
+        "contexts": ["image", "video", "audio"]
+    }  
+    
     chrome.contextMenus.create(openLinkContextMenuItem);
     chrome.contextMenus.create(openInMainWindowContextMenuItem);
     chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
+    chrome.contextMenus.create(viewImageContextMenuItem);
 // })
 
 
@@ -58,6 +65,7 @@ chrome.windows.onFocusChanged.addListener(
 
 chrome.storage.onChanged.addListener((changes) => {
     chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
+    chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
 });
 
 
@@ -68,7 +76,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     }
 
     /// load configs
-    const link = clickData.menuItemId == 'searchInPopupWindow' ? configs.popupSearchUrl.replace('%s', clickData.selectionText) : clickData.linkUrl;
+    const link = clickData.menuItemId == 'searchInPopupWindow' ? 
+        configs.popupSearchUrl.replace('%s', clickData.selectionText) 
+        : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
     openPopupWindowForLink(link);
  });
 

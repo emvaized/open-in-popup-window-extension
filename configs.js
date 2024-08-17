@@ -5,6 +5,7 @@ const configs = {
     'popupHeight': 800,
     'popupWidth': 600,
     'searchInPopupEnabled': true,
+    'viewInPopupEnabled': true,
     'popupSearchUrl': 'https://www.google.com/search?q=%s',
     'openByDragAndDrop': false,
 }
