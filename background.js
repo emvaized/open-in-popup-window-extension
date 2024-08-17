@@ -2,8 +2,15 @@ let lastClientX, lastClientY, originWindowId;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        lastClientX = request.lastClientX;
-        lastClientY = request.lastClientY;
+        if (request.type == 'openUrl') {
+            loadUserConfigs(function(loadedConfigs){
+                if (configs.openByDragAndDrop) 
+                    openPopupWindowForLink(request.link, request.dx, request.dy, request.selectedText);
+            })
+        } else {
+            lastClientX = request.lastClientX;
+            lastClientY = request.lastClientY;
+        }
     }
 );
 
@@ -61,6 +68,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     }
 
     /// load configs
+    const link = clickData.menuItemId == 'searchInPopupWindow' ? configs.popupSearchUrl.replace('%s', clickData.selectionText) : clickData.linkUrl;
+    openPopupWindowForLink(link);
+ });
+
+ function openPopupWindowForLink(link, dX, dY, selectedText) {
     loadUserConfigs(function(){
         let originalWindowIsFullscreen = false;
 
@@ -84,9 +96,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
         height = parseInt(height); width = parseInt(width);
 
-        if (configs.tryOpenAtMousePosition == true && (lastClientX && lastClientY)) {
+        if (configs.tryOpenAtMousePosition == true && ((dX ?? lastClientX) && (dY ?? lastClientY))) {
             /// open at last known mouse position
-            dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
+            dx = (dX ?? lastClientX) - (width / 2), dy = (dY ?? lastClientY) - (height / 2);
         } else {
             /// open at center of screen
             dx = (window.screen.width / 2) - (width / 2), dy = (window.screen.height / 2) - (height / 2);
@@ -102,7 +114,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         /// create popup window
         setTimeout(function () {
             chrome.windows.create({
-                'url': clickData.menuItemId == 'searchInPopupWindow' ? configs.popupSearchUrl.replace('%s', clickData.selectionText) : clickData.linkUrl, 
+                'url': link ?? configs.popupSearchUrl.replace('%s', selectedText), 
                 'type': configs.hideBrowserControls ? 'popup' : 'normal', 
                 'width': width, 'height': height, 'top': dy, 'left': dx
             }, function (popupWindow) {
@@ -131,4 +143,4 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             });
         }, originalWindowIsFullscreen ? 600 : 0)
     });
- });
+ }

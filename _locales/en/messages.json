@@ -20,6 +20,9 @@
     "hideBrowserControls": {
         "message": "Hide browser controls (addressbar, tabbar, etc)"
     },  
+    "openByDragAndDrop": {
+        "message": "Create popup by drag and drop link on empty place"
+    },    
     "openPageInMainWindow": {
         "message": "Open page in main window"
     },  

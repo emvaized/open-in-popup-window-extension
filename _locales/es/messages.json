@@ -19,6 +19,9 @@
     }, 
     "hideBrowserControls": {
         "message": "Ocultar los controles del navegador (barra de direcciones, barra de pestañas, etc.)"
+    },
+    "openByDragAndDrop": {
+        "message": "Crear una ventana emergente arrastrando y soltando un enlace en un lugar vacío"
     },  
     "openLinkInMainWindow": {
         "message": "Abrir página en la ventana principal"

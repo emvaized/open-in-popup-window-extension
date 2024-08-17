@@ -6,6 +6,7 @@ const configs = {
     'popupWidth': 600,
     'searchInPopupEnabled': true,
     'popupSearchUrl': 'https://www.google.com/search?q=%s',
+    'openByDragAndDrop': false,
 }
 
 function loadUserConfigs(callback) {
