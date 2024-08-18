@@ -13,3 +13,5 @@ input[type="text"]{
     min-width: 40%;
     margin-right: 4px;
 }
+
+hr { width: 100%; opacity: 0.2; }
