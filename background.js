@@ -115,9 +115,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             height = window.screen.height * 0.7; width = (height * aspectRatio);
     
             if (width > window.screen.width) {
-                width = window.screen.width * 0.7 + toolbarwidth; height = (width / aspectRatio);
+                width = window.screen.width * 0.7; height = (width / aspectRatio);
             }
-            height = Math.round(height);
+
+            let avarageBrowserToolbarHeight = 30;
+            height = Math.round(height) + avarageBrowserToolbarHeight;
             width = Math.round(width);
         }
 
