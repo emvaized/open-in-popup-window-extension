@@ -40,5 +40,8 @@
     },  
     "viewInPopupWindow": {
         "message": "Посмотреть во всплывающием окне"
+    },    
+    "tryFitWindowSizeToImage": {
+        "message": "Попытаться подогнать размер окна под размер изображения"
     }
 }

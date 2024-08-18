@@ -1,15 +1,18 @@
-let lastClientX, lastClientY, originWindowId;
+let lastClientX, lastClientY, originWindowId, lastClientHeight, lastClientWidth;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.type == 'openUrl') {
             loadUserConfigs(function(loadedConfigs){
                 if (configs.openByDragAndDrop) 
-                    openPopupWindowForLink(request.link, request.dx, request.dy, request.selectedText);
+                    openPopupWindowForLink(request.link, request.dx, request.dy, request.selectedText,
+                        request.clientHeight, request.clientWidth);
             })
         } else {
             lastClientX = request.lastClientX;
             lastClientY = request.lastClientY;
+            lastClientHeight = request.clientHeight;
+            lastClientWidth = request.clientWidth;
         }
     }
 );
@@ -75,14 +78,14 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         return;
     }
 
-    /// load configs
     const link = clickData.menuItemId == 'searchInPopupWindow' ? 
         configs.popupSearchUrl.replace('%s', clickData.selectionText) 
         : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
     openPopupWindowForLink(link);
  });
 
- function openPopupWindowForLink(link, dX, dY, selectedText) {
+ function openPopupWindowForLink(link, dX, dY, selectedText, clientHeight, clientWidth) {
+    /// load configs
     loadUserConfigs(function(){
         let originalWindowIsFullscreen = false;
 
@@ -105,6 +108,18 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         // height = window.screen.height * 0.65, width = window.screen.height * 0.5;
         height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
         height = parseInt(height); width = parseInt(width);
+
+        if (configs.tryFitWindowSizeToImage && (clientHeight || lastClientHeight) && (clientWidth || lastClientWidth)) {
+            height = clientHeight ?? lastClientHeight, width = clientWidth ?? lastClientWidth;
+            const aspectRatio = width / height;
+            height = window.screen.height * 0.7; width = (height * aspectRatio);
+    
+            if (width > window.screen.width) {
+                width = window.screen.width * 0.7 + toolbarwidth; height = (width / aspectRatio);
+            }
+            height = Math.round(height);
+            width = Math.round(width);
+        }
 
         if (configs.tryOpenAtMousePosition == true && ((dX ?? lastClientX) && (dY ?? lastClientY))) {
             /// open at last known mouse position
@@ -132,7 +147,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 chrome.windows.update(popupWindow.id, {
                     'top': dy, 'left': dx
                 });
-    
+
                 if (configs.closeWhenFocusedInitialWindow == false) return;
 
                 /// close popup on click parent window
@@ -150,6 +165,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 setTimeout(function () {
                     chrome.windows.onFocusChanged.addListener(windowFocusListener);
                 }, 300);
+
+                lastClientHeight = undefined;
+                lastClientWidth = undefined;
+                lastClientX = undefined;
+                lastClientY = undefined;
             });
         }, originalWindowIsFullscreen ? 600 : 0)
     });

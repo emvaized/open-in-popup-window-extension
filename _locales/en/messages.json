@@ -40,5 +40,8 @@
     },  
     "viewInPopupWindow": {
         "message": "View in popup window"
+    },    
+    "tryFitWindowSizeToImage": {
+        "message": "Try to fit window size to image aspect ratio"
     }
 }
