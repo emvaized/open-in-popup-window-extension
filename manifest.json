@@ -5,9 +5,9 @@
   "default_locale": "en",
   "version": "0.0.5",
   "icons": {
-    "48": "icon.svg",
-    "96": "icon.svg",
-    "128": "icon.svg"
+    "48": "icon.png",
+    "96": "icon.png",
+    "128": "icon.png"
   },
   "background": {
     "scripts": [
