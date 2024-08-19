@@ -1,19 +1,29 @@
-let dragAndDropSuccess=false;
-document.addEventListener("contextmenu",(e=>{
-    let t=document.elementFromPoint(e.clientX,e.clientY);
-    chrome.runtime.sendMessage({lastClientX:e.screenX,lastClientY:e.screenY,
-        clientHeight:t.naturalHeight??t.clientHeight,clientWidth:t.naturalWidth??t.clientWidth
-    })
-}
-)),
+let dragAndDropSuccess;
+
+document.addEventListener("contextmenu",(e=> sendBackgroundRequest(e)));
 document.addEventListener("dragend",(e=>{
-    dragAndDropSuccess || chrome.runtime.sendMessage({
-        type:"openUrl", link: e.target.href ?? e.target.src, 
-        dx:e.clientX, dy:e.clientY,
-        selectedText:window.getSelection().toString().trim(), 
-        clientHeight:e.target.naturalHeight??e.target.clientHeight,
-        clientWidth:e.target.naturalWidth??e.target.clientWidth
-    })})),
-document.addEventListener("drop",(e=>{
-    dragAndDropSuccess=true, setTimeout((function(){dragAndDropSuccess=false}),200)
+    if (!dragAndDropSuccess) sendBackgroundRequest(e, true)
 }));
+document.addEventListener("drop",(e=>{
+    dragAndDropSuccess=true, setTimeout((()=>{dragAndDropSuccess=false}),200)
+}));
+
+function sendBackgroundRequest(e, isViewer = false){
+    const t = e.target
+    const toolbarHeight = window.outerHeight - window.innerHeight
+    const toolbarWidth = window.outerWidth - window.innerWidth
+    const message = {
+        lastClientX: e.screenX, lastClientY: e.screenY,
+        selectedText: window.getSelection().toString().trim(), 
+        clientHeight: t.naturalHeight ?? t.clientHeight,
+        clientWidth: t.naturalWidth ?? t.clientWidth,
+        toolbarHeight: toolbarHeight, toolbarWidth: toolbarWidth
+    }
+
+    if (isViewer) {
+        message['nodeName'] = t.nodeName;
+        message['link'] = t.href ?? t.src;
+    }
+
+    chrome.runtime.sendMessage(message)
+}

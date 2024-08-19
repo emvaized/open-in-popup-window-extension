@@ -1,70 +1,61 @@
 let lastClientX, lastClientY, originWindowId, lastClientHeight, lastClientWidth;
+let toolbarWidth, toolbarHeight, textSelection;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
-        if (request.type == 'openUrl') {
-            loadUserConfigs(function(loadedConfigs){
-                if (configs.openByDragAndDrop) 
-                    openPopupWindowForLink(request.link, request.dx, request.dy, request.selectedText,
-                        request.clientHeight, request.clientWidth);
-            })
-        } else {
-            lastClientX = request.lastClientX;
-            lastClientY = request.lastClientY;
-            lastClientHeight = request.clientHeight;
-            lastClientWidth = request.clientWidth;
+        lastClientX = request.lastClientX;
+        lastClientY = request.lastClientY;
+        lastClientHeight = request.clientHeight;
+        lastClientWidth = request.clientWidth;
+        toolbarWidth = request.toolbarWidth;
+        toolbarHeight = request.toolbarHeight;
+        textSelection = request.selectedText ?? '';
+
+        if (request.link) {
+            loadUserConfigs((cfg) => { 
+                if (configs.openByDragAndDrop) {
+                    const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
+                    openPopupWindowForLink(request.link, isViewer); 
+                }
+            });
         }
     }
 );
 
-// chrome.runtime.onInstalled.addListener(function(){
-    const openLinkContextMenuItem = {
-        "id": "openInPopupWindow",
-        "title": chrome.i18n.getMessage('openInPopupWindow'),
-        "contexts": ["link"]
-    };
-    
-    const openInMainWindowContextMenuItem = {
-        "id": "openInMainWindow",
-        "title": chrome.i18n.getMessage('openPageInMainWindow'),
-        "visible": false,
-        "contexts": ["page"]
-    }
-    
-    const searchInPopupWindowContextMenuItem = {
-        "id": "searchInPopupWindow",
-        "title": chrome.i18n.getMessage('searchInPopupWindow'),
-        "contexts": ["selection"]
-    }
+const openLinkContextMenuItem = {
+    "id": "openInPopupWindow",
+    "title": chrome.i18n.getMessage('openInPopupWindow'),
+    "contexts": ["link"]
+}
+const openInMainWindowContextMenuItem = {
+    "id": "openInMainWindow",
+    "title": chrome.i18n.getMessage('openPageInMainWindow'),
+    "visible": false,
+    "contexts": ["page"]
+}
+const searchInPopupWindowContextMenuItem = {
+    "id": "searchInPopupWindow",
+    "title": chrome.i18n.getMessage('searchInPopupWindow'),
+    "contexts": ["selection"]
+}
+const viewImageContextMenuItem = {
+    "id": "viewInPopupWindow",
+    "title": 'View in popup window',
+    "contexts": ["image", "video", "audio"]
+}  
 
-    const viewImageContextMenuItem = {
-        "id": "viewInPopupWindow",
-        "title": 'View in popup window',
-        "contexts": ["image", "video", "audio"]
-    }  
-    
-    chrome.contextMenus.create(openLinkContextMenuItem);
-    chrome.contextMenus.create(openInMainWindowContextMenuItem);
-    chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
-    chrome.contextMenus.create(viewImageContextMenuItem);
-// })
+chrome.contextMenus.create(openLinkContextMenuItem);
+chrome.contextMenus.create(openInMainWindowContextMenuItem);
+chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
+chrome.contextMenus.create(viewImageContextMenuItem);
 
-
-chrome.windows.onFocusChanged.addListener(
-    function(w){
+chrome.windows.onFocusChanged.addListener(function(w){
         if (w < 0) return; /// don't process when window lost focus
         chrome.windows.getCurrent(
-            function(w){
-                if (w.type == 'popup'){
-                    chrome.contextMenus.update("openInMainWindow", {"visible": true});
-                } else{
-                    chrome.contextMenus.update("openInMainWindow", {"visible": false});
-                }
-            },
+            (w) => chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup'}),
         );
     }
 ); 
-
 
 chrome.storage.onChanged.addListener((changes) => {
     chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
@@ -81,11 +72,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     const link = clickData.menuItemId == 'searchInPopupWindow' ? 
         configs.popupSearchUrl.replace('%s', clickData.selectionText) 
         : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
-    openPopupWindowForLink(link);
+    openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
  });
 
- function openPopupWindowForLink(link, dX, dY, selectedText, clientHeight, clientWidth) {
-    /// load configs
+ function openPopupWindowForLink(link, isViewer = false) {
     loadUserConfigs(function(){
         let originalWindowIsFullscreen = false;
 
@@ -109,8 +99,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
         height = parseInt(height); width = parseInt(width);
 
-        if (configs.tryFitWindowSizeToImage && (clientHeight || lastClientHeight) && (clientWidth || lastClientWidth)) {
-            height = clientHeight ?? lastClientHeight, width = clientWidth ?? lastClientWidth;
+        if (isViewer && configs.tryFitWindowSizeToImage && lastClientHeight && lastClientWidth) {
+            height = lastClientHeight, width = lastClientWidth;
             const aspectRatio = width / height;
             height = window.screen.height * 0.7; width = (height * aspectRatio);
     
@@ -118,14 +108,13 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 width = window.screen.width * 0.7; height = (width / aspectRatio);
             }
 
-            let avarageBrowserToolbarHeight = 30;
-            height = Math.round(height) + avarageBrowserToolbarHeight;
-            width = Math.round(width);
+            height = Math.round(height + toolbarHeight);
+            width = Math.round(width + toolbarWidth);
         }
 
-        if (configs.tryOpenAtMousePosition == true && ((dX ?? lastClientX) && (dY ?? lastClientY))) {
+        if (configs.tryOpenAtMousePosition == true && (lastClientX && lastClientY)) {
             /// open at last known mouse position
-            dx = (dX ?? lastClientX) - (width / 2), dy = (dY ?? lastClientY) - (height / 2);
+            dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
         } else {
             /// open at center of screen
             dx = (window.screen.width / 2) - (width / 2), dy = (window.screen.height / 2) - (height / 2);
@@ -141,7 +130,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         /// create popup window
         setTimeout(function () {
             chrome.windows.create({
-                'url': link ?? configs.popupSearchUrl.replace('%s', selectedText), 
+                'url': link ?? configs.popupSearchUrl.replace('%s', textSelection), 
                 'type': configs.hideBrowserControls ? 'popup' : 'normal', 
                 'width': width, 'height': height, 'top': dy, 'left': dx
             }, function (popupWindow) {
@@ -172,6 +161,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 lastClientWidth = undefined;
                 lastClientX = undefined;
                 lastClientY = undefined;
+                toolbarHeight = undefined;
+                toolbarWidth = undefined;
+                textSelection = undefined;
             });
         }, originalWindowIsFullscreen ? 600 : 0)
     });
