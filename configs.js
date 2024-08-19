@@ -14,20 +14,18 @@ const configs = {
 function loadUserConfigs(callback) {
     const keys = Object.keys(configs);
     chrome.storage.sync.get(
-        keys, function (userConfigs) {
+        keys, (c)=>{
             const l = keys.length;
             for (let i = 0; i < l; i++) {
-                let key = keys[i];
-
-                if (userConfigs[key] !== null && userConfigs[key] !== undefined)
-                    configs[key] = userConfigs[key];
+                const key = keys[i];
+                if (c[key] !== undefined) configs[key] = c[key];
             }
 
-            if (callback) callback(userConfigs);
+            if (callback) callback(c);
         }
     );
 }
 
-function saveAllSettings() {
-    chrome.storage.sync.set(configs);
+function saveAllSettings(){
+    chrome.storage.sync.set(configs)
 }

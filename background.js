@@ -40,7 +40,7 @@ const searchInPopupWindowContextMenuItem = {
 }
 const viewImageContextMenuItem = {
     "id": "viewInPopupWindow",
-    "title": 'View in popup window',
+    "title": chrome.i18n.getMessage('viewInPopupWindow'),
     "contexts": ["image", "video", "audio"]
 }  
 
@@ -61,7 +61,6 @@ chrome.storage.onChanged.addListener((changes) => {
     chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
     chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
 });
-
 
 chrome.contextMenus.onClicked.addListener(function(clickData) {
     if (clickData.menuItemId == 'openInMainWindow') {
@@ -104,10 +103,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             const aspectRatio = width / height;
             height = window.screen.height * 0.7; width = (height * aspectRatio);
     
-            if (width > window.screen.width) {
+            if (width > window.screen.width)
                 width = window.screen.width * 0.7; height = (width / aspectRatio);
-            }
-
+            
             height = Math.round(height + toolbarHeight);
             width = Math.round(width + toolbarWidth);
         }
@@ -134,7 +132,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 'type': configs.hideBrowserControls ? 'popup' : 'normal', 
                 'width': width, 'height': height, 'top': dy, 'left': dx
             }, function (popupWindow) {
-                /// set coordinates again (workaround for old firefox bug)
+                /// set coordinates again (workaround for firefox bug)
                 chrome.windows.update(popupWindow.id, {
                     'top': dy, 'left': dx
                 });
@@ -157,12 +155,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                     chrome.windows.onFocusChanged.addListener(windowFocusListener);
                 }, 300);
 
-                lastClientHeight = undefined;
-                lastClientWidth = undefined;
-                lastClientX = undefined;
-                lastClientY = undefined;
-                toolbarHeight = undefined;
-                toolbarWidth = undefined;
+                lastClientHeight = undefined; lastClientWidth = undefined;
+                lastClientX = undefined; lastClientY = undefined;
+                toolbarHeight = undefined; toolbarWidth = undefined;
                 textSelection = undefined;
             });
         }, originalWindowIsFullscreen ? 600 : 0)
