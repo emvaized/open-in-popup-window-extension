@@ -39,6 +39,9 @@
         "message": "Opción para ver imágenes y vídeos en ventanas emergentes habilitadas"
     },  
     "viewInPopupWindow": {
-        "message": "Ver en ventana emergente"
+        "message": "Ver imagen en ventana emergente"
+    },    
+    "useBuiltInImageViewer": {
+        "message": "Utilice el visor de imágenes integrado del navegador"
     }
 }

@@ -39,9 +39,12 @@
         "message": "Option to view images and videos in popup enabled"
     },  
     "viewInPopupWindow": {
-        "message": "View in popup window"
+        "message": "View image in popup window"
     },    
     "tryFitWindowSizeToImage": {
         "message": "Try to fit window size to image aspect ratio"
+    },    
+    "useBuiltInImageViewer": {
+        "message": "Use browser's built-in image viewer"
     }
 }

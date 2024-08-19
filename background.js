@@ -41,7 +41,7 @@ const searchInPopupWindowContextMenuItem = {
 const viewImageContextMenuItem = {
     "id": "viewInPopupWindow",
     "title": chrome.i18n.getMessage('viewInPopupWindow'),
-    "contexts": ["image", "video", "audio"]
+    "contexts": ["image"]
 }  
 
 chrome.contextMenus.create(openLinkContextMenuItem);
@@ -128,7 +128,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         /// create popup window
         setTimeout(function () {
             chrome.windows.create({
-                'url': link ?? configs.popupSearchUrl.replace('%s', textSelection), 
+                // 'url': link ?? configs.popupSearchUrl.replace('%s', textSelection), 
+                'url': isViewer ? 
+                    (configs.useBuiltInImageViewer ? link :
+                        chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) :
+                    link ?? configs.popupSearchUrl.replace('%s', textSelection), 
                 'type': configs.hideBrowserControls ? 'popup' : 'normal', 
                 'width': width, 'height': height, 'top': dy, 'left': dx
             }, function (popupWindow) {
@@ -137,28 +141,28 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                     'top': dy, 'left': dx
                 });
 
-                if (configs.closeWhenFocusedInitialWindow == false) return;
-
-                /// close popup on click parent window
-                function windowFocusListener(windowId) {
-                    if (windowId == originWindowId) {
-                        chrome.windows.onFocusChanged.removeListener(windowFocusListener);
-                        chrome.windows.remove(popupWindow.id);
-    
-                        if (originalWindowIsFullscreen) chrome.windows.update(parentWindow.id, {
-                            'state': 'fullscreen'
-                        });
+                if (configs.closeWhenFocusedInitialWindow) {
+                     /// close popup on click parent window
+                    function windowFocusListener(windowId) {
+                        if (windowId == originWindowId) {
+                            chrome.windows.onFocusChanged.removeListener(windowFocusListener);
+                            chrome.windows.remove(popupWindow.id);
+        
+                            if (originalWindowIsFullscreen) chrome.windows.update(parentWindow.id, {
+                                'state': 'fullscreen'
+                            });
+                        }
                     }
+        
+                    setTimeout(function () {
+                        chrome.windows.onFocusChanged.addListener(windowFocusListener);
+                    }, 300);
                 }
-    
-                setTimeout(function () {
-                    chrome.windows.onFocusChanged.addListener(windowFocusListener);
-                }, 300);
 
                 lastClientHeight = undefined; lastClientWidth = undefined;
                 lastClientX = undefined; lastClientY = undefined;
-                toolbarHeight = undefined; toolbarWidth = undefined;
                 textSelection = undefined;
+                // toolbarHeight = undefined; toolbarWidth = undefined;
             });
         }, originalWindowIsFullscreen ? 600 : 0)
     });

@@ -9,6 +9,7 @@ const configs = {
     'popupSearchUrl': 'https://www.google.com/search?q=%s',
     'openByDragAndDrop': false,
     'tryFitWindowSizeToImage': true,
+    'useBuiltInImageViewer': false,
 }
 
 function loadUserConfigs(callback) {
