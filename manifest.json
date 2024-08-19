@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Open in Popup window",
+  "name": "Open in Popup Window",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
   "version": "0.0.5",

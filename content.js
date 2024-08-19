@@ -7,7 +7,7 @@ document.addEventListener("drop",(e=>{
     dragAndDropSuccess=true, setTimeout((()=>{dragAndDropSuccess=false}),200)
 }));
 
-function sendBackgroundRequest(e, isViewer = false){
+function sendBackgroundRequest(e, isViewer){
     const t = e.target,
     toolbarHeight = window.outerHeight - window.innerHeight,
     toolbarWidth = window.outerWidth - window.innerWidth,
