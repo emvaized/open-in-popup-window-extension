@@ -1,10 +1,6 @@
-let dragAndDropSuccess;
 document.addEventListener("contextmenu",(e=>sendBackgroundRequest(e)));
 document.addEventListener("dragend",(e=>{
-    if (!dragAndDropSuccess) sendBackgroundRequest(e, true)
-}));
-document.addEventListener("drop",(e=>{
-    dragAndDropSuccess=true, setTimeout((()=>{dragAndDropSuccess=false}),200)
+    if (e.dataTransfer.dropEffect == 'none') sendBackgroundRequest(e, true)
 }));
 
 function sendBackgroundRequest(e, isViewer){

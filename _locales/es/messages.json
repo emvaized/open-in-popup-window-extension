@@ -27,7 +27,7 @@
         "message": "Abrir página en la ventana principal"
     },  
     "searchInPopupWindow": {
-        "message": "Buscar en ventana emergente"
+        "message": "Buscar texto en la ventana emergente"
     },  
     "searchInPopupEnabled": {
         "message": "Opción para buscar selección en ventana emergente habilitada"
