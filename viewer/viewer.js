@@ -20,9 +20,15 @@ function init(){
     setImageListeners();
 
     /// update window size on image load (in case we got it wrong)
-    // image.onload = function(){
-    //     chrome.runtime.sendMessage({ action: 'updateExistingWindow', imageHeight: image.naturalHeight ?? image.clientHeight, imageWidth: image.naturalWidth ?? image.clientWidth });
-    // }
+    image.onload = function(){
+        const aspectRatio = (image.naturalWidth ?? image.clientWidth) / (image.naturalHeight ?? image.clientHeight);
+        const toolbarHeight = window.outerHeight - window.innerHeight;
+        const toolbarWidth = window.outerWidth - window.innerWidth;
+        chrome.runtime.sendMessage({ 
+            action: 'updateAspectRatio', aspectRatio: aspectRatio,
+            toolbarHeight:toolbarHeight, toolbarWidth:toolbarWidth
+          });
+    }
 }
 
 function setImageListeners(){

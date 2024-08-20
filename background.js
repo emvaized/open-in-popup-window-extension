@@ -1,8 +1,34 @@
-let lastClientX, lastClientY, originWindowId, lastClientHeight, lastClientWidth;
+let lastClientX, lastClientY, originWindowId, lastClientHeight, lastClientWidth, lastPopupId;
 let toolbarWidth, toolbarHeight, textSelection;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
+        if (request.action == 'updateAspectRatio') {
+            if (request.aspectRatio && configs.tryFitWindowSizeToImage) {
+                chrome.windows.get(lastPopupId, function(w){
+                    if (!w || lastPopupId < 0 || !request.aspectRatio) return;
+
+                    let newWidth = (w.height - request.toolbarHeight) * request.aspectRatio;
+
+                    if (newWidth > window.screen.availWidth)
+                        newWidth = window.screen.availWidth * 0.7;
+    
+                    let dx = w.left;
+                    if (dx + newWidth > window.screen.availWidth) 
+                        dx = dx - (dx + newWidth - window.screen.availWidth);
+
+                    newWidth = Math.round(newWidth);
+                    dx = Math.round(dx);
+    
+                    chrome.windows.update(lastPopupId, {
+                        'width': newWidth, 
+                        'left': dx
+                    });
+                })
+            }
+            return;
+        }
+
         lastClientX = request.lastClientX;
         lastClientY = request.lastClientY;
         lastClientHeight = request.clientHeight;
@@ -96,24 +122,23 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     
         // height = window.screen.height * 0.65, width = window.screen.height * 0.5;
         height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
-        height = parseInt(height); width = parseInt(width);
-
         if (isViewer && configs.tryFitWindowSizeToImage && lastClientHeight && lastClientWidth) {
             // height = lastClientHeight, width = lastClientWidth;
             // const aspectRatio = width / height;
             // height = window.screen.height * 0.7; width = (height * aspectRatio);
             const aspectRatio = lastClientWidth / lastClientHeight;
-            width = height * aspectRatio;
+            width = ((height - toolbarHeight) * aspectRatio) + toolbarWidth;
     
-            if (width > window.screen.width) {
-                width = window.screen.width * 0.7; height = width / aspectRatio;
+            if (width > window.screen.availWidth) {
+                width = window.screen.availWidth * 0.7; 
+                // height = width / aspectRatio;
             }
             
             // height = Math.round(height + toolbarHeight);
             // width = Math.round(width + toolbarWidth);
-            width = parseInt(width);
             // height = parseInt(height);
         }
+        height = parseInt(height); width = parseInt(width);
 
         if (configs.tryOpenAtMousePosition == true && (lastClientX && lastClientY)) {
             /// open at last known mouse position
@@ -126,10 +151,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         /// check for screen overflow
         if (dx < 0) dx = 0;
         if (dy < 0) dy = 0;
-        if (dx + width > window.screen.width) dx = dx - (dx + width - window.screen.width);
-        if (dy + height > window.screen.height) dy = dy - (dy + height - window.screen.height);
+        if (dx + width > window.screen.availWidth) dx = dx - (dx + width - window.screen.availWidth);
+        if (dy + height > window.screen.availHeight) dy = dy - (dy + height - window.screen.availHeight);
         dx = parseInt(dx); dy = parseInt(dy);
-    
+
         /// create popup window
         setTimeout(function () {
             chrome.windows.create({
@@ -143,7 +168,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             }, function (popupWindow) {
                 /// set coordinates again (workaround for firefox bug)
                 chrome.windows.update(popupWindow.id, {
-                    'top': dy, 'left': dx
+                    'top': dy, 'left': dx, 'width': width, 'height': height
                 });
 
                 if (configs.closeWhenFocusedInitialWindow) {
@@ -168,6 +193,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 lastClientX = undefined; lastClientY = undefined;
                 textSelection = undefined;
                 // toolbarHeight = undefined; toolbarWidth = undefined;
+                lastPopupId = popupWindow.id;
             });
         }, originalWindowIsFullscreen ? 600 : 0)
     });

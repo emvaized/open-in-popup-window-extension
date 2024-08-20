@@ -40,8 +40,11 @@
     },  
     "viewInPopupWindow": {
         "message": "Ver imagen en ventana emergente"
-    },    
+    }, 
     "useBuiltInImageViewer": {
         "message": "Utilice el visor de imágenes integrado del navegador"
+    },  
+    "tryFitWindowSizeToImage": {
+        "message": "Intente ajustar el ancho de la ventana emergente a la relación de aspecto de la imagen"
     }
 }
