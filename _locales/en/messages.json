@@ -42,7 +42,7 @@
         "message": "View image in popup window"
     },    
     "tryFitWindowSizeToImage": {
-        "message": "Try to fit window size to image aspect ratio"
+        "message": "Intente ajustar el ancho de la ventana emergente a la relación de aspecto de la imagen"
     },    
     "useBuiltInImageViewer": {
         "message": "Use browser's built-in image viewer"

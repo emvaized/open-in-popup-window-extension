@@ -99,15 +99,20 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         height = parseInt(height); width = parseInt(width);
 
         if (isViewer && configs.tryFitWindowSizeToImage && lastClientHeight && lastClientWidth) {
-            height = lastClientHeight, width = lastClientWidth;
-            const aspectRatio = width / height;
-            height = window.screen.height * 0.7; width = (height * aspectRatio);
+            // height = lastClientHeight, width = lastClientWidth;
+            // const aspectRatio = width / height;
+            // height = window.screen.height * 0.7; width = (height * aspectRatio);
+            const aspectRatio = lastClientWidth / lastClientHeight;
+            width = height * aspectRatio;
     
-            if (width > window.screen.width)
-                width = window.screen.width * 0.7; height = (width / aspectRatio);
+            if (width > window.screen.width) {
+                width = window.screen.width * 0.7; height = width / aspectRatio;
+            }
             
-            height = Math.round(height + toolbarHeight);
-            width = Math.round(width + toolbarWidth);
+            // height = Math.round(height + toolbarHeight);
+            // width = Math.round(width + toolbarWidth);
+            width = parseInt(width);
+            // height = parseInt(height);
         }
 
         if (configs.tryOpenAtMousePosition == true && (lastClientX && lastClientY)) {
@@ -123,7 +128,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         if (dy < 0) dy = 0;
         if (dx + width > window.screen.width) dx = dx - (dx + width - window.screen.width);
         if (dy + height > window.screen.height) dy = dy - (dy + height - window.screen.height);
-        dx = Math.round(dx); dy = Math.round(dy);
+        dx = parseInt(dx); dy = parseInt(dy);
     
         /// create popup window
         setTimeout(function () {
