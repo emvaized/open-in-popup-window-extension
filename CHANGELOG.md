@@ -1,3 +1,9 @@
+0.0.6
+- Implemented ability to open images in popup window
+- Added ability to create popup by drag'n'drop link on empty place
+- Slightly update extension icon
+- Various code optimizations and bug fixes
+
 0.0.5
 - reverted background script changes because Firefox kept loosing the context menu item
 
