@@ -1,20 +1,16 @@
-document.addEventListener("contextmenu",(e=>sendBackgroundRequest(e)));
+document.addEventListener("contextmenu",(e=>callback(e)));
 document.addEventListener("dragend",(e=>{
-    if (e.dataTransfer.dropEffect == 'none') sendBackgroundRequest(e, true)
+    if (e.dataTransfer.dropEffect == 'none') callback(e, true)
 }));
-
-function sendBackgroundRequest(e, isViewer){
+function callback(e, isDnd){
     const t = e.target,
-    toolbarHeight = window.outerHeight - window.innerHeight,
-    toolbarWidth = window.outerWidth - window.innerWidth,
     message = {
         lastClientX: e.screenX, lastClientY: e.screenY,
         selectedText: window.getSelection().toString().trim(), 
         clientHeight: t.naturalHeight ?? t.clientHeight,
         clientWidth: t.naturalWidth ?? t.clientWidth,
-        toolbarHeight: toolbarHeight, toolbarWidth: toolbarWidth
     }
-    if (isViewer) {
+    if (isDnd) {
         message['nodeName'] = t.nodeName;
         message['link'] = t.href ?? t.src;
     }

@@ -9,7 +9,6 @@ chrome.runtime.onMessage.addListener(
                     if (!w || lastPopupId < 0 || !request.aspectRatio) return;
 
                     let newWidth = (w.height - request.toolbarHeight) * request.aspectRatio;
-
                     if (newWidth > window.screen.availWidth)
                         newWidth = window.screen.availWidth * 0.7;
     
@@ -19,7 +18,6 @@ chrome.runtime.onMessage.addListener(
 
                     newWidth = Math.round(newWidth);
                     dx = Math.round(dx);
-    
                     chrome.windows.update(lastPopupId, {
                         'width': newWidth, 
                         'left': dx
@@ -33,8 +31,6 @@ chrome.runtime.onMessage.addListener(
         lastClientY = request.lastClientY;
         lastClientHeight = request.clientHeight;
         lastClientWidth = request.clientWidth;
-        toolbarWidth = request.toolbarWidth;
-        toolbarHeight = request.toolbarHeight;
         textSelection = request.selectedText ?? '';
 
         if (request.link) {
@@ -123,20 +119,13 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         // height = window.screen.height * 0.65, width = window.screen.height * 0.5;
         height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
         if (isViewer && configs.tryFitWindowSizeToImage && lastClientHeight && lastClientWidth) {
-            // height = lastClientHeight, width = lastClientWidth;
-            // const aspectRatio = width / height;
-            // height = window.screen.height * 0.7; width = (height * aspectRatio);
             const aspectRatio = lastClientWidth / lastClientHeight;
-            width = ((height - toolbarHeight) * aspectRatio) + toolbarWidth;
+            // width = ((height - toolbarHeight) * aspectRatio) + toolbarWidth;
+            width = height * aspectRatio;
     
             if (width > window.screen.availWidth) {
                 width = window.screen.availWidth * 0.7; 
-                // height = width / aspectRatio;
             }
-            
-            // height = Math.round(height + toolbarHeight);
-            // width = Math.round(width + toolbarWidth);
-            // height = parseInt(height);
         }
         height = parseInt(height); width = parseInt(width);
 
@@ -192,7 +181,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 lastClientHeight = undefined; lastClientWidth = undefined;
                 lastClientX = undefined; lastClientY = undefined;
                 textSelection = undefined;
-                // toolbarHeight = undefined; toolbarWidth = undefined;
                 lastPopupId = popupWindow.id;
             });
         }, originalWindowIsFullscreen ? 600 : 0)
