@@ -12,7 +12,7 @@ Extension provides several options for popup height/width, whether to show brows
 
 <img src="./screenshots/open-in-popup-screenshot.png">
 
-<img src="./screenshots/options_screenshot.png">
+<img src="./screenshots/options-screenshot.png">
 
 
 ## Privacy:
