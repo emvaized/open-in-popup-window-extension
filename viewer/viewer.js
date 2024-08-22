@@ -21,12 +21,15 @@ function init(){
 
     /// update window size on image load (in case we got it wrong)
     image.onload = function(){
-        const aspectRatio = (image.naturalWidth ?? image.clientWidth) / (image.naturalHeight ?? image.clientHeight);
-        const toolbarHeight = window.outerHeight - window.innerHeight;
-        const toolbarWidth = window.outerWidth - window.innerWidth;
+        const aspectRatio = (image.naturalWidth ?? image.clientWidth) / (image.naturalHeight ?? image.clientHeight),
+        toolbarHeight = window.outerHeight - window.innerHeight,
+        toolbarWidth = window.outerWidth - window.innerWidth, 
+        availHeight = window.screen.availHeight, availWidth = window.screen.availWidth;
+
         chrome.runtime.sendMessage({ 
             action: 'updateAspectRatio', aspectRatio: aspectRatio,
-            toolbarHeight:toolbarHeight, toolbarWidth:toolbarWidth
+            toolbarHeight: toolbarHeight, toolbarWidth: toolbarWidth, 
+            availHeight: availHeight, availWidth: availWidth
           });
     }
 }
@@ -134,8 +137,7 @@ function imageWheelListener(e) {
     const xs = (e.clientX - dxToShow) / scale,
     ys = (e.clientY - dyToShow) / scale;
 
-
-    const wheelDelta = e.wheelDelta ?? -e.deltaY;
+    const wheelDelta = e.wheelDeltaY ?? -e.deltaY;
     scale += wheelDelta / 300;
 
     if (scale < minScale) scale = minScale;

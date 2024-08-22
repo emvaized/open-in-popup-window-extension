@@ -8,6 +8,11 @@ chrome.runtime.onMessage.addListener(
                 chrome.windows.get(lastPopupId, function(w){
                     if (!w || lastPopupId < 0 || !request.aspectRatio) return;
 
+                    if (request.availWidth) {
+                        availWidth = request.availWidth;
+                        availHeight = request.availHeight;
+                    }
+
                     let newWidth = (w.height - request.toolbarHeight) * request.aspectRatio;
                     if (newWidth > availWidth)
                         newWidth = availWidth * 0.7;
