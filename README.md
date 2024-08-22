@@ -15,6 +15,11 @@ Extension provides several options for popup height/width, whether to show brows
 <img src="./screenshots/options-screenshot.png">
 
 
+## Building
+- `npm install` to install all dependencies
+- `npm run build` to generate `dist` folder with minimized code of the extension
+
+
 ## Privacy:
 This extension doesn't collect any private data. It only requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened.
 

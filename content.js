@@ -9,6 +9,7 @@ function callback(e, isDnd){
         selectedText: window.getSelection().toString().trim(), 
         clientHeight: t.naturalHeight ?? t.clientHeight,
         clientWidth: t.naturalWidth ?? t.clientWidth,
+        availHeight: window.screen.availHeight, availWidth: window.screen.availWidth
     }
     if (isDnd) {
         message['nodeName'] = t.nodeName;

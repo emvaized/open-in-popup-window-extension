@@ -30,3 +30,4 @@ function loadUserConfigs(callback) {
 function saveAllSettings(){
     chrome.storage.sync.set(configs)
 }
+
