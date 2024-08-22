@@ -3,7 +3,7 @@
         "message": "Open link in popup window"
     },
     "extensionDescription": {
-        "message": "Adds context menu entry to open link in popup window"
+        "message": "Allows to open any links and images in a popup window"
     },
     "popupHeight": {
         "message": "Popup height (px)"
