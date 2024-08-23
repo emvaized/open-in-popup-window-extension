@@ -1,5 +1,5 @@
 let lastClientX, lastClientY, originWindowId, lastClientHeight, lastClientWidth, lastPopupId;
-let toolbarWidth, toolbarHeight, textSelection;
+let toolbarWidth, toolbarHeight, textSelection, availWidth, availHeight;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -8,13 +8,18 @@ chrome.runtime.onMessage.addListener(
                 chrome.windows.get(lastPopupId, function(w){
                     if (!w || lastPopupId < 0 || !request.aspectRatio) return;
 
+                    if (request.availWidth) {
+                        availWidth = request.availWidth;
+                        availHeight = request.availHeight;
+                    }
+
                     let newWidth = (w.height - request.toolbarHeight) * request.aspectRatio;
-                    if (newWidth > window.screen.availWidth)
-                        newWidth = window.screen.availWidth * 0.7;
+                    if (newWidth > availWidth)
+                        newWidth = availWidth * 0.7;
     
                     let dx = w.left;
-                    if (dx + newWidth > window.screen.availWidth) 
-                        dx = dx - (dx + newWidth - window.screen.availWidth);
+                    if (dx + newWidth > availWidth) 
+                        dx = dx - (dx + newWidth - availWidth);
 
                     newWidth = Math.round(newWidth);
                     dx = Math.round(dx);
@@ -32,6 +37,8 @@ chrome.runtime.onMessage.addListener(
         lastClientHeight = request.clientHeight;
         lastClientWidth = request.clientWidth;
         textSelection = request.selectedText ?? '';
+        availWidth = request.availWidth;
+        availHeight = request.availHeight;
 
         if (request.link) {
             loadUserConfigs((cfg) => { 
@@ -123,8 +130,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             // width = ((height - toolbarHeight) * aspectRatio) + toolbarWidth;
             width = height * aspectRatio;
     
-            if (width > window.screen.availWidth) {
-                width = window.screen.availWidth * 0.7; 
+            if (width > availWidth) {
+                width = availWidth * 0.7; 
             }
         }
         height = parseInt(height); width = parseInt(width);
@@ -134,14 +141,15 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
         } else {
             /// open at center of screen
-            dx = (window.screen.width / 2) - (width / 2), dy = (window.screen.height / 2) - (height / 2);
+            dx = (availWidth / 2) - (width / 2), 
+            dy = (availHeight / 2) - (height / 2);
         }
     
         /// check for screen overflow
-        if (dx < 0) dx = 0;
-        if (dy < 0) dy = 0;
-        if (dx + width > window.screen.availWidth) dx = dx - (dx + width - window.screen.availWidth);
-        if (dy + height > window.screen.availHeight) dy = dy - (dy + height - window.screen.availHeight);
+        if (!dx || dx < 0) dx = 0;
+        if (!dy || dy < 0) dy = 0;
+        if (dx + width > availWidth) dx = dx - (dx + width - availWidth);
+        if (dy + height > availHeight) dy = dy - (dy + height - availHeight);
         dx = parseInt(dx); dy = parseInt(dy);
 
         /// create popup window

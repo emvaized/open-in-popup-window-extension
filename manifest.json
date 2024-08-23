@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Open in Popup Window",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
@@ -10,10 +10,8 @@
     "128": "icon.png"
   },
   "background": {
-    "scripts": [
-      "background.js",
-      "configs.js"
-    ]
+    "scripts": ["background.js"],
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
