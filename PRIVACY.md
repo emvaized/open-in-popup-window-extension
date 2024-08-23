@@ -1,0 +1,1 @@
+This extension doesn't collect or send any private data. It requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened. Such information as mouse coordinates, geometry and link associated with the element under cursor.
