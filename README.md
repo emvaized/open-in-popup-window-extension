@@ -1,8 +1,8 @@
 # <sub><img src="./icon.png" height="48" width="48"></sub> Open in Popup Window
 
-![Mozilla Add-on Version](https://img.shields.io/amo/v/open-in-popup-window)
-![Mozilla Add-on Users](https://img.shields.io/amo/users/open-in-popup-window)
-![Mozilla Add-on Stars](https://img.shields.io/amo/stars/open-in-popup-window)
+[![Mozilla Add-on Version](https://img.shields.io/amo/v/open-in-popup-window)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
+[![Mozilla Add-on Users](https://img.shields.io/amo/users/open-in-popup-window)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
+[![Mozilla Add-on Stars](https://img.shields.io/amo/stars/open-in-popup-window)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
 
 This tiny extension provides ability to quickly preview links without leaving the current page context. It adds entry in context menu of links, and when clicked, opens new small window without tab bar and addressbar at cursor position. 
 
