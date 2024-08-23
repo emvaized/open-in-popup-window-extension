@@ -12,6 +12,8 @@ Extension provides several options for popup height/width, whether to show brows
 
 <a href="https://addons.mozilla.org/firefox/addon/open-in-popup-window/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get for Firefox"></a>
 
+## Screenshots
+
 <img src="./screenshots/context-menu.png">
 
 <img src="./screenshots/open-in-popup-screenshot.png">
