@@ -8,7 +8,7 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
   /// background script
   entry: {
-    content: "./content.js"
+    content: "./src/content.js"
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -21,8 +21,8 @@ module.exports = {
       outputPath: './',
       fileName: '[name].js',
       filesToConcat: [
-        "./configs.js",
-        "./background.js",
+        "./src/configs.js",
+        "./src/background.js",
       ]
     }),
     /// static files
@@ -32,9 +32,9 @@ module.exports = {
         { from: "_locales", to: "_locales" },
         { from: "icon.png", to: "icon.png" },
         { from: "options", to: "options" },
-        { from: "viewer", to: "viewer" },
+        { from: "src/viewer", to: "viewer" },
         /// additional dependencies for the options page
-        { from: "configs.js", to: "configs.js" },
+        { from: "src/configs.js", to: "configs.js" },
 
       ],
     }),
