@@ -146,8 +146,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         }
     
         /// check for screen overflow
-        if (dx < 0) dx = 0;
-        if (dy < 0) dy = 0;
+        if (!dx || dx < 0) dx = 0;
+        if (!dy || dy < 0) dy = 0;
         if (dx + width > availWidth) dx = dx - (dx + width - availWidth);
         if (dy + height > availHeight) dy = dy - (dy + height - availHeight);
         dx = parseInt(dx); dy = parseInt(dy);
