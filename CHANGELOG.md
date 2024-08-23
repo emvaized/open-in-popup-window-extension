@@ -1,3 +1,9 @@
+0.1
+- Migrated extension to Manifest V3 for Chrome Web Store publish
+- Implemented build mechanism for minified release
+- Updated extension icon to have more unique design
+- Unavailable options in settings are now greyed out
+
 0.0.6
 - Implemented ability to open images in popup window
 - Added ability to create popup by drag'n'drop link on empty place
