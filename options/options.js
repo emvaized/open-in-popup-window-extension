@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init(){
     loadUserConfigs(function(userConfigs){
-
         const keys = Object.keys(configs);
 
         for (let i = 0, l = keys.length; i < l; i++) {
@@ -38,7 +37,11 @@ function init(){
 
                 /// Set translated label for input
                 if (!input.parentNode.innerHTML.includes(chrome.i18n.getMessage(key))) {
-                    input.parentNode.innerHTML = chrome.i18n.getMessage(key) + ' ' + input.parentNode.innerHTML;
+                    if (input.type == 'checkbox'){
+                        input.parentNode.innerHTML += ' ' + chrome.i18n.getMessage(key);
+                    } else {
+                        input.parentNode.innerHTML = chrome.i18n.getMessage(key) + ' ' + input.parentNode.innerHTML;
+                    }
                 }
 
                 input = document.querySelector('#' + key.toString());
@@ -56,6 +59,9 @@ function init(){
         }
         updateDisabledOptions();
     });
+
+    /// Translate labels
+    document.getElementById('settingsTitle').innerText = chrome.i18n.getMessage('settingsTitle');
 }
 
 function updateDisabledOptions() {

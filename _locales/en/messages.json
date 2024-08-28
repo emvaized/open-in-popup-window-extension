@@ -64,5 +64,8 @@
     },
     "bottomLeft": {
         "message": "Bottom left"
+    },
+    "settingsTitle": {
+        "message": "Settings"
     }
 }

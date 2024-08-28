@@ -31,6 +31,11 @@
   "options_ui": {
     "page": "options/options.html"
   },
+  "action": {
+    "default_icon": "icon.png",
+    "default_title": "Open in Popup Window",
+    "default_popup": "options/options.html"
+  },
   "browser_specific_settings": {
     "gecko": {
       "id": "open_in_popup_window@emvaized.dev"

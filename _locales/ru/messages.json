@@ -64,5 +64,8 @@
     },
     "bottomLeft": {
         "message": "Слева внизу"
+    },
+    "settingsTitle": {
+        "message": "Настройки"
     }
 }

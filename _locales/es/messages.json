@@ -43,5 +43,8 @@
     },  
     "tryFitWindowSizeToImage": {
         "message": "Intente ajustar el ancho de la ventana emergente a la relación de aspecto de la imagen"
+    },
+    "settingsTitle": {
+        "message": "Configuración"
     }
 }

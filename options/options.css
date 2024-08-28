@@ -1,3 +1,9 @@
+body {
+    min-width: 300px;
+}
+#settingsTitle{
+    padding: 0 5px;
+}
 .option {
     padding: 5px;
     cursor: pointer;
@@ -20,4 +26,15 @@ hr { width: 100%; opacity: 0.2; }
     opacity: 0.5;
     transition: opacity 150ms ease-in-out;
     pointer-events: none;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: rgb(40,41,44);
+        color: white;
+    }
+
+    .option:hover {
+        background-color: rgb(256, 256, 256, 0.1);
+    }
 }
