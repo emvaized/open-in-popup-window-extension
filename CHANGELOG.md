@@ -1,3 +1,9 @@
+0.1.1
+- Added more options for popup window location (top right, bottom right, etc)
+- Use options page as a popup for toolbar button
+- Added footer buttons for the options page
+- Fix potential bug on Firefox
+
 0.1
 - Migrated extension to Manifest V3 for Chrome Web Store publish
 - Implemented build mechanism for minified release
