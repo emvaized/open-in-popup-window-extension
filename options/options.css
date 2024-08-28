@@ -1,5 +1,5 @@
 body {
-    min-width: 300px;
+    min-width: 381px;
 }
 #settingsTitle{
     padding: 0 5px;
@@ -26,6 +26,13 @@ hr { width: 100%; opacity: 0.2; }
     opacity: 0.5;
     transition: opacity 150ms ease-in-out;
     pointer-events: none;
+}
+
+#footer-buttons{
+    padding: 4px 8px;
+}
+#footer-buttons img {
+    vertical-align: bottom;
 }
 
 @media (prefers-color-scheme: dark) {

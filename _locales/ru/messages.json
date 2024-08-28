@@ -67,5 +67,14 @@
     },
     "settingsTitle": {
         "message": "Настройки"
+    },
+    "writeAReviewButton": {
+        "message": "Написать отзыв"
+    },
+    "donateButton": {
+        "message": "Поддержать проект"
+    },
+    "githubButton": {
+        "message": "Исходный код"
     }
 }

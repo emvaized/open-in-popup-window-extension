@@ -67,5 +67,14 @@
     },
     "settingsTitle": {
         "message": "Settings"
+    },
+    "writeAReviewButton": {
+        "message": "Write a review"
+    },
+    "donateButton": {
+        "message": "Support project"
+    },
+    "githubButton": {
+        "message": "Source code"
     }
 }

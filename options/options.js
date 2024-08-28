@@ -58,10 +58,14 @@ function init(){
             }
         }
         updateDisabledOptions();
+        setFooterButtons();
     });
 
-    /// Translate labels
+    /// Set translations
     document.getElementById('settingsTitle').innerText = chrome.i18n.getMessage('settingsTitle');
+    document.getElementById('donateButton').innerHTML += chrome.i18n.getMessage('donateButton');
+    document.getElementById('githubButton').innerHTML += chrome.i18n.getMessage('githubButton');
+    document.getElementById('writeAReviewButton').innerHTML += chrome.i18n.getMessage('writeAReviewButton');
 }
 
 function updateDisabledOptions() {
@@ -70,4 +74,19 @@ function updateDisabledOptions() {
     document.getElementById("tryFitWindowSizeToImage").parentNode.className = document.getElementById("useBuiltInImageViewer").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("tryFitWindowSizeToImage").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option'; 
     document.getElementById("useBuiltInImageViewer").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option';
+}
+
+function setFooterButtons(){
+    document.querySelector("#donateButton").addEventListener("click", function (val) {
+        window.open('https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#support', '_blank');
+    });
+    
+    document.querySelector("#githubButton").addEventListener("click", function (val) {
+        window.open('https://github.com/emvaized/open-in-popup-window-extension', '_blank');
+    });
+    document.querySelector("#writeAReviewButton").addEventListener("click", function (val) {
+    
+        const isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
+        window.open(isFirefox ? 'https://addons.mozilla.org/firefox/addon/open-in-popup-window/' : 'https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie/reviews', '_blank');
+    });
 }
