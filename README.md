@@ -25,12 +25,11 @@ Extension provides several options for popup height/width, whether to show brows
 - `npm install` to install all dependencies
 - `npm run build` to generate `dist` folder with minimized code of the extension
 
+## Troubleshooting
+- It was previously [reported](https://github.com/emvaized/open-in-popup-window-extension/issues/1#issuecomment-1637067834) that Firefox Multi-Account Containers might interfere with "Search in popup" action, enforcing it's own redirection and preventing popup window from open. If you have a setup like this, I belive there is no easy fix other than choosing another search URL in Open in Popoup Window settings.
 
 ## Privacy:
 This extension doesn't collect any private data. It only requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened.
-
-## Troubleshooting
-- It was previously [reported](https://github.com/emvaized/open-in-popup-window-extension/issues/1#issuecomment-1637067834) that Firefox Multi-Account Containers might interfere with "Search in popup" action, enforcing it's own redirection and preventing popup window from open. I belive there is no easy fix for that, other than choosing another search URL in Open in Popoup Window settings, which isn't configured to be redirected in Firefox Multi-Account Containers.
 
 ## Support
 If you really enjoy this project, please consider supporting its further development by making a small donation using one of the ways below! 
