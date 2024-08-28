@@ -17,13 +17,28 @@ function init(){
                     if ((userConfigs[key] !== null && userConfigs[key] == true) || (userConfigs[key] == null && configs[key] == true))
                         input.setAttribute('checked', 0);
                     else input.removeAttribute('checked', 0);
+                } else if (input.tagName == 'SELECT') {
+                    let options = input.querySelectorAll('option');
+                    if (options)
+                        options.forEach(function (option) {
+                            let selectedValue = userConfigs[key] ?? configs[key];
+                            if (option.value == selectedValue) option.setAttribute('selected', true);
+    
+                            try {
+                                if (chrome.i18n.getMessage(option.innerHTML) != '')
+                                    option.innerHTML = chrome.i18n.getMessage(option.innerHTML);
+                                else if (chrome.i18n.getMessage(option['value']) != '')
+                                    option.innerHTML = chrome.i18n.getMessage(option['value']);
+                            } catch (e) { }
+    
+                        });
                 }  else {
                     input.setAttribute('value', userConfigs[key] ?? configs[key]);
                 }
 
                 /// Set translated label for input
                 if (!input.parentNode.innerHTML.includes(chrome.i18n.getMessage(key))) {
-                    input.parentNode.innerHTML += ' ' + chrome.i18n.getMessage(key);
+                    input.parentNode.innerHTML = chrome.i18n.getMessage(key) + ' ' + input.parentNode.innerHTML;
                 }
 
                 input = document.querySelector('#' + key.toString());

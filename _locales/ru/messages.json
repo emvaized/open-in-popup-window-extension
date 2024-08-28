@@ -14,9 +14,6 @@
     "popupWidth": {
         "message": "Ширина окна (px)"
     },    
-    "tryOpenAtMousePosition": {
-        "message": "Пытаться открыть под курсором мыши (отключено — октрывать в центре экрана)"
-    },    
     "hideBrowserControls": {
         "message": "Прятать элементы управления браузера (панель адреса, вкладок, и тд)"
     },
@@ -46,5 +43,26 @@
     },    
     "useBuiltInImageViewer": {
         "message": "Используйте встроенный в браузер просмотрщик изображений"
+    },
+    "popupWindowLocation": {
+        "message": "Расположение вспл. окна"
+    },    
+    "mousePosition": {
+        "message": "Под курсором мыши"
+    },    
+    "center": {
+        "message": "Центр экрана"
+    },    
+    "topRight": {
+        "message": "Справа вверху"
+    },    
+    "topLeft": {
+        "message": "Слева вверху"
+    },    
+    "bottomRight": {
+        "message": "Справа внизу"
+    },
+    "bottomLeft": {
+        "message": "Слева внизу"
     }
 }

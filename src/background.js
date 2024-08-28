@@ -136,13 +136,36 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         }
         height = parseInt(height); width = parseInt(width);
 
-        if (configs.tryOpenAtMousePosition == true && (lastClientX && lastClientY)) {
-            /// open at last known mouse position
-            dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
-        } else {
-            /// open at center of screen
-            dx = (availWidth / 2) - (width / 2), 
-            dy = (availHeight / 2) - (height / 2);
+        switch(configs.popupWindowLocation){
+            case 'mousePosition': {
+                /// open at last known mouse position
+                dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
+            } break;
+            case 'topRight': {
+                /// open in top right corner
+                dx = availWidth - width, 
+                dy = 0;
+            } break;
+            case 'topLeft': {
+                /// open in top right corner
+                dx = 0, 
+                dy = 0;
+            } break;
+            case 'bottomRight': {
+                /// open in top right corner
+                dx = availWidth - width, 
+                dy = availHeight - height;
+            } break;
+            case 'bottomLeft': {
+                /// open in top right corner
+                dx = 0, 
+                dy = availHeight - height;
+            } break;
+            default: {
+                /// open at center of screen
+                dx = (availWidth / 2) - (width / 2), 
+                dy = (availHeight / 2) - (height / 2);
+            } break;
         }
     
         /// check for screen overflow

@@ -1,6 +1,5 @@
 const configs = {
     'closeWhenFocusedInitialWindow': true,
-    'tryOpenAtMousePosition': true,
     'hideBrowserControls': true,
     'popupHeight': 800,
     'popupWidth': 600,
@@ -10,6 +9,7 @@ const configs = {
     'openByDragAndDrop': false,
     'tryFitWindowSizeToImage': true,
     'useBuiltInImageViewer': false,
+    'popupWindowLocation': 'mousePosition' /// possible values: mouse,center,bottomRight,topRight,bottomLeft,topLeft
 }
 
 function loadUserConfigs(callback) {

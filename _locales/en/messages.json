@@ -14,9 +14,6 @@
     "closeWhenFocusedInitialWindow": {
         "message": "Close popup when origin window is focused"
     },
-    "tryOpenAtMousePosition": {
-        "message": "Try to open at mouse position (disabled — open at screen center)"
-    },  
     "hideBrowserControls": {
         "message": "Hide browser controls (addressbar, tabbar, etc)"
     },  
@@ -46,5 +43,26 @@
     },    
     "useBuiltInImageViewer": {
         "message": "Use browser's built-in image viewer"
+    },    
+    "popupWindowLocation": {
+        "message": "Popup window location"
+    },    
+    "mousePosition": {
+        "message": "Mouse position"
+    },    
+    "center": {
+        "message": "Center"
+    },    
+    "topRight": {
+        "message": "Top right"
+    },    
+    "topLeft": {
+        "message": "Top left"
+    },    
+    "bottomRight": {
+        "message": "Bottom right"
+    },
+    "bottomLeft": {
+        "message": "Bottom left"
     }
 }

@@ -8,13 +8,20 @@
 
 <body>
     <div class='option'>
+        <label><select id="popupWindowLocation">
+            <option value="mousePosition">Mouse position</option>
+            <option value="center">Center</option>
+            <option value="topLeft">Top left</option>
+            <option value="topRight">Top right</option>
+            <option value="bottomLeft">Bottom left</option>
+            <option value="bottomRight">Bottom right</option>
+        </select></label>
+    </div>
+
+    <div class='option'>
         <label><input type="checkbox" id="closeWhenFocusedInitialWindow"></input></label>
     </div>   
     
-    <div class='option'>
-        <label><input type="checkbox" id="tryOpenAtMousePosition"></input></label>
-    </div>
-
     <div class='option'>
         <label><input type="checkbox" id="hideBrowserControls"></input></label>
     </div>
@@ -55,8 +62,8 @@
     
     <div class='option'>
         <label><input type="checkbox" id="tryFitWindowSizeToImage"></input></label>
-    </div>
-
+    </div> 
+    
   <script src="../configs.js"></script>
   <script src="./options.js"></script>
 </body>
