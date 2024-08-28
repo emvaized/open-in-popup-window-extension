@@ -15,14 +15,16 @@ const configs = {
 function loadUserConfigs(callback) {
     const keys = Object.keys(configs);
     chrome.storage.sync.get(
-        keys, (c)=>{
-            const l = keys.length;
-            for (let i = 0; i < l; i++) {
-                const key = keys[i];
-                if (c[key] !== undefined) configs[key] = c[key];
+        keys, (cfg)=>{
+            if (cfg){
+                const l = keys.length;
+                for (let i = 0; i < l; i++) {
+                    const key = keys[i];
+                    if (cfg[key] !== undefined) configs[key] = cfg[key];
+                }
             }
 
-            if (callback) callback(c);
+            if (callback) callback(configs);
         }
     );
 }
