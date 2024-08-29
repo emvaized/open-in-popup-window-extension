@@ -48,7 +48,7 @@
         "message": "Popup window location"
     },
     "mousePosition": {
-        "message": "Mouse position"
+        "message": "Mouse cursor position"
     },
     "center": {
         "message": "Center"
