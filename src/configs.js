@@ -9,6 +9,7 @@ const configs = {
     'openByDragAndDrop': false,
     'tryFitWindowSizeToImage': true,
     'useBuiltInImageViewer': false,
+    'openByShiftClick': false,
     'popupWindowLocation': 'mousePosition' /// possible values: mouse,center,bottomRight,topRight,bottomLeft,topLeft
 }
 
@@ -28,8 +29,3 @@ function loadUserConfigs(callback) {
         }
     );
 }
-
-function saveAllSettings(){
-    chrome.storage.sync.set(configs)
-}
-

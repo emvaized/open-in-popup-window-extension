@@ -90,3 +90,7 @@ function setFooterButtons(){
         window.open(isFirefox ? 'https://addons.mozilla.org/firefox/addon/open-in-popup-window/' : 'https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie/reviews', '_blank');
     });
 }
+
+function saveAllSettings(){
+    chrome.storage.sync.set(configs)
+}

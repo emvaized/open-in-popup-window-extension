@@ -8,7 +8,7 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 module.exports = {
   /// background script
   entry: {
-    content: "./src/content.js"
+    index: "./src/content.js"
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -16,6 +16,15 @@ module.exports = {
   },
   plugins: [
     /// content scripts
+    new ConcatPlugin({
+      name: 'content',
+      outputPath: './',
+      fileName: '[name].js',
+      filesToConcat: [
+        "./src/configs.js",
+        "./src/content.js",
+      ]
+    }),
     new ConcatPlugin({
       name: 'background',
       outputPath: './',

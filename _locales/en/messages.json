@@ -18,7 +18,7 @@
         "message": "Hide browser controls (addressbar, tabbar, etc)"
     },  
     "openByDragAndDrop": {
-        "message": "Create popup by drag and drop link on empty place"
+        "message": "Use drag and drop on empty place to open in popup"
     },    
     "openPageInMainWindow": {
         "message": "Open page in main window"
@@ -76,5 +76,8 @@
     },
     "githubButton": {
         "message": "Source code"
+    },
+    "openByShiftClick": {
+        "message": "Use Shift + Click to open in popup"
     }
 }

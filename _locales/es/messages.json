@@ -18,7 +18,7 @@
         "message": "Ocultar los controles del navegador (barra de direcciones, barra de pestañas, etc.)"
     },
     "openByDragAndDrop": {
-        "message": "Crear una ventana emergente arrastrando y soltando un enlace en un lugar vacío"
+        "message": "Utilice arrastrar y soltar en un lugar vacío para abrir una ventana emergente"
     },  
     "openLinkInMainWindow": {
         "message": "Abrir página en la ventana principal"
@@ -76,5 +76,8 @@
     },
     "githubButton": {
         "message": "Código fuente"
+    },
+    "openByShiftClick": {
+        "message": "Utilice Shift + Clic para abrir en ventana emergente"
     }
 }

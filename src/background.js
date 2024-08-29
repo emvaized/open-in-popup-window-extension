@@ -42,10 +42,13 @@ chrome.runtime.onMessage.addListener(
 
         if (request.link) {
             loadUserConfigs((cfg) => { 
-                if (configs.openByDragAndDrop) {
+                if (request.type == 'drag' && configs.openByDragAndDrop == false)  return;
+                if (request.type == 'shiftClick' && configs.openByShiftClick == false)  return;
+
+                // if (configs.openByDragAndDrop) {
                     const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
                     openPopupWindowForLink(request.link, isViewer); 
-                }
+                // }
             });
         }
     }
