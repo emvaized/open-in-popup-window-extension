@@ -46,19 +46,19 @@
     },
     "popupWindowLocation": {
         "message": "Расположение вспл. окна"
-    },    
+    },
     "mousePosition": {
         "message": "Под курсором мыши"
-    },    
+    },
     "center": {
         "message": "Центр экрана"
-    },    
+    },
     "topRight": {
         "message": "Справа вверху"
-    },    
+    },
     "topLeft": {
         "message": "Слева вверху"
-    },    
+    },
     "bottomRight": {
         "message": "Справа внизу"
     },

@@ -46,19 +46,19 @@
     },    
     "popupWindowLocation": {
         "message": "Popup window location"
-    },    
+    },
     "mousePosition": {
         "message": "Mouse position"
-    },    
+    },
     "center": {
         "message": "Center"
-    },    
+    },
     "topRight": {
         "message": "Top right"
-    },    
+    },
     "topLeft": {
         "message": "Top left"
-    },    
+    },
     "bottomRight": {
         "message": "Bottom right"
     },
