@@ -25,6 +25,7 @@
     }
   ],
   "permissions": [
+    "<all_urls>",
     "contextMenus",
     "storage"
   ],
