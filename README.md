@@ -27,9 +27,9 @@ Extension provides several options for popup height/width, whether to show brows
 
 ## FAQ
 #### How to open page from the popup in the main window? 
-For now it is only possible by right clicking on the page in popup window and selecting "Open in the main window" entry
+For now it is only possible by right clicking on the page in popup window and selecting "Open page in main window" entry
 <details>
-    <summary>Illustration</summary>
+    <summary>Demonstration</summary>
     <img src="./screenshots/open-in-main-window.png" />
 </details>
 
