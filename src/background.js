@@ -42,8 +42,8 @@ chrome.runtime.onMessage.addListener(
 
         if (request.link) {
             loadUserConfigs((cfg) => { 
-                if (request.type == 'drag' && configs.openByDragAndDrop == false)  return;
-                if (request.type == 'shiftClick' && configs.openByShiftClick == false)  return;
+                if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
+                if (request.type == 'shiftClick' && configs.openByShiftClick == false) return;
 
                 // if (configs.openByDragAndDrop) {
                     const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
@@ -134,11 +134,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     
         let dx, dy, height, width;
     
-        // height = window.screen.height * 0.65, width = window.screen.height * 0.5;
         height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
         if (isViewer && configs.tryFitWindowSizeToImage && lastClientHeight && lastClientWidth) {
             const aspectRatio = lastClientWidth / lastClientHeight;
-            // width = ((height - toolbarHeight) * aspectRatio) + toolbarWidth;
             width = height * aspectRatio;
     
             if (width > availWidth) {
@@ -189,7 +187,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         /// create popup window
         setTimeout(function () {
             chrome.windows.create({
-                // 'url': link ?? configs.popupSearchUrl.replace('%s', textSelection), 
                 'url': isViewer ? 
                     (configs.useBuiltInImageViewer ? link :
                         chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) :
