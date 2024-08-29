@@ -1,3 +1,9 @@
+0.1.2
+- Implement option to use shift+click to open in popup
+- Try to preserve state of page when open in main window
+- Added missing "all_urls" permission to run on every page automatically
+- Updated translations
+
 0.1.1
 - Added more options for popup window location (top right, bottom right, etc)
 - Use options page as a popup for toolbar button
