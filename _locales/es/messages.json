@@ -44,6 +44,27 @@
     "tryFitWindowSizeToImage": {
         "message": "Intente ajustar el ancho de la ventana emergente a la relación de aspecto de la imagen"
     },
+    "popupWindowLocation": {
+        "message": "Ubicación de la ventana emergente"
+    },    
+    "mousePosition": {
+        "message": "Posición del cursor del ratón"
+    },    
+    "center": {
+        "message": "Centro"
+    },    
+    "topRight": {
+        "message": "Arriba a la derecha"
+    },    
+    "topLeft": {
+        "message": "Arriba a la izquierda"
+    },    
+    "bottomRight": {
+        "message": "Abajo a la derecha"
+    },
+    "bottomLeft": {
+        "message": "Abajo a la izquierda"
+    },
     "settingsTitle": {
         "message": "Configuración"
     },
