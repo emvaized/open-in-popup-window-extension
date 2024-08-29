@@ -96,7 +96,15 @@ chrome.storage.onChanged.addListener((changes) => {
 
 chrome.contextMenus.onClicked.addListener(function(clickData) {
     if (clickData.menuItemId == 'openInMainWindow') {
-        chrome.tabs.create({url: clickData.pageUrl, active:false });
+        if (originWindowId){
+            chrome.tabs.query({active: true, lastFocusedWindow: true}, ([tab]) => {
+                if (tab) chrome.tabs.move(tab.id, { index: 0, windowId: originWindowId}, function(t){
+                    if (t) chrome.tabs.update(tab.id, { 'active': true });
+                });
+            });
+        } else {
+            chrome.tabs.create({url: clickData.pageUrl, active:false });
+        }
         return;
     }
 
