@@ -25,8 +25,17 @@ Extension provides several options for popup height/width, whether to show brows
 - `npm install` to install all dependencies
 - `npm run build` to generate `dist` folder with minimized code of the extension
 
+## FAQ
+#### How to open page from the popup in the main window? 
+For now it is only possible by right clicking on the page in popup window and selecting "Open in the main window" entry
+<details>
+    <summary>Illustration</summary>
+    <img src="./screenshots/open-in-main-window.png" />
+</details>
+
 ## Troubleshooting
-- It was previously [reported](https://github.com/emvaized/open-in-popup-window-extension/issues/1#issuecomment-1637067834) that Firefox Multi-Account Containers might interfere with "Search in popup" action, enforcing it's own redirection and preventing popup window from open. If you have a setup like this, I belive there is no easy fix other than choosing another search URL in Open in Popup Window settings.
+- ⚠️ If "Open by drag" and "Shift+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
+- It was also previously [reported](https://github.com/emvaized/open-in-popup-window-extension/issues/1#issuecomment-1637067834) that Firefox Multi-Account Containers might interfere with "Search in popup" action, enforcing it's own redirection and preventing popup window from open. If you have a setup like this, I belive there is no easy fix other than choosing another search URL in Open in Popup Window settings
 
 ## Privacy:
 This extension doesn't collect any private data. It only requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened.
