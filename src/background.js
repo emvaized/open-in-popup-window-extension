@@ -40,7 +40,7 @@ chrome.runtime.onMessage.addListener(
         availWidth = request.availWidth;
         availHeight = request.availHeight;
 
-        if (request.link) {
+        if (request.type == 'drag' || request.type == 'shiftClick') {
             loadUserConfigs((cfg) => { 
                 if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
                 if (request.type == 'shiftClick' && configs.openByShiftClick == false) return;
