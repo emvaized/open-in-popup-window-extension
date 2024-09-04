@@ -2,7 +2,7 @@
 
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/open-in-popup-window?label=version&color=red)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/gmnkpkmmkhbgnljljcchnakehlkihhie?label=users&logo=googlechrome&logoColor=white&color=blue)](https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie)
-[![Mozilla Add-on](https://img.shields.io/amo/users/open-in-popup-window?color=%23FF6611&label=users&logo=Firefox)](https://addons.mozilla.org/firefox/addon/selection-actions/)
+[![Mozilla Add-on](https://img.shields.io/amo/users/open-in-popup-window?color=%23FF6611&label=users&logo=Firefox)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
 [![Mozilla Add-on Stars](https://img.shields.io/amo/stars/open-in-popup-window)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
 
 This tiny extension provides ability to quickly preview links without leaving the current page context. It adds entry in context menu of links, and when clicked, opens new small window without browser controls at cursor position. It is indended to work like Safari Preview on force click, or Peek window feature in the Arc browser.
