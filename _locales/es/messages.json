@@ -85,5 +85,17 @@
     },
     "escKeyClosesPopup": {
         "message": "Cerrar ventana emergente con la tecla Esc"
+    },
+    "textSelectionHeader": {
+        "message": "Selección de texto"
+    },
+    "imageViewer": {
+        "message": "Visor de imágenes"
+    },
+    "popupWindowSize": {
+        "message": "Tamaño de la ventana emergente"
+    },
+    "generalSettings": {
+        "message": "Configuración general"
     }
 }

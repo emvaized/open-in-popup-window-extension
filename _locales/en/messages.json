@@ -83,6 +83,18 @@
     "nearMousePosition": {
         "message": "Near mouse cursor"
     },
+    "textSelectionHeader": {
+        "message": "Text selection"
+    },
+    "imageViewer": {
+        "message": "Image viewer"
+    },
+    "popupWindowSize": {
+        "message": "Popup window size"
+    },
+    "generalSettings": {
+        "message": "General settings"
+    },
     "escKeyClosesPopup": {
         "message": "Close popup window with Esc key"
     }

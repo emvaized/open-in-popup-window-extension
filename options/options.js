@@ -60,12 +60,20 @@ function init(){
         updateDisabledOptions();
         setFooterButtons();
     });
+    
+    setTranslatedLabels();
+}
 
+function setTranslatedLabels(){
     /// Set translations
-    document.getElementById('settingsTitle').innerText = chrome.i18n.getMessage('settingsTitle');
+    // document.getElementById('settingsTitle').innerText = chrome.i18n.getMessage('settingsTitle');
     document.getElementById('donateButton').innerHTML += chrome.i18n.getMessage('donateButton');
     document.getElementById('githubButton').innerHTML += chrome.i18n.getMessage('githubButton');
     document.getElementById('writeAReviewButton').innerHTML += chrome.i18n.getMessage('writeAReviewButton');
+    document.getElementById('textSelectionHeader').innerText = chrome.i18n.getMessage('textSelectionHeader');
+    document.getElementById('imageViewer').innerText = chrome.i18n.getMessage('imageViewer');
+    document.getElementById('popupWindowSize').innerText = chrome.i18n.getMessage('imageViewer');
+    document.getElementById('generalSettings').innerText = chrome.i18n.getMessage('imageViewer');
 }
 
 function updateDisabledOptions() {

@@ -7,8 +7,10 @@
 </head>
 
 <body>
-    <h2 id="settingsTitle">Settings</h2>
+    <!-- <h2 id="settingsTitle">Settings</h2> -->
     
+    <div><h5 id="generalSettings">General settings</h5> <hr /></div>
+
     <div class='option'>
         <label><select id="popupWindowLocation">
             <option value="mousePosition">Mouse position</option>
@@ -41,7 +43,7 @@
         <label><input type="checkbox" id="escKeyClosesPopup"></input></label>
     </div>
 
-    <hr />
+    <div><h5 id="popupWindowSize">Popup window size</h5> <hr /></div>
 
     <div class='option'>
         <label><input type="number" max="10000" min="100" step="50" id="popupHeight"></input></label>
@@ -51,17 +53,7 @@
         <label><input type="number" max="10000" min="100" step="50" id="popupWidth"></input></label>
     </div>
 
-    <hr />
-
-    <div class='option'>
-        <label><input type="checkbox" id="searchInPopupEnabled"></input></label>
-    </div>
-
-    <div class='option'>
-        <label><input type="text" style="min-width: 70%" id="popupSearchUrl"></input></label>
-    </div>
-
-    <hr />
+   <div><h5 id="imageViewer">Image viewer</h5> <hr /> </div>
 
     <div class='option'>
         <label><input type="checkbox" id="viewInPopupEnabled"></input></label>
@@ -73,7 +65,17 @@
     
     <div class='option'>
         <label><input type="checkbox" id="tryFitWindowSizeToImage"></input></label>
-    </div> 
+    </div>
+
+   <div><h5 id="textSelectionHeader">Text selection</h5> <hr /> </div>
+
+    <div class='option'>
+        <label><input type="checkbox" id="searchInPopupEnabled"></input></label>
+    </div>
+
+    <div class='option'>
+        <label><input type="text" style="min-width: 70%" id="popupSearchUrl"></input></label>
+    </div>
 
     <hr>
     <div id='footer-buttons'>

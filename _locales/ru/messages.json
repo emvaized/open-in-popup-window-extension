@@ -85,5 +85,17 @@
     },
     "escKeyClosesPopup": {
         "message": "Закрывать вспл. окно клавишей Esc"
+    },
+    "textSelectionHeader": {
+        "message": "Выделение текста"
+    },
+    "imageViewer": {
+        "message": "Просмотр изображений"
+    },
+    "popupWindowSize": {
+        "message": "Размер всплывающего окна"
+    },
+    "generalSettings": {
+        "message": "Общие настройки"
     }
 }
