@@ -37,10 +37,10 @@ module.exports = {
     /// static files
     new CopyPlugin({
       patterns: [
-        { from: "manifest.json", to: "manifest.json" },
-        { from: "_locales", to: "_locales" },
-        { from: "icon.png", to: "icon.png" },
-        { from: "options", to: "options" },
+        { from: "src/manifest.json", to: "manifest.json" },
+        { from: "src/assets/_locales", to: "_locales" },
+        { from: "src/assets/icon.png", to: "icon.png" },
+        { from: "src/options", to: "options" },
         { from: "src/viewer", to: "viewer" },
         /// additional dependencies for the options page
         { from: "src/configs.js", to: "configs.js" },
