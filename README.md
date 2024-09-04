@@ -33,6 +33,11 @@ For now it is only possible by right clicking on the page in popup window and se
     <img src="./screenshots/open-in-main-window.png" />
 </details>
 
+#### How to close the popup using keyboard?
+- <kbd>Alt</kbd>+<kbd>F4</kbd>
+- <kbd>Ctrl</kbd>+<kbd>W</kbd>
+- <kbd>Escape</kbd> key (if option is enabled in extension settings)
+
 ## Troubleshooting
 - ⚠️ If "Open by drag" and "Shift+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
 - It was also previously [reported](https://github.com/emvaized/open-in-popup-window-extension/issues/1#issuecomment-1637067834) that Firefox Multi-Account Containers might interfere with "Search in popup" action, enforcing it's own redirection and preventing popup window from open. If you have a setup like this, I belive there is no easy fix other than choosing another search URL in Open in Popup Window settings
