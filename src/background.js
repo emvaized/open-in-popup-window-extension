@@ -53,14 +53,12 @@ chrome.runtime.onMessage.addListener(
         availHeight = request.availHeight;
 
         if (request.type == 'drag' || request.type == 'shiftClick') {
-            loadUserConfigs((cfg) => { 
+            loadUserConfigs((cfg) => {
                 if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
                 if (request.type == 'shiftClick' && configs.openByShiftClick == false) return;
 
-                // if (configs.openByDragAndDrop) {
-                    const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
-                    openPopupWindowForLink(request.link, isViewer); 
-                // }
+                const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
+                openPopupWindowForLink(request.link, isViewer); 
             });
         }
     }
@@ -104,6 +102,7 @@ chrome.windows.onFocusChanged.addListener(function(w){
 chrome.storage.onChanged.addListener((changes) => {
     chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
     chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
+    applyUserConfigs(changes);
 });
 
 chrome.contextMenus.onClicked.addListener(function(clickData) {
@@ -165,7 +164,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             case 'nearMousePosition': {
                 /// try to open on side near mouse position, where there's enough space
                 const verticalPadding = lastClientHeight;
-                const horizontalPadding = 10;
+                const horizontalPadding = 15;
                 dx = lastClientX - (width / 2), dy = lastClientY - height - verticalPadding;
 
                 if (dy < 0) dy = lastClientY + verticalPadding;
