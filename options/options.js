@@ -72,8 +72,8 @@ function setTranslatedLabels(){
     document.getElementById('writeAReviewButton').innerHTML += chrome.i18n.getMessage('writeAReviewButton');
     document.getElementById('textSelectionHeader').innerText = chrome.i18n.getMessage('textSelectionHeader');
     document.getElementById('imageViewer').innerText = chrome.i18n.getMessage('imageViewer');
-    document.getElementById('popupWindowSize').innerText = chrome.i18n.getMessage('imageViewer');
-    document.getElementById('generalSettings').innerText = chrome.i18n.getMessage('imageViewer');
+    document.getElementById('popupWindowSize').innerText = chrome.i18n.getMessage('popupWindowSize');
+    document.getElementById('generalSettings').innerText = chrome.i18n.getMessage('generalSettings');
 }
 
 function updateDisabledOptions() {

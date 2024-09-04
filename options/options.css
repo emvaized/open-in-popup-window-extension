@@ -2,10 +2,10 @@ body {
     min-width: 381px;
 }
 #settingsTitle{
-    padding: 0 5px;
+    padding: 0 6px;
 }
 .option {
-    padding: 5px;
+    padding: 5px 6px;
     cursor: pointer;
 }
 
@@ -29,7 +29,8 @@ hr { width: 100%; opacity: 0.2; }
 }
 
 #footer-buttons{
-    padding: 4px 8px;
+    padding: 6px;
+    margin-top: 10px;
 }
 #footer-buttons img {
     vertical-align: bottom;
@@ -37,19 +38,20 @@ hr { width: 100%; opacity: 0.2; }
 
 
 h2{
-    margin: 8px 0;
+    margin: 6px 0;
 }
 
 h5{
     color: gray;
-    margin: 8px;
+    margin: 6px;
     min-width: fit-content !important;
     margin-right: 4px;
     opacity: 0.85;
+    font-weight: normal;
 }
 
 div:has(h5){
-    display: flex; align-items: center;
+    display: flex; align-items: center; margin-top: 2px; margin-bottom: 2px;
 }
 
 @media (prefers-color-scheme: dark) {
