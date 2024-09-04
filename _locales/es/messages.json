@@ -33,7 +33,7 @@
         "message": "URL de búsqueda (%s se reemplazará con la consulta de búsqueda)"
     },  
     "viewInPopupEnabled": {
-        "message": "Opción para ver imágenes y vídeos en ventanas emergentes habilitadas"
+        "message": "Activar la opción de ver las imágenes en una ventana emergente"
     },  
     "viewInPopupWindow": {
         "message": "Ver imagen en ventana emergente"

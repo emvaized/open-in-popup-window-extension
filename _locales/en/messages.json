@@ -33,7 +33,7 @@
         "message": "Search url (%s will be replaced with the search query)"
     },  
     "viewInPopupEnabled": {
-        "message": "Option to view images and videos in popup enabled"
+        "message": "Enable option to view images in popup window"
     },  
     "viewInPopupWindow": {
         "message": "View image in popup window"
