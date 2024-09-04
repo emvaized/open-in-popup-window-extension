@@ -3,7 +3,7 @@
         "message": "Abrir enlace en ventana emergente"
     },    
     "extensionDescription": {
-        "message": "Permite abrir cualquier enlace e imagen en una ventana emergente"
+        "message": "Abrir enlaces e imágenes en una ventana emergente"
     },
     "popupHeight": {
         "message": "Altura emergente (px)"
