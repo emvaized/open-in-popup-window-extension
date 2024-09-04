@@ -58,7 +58,7 @@ chrome.runtime.onMessage.addListener(
                 if (request.type == 'shiftClick' && configs.openByShiftClick == false) return;
 
                 const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
-                openPopupWindowForLink(request.link, isViewer); 
+                openPopupWindowForLink(request.link, isViewer, request.type == 'drag'); 
             });
         }
     }
@@ -125,7 +125,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
  });
 
- function openPopupWindowForLink(link, isViewer = false) {
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent) {
     loadUserConfigs(function(){
         let originalWindowIsFullscreen = false;
 
@@ -156,7 +156,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         }
         height = parseInt(height); width = parseInt(width);
 
-        switch(configs.popupWindowLocation){
+        let popupLocation = configs.popupWindowLocation;
+        if (isDragEvent) popupLocation = 'mousePosition';
+        switch(popupLocation){
             case 'mousePosition': {
                 /// open at last known mouse position
                 dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
