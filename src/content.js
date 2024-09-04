@@ -21,8 +21,8 @@ function callback(e, type){
     message = {
         lastClientX: e.screenX, lastClientY: e.screenY,
         selectedText: window.getSelection().toString().trim(), 
-        clientHeight: t.naturalHeight ?? t.clientHeight,
-        clientWidth: t.naturalWidth ?? t.clientWidth,
+        clientHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
+        clientWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,
         type: type
     }

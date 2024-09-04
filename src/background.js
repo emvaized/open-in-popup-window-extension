@@ -150,6 +150,24 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 /// open at last known mouse position
                 dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
             } break;
+            case 'nearMousePosition': {
+                /// try to open on side near mouse position, where there's enough space
+                const verticalPadding = lastClientHeight;
+                const horizontalPadding = 10;
+                dx = lastClientX - (width / 2), dy = lastClientY - height - verticalPadding;
+
+                if (dy < 0) dy = lastClientY + verticalPadding;
+                if (dy + height > availHeight) {
+                    dy = lastClientY - (height / 2);
+                    dx = lastClientX - width - horizontalPadding;
+
+                    if (dx < 0) dx = lastClientX + horizontalPadding;
+                    if (dx + width > availWidth){
+                        /// if nothing works, open centered in mouse position
+                        dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
+                    }
+                }
+            } break;
             case 'topRight': {
                 /// open in top right corner
                 dx = availWidth - width, 

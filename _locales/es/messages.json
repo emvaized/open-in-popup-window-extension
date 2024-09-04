@@ -79,5 +79,8 @@
     },
     "openByShiftClick": {
         "message": "Utilice Shift + Clic para abrir en ventana emergente"
+    },
+    "nearMousePosition": {
+        "message": "Cerca del cursor"
     }
 }

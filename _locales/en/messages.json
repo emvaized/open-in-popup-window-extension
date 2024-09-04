@@ -79,5 +79,8 @@
     },
     "openByShiftClick": {
         "message": "Use Shift + Click to open in popup"
+    },
+    "nearMousePosition": {
+        "message": "Near mouse cursor"
     }
 }
