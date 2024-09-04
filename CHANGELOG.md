@@ -1,3 +1,9 @@
+0.2
+- Added new option for popup position "Near mouse cursor"
+- Added option to close popup with Esc key (disabled by default)
+- Fix text selection popup not opened by drag & drop
+- Options page design improvements
+
 0.1.2
 - Implement option to use shift+click to open in popup
 - Try to preserve state of page when open in main window
