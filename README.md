@@ -7,9 +7,13 @@
 
 This tiny extension provides ability to quickly preview links without leaving the current page context. It adds entry in context menu of links, and when clicked, opens new small window without browser controls at cursor position. It is indended to work like Safari Preview on force click, or Peek window feature in the Arc browser.
 
-It also provides the ability to open any image in a popup window, as well as use drag and drop to create popup windows for links and images (disabled by default)
+Current features: 
+- Ability to open images and search selected text in popup window
+- Use drag and drop to open in popup window (disabled by default)
+- Use Shift + Click to open in popup window (disabled by default)
+- Configurable popup height, width and position on screen
+- Option to close popup window when origin window regains focus
 
-Extension provides several options for popup height/width, whether to show browser controls, and whether to close the popup when origin window regains focus (for example, user clicked outside of popup), and many others! 
 
 <a href="https://addons.mozilla.org/firefox/addon/open-in-popup-window/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get for Firefox"></a> &nbsp; <a href="https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie"><img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png" alt="Get for Chrome" height=65 ></a>
 
