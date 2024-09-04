@@ -82,5 +82,8 @@
     },
     "nearMousePosition": {
         "message": "Возле курсора мыши"
+    },
+    "escKeyClosesPopup": {
+        "message": "Закрывать вспл. окно клавишей Esc"
     }
 }

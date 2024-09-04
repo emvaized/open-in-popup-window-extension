@@ -3,6 +3,18 @@ let toolbarWidth, toolbarHeight, textSelection, availWidth, availHeight;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
+        if (request.action == 'requestEscPopupWindowClose') {
+            loadUserConfigs((cfg) => {
+                if (configs.escKeyClosesPopup){
+                    chrome.windows.getCurrent((w)=>{
+                        if (w.type == 'popup')
+                            chrome.windows.remove(w.id);
+                    });
+                }
+            });
+            return;
+        }
+
         if (request.action == 'updateAspectRatio') {
             if (request.aspectRatio && configs.tryFitWindowSizeToImage) {
                 chrome.windows.get(lastPopupId, function(w){

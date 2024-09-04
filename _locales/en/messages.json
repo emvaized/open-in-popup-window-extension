@@ -82,5 +82,8 @@
     },
     "nearMousePosition": {
         "message": "Near mouse cursor"
+    },
+    "escKeyClosesPopup": {
+        "message": "Close popup window with Esc key"
     }
 }

@@ -10,6 +10,7 @@ const configs = {
     'tryFitWindowSizeToImage': true,
     'useBuiltInImageViewer': false,
     'openByShiftClick': false,
+    'escKeyClosesPopup': false,
     'popupWindowLocation': 'mousePosition' /// possible values: mouse,center,bottomRight,topRight,bottomLeft,topLeft
 }
 
