@@ -165,7 +165,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             } break;
             case 'nearMousePosition': {
                 /// try to open on side near mouse position, where there's enough space
-                const verticalPadding = lastClientHeight;
+                // const verticalPadding = lastClientHeight;
+                const verticalPadding = 15;
                 const horizontalPadding = 15;
                 dx = lastClientX - (width / 2), dy = lastClientY - height - verticalPadding;
 
