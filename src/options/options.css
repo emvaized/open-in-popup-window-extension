@@ -35,6 +35,9 @@ hr { width: 100%; opacity: 0.2; }
 #footer-buttons img {
     vertical-align: bottom;
 }
+#footer-buttons button{
+    cursor: pointer;
+}
 
 
 h2{
