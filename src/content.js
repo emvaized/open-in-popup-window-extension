@@ -2,8 +2,17 @@ document.addEventListener("contextmenu",(e=>callback(e,'context')));
 
 loadUserConfigs(function(c){
     if (configs.openByDragAndDrop){
+        let dragStartDx, dragStartDy;
+        document.addEventListener("dragstart",(e=>{
+            dragStartDx = e.clientX; dragStartDy = e.clientY;
+        }));
         document.addEventListener("dragend",(e=>{
-            if (e.dataTransfer.dropEffect == 'none') callback(e, 'drag')
+            if (e.dataTransfer.dropEffect == 'none'){
+                if (
+                    Math.abs(e.clientX - dragStartDx) > configs.minimalDragDistance ||
+                    Math.abs(e.clientY - dragStartDy) > configs.minimalDragDistance
+                ) callback(e, 'drag')
+            } 
         }));
     }
     if (configs.openByShiftClick){

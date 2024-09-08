@@ -97,5 +97,8 @@
     },
     "generalSettings": {
         "message": "Общие настройки"
+    },
+    "minimalDragDistance": {
+        "message": "Минимальное расстояние перетаскивания (px)"
     }
 }

@@ -7,6 +7,7 @@ const configs = {
     'viewInPopupEnabled': true,
     'popupSearchUrl': 'https://www.google.com/search?q=%s',
     'openByDragAndDrop': false,
+    'minimalDragDistance': 50,
     'tryFitWindowSizeToImage': true,
     'useBuiltInImageViewer': false,
     'openByShiftClick': false,
