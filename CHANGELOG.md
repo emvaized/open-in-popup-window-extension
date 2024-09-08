@@ -1,3 +1,8 @@
+0.2.1
+- Updated extension icon
+- Added option for minimal drag distance
+- Small options page improvements
+
 0.2
 - Added new option for popup position "Near mouse cursor"
 - Added option to close popup with Esc key (disabled by default)
