@@ -97,5 +97,8 @@
     },
     "generalSettings": {
         "message": "Configuración general"
+    },
+    "minimalDragDistance": {
+        "message": "Distancia mínima de arrastre (px)"
     }
 }

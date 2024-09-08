@@ -36,11 +36,13 @@ function init(){
                 }
 
                 /// Set translated label for input
-                if (!input.parentNode.innerHTML.includes(chrome.i18n.getMessage(key))) {
+                let translatedLabel = chrome.i18n.getMessage(key);
+                translatedLabel = translatedLabel.replace('Shift','<kbd>Shift</kbd>').replace('Esc','<kbd>Esc</kbd>')
+                if (!input.parentNode.innerHTML.includes(translatedLabel)) {
                     if (input.type == 'checkbox'){
-                        input.parentNode.innerHTML += ' ' + chrome.i18n.getMessage(key);
+                        input.parentNode.innerHTML += ' ' + translatedLabel;
                     } else {
-                        input.parentNode.innerHTML = chrome.i18n.getMessage(key) + ' ' + input.parentNode.innerHTML;
+                        input.parentNode.innerHTML = translatedLabel + ' ' + input.parentNode.innerHTML;
                     }
                 }
 
@@ -82,6 +84,7 @@ function updateDisabledOptions() {
     document.getElementById("tryFitWindowSizeToImage").parentNode.className = document.getElementById("useBuiltInImageViewer").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("tryFitWindowSizeToImage").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option'; 
     document.getElementById("useBuiltInImageViewer").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("minimalDragDistance").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
 }
 
 function setFooterButtons(){

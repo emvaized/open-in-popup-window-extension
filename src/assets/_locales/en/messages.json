@@ -97,5 +97,8 @@
     },
     "escKeyClosesPopup": {
         "message": "Close popup window with Esc key"
+    },
+    "minimalDragDistance": {
+        "message": "Minimal drag distance (px)"
     }
 }

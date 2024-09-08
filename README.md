@@ -5,14 +5,17 @@
 [![Mozilla Add-on](https://img.shields.io/amo/users/open-in-popup-window?color=%23FF6611&label=users&logo=Firefox)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
 [![Mozilla Add-on Stars](https://img.shields.io/amo/stars/open-in-popup-window)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
 
-This tiny extension provides ability to quickly preview links without leaving the current page context. It adds entry in context menu of links, and when clicked, opens new small window without browser controls at cursor position. It is indended to work like Safari Preview on force click, or Peek window feature in the Arc browser.
+This tiny browser extension provides ability to quickly preview links without leaving the current page context. It adds entry in context menu of links, and when clicked, opens new small window at cursor position, with no tab bar and addressbar. 
 
-Current features: 
+<b>Features:</b>
 - Ability to open images and search selected text in popup window
 - Use drag and drop to open in popup window (disabled by default)
 - Use <kbd>Shift</kbd> + Click to open in popup window (disabled by default)
 - Configurable popup height, width and position on screen
 - Option to close popup window when origin window regains focus
+- New popups can be opened from existing popups as well!
+
+This extension is intended to be used as an analogue of <i>Safari Link Preview</i>, or the new <i>Arc Peek</i>. It's a great way to preview links, which works everywhere and is not affected by the CORS problem like extensions which are using iframe element for link preview.
 
 
 <a href="https://addons.mozilla.org/firefox/addon/open-in-popup-window/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get for Firefox"></a> &nbsp; <a href="https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie"><img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png" alt="Get for Chrome" height=65 ></a>
