@@ -92,16 +92,18 @@ chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
 chrome.contextMenus.create(viewImageContextMenuItem);
 
 chrome.windows.onFocusChanged.addListener(function(wId){
-        if (wId < 0) return; /// don't process when window lost focus
-        chrome.windows.get(wId,{},
-            (w) => chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup'}),
+        if (wId == undefined || wId < 0) return; /// don't process when window lost focus
+        chrome.windows.get(wId, {},
+            (w) => { if (w) chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup'})},
         );
     }
 ); 
 
 chrome.storage.onChanged.addListener((changes) => {
-    chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
-    chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
+    if (changes.searchInPopupEnabled)
+        chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
+    if (changes.viewInPopupEnabled)
+        chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
     applyUserConfigs(changes);
 });
 
@@ -285,7 +287,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                     function windowFocusListener(wId) {
                         // if (wId > -1) 
                             chrome.windows.get(wId,{}, (w) => {
-                                    if (w.type == 'normal') {
+                                    if (w && w.type == 'normal') {
                                         chrome.windows.remove(popupWindow.id);
                                         chrome.windows.onFocusChanged.removeListener(windowFocusListener);
 
@@ -315,11 +317,14 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
 /// Reopen new single tab windows as popups
 chrome.windows.onCreated.addListener(
     (w) => {
-        if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
-            chrome.tabs.query({windowId: w.id}, (tabs) => {
-                if (tabs.length == 1){
-                    openPopupWindowForLink(undefined, false, false, tabs[0].id)
-                } 
-            });
+        loadUserConfigs((c) => {
+            if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
+                chrome.tabs.query({windowId: w.id}, (tabs) => {
+                    if (tabs.length == 1){
+                        openPopupWindowForLink(undefined, false, false, tabs[0].id)
+                    } 
+                });
+        })
+       
     }
 )
