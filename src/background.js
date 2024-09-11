@@ -131,7 +131,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent) {
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId) {
     loadUserConfigs(function(){
         let originalWindowIsFullscreen = false;
 
@@ -199,22 +199,26 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 setCursorCoordinates();
             } break;
             case 'nearMousePosition': {
-                /// try to open on side near mouse position, where there's enough space
+                if (!mouseX) {
+                    setCursorCoordinates();
+                } else {
+                    /// try to open on side near mouse position, where there's enough space
 
-                // const verticalPadding = elementHeight;
-                const verticalPadding = 15;
-                const horizontalPadding = 15;
-                dx = mouseX - (width / 2), dy = mouseY - height - verticalPadding;
+                    // const verticalPadding = elementHeight;
+                    const verticalPadding = 15;
+                    const horizontalPadding = 15;
+                    dx = mouseX - (width / 2), dy = mouseY - height - verticalPadding;
 
-                if (dy < 0) dy = mouseY + verticalPadding;
-                if (dy + height > availHeight) {
-                    dy = mouseY - (height / 2);
-                    dx = mouseX - width - horizontalPadding;
+                    if (dy < 0) dy = mouseY + verticalPadding;
+                    if (dy + height > availHeight) {
+                        dy = mouseY - (height / 2);
+                        dx = mouseX - width - horizontalPadding;
 
-                    if (dx < 0) dx = mouseX + horizontalPadding;
-                    if (dx + width > availWidth){
-                        /// if nothing works, open centered in mouse position
-                        setCursorCoordinates();
+                        if (dx < 0) dx = mouseX + horizontalPadding;
+                        if (dx + width > availWidth){
+                            /// if nothing works, open centered in mouse position
+                            setCursorCoordinates();
+                        }
                     }
                 }
             } break;
@@ -253,14 +257,24 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
 
         /// create popup window
         setTimeout(function () {
-            chrome.windows.create({
-                'url': isViewer ? 
-                    (configs.useBuiltInImageViewer ? link :
-                        chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) :
-                    link ?? configs.popupSearchUrl.replace('%s', textSelection), 
+            const createParams = {
                 'type': 'popup', 
-                'width': width, 'height': height, 'top': dy, 'left': dx
-            }, function (popupWindow) {
+                'width': width, 'height': height, 
+                'top': dy, 'left': dx
+            };
+
+            if (tabId) {
+                createParams.tabId = tabId;
+            } else {
+                createParams['url'] = isViewer ? 
+                    (configs.useBuiltInImageViewer ? link :
+                        chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
+                    : link ?? (textSelection ? 
+                        (configs.popupSearchUrl.replace('%s', textSelection))
+                        : 'about:blank');
+            }
+
+            chrome.windows.create(createParams, function (popupWindow) {
                 /// set coordinates again (workaround for old firefox bug)
                 chrome.windows.update(popupWindow.id, {
                     'top': dy, 'left': dx, 'width': width, 'height': height
@@ -297,3 +311,15 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         }, originalWindowIsFullscreen ? 600 : 0)
     });
  }
+
+/// Reopen new single tab windows as popups
+chrome.windows.onCreated.addListener(
+    (w) => {
+        if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
+            chrome.tabs.query({windowId: w.id}, (tabs) => {
+                if (tabs.length == 1){
+                    openPopupWindowForLink(undefined, false, false, tabs[0].id)
+                } 
+            });
+    }
+)

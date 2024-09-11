@@ -12,6 +12,7 @@ const configs = {
     'useBuiltInImageViewer': false,
     'openByShiftClick': false,
     'escKeyClosesPopup': false,
+    'reopenSingleTabWindowAsPopup': false,
     'popupWindowLocation': 'mousePosition' /// possible values: mouse,center,bottomRight,topRight,bottomLeft,topLeft
 }
 

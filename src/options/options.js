@@ -46,6 +46,13 @@ function init(){
                     }
                 }
 
+                /// Check if needs hint tooltip
+                const hintMark = document.querySelector(`.option:has(#${key}) .hint`);
+                if (hintMark) {
+                    const hintText = chrome.i18n.getMessage(key + 'Hint');
+                    if (hintText) hintMark.title = hintText;
+                }
+
                 input = document.querySelector('#' + key.toString());
 
                 /// Set event listener

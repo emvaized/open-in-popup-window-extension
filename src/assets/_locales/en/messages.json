@@ -100,5 +100,11 @@
     },
     "minimalDragDistance": {
         "message": "Minimal drag distance (px)"
+    },
+    "reopenSingleTabWindowAsPopup": {
+        "message": "Reopen new single tab windows as popup windows"
+    },
+    "reopenSingleTabWindowAsPopupHint": {
+        "message": "With this option enabled, any new browser window with only one tab will be automatically reopened as a popup window. It allows extension to create popup for links which it usually can't access (for example, bookmarks bar). But it can lead to unwanted behavior if you usually open many browser windows, so use with caution!"
     }
 }
