@@ -225,22 +225,22 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 }
             } break;
             case 'topRight': {
-                /// open in top right corner
                 dx = availWidth - width, 
                 dy = 0;
             } break;
             case 'topLeft': {
-                /// open in top right corner
                 dx = 0, 
                 dy = 0;
             } break;
+            case 'topCenter': {
+                setCenterCoordinates();
+                dy = 0;
+            } break;
             case 'bottomRight': {
-                /// open in top right corner
                 dx = availWidth - width, 
                 dy = availHeight - height;
             } break;
             case 'bottomLeft': {
-                /// open in top right corner
                 dx = 0, 
                 dy = availHeight - height;
             } break;
