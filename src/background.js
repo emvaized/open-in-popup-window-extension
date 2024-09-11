@@ -1,10 +1,10 @@
-let lastClientX, lastClientY, originWindowId, lastClientHeight, lastClientWidth, lastPopupId;
-let toolbarWidth, toolbarHeight, textSelection, availWidth, availHeight;
+let mouseX, mouseY, elementHeight, elementWidth, lastPopupId;
+let toolbarHeight, textSelection, availWidth, availHeight;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.action == 'requestEscPopupWindowClose') {
-            loadUserConfigs((cfg) => {
+            loadUserConfigs((c) => {
                 if (configs.escKeyClosesPopup){
                     chrome.windows.getCurrent((w)=>{
                         if (w.type == 'popup')
@@ -44,10 +44,10 @@ chrome.runtime.onMessage.addListener(
             return;
         }
 
-        lastClientX = request.lastClientX;
-        lastClientY = request.lastClientY;
-        lastClientHeight = request.clientHeight;
-        lastClientWidth = request.clientWidth;
+        mouseX = request.mouseX;
+        mouseY = request.mouseY;
+        elementHeight = request.elementHeight;
+        elementWidth = request.elementWidth;
         textSelection = request.selectedText ?? '';
         availWidth = request.availWidth;
         availHeight = request.availHeight;
@@ -107,35 +107,21 @@ chrome.storage.onChanged.addListener((changes) => {
 
 chrome.contextMenus.onClicked.addListener(function(clickData) {
     if (clickData.menuItemId == 'openInMainWindow') {
-        // if (originWindowId){
             chrome.tabs.query({active: true, lastFocusedWindow: true}, ([tab]) => {
                 if (tab) {
-                    /// filter by windowType doesn't work in Firefox 130
+                    /// filter by windowType doesn't seem to work in Firefox 130
                     // chrome.windows.getLastFocused(
                     //     { windowTypes: ['normal'] },
-                    //     function(lastWindow){
-                    //         if (lastWindow){
-                    //             chrome.tabs.move(tab.id, { index: 0, windowId: lastWindow.id}, function(t){
-                    //                 if (t) chrome.tabs.update(tab.id, { 'active': true });
-                    //             });
-                    //         }
-                    //     }
-                    //   )
                     chrome.windows.getAll(
                         { windowTypes: ['normal'] },
                         function(windows){
                             chrome.tabs.move(tab.id, { index: 0, windowId: windows[0].id}, function(t){
-                                if (t) chrome.tabs.update(tab.id, { 'active': true });
+                                if (t) chrome.tabs.update(t[0].id, { 'active': true });
                             });
                         }
                     );
                 } 
-                
-                
             });
-        // } else {
-        //     chrome.tabs.create({url: clickData.pageUrl, active:false });
-        // }
         return;
     }
 
@@ -149,10 +135,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     loadUserConfigs(function(){
         let originalWindowIsFullscreen = false;
 
-        /// store current windowId
         chrome.windows.getCurrent(
             function(originWindow){
-                if (originWindow.type !== 'popup') originWindowId = originWindow.id;
+                // if (originWindow.type !== 'popup') originWindowId = originWindow.id;
 
                  /// if original window is fullscreen, unmaximize it (for MacOS)
                 if (originWindow.state == 'fullscreen') {
@@ -167,8 +152,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         let height, width;
     
         height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
-        if (isViewer && configs.tryFitWindowSizeToImage && lastClientHeight && lastClientWidth) {
-            const aspectRatio = lastClientWidth / lastClientHeight;
+        if (isViewer && configs.tryFitWindowSizeToImage && elementHeight && elementWidth) {
+            const aspectRatio = elementWidth / elementHeight;
             width = height * aspectRatio;
     
             if (width > availWidth) {
@@ -200,8 +185,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         }
 
         function setCursorCoordinates(){
-            if (lastClientX && lastClientY){
-                dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
+            if (mouseX && mouseY){
+                dx = mouseX - (width / 2), dy = mouseY - (height / 2);
             } else {
                 /// if no dx stored, open in center
                 setCenterCoordinates();
@@ -216,17 +201,17 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             case 'nearMousePosition': {
                 /// try to open on side near mouse position, where there's enough space
 
-                // const verticalPadding = lastClientHeight;
+                // const verticalPadding = elementHeight;
                 const verticalPadding = 15;
                 const horizontalPadding = 15;
-                dx = lastClientX - (width / 2), dy = lastClientY - height - verticalPadding;
+                dx = mouseX - (width / 2), dy = mouseY - height - verticalPadding;
 
-                if (dy < 0) dy = lastClientY + verticalPadding;
+                if (dy < 0) dy = mouseY + verticalPadding;
                 if (dy + height > availHeight) {
-                    dy = lastClientY - (height / 2);
-                    dx = lastClientX - width - horizontalPadding;
+                    dy = mouseY - (height / 2);
+                    dx = mouseX - width - horizontalPadding;
 
-                    if (dx < 0) dx = lastClientX + horizontalPadding;
+                    if (dx < 0) dx = mouseX + horizontalPadding;
                     if (dx + width > availWidth){
                         /// if nothing works, open centered in mouse position
                         setCursorCoordinates();
@@ -304,8 +289,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 }
 
                 /// clear variables
-                lastClientHeight = undefined; lastClientWidth = undefined;
-                lastClientX = undefined; lastClientY = undefined;
+                elementHeight = undefined; elementWidth = undefined;
+                mouseX = undefined; mouseY = undefined;
                 textSelection = undefined;
                 lastPopupId = popupWindow.id;
             });

@@ -34,11 +34,11 @@ loadUserConfigs(function(c){
 function callback(e, type){
     const t = e.target,
     message = {
-        lastClientX: e.screenX, lastClientY: e.screenY,
-        selectedText: window.getSelection().toString().trim(), 
-        clientHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
-        clientWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
+        mouseX: e.screenX, mouseY: e.screenY,
+        elementHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
+        elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,
+        selectedText: window.getSelection().toString().trim(),
         type: type
     }
     if (type == 'drag' || type == 'shiftClick') {
