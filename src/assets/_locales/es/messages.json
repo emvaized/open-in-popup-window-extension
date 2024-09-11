@@ -12,7 +12,7 @@
         "message": "Ancho de la ventana emergente (px)"
     },
     "closeWhenFocusedInitialWindow": {
-        "message": "Cerrar ventana emergente cuando la ventana de origen está enfocada"
+        "message": "Cerrar la ventana emergente cuando la ventana normal obtiene el foco"
     },
     "hideBrowserControls": {
         "message": "Ocultar los controles del navegador (barra de direcciones, barra de pestañas, etc.)"

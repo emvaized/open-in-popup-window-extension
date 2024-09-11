@@ -91,9 +91,9 @@ chrome.contextMenus.create(openInMainWindowContextMenuItem);
 chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
 chrome.contextMenus.create(viewImageContextMenuItem);
 
-chrome.windows.onFocusChanged.addListener(function(w){
-        if (w < 0) return; /// don't process when window lost focus
-        chrome.windows.getCurrent(
+chrome.windows.onFocusChanged.addListener(function(wId){
+        if (wId < 0) return; /// don't process when window lost focus
+        chrome.windows.get(wId,{},
             (w) => chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup'}),
         );
     }
@@ -107,15 +107,35 @@ chrome.storage.onChanged.addListener((changes) => {
 
 chrome.contextMenus.onClicked.addListener(function(clickData) {
     if (clickData.menuItemId == 'openInMainWindow') {
-        if (originWindowId){
+        // if (originWindowId){
             chrome.tabs.query({active: true, lastFocusedWindow: true}, ([tab]) => {
-                if (tab) chrome.tabs.move(tab.id, { index: 0, windowId: originWindowId}, function(t){
-                    if (t) chrome.tabs.update(tab.id, { 'active': true });
-                });
+                if (tab) {
+                    /// filter by windowType doesn't work in Firefox 130
+                    // chrome.windows.getLastFocused(
+                    //     { windowTypes: ['normal'] },
+                    //     function(lastWindow){
+                    //         if (lastWindow){
+                    //             chrome.tabs.move(tab.id, { index: 0, windowId: lastWindow.id}, function(t){
+                    //                 if (t) chrome.tabs.update(tab.id, { 'active': true });
+                    //             });
+                    //         }
+                    //     }
+                    //   )
+                    chrome.windows.getAll(
+                        { windowTypes: ['normal'] },
+                        function(windows){
+                            chrome.tabs.move(tab.id, { index: 0, windowId: windows[0].id}, function(t){
+                                if (t) chrome.tabs.update(tab.id, { 'active': true });
+                            });
+                        }
+                    );
+                } 
+                
+                
             });
-        } else {
-            chrome.tabs.create({url: clickData.pageUrl, active:false });
-        }
+        // } else {
+        //     chrome.tabs.create({url: clickData.pageUrl, active:false });
+        // }
         return;
     }
 
@@ -143,7 +163,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 }
         });
     
-        let dx, dy, height, width;
+        /// calculate popup size
+        let height, width;
     
         height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
         if (isViewer && configs.tryFitWindowSizeToImage && lastClientHeight && lastClientWidth) {
@@ -156,15 +177,45 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         }
         height = parseInt(height); width = parseInt(width);
 
+
+        /// calculate popup position
+        let dx, dy;
         let popupLocation = configs.popupWindowLocation;
         if (isDragEvent) popupLocation = 'mousePosition';
+
+        function setCenterCoordinates(){
+            try {
+                dx = window.screen.width / 2;
+                dy = window.screen.height / 2;
+            } catch(e){
+                if (availHeight && availWidth){
+                    dx =  availWidth / 2;
+                    dy =  availHeight / 2;
+                } else {
+                    dx = 0; dy = 0;
+                }
+            }
+            dx -= width / 2;
+            dy -= height / 2;
+        }
+
+        function setCursorCoordinates(){
+            if (lastClientX && lastClientY){
+                dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
+            } else {
+                /// if no dx stored, open in center
+                setCenterCoordinates();
+            }
+        }
+
         switch(popupLocation){
             case 'mousePosition': {
                 /// open at last known mouse position
-                dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
+                setCursorCoordinates();
             } break;
             case 'nearMousePosition': {
                 /// try to open on side near mouse position, where there's enough space
+
                 // const verticalPadding = lastClientHeight;
                 const verticalPadding = 15;
                 const horizontalPadding = 15;
@@ -178,7 +229,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                     if (dx < 0) dx = lastClientX + horizontalPadding;
                     if (dx + width > availWidth){
                         /// if nothing works, open centered in mouse position
-                        dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
+                        setCursorCoordinates();
                     }
                 }
             } break;
@@ -204,8 +255,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             } break;
             default: {
                 /// open at center of screen
-                dx = (availWidth / 2) - (width / 2), 
-                dy = (availHeight / 2) - (height / 2);
+                setCenterCoordinates();
             } break;
         }
     
@@ -226,22 +276,26 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 'type': configs.hideBrowserControls ? 'popup' : 'normal', 
                 'width': width, 'height': height, 'top': dy, 'left': dx
             }, function (popupWindow) {
-                /// set coordinates again (workaround for firefox bug)
+                /// set coordinates again (workaround for old firefox bug)
                 chrome.windows.update(popupWindow.id, {
                     'top': dy, 'left': dx, 'width': width, 'height': height
                 });
 
                 if (configs.closeWhenFocusedInitialWindow) {
-                     /// close popup on click parent window
-                    function windowFocusListener(windowId) {
-                        if (windowId == originWindowId) {
-                            chrome.windows.onFocusChanged.removeListener(windowFocusListener);
-                            chrome.windows.remove(popupWindow.id);
-        
-                            if (originalWindowIsFullscreen) chrome.windows.update(parentWindow.id, {
-                                'state': 'fullscreen'
-                            });
-                        }
+                    /// close popup on focus normal window
+                    function windowFocusListener(wId) {
+                        if (wId > -1) 
+                            chrome.windows.get(wId,{}, (w) => {
+                                    if (w.type == 'normal') {
+                                        chrome.windows.remove(popupWindow.id);
+                                        chrome.windows.onFocusChanged.removeListener(windowFocusListener);
+
+                                        if (originalWindowIsFullscreen) 
+                                            chrome.windows.update(parentWindow.id, {
+                                                'state': 'fullscreen'
+                                            });
+                                    }
+                                });
                     }
         
                     setTimeout(function () {
@@ -249,6 +303,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                     }, 300);
                 }
 
+                /// clear variables
                 lastClientHeight = undefined; lastClientWidth = undefined;
                 lastClientX = undefined; lastClientY = undefined;
                 textSelection = undefined;

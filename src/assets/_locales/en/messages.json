@@ -12,7 +12,7 @@
         "message": "Popup width (px)"
     },
     "closeWhenFocusedInitialWindow": {
-        "message": "Close popup when origin window is focused"
+        "message": "Close popup when normal window is focused"
     },
     "hideBrowserControls": {
         "message": "Hide browser controls (addressbar, tabbar, etc)"
