@@ -258,7 +258,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                     (configs.useBuiltInImageViewer ? link :
                         chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) :
                     link ?? configs.popupSearchUrl.replace('%s', textSelection), 
-                'type': configs.hideBrowserControls ? 'popup' : 'normal', 
+                'type': 'popup', 
                 'width': width, 'height': height, 'top': dy, 'left': dx
             }, function (popupWindow) {
                 /// set coordinates again (workaround for old firefox bug)
