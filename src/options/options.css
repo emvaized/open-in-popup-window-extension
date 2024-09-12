@@ -57,6 +57,24 @@ div:has(h5){
     display: flex; align-items: center; margin-top: 2px; margin-bottom: 2px;
 }
 
+.hint {
+    border-radius: 50%;
+    line-height: 1;
+    vertical-align: middle;
+    height: 12px;
+    width: 12px;
+    min-width: 12px;
+    font-size: 13px;
+    display: inline-block;
+    text-align: center;
+    border: 1px solid gray;
+    color: gray;
+}
+.hint:hover{
+    background: rgba(0,0,0,0.4);
+    color:white;
+}
+
 @media (prefers-color-scheme: dark) {
     body {
         background: rgb(40,41,44);

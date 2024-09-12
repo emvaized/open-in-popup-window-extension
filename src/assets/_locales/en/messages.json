@@ -1,104 +1,122 @@
 {
-    "openInPopupWindow": {
-        "message": "Open link in popup window"
-    },
-    "extensionDescription": {
-        "message": "Open any links and images in a popup window"
-    },
-    "popupHeight": {
-        "message": "Popup height (px)"
-    },
-    "popupWidth": {
-        "message": "Popup width (px)"
-    },
-    "closeWhenFocusedInitialWindow": {
-        "message": "Close popup when origin window is focused"
-    },
-    "hideBrowserControls": {
-        "message": "Hide browser controls (addressbar, tabbar, etc)"
-    },  
-    "openByDragAndDrop": {
-        "message": "Use drag and drop on empty place to open in popup"
-    },    
-    "openPageInMainWindow": {
-        "message": "Open page in main window"
-    },  
-    "searchInPopupWindow": {
-        "message": "Search text in popup window"
-    },  
-    "searchInPopupEnabled": {
-        "message": "Option to search selection in popup enabled"
-    },  
-    "popupSearchUrl": {
-        "message": "Search url (%s will be replaced with the search query)"
-    },  
-    "viewInPopupEnabled": {
-        "message": "Enable option to view images in popup window"
-    },  
-    "viewInPopupWindow": {
-        "message": "View image in popup window"
-    },    
-    "tryFitWindowSizeToImage": {
-        "message": "Try to fit popup width to image aspect ratio"
-    },    
-    "useBuiltInImageViewer": {
-        "message": "Use browser's built-in image viewer"
-    },    
-    "popupWindowLocation": {
-        "message": "Popup window location"
-    },
-    "mousePosition": {
-        "message": "Mouse cursor position"
-    },
-    "center": {
-        "message": "Center"
-    },
-    "topRight": {
-        "message": "Top right"
-    },
-    "topLeft": {
-        "message": "Top left"
+    "bottomLeft": {
+        "message": "Bottom left"
     },
     "bottomRight": {
         "message": "Bottom right"
     },
-    "bottomLeft": {
-        "message": "Bottom left"
+    "center": {
+        "message": "Center"
     },
-    "settingsTitle": {
-        "message": "Settings"
-    },
-    "writeAReviewButton": {
-        "message": "Write a review"
+    "closeWhenFocusedInitialWindow": {
+        "message": "Close popup when normal window is focused"
     },
     "donateButton": {
         "message": "Support project"
     },
-    "githubButton": {
-        "message": "Source code"
+    "escKeyClosesPopup": {
+        "message": "Close popup window with Esc key"
     },
-    "openByShiftClick": {
-        "message": "Use Shift + Click to open in popup"
+    "escKeyClosesPopupHint": {
+        "message": "Ctrl + Escape will also open page in the main window"
     },
-    "nearMousePosition": {
-        "message": "Near mouse cursor"
+    "extensionDescription": {
+        "message": "Open any links and images in a popup window"
     },
-    "textSelectionHeader": {
-        "message": "Text selection"
-    },
-    "imageViewer": {
-        "message": "Image viewer"
-    },
-    "popupWindowSize": {
-        "message": "Popup window size"
+    "fallbackPopupWindowLocation": {
+        "message": "Fallback option for popup window location"
     },
     "generalSettings": {
         "message": "General settings"
     },
-    "escKeyClosesPopup": {
-        "message": "Close popup window with Esc key"
+    "githubButton": {
+        "message": "Source code"
+    },
+    "hideBrowserControls": {
+        "message": "Hide browser controls (addressbar, tabbar, etc)"
+    },
+    "imageViewer": {
+        "message": "Image viewer"
     },
     "minimalDragDistance": {
         "message": "Minimal drag distance (px)"
+    },
+    "mousePosition": {
+        "message": "Mouse cursor position"
+    },
+    "nearMousePosition": {
+        "message": "Near mouse cursor"
+    },
+    "openByDragAndDrop": {
+        "message": "Use drag and drop on empty place to open in popup"
+    },
+    "openByShiftClick": {
+        "message": "Use Shift + Click to open in popup"
+    },
+    "openInPopupWindow": {
+        "message": "Open link in popup window"
+    },
+    "openPageInMainWindow": {
+        "message": "Open page in main window"
+    },
+    "popupHeight": {
+        "message": "Popup height (px)"
+    },
+    "popupSearchUrl": {
+        "message": "Search url (%s will be replaced with the search query)"
+    },
+    "popupWidth": {
+        "message": "Popup width (px)"
+    },
+    "popupWindowLocation": {
+        "message": "Popup window location"
+    },
+    "popupWindowSize": {
+        "message": "Popup window size"
+    },
+    "rememberWindowResize": {
+        "message": "Remember dimensions on manual resize"
+    },
+    "reopenSingleTabWindowAsPopup": {
+        "message": "Reopen new single tab windows as popup windows"
+    },
+    "reopenSingleTabWindowAsPopupHint": {
+        "message": "With this option enabled, any new browser window with only one tab will be automatically reopened as a popup window. It allows extension to create popup for links which it usually can't access (for example, bookmarks bar). But it can lead to unwanted behavior if you usually open many browser windows, so use with caution!"
+    },
+    "searchInPopupEnabled": {
+        "message": "Option to search selection in popup enabled"
+    },
+    "searchInPopupWindow": {
+        "message": "Search text in popup window"
+    },
+    "settingsTitle": {
+        "message": "Settings"
+    },
+    "textSelectionHeader": {
+        "message": "Text selection"
+    },
+    "topCenter": {
+        "message": "Top center"
+    },
+    "topLeft": {
+        "message": "Top left"
+    },
+    "topRight": {
+        "message": "Top right"
+    },
+    "tryFitWindowSizeToImage": {
+        "message": "Try to fit popup width to image aspect ratio"
+    },
+    "useBuiltInImageViewer": {
+        "message": "Use browser's built-in image viewer"
+    },
+    "viewInPopupEnabled": {
+        "message": "Enable option to view images in popup window"
+    },
+    "viewInPopupWindow": {
+        "message": "View image in popup window"
+    },
+    "writeAReviewButton": {
+        "message": "Write a review"
     }
 }

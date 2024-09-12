@@ -1,16 +1,23 @@
-let lastClientX, lastClientY, originWindowId, lastClientHeight, lastClientWidth, lastPopupId;
-let toolbarWidth, toolbarHeight, textSelection, availWidth, availHeight;
+let mouseX, mouseY, elementHeight, elementWidth, lastPopupId;
+let toolbarHeight, textSelection, availWidth, availHeight;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.action == 'requestEscPopupWindowClose') {
-            loadUserConfigs((cfg) => {
+            loadUserConfigs((c) => {
                 if (configs.escKeyClosesPopup){
                     chrome.windows.getCurrent((w)=>{
                         if (w.type == 'popup')
                             chrome.windows.remove(w.id);
                     });
                 }
+            });
+            return;
+        }
+        if (request.action == 'requestOpenInMainWindow') {
+            loadUserConfigs((c) => {
+                if (configs.escKeyClosesPopup && sender.tab)
+                    moveTabToRegularWindow(sender.tab)
             });
             return;
         }
@@ -44,10 +51,10 @@ chrome.runtime.onMessage.addListener(
             return;
         }
 
-        lastClientX = request.lastClientX;
-        lastClientY = request.lastClientY;
-        lastClientHeight = request.clientHeight;
-        lastClientWidth = request.clientWidth;
+        mouseX = request.mouseX;
+        mouseY = request.mouseY;
+        elementHeight = request.elementHeight;
+        elementWidth = request.elementWidth;
         textSelection = request.selectedText ?? '';
         availWidth = request.availWidth;
         availHeight = request.availHeight;
@@ -91,31 +98,38 @@ chrome.contextMenus.create(openInMainWindowContextMenuItem);
 chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
 chrome.contextMenus.create(viewImageContextMenuItem);
 
-chrome.windows.onFocusChanged.addListener(function(w){
-        if (w < 0) return; /// don't process when window lost focus
-        chrome.windows.getCurrent(
-            (w) => chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup'}),
+chrome.windows.onFocusChanged.addListener(function(wId){
+        if (wId == undefined || wId < 0) return; /// don't process when window lost focus
+        chrome.windows.get(wId, {},
+            (w) => { if (w) chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup'})},
         );
     }
 ); 
 
 chrome.storage.onChanged.addListener((changes) => {
-    chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
-    chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
+    if (changes.searchInPopupEnabled)
+        chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
+    if (changes.viewInPopupEnabled)
+        chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
     applyUserConfigs(changes);
 });
 
+function moveTabToRegularWindow(tab){
+    chrome.windows.getAll(
+        { windowTypes: ['normal'] },
+        function(windows){
+            chrome.tabs.move(tab.id, { index: 0, windowId: windows[0].id}, function(t){
+                if (t) chrome.tabs.update(t[0].id, { 'active': true });
+            });
+        }
+    );
+}
+
 chrome.contextMenus.onClicked.addListener(function(clickData) {
     if (clickData.menuItemId == 'openInMainWindow') {
-        if (originWindowId){
             chrome.tabs.query({active: true, lastFocusedWindow: true}, ([tab]) => {
-                if (tab) chrome.tabs.move(tab.id, { index: 0, windowId: originWindowId}, function(t){
-                    if (t) chrome.tabs.update(tab.id, { 'active': true });
-                });
+                if (tab) moveTabToRegularWindow(tab)
             });
-        } else {
-            chrome.tabs.create({url: clickData.pageUrl, active:false });
-        }
         return;
     }
 
@@ -125,14 +139,13 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent) {
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId) {
     loadUserConfigs(function(){
         let originalWindowIsFullscreen = false;
 
-        /// store current windowId
         chrome.windows.getCurrent(
             function(originWindow){
-                if (originWindow.type !== 'popup') originWindowId = originWindow.id;
+                // if (originWindow.type !== 'popup') originWindowId = originWindow.id;
 
                  /// if original window is fullscreen, unmaximize it (for MacOS)
                 if (originWindow.state == 'fullscreen') {
@@ -143,11 +156,12 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 }
         });
     
-        let dx, dy, height, width;
+        /// calculate popup size
+        let height, width;
     
         height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
-        if (isViewer && configs.tryFitWindowSizeToImage && lastClientHeight && lastClientWidth) {
-            const aspectRatio = lastClientWidth / lastClientHeight;
+        if (isViewer && configs.tryFitWindowSizeToImage && elementHeight && elementWidth) {
+            const aspectRatio = elementWidth / elementHeight;
             width = height * aspectRatio;
     
             if (width > availWidth) {
@@ -156,58 +170,99 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         }
         height = parseInt(height); width = parseInt(width);
 
+
+        /// calculate popup position
+        let dx, dy;
         let popupLocation = configs.popupWindowLocation;
         if (isDragEvent) popupLocation = 'mousePosition';
-        switch(popupLocation){
-            case 'mousePosition': {
-                /// open at last known mouse position
-                dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
-            } break;
-            case 'nearMousePosition': {
-                /// try to open on side near mouse position, where there's enough space
-                // const verticalPadding = lastClientHeight;
-                const verticalPadding = 15;
-                const horizontalPadding = 15;
-                dx = lastClientX - (width / 2), dy = lastClientY - height - verticalPadding;
 
-                if (dy < 0) dy = lastClientY + verticalPadding;
-                if (dy + height > availHeight) {
-                    dy = lastClientY - (height / 2);
-                    dx = lastClientX - width - horizontalPadding;
+        /// try to get current screen size
+        try {
+            availWidth = window.screen.width;
+            availHeight = window.screen.height;
+        } catch(e){}
 
-                    if (dx < 0) dx = lastClientX + horizontalPadding;
-                    if (dx + width > availWidth){
-                        /// if nothing works, open centered in mouse position
-                        dx = lastClientX - (width / 2), dy = lastClientY - (height / 2);
-                    }
-                }
-            } break;
-            case 'topRight': {
-                /// open in top right corner
-                dx = availWidth - width, 
-                dy = 0;
-            } break;
-            case 'topLeft': {
-                /// open in top right corner
-                dx = 0, 
-                dy = 0;
-            } break;
-            case 'bottomRight': {
-                /// open in top right corner
-                dx = availWidth - width, 
-                dy = availHeight - height;
-            } break;
-            case 'bottomLeft': {
-                /// open in top right corner
-                dx = 0, 
-                dy = availHeight - height;
-            } break;
-            default: {
-                /// open at center of screen
-                dx = (availWidth / 2) - (width / 2), 
-                dy = (availHeight / 2) - (height / 2);
-            } break;
+        function setCenterCoordinates(){
+            if (availHeight && availWidth){
+                dx =  availWidth / 2;
+                dy =  availHeight / 2;
+            } else {
+                dx = 0; dy = 0;
+            }
+            dx -= width / 2;
+            dy -= height / 2;
         }
+
+        function setCursorCoordinates(){
+            if (mouseX && mouseY){
+                dx = mouseX - (width / 2), dy = mouseY - (height / 2);
+            } else {
+                /// if no dx stored, switch to fallback
+                setFallbackPopupLocation();
+            }
+        }
+
+        function setFallbackPopupLocation(){
+            setPopupLocation(configs.fallbackPopupWindowLocation ?? 'center');
+        }
+
+        function setPopupLocation(preference){
+            switch(preference){
+                case 'mousePosition': {
+                    /// open at last known mouse position
+                    setCursorCoordinates();
+                } break;
+                case 'nearMousePosition': {
+                    if (!mouseX) {
+                        setFallbackPopupLocation();
+                    } else {
+                        /// try to open on side near mouse position, where there's enough space
+    
+                        // const verticalPadding = elementHeight;
+                        const verticalPadding = 15;
+                        const horizontalPadding = 15;
+                        dx = mouseX - (width / 2), dy = mouseY - height - verticalPadding;
+    
+                        if (dy < 0) dy = mouseY + verticalPadding;
+                        if (dy + height > availHeight) {
+                            dy = mouseY - (height / 2);
+                            dx = mouseX - width - horizontalPadding;
+    
+                            if (dx < 0) dx = mouseX + horizontalPadding;
+                            if (dx + width > availWidth){
+                                /// if nothing works, open centered in mouse position
+                                setFallbackPopupLocation();
+                            }
+                        }
+                    }
+                } break;
+                case 'topRight': {
+                    dx = availWidth - width, 
+                    dy = 0;
+                } break;
+                case 'topLeft': {
+                    dx = 0, 
+                    dy = 0;
+                } break;
+                case 'topCenter': {
+                    setCenterCoordinates();
+                    dy = 0;
+                } break;
+                case 'bottomRight': {
+                    dx = availWidth - width, 
+                    dy = availHeight - height;
+                } break;
+                case 'bottomLeft': {
+                    dx = 0, 
+                    dy = availHeight - height;
+                } break;
+                default: {
+                    /// open at center of screen
+                    setCenterCoordinates();
+                } break;
+            }
+        }
+        setPopupLocation(popupLocation);
     
         /// check for screen overflow
         if (!dx || dx < 0) dx = 0;
@@ -218,30 +273,44 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
 
         /// create popup window
         setTimeout(function () {
-            chrome.windows.create({
-                'url': isViewer ? 
+            const createParams = {
+                'type': 'popup', 
+                'width': width, 'height': height, 
+                'top': dy, 'left': dx
+            };
+
+            if (tabId) {
+                createParams.tabId = tabId;
+            } else {
+                createParams['url'] = isViewer ? 
                     (configs.useBuiltInImageViewer ? link :
-                        chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) :
-                    link ?? configs.popupSearchUrl.replace('%s', textSelection), 
-                'type': configs.hideBrowserControls ? 'popup' : 'normal', 
-                'width': width, 'height': height, 'top': dy, 'left': dx
-            }, function (popupWindow) {
-                /// set coordinates again (workaround for firefox bug)
+                        chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
+                    : link ?? (textSelection ? 
+                        (configs.popupSearchUrl.replace('%s', textSelection))
+                        : 'about:blank');
+            }
+
+            chrome.windows.create(createParams, function (popupWindow) {
+                /// set coordinates again (workaround for old firefox bug)
                 chrome.windows.update(popupWindow.id, {
                     'top': dy, 'left': dx, 'width': width, 'height': height
                 });
 
+                /// close popup on focus normal window
                 if (configs.closeWhenFocusedInitialWindow) {
-                     /// close popup on click parent window
-                    function windowFocusListener(windowId) {
-                        if (windowId == originWindowId) {
-                            chrome.windows.onFocusChanged.removeListener(windowFocusListener);
-                            chrome.windows.remove(popupWindow.id);
-        
-                            if (originalWindowIsFullscreen) chrome.windows.update(parentWindow.id, {
-                                'state': 'fullscreen'
-                            });
-                        }
+                    function windowFocusListener(wId) {
+                        // if (wId > -1) 
+                            chrome.windows.get(wId,{}, (w) => {
+                                    if (w && w.type == 'normal') {
+                                        chrome.windows.remove(popupWindow.id);
+                                        chrome.windows.onFocusChanged.removeListener(windowFocusListener);
+
+                                        if (originalWindowIsFullscreen) 
+                                            chrome.windows.update(parentWindow.id, {
+                                                'state': 'fullscreen'
+                                            });
+                                    }
+                                });
                     }
         
                     setTimeout(function () {
@@ -249,11 +318,51 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                     }, 300);
                 }
 
-                lastClientHeight = undefined; lastClientWidth = undefined;
-                lastClientX = undefined; lastClientY = undefined;
+                /* remember dimensions on window resize 
+                [draft until onBoundsChanged is supported in Firefox]
+                {@link https://bugzilla.mozilla.org/show_bug.cgi?id=1762975}
+                */
+                // if (configs.rememberWindowResize){
+                //     function resizeListener(w){
+                //         const newSize = {
+                //             'popupHeight': w.height,
+                //             'popupWidth': w.width,
+                //         }
+                //         console.log(newSize);
+                //         chrome.storage.sync.set(configs)
+
+                //     }
+                //     function removedListener(wId){
+                //         if (wId && wId > -1 && wId == popupWindow.id) {
+                //             chrome.windows.onBoundsChanged.removeListener(resizeListener);
+                //             chrome.windows.onRemoved.removeListener(removedListener);
+                //         }
+                //     }
+                //     chrome.windows.onBoundsChanged.addListener(resizeListener);
+                //     chrome.windows.onRemoved.addListener(removedListener);
+                // }
+
+                /// clear variables
+                elementHeight = undefined; elementWidth = undefined;
+                mouseX = undefined; mouseY = undefined;
                 textSelection = undefined;
                 lastPopupId = popupWindow.id;
             });
         }, originalWindowIsFullscreen ? 600 : 0)
     });
  }
+
+/// Reopen new single tab windows as popups
+chrome.windows.onCreated.addListener(
+    (w) => {
+        loadUserConfigs((c) => {
+            if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
+                chrome.tabs.query({windowId: w.id}, (tabs) => {
+                    if (tabs.length == 1){
+                        openPopupWindowForLink(undefined, false, false, tabs[0].id)
+                    } 
+                });
+        })
+       
+    }
+)

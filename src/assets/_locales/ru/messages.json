@@ -1,104 +1,119 @@
 {
-    "extensionDescription": {
-        "message": "Открывает ссылки и изображения во вплывающем окне"
-    },
-    "closeWhenFocusedInitialWindow": {
-        "message": "Закрыть всплывающее окно, когда изначальное окно получает фокус"
-    },   
-    "openInPopupWindow": {
-        "message": "Открыть ссылку во вспл. окне"
-    },    
-    "popupHeight": {
-        "message": "Высота окна (px)"
-    },    
-    "popupWidth": {
-        "message": "Ширина окна (px)"
-    },    
-    "hideBrowserControls": {
-        "message": "Прятать элементы управления браузера (панель адреса, вкладок, и тд)"
-    },
-    "openByDragAndDrop": {
-        "message": "Использовать перетаскивание на пустое место для октрытия во вспл. окне"
-    },  
-    "openPageInMainWindow": {
-        "message": "Открыть страницу в основном окне"
-    },  
-    "searchInPopupWindow": {
-        "message": "Искать текст во вспл. окне"
-    },  
-    "searchInPopupEnabled": {
-        "message": "Включить опцию поиска выделения во всплывающем окне"
-    },  
-    "popupSearchUrl": {
-        "message": "URL поиска (%s будет заменено поисковым запросом)"
-    },  
-    "viewInPopupEnabled": {
-        "message": "Включить опцию просмотра изображений во всплывающем окне"
-    },  
-    "viewInPopupWindow": {
-        "message": "Посмотреть изображение во вспл. окне"
-    },    
-    "tryFitWindowSizeToImage": {
-        "message": "Попытаться подогнать ширину окна под размер изображения"
-    },    
-    "useBuiltInImageViewer": {
-        "message": "Использовать встроенный в браузер просмотрщик изображений"
-    },
-    "popupWindowLocation": {
-        "message": "Расположение всплывающего окна"
-    },
-    "mousePosition": {
-        "message": "Под курсором мыши"
-    },
-    "center": {
-        "message": "Центр экрана"
-    },
-    "topRight": {
-        "message": "Справа вверху"
-    },
-    "topLeft": {
-        "message": "Слева вверху"
+    "bottomLeft": {
+        "message": "Слева внизу"
     },
     "bottomRight": {
         "message": "Справа внизу"
     },
-    "bottomLeft": {
-        "message": "Слева внизу"
+    "center": {
+        "message": "Центр экрана"
     },
-    "settingsTitle": {
-        "message": "Настройки"
-    },
-    "writeAReviewButton": {
-        "message": "Написать отзыв"
+    "closeWhenFocusedInitialWindow": {
+        "message": "Закрыть всплывающее окно, когда обычное окно получает фокус"
     },
     "donateButton": {
         "message": "Поддержать проект"
     },
-    "githubButton": {
-        "message": "Исходный код"
-    },
-    "openByShiftClick": {
-        "message": "Использовать Shift + клик для открытия во вспл. окне"
-    },
-    "nearMousePosition": {
-        "message": "Возле курсора мыши"
-    },
     "escKeyClosesPopup": {
         "message": "Закрывать вспл. окно клавишей Esc"
     },
-    "textSelectionHeader": {
-        "message": "Выделение текста"
+    "escKeyClosesPopupHint": {
+        "message": "Ctrl + Escape также откроет страницу в основном окне"
     },
-    "imageViewer": {
-        "message": "Просмотр изображений"
+    "extensionDescription": {
+        "message": "Открывает ссылки и изображения во вплывающем окне"
     },
-    "popupWindowSize": {
-        "message": "Размер всплывающего окна"
+    "fallbackPopupWindowLocation": {
+        "message": "Запасной вариант расположения всплывающего окна"
     },
     "generalSettings": {
         "message": "Общие настройки"
     },
+    "githubButton": {
+        "message": "Исходный код"
+    },
+    "hideBrowserControls": {
+        "message": "Прятать элементы управления браузера (панель адреса, вкладок, и тд)"
+    },
+    "imageViewer": {
+        "message": "Просмотр изображений"
+    },
     "minimalDragDistance": {
         "message": "Минимальное расстояние перетаскивания (px)"
+    },
+    "mousePosition": {
+        "message": "Под курсором мыши"
+    },
+    "nearMousePosition": {
+        "message": "Возле курсора мыши"
+    },
+    "openByDragAndDrop": {
+        "message": "Использовать перетаскивание на пустое место для октрытия во вспл. окне"
+    },
+    "openByShiftClick": {
+        "message": "Использовать Shift + клик для открытия во вспл. окне"
+    },
+    "openInPopupWindow": {
+        "message": "Открыть ссылку во вспл. окне"
+    },
+    "openPageInMainWindow": {
+        "message": "Открыть страницу в основном окне"
+    },
+    "popupHeight": {
+        "message": "Высота окна (px)"
+    },
+    "popupSearchUrl": {
+        "message": "URL поиска (%s будет заменено поисковым запросом)"
+    },
+    "popupWidth": {
+        "message": "Ширина окна (px)"
+    },
+    "popupWindowLocation": {
+        "message": "Расположение всплывающего окна"
+    },
+    "popupWindowSize": {
+        "message": "Размер всплывающего окна"
+    },
+    "reopenSingleTabWindowAsPopup": {
+        "message": "Переоткрывать новые окна с одной вкладкой в виде всплывающих окон"
+    },
+    "reopenSingleTabWindowAsPopupHint": {
+        "message": "При включении этой опции любое новое окно браузера с одной вкладкой будет автоматически переоткрыто как всплывающее окно. Это позволит расширению создавать всплывающие окна для ссылок, к которым оно обычно не имеет доступа (например, панель закладок). Но это также может привести к нежелательному поведению, если вы обычно открываете вручную несколько окон браузера, поэтому используйте эту опцию с осторожностью!"
+    },
+    "searchInPopupEnabled": {
+        "message": "Включить опцию поиска выделения во всплывающем окне"
+    },
+    "searchInPopupWindow": {
+        "message": "Искать текст во вспл. окне"
+    },
+    "settingsTitle": {
+        "message": "Настройки"
+    },
+    "textSelectionHeader": {
+        "message": "Выделение текста"
+    },
+    "topCenter": {
+        "message": "Центр вверху"
+    },
+    "topLeft": {
+        "message": "Слева вверху"
+    },
+    "topRight": {
+        "message": "Справа вверху"
+    },
+    "tryFitWindowSizeToImage": {
+        "message": "Попытаться подогнать ширину окна под размер изображения"
+    },
+    "useBuiltInImageViewer": {
+        "message": "Использовать встроенный в браузер просмотрщик изображений"
+    },
+    "viewInPopupEnabled": {
+        "message": "Включить опцию просмотра изображений во всплывающем окне"
+    },
+    "viewInPopupWindow": {
+        "message": "Посмотреть изображение во вспл. окне"
+    },
+    "writeAReviewButton": {
+        "message": "Написать отзыв"
     }
 }
