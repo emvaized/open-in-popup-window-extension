@@ -25,8 +25,13 @@ loadUserConfigs(function(c){
     }
     if (configs.escKeyClosesPopup){
         document.addEventListener('keyup',(e)=>{
-            if (e.key == 'Escape') 
-                chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
+            if (e.key == 'Escape'){
+                if (e.ctrlKey){
+                    chrome.runtime.sendMessage({action: 'requestOpenInMainWindow'})
+                } else {
+                    chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
+                }
+            } 
         })
     }
 })

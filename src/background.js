@@ -14,6 +14,13 @@ chrome.runtime.onMessage.addListener(
             });
             return;
         }
+        if (request.action == 'requestOpenInMainWindow') {
+            loadUserConfigs((c) => {
+                if (configs.escKeyClosesPopup && sender.tab)
+                    moveTabToRegularWindow(sender.tab)
+            });
+            return;
+        }
 
         if (request.action == 'updateAspectRatio') {
             if (request.aspectRatio && configs.tryFitWindowSizeToImage) {
@@ -107,22 +114,21 @@ chrome.storage.onChanged.addListener((changes) => {
     applyUserConfigs(changes);
 });
 
+function moveTabToRegularWindow(tab){
+    chrome.windows.getAll(
+        { windowTypes: ['normal'] },
+        function(windows){
+            chrome.tabs.move(tab.id, { index: 0, windowId: windows[0].id}, function(t){
+                if (t) chrome.tabs.update(t[0].id, { 'active': true });
+            });
+        }
+    );
+}
+
 chrome.contextMenus.onClicked.addListener(function(clickData) {
     if (clickData.menuItemId == 'openInMainWindow') {
             chrome.tabs.query({active: true, lastFocusedWindow: true}, ([tab]) => {
-                if (tab) {
-                    /// filter by windowType doesn't seem to work in Firefox 130
-                    // chrome.windows.getLastFocused(
-                    //     { windowTypes: ['normal'] },
-                    chrome.windows.getAll(
-                        { windowTypes: ['normal'] },
-                        function(windows){
-                            chrome.tabs.move(tab.id, { index: 0, windowId: windows[0].id}, function(t){
-                                if (t) chrome.tabs.update(t[0].id, { 'active': true });
-                            });
-                        }
-                    );
-                } 
+                if (tab) moveTabToRegularWindow(tab)
             });
         return;
     }

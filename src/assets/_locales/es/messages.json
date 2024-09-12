@@ -17,6 +17,9 @@
     "escKeyClosesPopup": {
         "message": "Cerrar ventana emergente con la tecla Esc"
     },
+    "escKeyClosesPopupHint": {
+        "message": "Ctrl + Escape también abrirá la página en la ventana principal"
+    },
     "extensionDescription": {
         "message": "Abrir enlaces e imágenes en una ventana emergente"
     },

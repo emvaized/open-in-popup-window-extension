@@ -17,6 +17,9 @@
     "escKeyClosesPopup": {
         "message": "Закрывать вспл. окно клавишей Esc"
     },
+    "escKeyClosesPopupHint": {
+        "message": "Ctrl + Escape также откроет страницу в основном окне"
+    },
     "extensionDescription": {
         "message": "Открывает ссылки и изображения во вплывающем окне"
     },

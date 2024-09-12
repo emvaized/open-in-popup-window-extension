@@ -17,6 +17,9 @@
     "escKeyClosesPopup": {
         "message": "Close popup window with Esc key"
     },
+    "escKeyClosesPopupHint": {
+        "message": "Ctrl + Escape will also open page in the main window"
+    },
     "extensionDescription": {
         "message": "Open any links and images in a popup window"
     },
@@ -70,7 +73,7 @@
     },
     "popupWindowSize": {
         "message": "Popup window size"
-    },    
+    },
     "rememberWindowResize": {
         "message": "Remember dimensions on manual resize"
     },
