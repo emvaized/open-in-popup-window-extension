@@ -54,9 +54,9 @@ This powerful feature, introduced in version `0.3`, allows to extend extension a
 
 This way it can operate with links, which it couldn't access otherwise, for example: sites on new tab page, in bookmarks panel, links on browser-protected pages (`chrome://`, `about:`) etc. You could create a popup window the following ways:
 
-- Using right click context menu, and selecting "Open in new window"
-- <kbd>CTRL</kbd> + <kbd>Shift</kbd> + left click in Chrome
-- <kbd>Shift</kbd> + left click in Firefox (this will effectively override extension's "Open with shift+click" option)
+- Using right click context menu and selecting "Open in new window"
+- <kbd>Shift</kbd> + left click in Firefox (+ <kbd>Ctrl</kbd> in Chrome) – this will essentially duplicate extension's "Open with shift+click" option
+- <kbd>Shift</kbd> + <kbd>Enter</kbd> in Firefox (+ <kbd>Ctrl</kbd> in Chrome) on any focused element, for example search suggestion in address bar
 
 Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
 
