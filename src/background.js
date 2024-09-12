@@ -98,6 +98,7 @@ chrome.contextMenus.create(openInMainWindowContextMenuItem);
 chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
 chrome.contextMenus.create(viewImageContextMenuItem);
 
+/// Update context menu availability
 chrome.windows.onFocusChanged.addListener(function(wId){
         if (wId == undefined || wId < 0) return; /// don't process when window lost focus
         chrome.windows.get(wId, {},
@@ -106,6 +107,7 @@ chrome.windows.onFocusChanged.addListener(function(wId){
     }
 ); 
 
+/// Update configs
 chrome.storage.onChanged.addListener((changes) => {
     if (changes.searchInPopupEnabled)
         chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
@@ -114,16 +116,19 @@ chrome.storage.onChanged.addListener((changes) => {
     applyUserConfigs(changes);
 });
 
-function moveTabToRegularWindow(tab){
-    chrome.windows.getAll(
-        { windowTypes: ['normal'] },
-        function(windows){
-            chrome.tabs.move(tab.id, { index: 0, windowId: windows[0].id}, function(t){
-                if (t) chrome.tabs.update(t[0].id, { 'active': true });
-            });
-        }
-    );
-}
+/// Reopen new single tab windows as popups
+chrome.windows.onCreated.addListener(
+    (w) => {
+        loadUserConfigs((c) => {
+            if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
+                chrome.tabs.query({windowId: w.id}, (tabs) => {
+                    if (tabs.length == 1){
+                        openPopupWindowForLink(undefined, false, false, tabs[0].id)
+                    } 
+                });
+        })   
+    }
+)
 
 chrome.contextMenus.onClicked.addListener(function(clickData) {
     if (clickData.menuItemId == 'openInMainWindow') {
@@ -352,17 +357,13 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     });
  }
 
-/// Reopen new single tab windows as popups
-chrome.windows.onCreated.addListener(
-    (w) => {
-        loadUserConfigs((c) => {
-            if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
-                chrome.tabs.query({windowId: w.id}, (tabs) => {
-                    if (tabs.length == 1){
-                        openPopupWindowForLink(undefined, false, false, tabs[0].id)
-                    } 
-                });
-        })
-       
-    }
-)
+ function moveTabToRegularWindow(tab){
+    chrome.windows.getAll(
+        { windowTypes: ['normal'] },
+        function(windows){
+            chrome.tabs.move(tab.id, { index: 0, windowId: windows[0].id}, function(t){
+                if (t) chrome.tabs.update(t[0].id, { 'active': true });
+            });
+        }
+    );
+}
