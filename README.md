@@ -37,15 +37,15 @@ If you really enjoy this project, please consider supporting its further develop
 #### How to open page from the popup in the main window? 
 You can do it in 2 ways: 
 - <kbd>Ctrl</kbd> + <kbd>Escape</kbd> hotkey (if enabled in extension settings)
-- by right clicking on the page in popup window and selecting "Open page in main window" entry
+- By right clicking on the page in popup window and selecting "Open page in main window"
 <details>
     <summary>Demonstration</summary>
     <img src="./screenshots/open-in-main-window.png" />
 </details>
 
 #### How to close the popup using keyboard?
-- <kbd>Alt</kbd>+<kbd>F4</kbd>
-- <kbd>Ctrl</kbd>+<kbd>W</kbd>
+- <kbd>Alt</kbd> + <kbd>F4</kbd>
+- <kbd>Ctrl</kbd> + <kbd>W</kbd>
 - <kbd>Escape</kbd> key (if option is enabled in extension settings)
 
 #### How to use the new feature "Reopen new single tab windows as popup windows"?
@@ -60,9 +60,9 @@ This way it can operate with links, which it couldn't access otherwise, for exam
 
 Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
 
-#### Private windows are not reopened as popup with the option enabled
+#### If private windows are not reopened as popup with this option enabled
 
-You might need to allow this extension to run in private windows to fix it
+You might need to manually allow this extension to run in private windows
 
 ## Troubleshooting
 - ⚠️ If "Open by drag" and "Shift+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
