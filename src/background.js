@@ -170,17 +170,18 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         let popupLocation = configs.popupWindowLocation;
         if (isDragEvent) popupLocation = 'mousePosition';
 
+        /// try to get current screen size
+        try {
+            availWidth = window.screen.width;
+            availHeight = window.screen.height;
+        } catch(e){}
+
         function setCenterCoordinates(){
-            try {
-                dx = window.screen.width / 2;
-                dy = window.screen.height / 2;
-            } catch(e){
-                if (availHeight && availWidth){
-                    dx =  availWidth / 2;
-                    dy =  availHeight / 2;
-                } else {
-                    dx = 0; dy = 0;
-                }
+            if (availHeight && availWidth){
+                dx =  availWidth / 2;
+                dy =  availHeight / 2;
+            } else {
+                dx = 0; dy = 0;
             }
             dx -= width / 2;
             dy -= height / 2;
@@ -190,65 +191,72 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             if (mouseX && mouseY){
                 dx = mouseX - (width / 2), dy = mouseY - (height / 2);
             } else {
-                /// if no dx stored, open in center
-                setCenterCoordinates();
+                /// if no dx stored, switch to fallback
+                setFallbackPopupLocation();
             }
         }
 
-        switch(popupLocation){
-            case 'mousePosition': {
-                /// open at last known mouse position
-                setCursorCoordinates();
-            } break;
-            case 'nearMousePosition': {
-                if (!mouseX) {
+        function setFallbackPopupLocation(){
+            setPopupLocation(configs.fallbackPopupWindowLocation ?? 'center');
+        }
+
+        function setPopupLocation(preference){
+            switch(preference){
+                case 'mousePosition': {
+                    /// open at last known mouse position
                     setCursorCoordinates();
-                } else {
-                    /// try to open on side near mouse position, where there's enough space
-
-                    // const verticalPadding = elementHeight;
-                    const verticalPadding = 15;
-                    const horizontalPadding = 15;
-                    dx = mouseX - (width / 2), dy = mouseY - height - verticalPadding;
-
-                    if (dy < 0) dy = mouseY + verticalPadding;
-                    if (dy + height > availHeight) {
-                        dy = mouseY - (height / 2);
-                        dx = mouseX - width - horizontalPadding;
-
-                        if (dx < 0) dx = mouseX + horizontalPadding;
-                        if (dx + width > availWidth){
-                            /// if nothing works, open centered in mouse position
-                            setCursorCoordinates();
+                } break;
+                case 'nearMousePosition': {
+                    if (!mouseX) {
+                        setFallbackPopupLocation();
+                    } else {
+                        /// try to open on side near mouse position, where there's enough space
+    
+                        // const verticalPadding = elementHeight;
+                        const verticalPadding = 15;
+                        const horizontalPadding = 15;
+                        dx = mouseX - (width / 2), dy = mouseY - height - verticalPadding;
+    
+                        if (dy < 0) dy = mouseY + verticalPadding;
+                        if (dy + height > availHeight) {
+                            dy = mouseY - (height / 2);
+                            dx = mouseX - width - horizontalPadding;
+    
+                            if (dx < 0) dx = mouseX + horizontalPadding;
+                            if (dx + width > availWidth){
+                                /// if nothing works, open centered in mouse position
+                                setFallbackPopupLocation();
+                            }
                         }
                     }
-                }
-            } break;
-            case 'topRight': {
-                dx = availWidth - width, 
-                dy = 0;
-            } break;
-            case 'topLeft': {
-                dx = 0, 
-                dy = 0;
-            } break;
-            case 'topCenter': {
-                setCenterCoordinates();
-                dy = 0;
-            } break;
-            case 'bottomRight': {
-                dx = availWidth - width, 
-                dy = availHeight - height;
-            } break;
-            case 'bottomLeft': {
-                dx = 0, 
-                dy = availHeight - height;
-            } break;
-            default: {
-                /// open at center of screen
-                setCenterCoordinates();
-            } break;
+                } break;
+                case 'topRight': {
+                    dx = availWidth - width, 
+                    dy = 0;
+                } break;
+                case 'topLeft': {
+                    dx = 0, 
+                    dy = 0;
+                } break;
+                case 'topCenter': {
+                    setCenterCoordinates();
+                    dy = 0;
+                } break;
+                case 'bottomRight': {
+                    dx = availWidth - width, 
+                    dy = availHeight - height;
+                } break;
+                case 'bottomLeft': {
+                    dx = 0, 
+                    dy = availHeight - height;
+                } break;
+                default: {
+                    /// open at center of screen
+                    setCenterCoordinates();
+                } break;
+            }
         }
+        setPopupLocation(popupLocation);
     
         /// check for screen overflow
         if (!dx || dx < 0) dx = 0;

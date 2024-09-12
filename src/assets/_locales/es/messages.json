@@ -1,105 +1,75 @@
 {
-    "openInPopupWindow": {
-        "message": "Abrir enlace en ventana emergente"
-    },    
-    "extensionDescription": {
-        "message": "Abrir enlaces e imágenes en una ventana emergente"
-    },
-    "popupHeight": {
-        "message": "Altura emergente (px)"
-    },
-    "popupWidth": {
-        "message": "Ancho de la ventana emergente (px)"
-    },
-    "closeWhenFocusedInitialWindow": {
-        "message": "Cerrar la ventana emergente cuando la ventana normal obtiene el foco"
-    },
-    "hideBrowserControls": {
-        "message": "Ocultar los controles del navegador (barra de direcciones, barra de pestañas, etc.)"
-    },
-    "openByDragAndDrop": {
-        "message": "Utilice arrastrar y soltar en un lugar vacío para abrir una ventana emergente"
-    },  
-    "openLinkInMainWindow": {
-        "message": "Abrir página en la ventana principal"
-    },  
-    "searchInPopupWindow": {
-        "message": "Buscar texto en la ventana emergente"
-    },  
-    "searchInPopupEnabled": {
-        "message": "Opción para buscar selección en ventana emergente habilitada"
-    },  
-    "popupSearchUrl": {
-        "message": "URL de búsqueda (%s se reemplazará con la consulta de búsqueda)"
-    },  
-    "viewInPopupEnabled": {
-        "message": "Activar la opción de ver las imágenes en una ventana emergente"
-    },  
-    "viewInPopupWindow": {
-        "message": "Ver imagen en ventana emergente"
-    }, 
-    "useBuiltInImageViewer": {
-        "message": "Utilice el visor de imágenes integrado del navegador"
-    },  
-    "tryFitWindowSizeToImage": {
-        "message": "Intente ajustar el ancho de la ventana emergente a la relación de aspecto de la imagen"
-    },
-    "popupWindowLocation": {
-        "message": "Ubicación de la ventana emergente"
-    },
-    "mousePosition": {
-        "message": "Posición del cursor del ratón"
-    },
-    "center": {
-        "message": "Centro"
-    },
-    "topRight": {
-        "message": "Arriba a la derecha"
-    },
-    "topLeft": {
-        "message": "Arriba a la izquierda"
+    "bottomLeft": {
+        "message": "Abajo a la izquierda"
     },
     "bottomRight": {
         "message": "Abajo a la derecha"
     },
-    "bottomLeft": {
-        "message": "Abajo a la izquierda"
+    "center": {
+        "message": "Centro"
     },
-    "settingsTitle": {
-        "message": "Configuración"
-    },
-    "writeAReviewButton": {
-        "message": "Escribe una reseña"
+    "closeWhenFocusedInitialWindow": {
+        "message": "Cerrar la ventana emergente cuando la ventana normal obtiene el foco"
     },
     "donateButton": {
         "message": "Proyecto de apoyo"
     },
-    "githubButton": {
-        "message": "Código fuente"
-    },
-    "openByShiftClick": {
-        "message": "Utilice Shift + Clic para abrir en ventana emergente"
-    },
-    "nearMousePosition": {
-        "message": "Cerca del cursor"
-    },
     "escKeyClosesPopup": {
         "message": "Cerrar ventana emergente con la tecla Esc"
     },
-    "textSelectionHeader": {
-        "message": "Selección de texto"
+    "extensionDescription": {
+        "message": "Abrir enlaces e imágenes en una ventana emergente"
     },
-    "imageViewer": {
-        "message": "Visor de imágenes"
-    },
-    "popupWindowSize": {
-        "message": "Tamaño de la ventana emergente"
+    "fallbackPopupWindowLocation": {
+        "message": "Opción alternativa para la ubicación de la ventana emergente"
     },
     "generalSettings": {
         "message": "Configuración general"
     },
+    "githubButton": {
+        "message": "Código fuente"
+    },
+    "hideBrowserControls": {
+        "message": "Ocultar los controles del navegador (barra de direcciones, barra de pestañas, etc.)"
+    },
+    "imageViewer": {
+        "message": "Visor de imágenes"
+    },
     "minimalDragDistance": {
         "message": "Distancia mínima de arrastre (px)"
+    },
+    "mousePosition": {
+        "message": "Posición del cursor del ratón"
+    },
+    "nearMousePosition": {
+        "message": "Cerca del cursor"
+    },
+    "openByDragAndDrop": {
+        "message": "Utilice arrastrar y soltar en un lugar vacío para abrir una ventana emergente"
+    },
+    "openByShiftClick": {
+        "message": "Utilice Shift + Clic para abrir en ventana emergente"
+    },
+    "openInPopupWindow": {
+        "message": "Abrir enlace en ventana emergente"
+    },
+    "openLinkInMainWindow": {
+        "message": "Abrir página en la ventana principal"
+    },
+    "popupHeight": {
+        "message": "Altura emergente (px)"
+    },
+    "popupSearchUrl": {
+        "message": "URL de búsqueda (%s se reemplazará con la consulta de búsqueda)"
+    },
+    "popupWidth": {
+        "message": "Ancho de la ventana emergente (px)"
+    },
+    "popupWindowLocation": {
+        "message": "Ubicación de la ventana emergente"
+    },
+    "popupWindowSize": {
+        "message": "Tamaño de la ventana emergente"
     },
     "reopenSingleTabWindowAsPopup": {
         "message": "Reabrir nuevas ventanas de una sola pestaña como ventanas emergentes"
@@ -107,7 +77,40 @@
     "reopenSingleTabWindowAsPopupHint": {
         "message": "Con esta opción activada, cualquier ventana nueva del navegador con una sola pestaña se reabrirá automáticamente como ventana emergente. Permite a la extensión crear ventanas emergentes para enlaces a los que normalmente no puede acceder (por ejemplo, la barra de marcadores). Pero puede conducir a un comportamiento no deseado si sueles abrir muchas ventanas del navegador, ¡así que úsalo con precaución!"
     },
+    "searchInPopupEnabled": {
+        "message": "Opción para buscar selección en ventana emergente habilitada"
+    },
+    "searchInPopupWindow": {
+        "message": "Buscar texto en la ventana emergente"
+    },
+    "settingsTitle": {
+        "message": "Configuración"
+    },
+    "textSelectionHeader": {
+        "message": "Selección de texto"
+    },
     "topCenter": {
         "message": "Arriba medio"
+    },
+    "topLeft": {
+        "message": "Arriba a la izquierda"
+    },
+    "topRight": {
+        "message": "Arriba a la derecha"
+    },
+    "tryFitWindowSizeToImage": {
+        "message": "Intente ajustar el ancho de la ventana emergente a la relación de aspecto de la imagen"
+    },
+    "useBuiltInImageViewer": {
+        "message": "Utilice el visor de imágenes integrado del navegador"
+    },
+    "viewInPopupEnabled": {
+        "message": "Activar la opción de ver las imágenes en una ventana emergente"
+    },
+    "viewInPopupWindow": {
+        "message": "Ver imagen en ventana emergente"
+    },
+    "writeAReviewButton": {
+        "message": "Escribe una reseña"
     }
 }

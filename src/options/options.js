@@ -92,6 +92,10 @@ function updateDisabledOptions() {
     document.getElementById("tryFitWindowSizeToImage").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option'; 
     document.getElementById("useBuiltInImageViewer").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("minimalDragDistance").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("fallbackPopupWindowLocation").parentNode.className = 
+        document.getElementById("popupWindowLocation").value == "mousePosition" || 
+        document.getElementById("popupWindowLocation").value == "nearMousePosition" 
+            ? 'enabled-option' : 'disabled-option';
 }
 
 function setFooterButtons(){

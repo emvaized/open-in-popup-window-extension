@@ -13,7 +13,8 @@ const configs = {
     'openByShiftClick': false,
     'escKeyClosesPopup': false,
     'reopenSingleTabWindowAsPopup': false,
-    'popupWindowLocation': 'mousePosition' /// possible values: mouse,center,bottomRight,topRight,bottomLeft,topLeft
+    'popupWindowLocation': 'mousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
+    'fallbackPopupWindowLocation': 'center'
 }
 
 function loadUserConfigs(callback) {
