@@ -15,7 +15,7 @@
         "message": "Поддержать проект"
     },
     "escKeyClosesPopup": {
-        "message": "Закрывать вспл. окно клавишей Esc"
+        "message": "Закрывать всплывающее окно клавишей Escape"
     },
     "escKeyClosesPopupHint": {
         "message": "Ctrl + Escape также откроет страницу в основном окне"

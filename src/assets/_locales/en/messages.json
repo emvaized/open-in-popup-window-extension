@@ -15,7 +15,7 @@
         "message": "Support project"
     },
     "escKeyClosesPopup": {
-        "message": "Close popup window with Esc key"
+        "message": "Close popup window with an Escape key"
     },
     "escKeyClosesPopupHint": {
         "message": "Ctrl + Escape will also open page in the main window"

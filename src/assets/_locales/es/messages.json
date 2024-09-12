@@ -15,7 +15,7 @@
         "message": "Proyecto de apoyo"
     },
     "escKeyClosesPopup": {
-        "message": "Cerrar ventana emergente con la tecla Esc"
+        "message": "Cerrar ventana emergente con la tecla Escape"
     },
     "escKeyClosesPopupHint": {
         "message": "Ctrl + Escape también abrirá la página en la ventana principal"

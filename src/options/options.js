@@ -37,7 +37,9 @@ function init(){
 
                 /// Set translated label for input
                 let translatedLabel = chrome.i18n.getMessage(key);
-                translatedLabel = translatedLabel.replace('Shift','<kbd>Shift</kbd>').replace('Esc','<kbd>Esc</kbd>')
+                translatedLabel = translatedLabel
+                    .replace('Shift','<kbd>Shift</kbd>')
+                    .replace('Escape','<kbd>Escape</kbd>');
                 if (!input.parentNode.innerHTML.includes(translatedLabel)) {
                     if (input.type == 'checkbox'){
                         input.parentNode.innerHTML += ' ' + translatedLabel;
