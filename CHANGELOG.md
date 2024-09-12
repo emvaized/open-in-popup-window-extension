@@ -1,3 +1,10 @@
+0.3
+- Added feature to reopen new single tab windows as popup windows [how to use](./README.md#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows)
+- Improve logic for popup size calculation and autoclose
+- Added top center option for popup placement
+- Added option for fallback popup window location
+- Added ability to open page in main window with Ctrl+Esc
+
 0.2.1
 - Updated extension icon
 - Added option for minimal drag distance

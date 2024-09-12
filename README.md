@@ -8,12 +8,13 @@
 This tiny browser extension provides ability to quickly preview links without leaving the current page context. It adds entry in context menu of links, and when clicked, opens new small window at cursor position, with no tab bar and addressbar. 
 
 <b>Features:</b>
-- Ability to open images and search selected text in popup window
-- Use drag and drop to open in popup window (disabled by default)
-- Use <kbd>Shift</kbd> + Click to open in popup window (disabled by default)
-- Configurable popup height, width and position on screen
-- Option to close popup window when origin window regains focus
-- New popups can be opened from existing popups as well!
+- [x] Ability to open images and search selected text in popup window
+- [x] Use drag and drop to open in popup window (disabled by default)
+- [x] Use <kbd>Shift</kbd> + Click to open in popup window (disabled by default)
+- [x] Configurable popup height, width and position on screen
+- [x] Option to close popup window when origin window regains focus
+- [x] New popups can be opened from existing popups
+- [x] Automatically reopen new single tab windows as popup windows
 
 This extension is intended to be used as an analogue of <i>Safari Link Preview</i>, or the new <i>Arc Peek</i>. It's a great way to preview links, which works everywhere and is not affected by the CORS problem like extensions which are using iframe element for link preview.
 
@@ -58,6 +59,10 @@ This way it can operate with links, which it couldn't access otherwise, for exam
 - <kbd>Shift</kbd> + left click in Firefox (this will effectively override extension's "Open with shift+click" option)
 
 Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
+
+#### Private windows are not reopened as popup with the option enabled
+
+You might need to allow this extension to run in private windows to fix it
 
 ## Troubleshooting
 - ⚠️ If "Open by drag" and "Shift+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
