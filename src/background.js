@@ -290,8 +290,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                     'top': dy, 'left': dx, 'width': width, 'height': height
                 });
 
+                /// close popup on focus normal window
                 if (configs.closeWhenFocusedInitialWindow) {
-                    /// close popup on focus normal window
                     function windowFocusListener(wId) {
                         // if (wId > -1) 
                             chrome.windows.get(wId,{}, (w) => {
@@ -311,6 +311,30 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                         chrome.windows.onFocusChanged.addListener(windowFocusListener);
                     }, 300);
                 }
+
+                /* remember dimensions on window resize 
+                [draft until onBoundsChanged is supported in Firefox]
+                {@link https://bugzilla.mozilla.org/show_bug.cgi?id=1762975}
+                */
+                // if (configs.rememberWindowResize){
+                //     function resizeListener(w){
+                //         const newSize = {
+                //             'popupHeight': w.height,
+                //             'popupWidth': w.width,
+                //         }
+                //         console.log(newSize);
+                //         chrome.storage.sync.set(configs)
+
+                //     }
+                //     function removedListener(wId){
+                //         if (wId && wId > -1 && wId == popupWindow.id) {
+                //             chrome.windows.onBoundsChanged.removeListener(resizeListener);
+                //             chrome.windows.onRemoved.removeListener(removedListener);
+                //         }
+                //     }
+                //     chrome.windows.onBoundsChanged.addListener(resizeListener);
+                //     chrome.windows.onRemoved.addListener(removedListener);
+                // }
 
                 /// clear variables
                 elementHeight = undefined; elementWidth = undefined;

@@ -15,6 +15,7 @@ const configs = {
     'reopenSingleTabWindowAsPopup': false,
     'popupWindowLocation': 'mousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
     'fallbackPopupWindowLocation': 'center'
+    //, 'rememberWindowResize': false,
 }
 
 function loadUserConfigs(callback) {
