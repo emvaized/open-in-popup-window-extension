@@ -299,7 +299,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 /// close popup on focus normal window
                 if (configs.closeWhenFocusedInitialWindow) {
                     function windowFocusListener(wId) {
-                        // if (wId > -1) 
+                        if (wId > -1) 
                             chrome.windows.get(wId,{}, (w) => {
                                     if (w && w.type == 'normal') {
                                         chrome.windows.remove(popupWindow.id);
