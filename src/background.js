@@ -1,5 +1,5 @@
 let mouseX, mouseY, elementHeight, elementWidth, lastPopupId;
-let toolbarHeight, textSelection, availWidth, availHeight;
+let textSelection, availWidth, availHeight;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -32,7 +32,7 @@ chrome.runtime.onMessage.addListener(
                         availHeight = request.availHeight;
                     }
 
-                    let newWidth = (w.height - request.toolbarHeight) * request.aspectRatio;
+                    let newWidth = w.height * request.aspectRatio;
                     if (newWidth > availWidth)
                         newWidth = availWidth * 0.7;
     
