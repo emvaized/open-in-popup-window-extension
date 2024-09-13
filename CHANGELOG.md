@@ -1,3 +1,7 @@
+0.3.1
+- Improved window listener on focus lost
+- Refactored code for better readability
+
 0.3
 - Added feature to reopen new single tab windows as popup windows [how to use](./README.md#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows)
 - Improve logic for popup size calculation and autoclose
