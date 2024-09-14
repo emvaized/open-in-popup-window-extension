@@ -153,20 +153,25 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
 
  function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId) {
     loadUserConfigs(function(){
-        let originalWindowIsFullscreen = false;
 
-        chrome.windows.getCurrent(
-            function(originWindow){
-                // if (originWindow.type !== 'popup') originWindowId = originWindow.id;
+        /* 
+            This logic was created in order to counter MacOS behavior,
+            where popup windows could not be opened above the fullscreen window.
+            It should determine MacOS native fullscreen specifically
+        */
+        // let originalWindowIsFullscreen = false;
+        // chrome.windows.getCurrent(
+        //     function(originWindow){
+        //         // if (originWindow.type !== 'popup') originWindowId = originWindow.id;
 
-                 /// if original window is fullscreen, unmaximize it (for MacOS)
-                if (originWindow.state == 'fullscreen') {
-                    originalWindowIsFullscreen = true;
-                    chrome.windows.update(originWindow.id, {
-                        'state': 'maximized'
-                    });
-                }
-        });
+        //          /// if original window is fullscreen, unmaximize it (for MacOS)
+        //         if (originWindow.state == 'fullscreen') {
+        //             originalWindowIsFullscreen = true;
+        //             chrome.windows.update(originWindow.id, {
+        //                 'state': 'maximized'
+        //             });
+        //         }
+        // });
     
         /// calculate popup size
         let height, width;
@@ -181,7 +186,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             }
         }
         height = parseInt(height); width = parseInt(width);
-
 
         /// calculate popup position
         let dx, dy;
@@ -284,7 +288,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         dx = parseInt(dx); dy = parseInt(dy);
 
         /// create popup window
-        setTimeout(function () {
+        // setTimeout(function () {
             const createParams = {
                 'type': 'popup', 
                 'width': width, 'height': height, 
@@ -317,10 +321,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                                         chrome.windows.remove(popupWindow.id);
                                         chrome.windows.onFocusChanged.removeListener(windowFocusListener);
 
-                                        if (originalWindowIsFullscreen) 
-                                            chrome.windows.update(parentWindow.id, {
-                                                'state': 'fullscreen'
-                                            });
+                                        // if (originalWindowIsFullscreen) 
+                                        //     chrome.windows.update(parentWindow.id, {
+                                        //         'state': 'fullscreen'
+                                        //     });
                                     }
                                 });
                     }
@@ -360,7 +364,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 textSelection = undefined;
                 lastPopupId = popupWindow.id;
             });
-        }, originalWindowIsFullscreen ? 600 : 0)
+        // }, originalWindowIsFullscreen ? 600 : 0)
     });
  }
 
