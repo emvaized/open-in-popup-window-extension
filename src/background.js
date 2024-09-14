@@ -121,11 +121,18 @@ chrome.windows.onCreated.addListener(
     (w) => {
         loadUserConfigs((c) => {
             if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
-                chrome.tabs.query({windowId: w.id}, (tabs) => {
-                    if (tabs.length == 1){
-                        openPopupWindowForLink(undefined, false, false, tabs[0].id)
-                    } 
-                });
+                setTimeout(()=> 
+                    chrome.tabs.query({windowId: w.id}, (tabs) => {
+                        if (tabs.length == 1){
+                            const tab = tabs[0];
+                            if (tab.url !== 'about:home' && tab.url !== 'about:privatebrowsing' &&
+                                tab.url !== 'chrome://newtab/' &&tab.url !== 'edge://newtab/'
+                            ) {
+                                openPopupWindowForLink(undefined, false, false, tab.id)
+                            }
+                        } 
+                    })
+                , 5)
         })   
     }
 )
