@@ -27,6 +27,7 @@
   "permissions": [
     "<all_urls>",
     "contextMenus",
+    "tabs",
     "storage"
   ],
   "options_ui": {
