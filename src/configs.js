@@ -14,8 +14,9 @@ const configs = {
     'escKeyClosesPopup': false,
     'reopenSingleTabWindowAsPopup': false,
     'popupWindowLocation': 'mousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
-    'fallbackPopupWindowLocation': 'center'
+    'fallbackPopupWindowLocation': 'center',
     //, 'rememberWindowResize': false,
+    'debugMode': false,
 }
 
 function loadUserConfigs(callback) {

@@ -11,6 +11,9 @@
     "closeWhenFocusedInitialWindow": {
         "message": "Cerrar la ventana emergente cuando la ventana normal obtiene el foco"
     },
+    "debugMode": {
+        "message": "Depurar"
+    },
     "donateButton": {
         "message": "Proyecto de apoyo"
     },

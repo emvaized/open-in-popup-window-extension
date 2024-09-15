@@ -11,6 +11,9 @@
     "closeWhenFocusedInitialWindow": {
         "message": "Close popup when normal window is focused"
     },
+    "debugMode": {
+        "message": "Debug mode"
+    },
     "donateButton": {
         "message": "Support project"
     },

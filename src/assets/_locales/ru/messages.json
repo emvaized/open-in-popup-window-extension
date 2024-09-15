@@ -11,6 +11,9 @@
     "closeWhenFocusedInitialWindow": {
         "message": "Закрыть всплывающее окно, когда обычное окно получает фокус"
     },
+    "debugMode": {
+        "message": "Отладка"
+    },
     "donateButton": {
         "message": "Поддержать проект"
     },

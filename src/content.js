@@ -50,5 +50,6 @@ function callback(e, type){
         message['nodeName'] = t.nodeName;
         message['link'] = t.href ?? t.src ?? t.parentNode.href;
     }
+    if(configs.debugMode) console.log('Sending message to bg script: ', message)
     chrome.runtime.sendMessage(message)
 }

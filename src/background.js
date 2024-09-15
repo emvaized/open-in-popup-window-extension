@@ -279,6 +279,19 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             }
         }
         setPopupLocation(popupLocation);
+
+        if (configs.debugMode){
+            console.log('~~~');
+            console.log('Trying to open a popup window...');
+            console.log('window.screen.width: ', window.screen.width);
+            console.log('window.screen.availWidth: ', window.screen.availWidth);
+            console.log('window.screenLeft: ', window.screenLeft);
+            console.log('window.screenX: ', window.screenX);
+            console.log('window.availLeft: ', window.screen.availLeft);
+            console.log('Selected popup window placement: ', popupLocation);
+            console.log('Calculated popup window dx: ', dx);
+            console.log('Checking for dx overflow...');
+        }
     
         /// check for screen overflow
         if (!dx || dx < 0) dx = 0;
@@ -287,6 +300,12 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         if (dy + height > availHeight) dy = dy - (dy + height - availHeight);
         dx = parseInt(dx); dy = parseInt(dy);
 
+        if (configs.debugMode){
+            console.log('Calucated dx after checking: ', dx);
+            console.log('Calucated dy after checking: ', dy);
+            console.log('End logging ~~~');
+        }
+        
         /// create popup window
         // setTimeout(function () {
             const createParams = {
