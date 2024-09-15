@@ -44,7 +44,7 @@ function callback(e, type){
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,
         selectedText: window.getSelection().toString().trim(),
-        type: type
+        availLeft: window.screen.availLeft, type: type
     }
     if (type == 'drag' || type == 'shiftClick') {
         message['nodeName'] = t.nodeName;

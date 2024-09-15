@@ -1,5 +1,5 @@
 let mouseX, mouseY, elementHeight, elementWidth, lastPopupId;
-let textSelection, availWidth, availHeight;
+let textSelection, availWidth, availHeight, availLeft;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -58,6 +58,7 @@ chrome.runtime.onMessage.addListener(
         textSelection = request.selectedText ?? '';
         availWidth = request.availWidth;
         availHeight = request.availHeight;
+        availLeft = request.availLeft;
 
         if (request.type == 'drag' || request.type == 'shiftClick') {
             loadUserConfigs((cfg) => {
@@ -192,18 +193,20 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         let popupLocation = configs.popupWindowLocation;
         if (isDragEvent) popupLocation = 'mousePosition';
 
-        /// try to get current screen size
+        /// try to get current screen size (not supported in Manifest v3)
         try {
             availWidth = window.screen.width;
             availHeight = window.screen.height;
         } catch(e){}
+        if (configs.debugMode) console.log('Initial availLeft: ', availLeft)
+        if (!availLeft) availLeft = 0;
 
         function setCenterCoordinates(){
             if (availHeight && availWidth){
-                dx =  availWidth / 2;
+                dx =  availLeft + availWidth / 2;
                 dy =  availHeight / 2;
             } else {
-                dx = 0; dy = 0;
+                dx = availLeft; dy = 0;
             }
             dx -= width / 2;
             dy -= height / 2;
@@ -253,11 +256,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                     }
                 } break;
                 case 'topRight': {
-                    dx = availWidth - width, 
+                    dx = availLeft + availWidth - width, 
                     dy = 0;
                 } break;
                 case 'topLeft': {
-                    dx = 0, 
+                    dx = availLeft, 
                     dy = 0;
                 } break;
                 case 'topCenter': {
@@ -265,11 +268,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                     dy = 0;
                 } break;
                 case 'bottomRight': {
-                    dx = availWidth - width, 
+                    dx = availLeft + availWidth - width, 
                     dy = availHeight - height;
                 } break;
                 case 'bottomLeft': {
-                    dx = 0, 
+                    dx = availLeft, 
                     dy = availHeight - height;
                 } break;
                 default: {
@@ -288,17 +291,19 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
             console.log('window.screenLeft: ', window.screenLeft);
             console.log('window.screenX: ', window.screenX);
             console.log('window.availLeft: ', window.screen.availLeft);
+            console.log('availLeft: ', availLeft);
             console.log('Selected popup window placement: ', popupLocation);
             console.log('Calculated popup window dx: ', dx);
             console.log('Checking for dx overflow...');
         }
     
         /// check for screen overflow
-        if (!dx || dx < 0) dx = 0;
+        if (!dx) dx = 0;
+        if (availLeft >= 0 && dx < 0) dx = 0;
         if (!dy || dy < 0) dy = 0;
-        if (dx + width > availWidth) dx = dx - (dx + width - availWidth);
         if (dy + height > availHeight) dy = dy - (dy + height - availHeight);
         dx = parseInt(dx); dy = parseInt(dy);
+        if (dx + width > availWidth) dx = dx - (dx + width - availWidth);
 
         if (configs.debugMode){
             console.log('Calucated dx after checking: ', dx);
