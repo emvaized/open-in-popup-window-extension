@@ -6,6 +6,8 @@ body {
 }
 .option {
     padding: 5px 6px;
+}
+.option, .option label {
     cursor: pointer;
 }
 
