@@ -56,6 +56,9 @@
     "openByShiftClick": {
         "message": "Utilice Shift + Clic para abrir en ventana emergente"
     },
+    "openDragAndDropUnderMouse": {
+        "message": "Abrir siempre arrastrando y soltando bajo el cursor del ratón"
+    },
     "openInPopupWindow": {
         "message": "Abrir enlace en ventana emergente"
     },

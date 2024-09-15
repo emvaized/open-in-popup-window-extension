@@ -56,6 +56,9 @@
     "openByShiftClick": {
         "message": "Использовать Shift + клик для открытия во вспл. окне"
     },
+    "openDragAndDropUnderMouse": {
+        "message": "Всегда открывать перетаскиванием под курсором мыши"
+    },
     "openInPopupWindow": {
         "message": "Открыть ссылку во вспл. окне"
     },

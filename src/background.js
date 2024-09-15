@@ -191,7 +191,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         /// calculate popup position
         let dx, dy;
         let popupLocation = configs.popupWindowLocation;
-        if (isDragEvent) popupLocation = 'mousePosition';
+        if (isDragEvent && configs.openDragAndDropUnderMouse) popupLocation = 'mousePosition';
 
         /// try to get current screen size (not supported in Manifest v3)
         try {

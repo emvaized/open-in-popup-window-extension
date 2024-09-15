@@ -17,6 +17,7 @@ const configs = {
     'fallbackPopupWindowLocation': 'center',
     //, 'rememberWindowResize': false,
     'debugMode': false,
+    'openDragAndDropUnderMouse': true,
 }
 
 function loadUserConfigs(callback) {

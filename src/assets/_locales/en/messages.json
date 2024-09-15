@@ -56,6 +56,9 @@
     "openByShiftClick": {
         "message": "Use Shift + Click to open in popup"
     },
+    "openDragAndDropUnderMouse": {
+        "message": "Always open by drag and drop under mouse cursor"
+    },
     "openInPopupWindow": {
         "message": "Open link in popup window"
     },
