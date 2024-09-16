@@ -35,6 +35,11 @@
   },
   "action": {
     "default_icon": "icon.png",
+    "theme_icons": [{
+      "light": "icon_white.png",
+      "dark": "icon.png",
+      "size": 32
+    }],
     "default_title": "Open in Popup Window",
     "default_popup": "options/options.html"
   },

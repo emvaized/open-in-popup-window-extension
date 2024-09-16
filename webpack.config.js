@@ -40,6 +40,7 @@ module.exports = {
         { from: "src/manifest.json", to: "manifest.json" },
         { from: "src/assets/_locales", to: "_locales" },
         { from: "src/assets/icon.png", to: "icon.png" },
+        { from: "src/assets/icon_white.png", to: "icon_white.png" },
         { from: "src/options", to: "options" },
         { from: "src/viewer", to: "viewer" },
         /// additional dependencies for the options page
