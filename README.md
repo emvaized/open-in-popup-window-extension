@@ -34,6 +34,12 @@ If you really enjoy this project, please consider supporting its further develop
 <a href="https://ko-fi.com/emvaized"><img src="https://cdn.prod.website-files.com/5c14e387dab576fe667689cf/64f1a9ddd0246590df69ea0b_kofi_long_button_red%25402x-p-800.png" alt="Support on Ko-fi" height="40"></a> &nbsp; <a href="https://liberapay.com/emvaized/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"></a> &nbsp; <a href="https://emvaized.github.io/donate/bitcoin/"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/bitcoin/assets/bitcoin-donate-button.png?raw=true" alt="Donate Bitcoin" height="40" /></a>
 
 ## FAQ
+
+#### How to close the popup using keyboard?
+- <kbd>Alt</kbd> + <kbd>F4</kbd>
+- <kbd>Ctrl</kbd> + <kbd>W</kbd>
+- <kbd>Escape</kbd> key (if option is enabled in extension settings)
+
 #### How to open page from the popup in the main window? 
 You can do it in 2 ways: 
 - <kbd>Ctrl</kbd> + <kbd>Escape</kbd> hotkey (if enabled in extension settings)
@@ -43,10 +49,13 @@ You can do it in 2 ways:
     <img src="./screenshots/open-in-main-window.png" />
 </details>
 
-#### How to close the popup using keyboard?
-- <kbd>Alt</kbd> + <kbd>F4</kbd>
-- <kbd>Ctrl</kbd> + <kbd>W</kbd>
-- <kbd>Escape</kbd> key (if option is enabled in extension settings)
+#### In fullscreen mode on Mac OS popup windows do not appear
+Due to the specifics of fullscreen mode on Mac OS (fullscreen apps separate in their own Desktop space), popup windows do not appear above the fullcreen window. They either open on the "main" desktop (Firefox), or as a new fullscreen window (Chrome). To use this extension on Mac OS, you would have to open browser not in the fullscreen mode.
+
+#### How to make popups remain always on top? 
+Unfortunately, browser extensions currently are [not capable](https://github.com/w3c/webextensions/issues/443) of manually setting "always on top" flag. 
+
+But you can use third-party programs in your system which can do it, for example [PowerToys](https://github.com/microsoft/PowerToys) on Windows. Don't forget to disable autoclosing popup window when it loses focus in the extension settings.
 
 #### How to use the new feature "Reopen new single tab windows as popup windows"?
 
