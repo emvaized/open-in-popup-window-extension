@@ -48,7 +48,14 @@ function callback(e, type){
     }
     if (type == 'drag' || type == 'shiftClick') {
         message['nodeName'] = t.nodeName;
-        message['link'] = t.href ?? t.src ?? t.parentNode.href;
+
+        /// Handle IMG inside A
+        if (t.parentNode && t.parentNode.nodeName == 'A'){
+            message['link'] = t.parentNode.href;
+            message['nodeName'] = t.parentNode.nodeName;
+        } else {
+            message['link'] = t.href ?? t.src ?? t.parentNode.href;
+        }
     }
     if(configs.debugMode) console.log('Sending message to bg script: ', message)
     chrome.runtime.sendMessage(message)
