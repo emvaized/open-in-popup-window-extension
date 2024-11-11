@@ -66,6 +66,7 @@ chrome.runtime.onMessage.addListener(
                 if (request.type == 'shiftClick' && configs.openByShiftClick == false) return;
 
                 const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
+                if (isViewer && !cfg.viewInPopupEnabled) return;
                 openPopupWindowForLink(request.link, isViewer, request.type == 'drag'); 
             });
         }
