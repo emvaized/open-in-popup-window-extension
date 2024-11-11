@@ -1,3 +1,7 @@
+### 0.3.3
+- Handle images wrapped inside links, to favor links
+- Fix shift+click on image ignoring disabled image viewer
+
 ### 0.3.2
 - Added option to always open by drag and drop under mouse
 - Fix for multimonitor usage with secondary on the left
