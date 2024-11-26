@@ -41,6 +41,9 @@
     "imageViewer": {
         "message": "Просмотр изображений"
     },
+    "imageWithLinkPreferLink": {
+        "message": "Когда изображение вложено в ссылку, предпочитать ссылку"
+    },
     "minimalDragDistance": {
         "message": "Минимальное расстояние перетаскивания (px)"
     },

@@ -14,6 +14,7 @@ const configs = {
     'escKeyClosesPopup': false,
     'reopenSingleTabWindowAsPopup': false,
     'popupWindowLocation': 'mousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
+    'imageWithLinkPreferLink': false,
     'fallbackPopupWindowLocation': 'center',
     //, 'rememberWindowResize': false,
     'debugMode': false,

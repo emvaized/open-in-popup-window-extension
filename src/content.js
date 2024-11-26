@@ -47,16 +47,28 @@ function callback(e, type){
         availLeft: window.screen.availLeft, type: type
     }
     if (type == 'drag' || type == 'shiftClick') {
-        message['nodeName'] = t.nodeName;
 
-        /// Handle IMG inside A
+        /// Handle IMG wrapped in A
         if (t.parentNode && t.parentNode.nodeName == 'A'){
-            message['link'] = t.parentNode.href;
-            message['nodeName'] = t.parentNode.nodeName;
+            if (configs.imageWithLinkPreferLink){
+                message['link'] = t.parentNode.href;
+                message['nodeName'] = t.parentNode.nodeName;
+            } else {
+                message['link'] = t.src;
+                message['nodeName'] = t.nodeName;
+            }
+        } else if (t.childNodes && t.childNodes.length == 1 && t.firstChild.nodeName == 'IMG') {
+            if (configs.imageWithLinkPreferLink){
+                message['link'] = t.href;
+                message['nodeName'] = t.nodeName;
+            } else {
+                message['link'] = t.firstChild.src;
+                message['nodeName'] = t.firstChild.nodeName;
+            }
         } else {
-            message['link'] = t.href ?? t.src ?? t.parentNode.href;
+            message['link'] = t.src ?? t.href ?? t.parentNode.href;
+            message['nodeName'] = t.nodeName;
         }
     }
-    if(configs.debugMode) console.log('Sending message to bg script: ', message)
     chrome.runtime.sendMessage(message)
 }

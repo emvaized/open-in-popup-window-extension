@@ -41,6 +41,9 @@
     "imageViewer": {
         "message": "Image viewer"
     },
+    "imageWithLinkPreferLink": {
+        "message": "When image is wrapped in link, prefer link"
+    },
     "minimalDragDistance": {
         "message": "Minimal drag distance (px)"
     },
