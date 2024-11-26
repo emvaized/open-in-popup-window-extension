@@ -1,42 +1,68 @@
-document.addEventListener("contextmenu",(e=>callback(e,'context')));
+document.addEventListener("contextmenu",(e=>onTrigger(e,'context')));
+chrome.storage.onChanged.addListener((c) => {
+    loadUserConfigs((c) => setMouseListeners())
+});
 
-loadUserConfigs(function(c){
+loadUserConfigs((c) => setMouseListeners())
+
+function setMouseListeners(){
+
+    /* Drag listeners */
     if (configs.openByDragAndDrop){
-        let dragStartDx, dragStartDy;
-        document.addEventListener("dragstart",(e=>{
-            dragStartDx = e.clientX; dragStartDy = e.clientY;
-        }));
-        document.addEventListener("dragend",(e=>{
-            if (e.dataTransfer.dropEffect == 'none'){
-                if (
-                    Math.abs(e.clientX - dragStartDx) > configs.minimalDragDistance ||
-                    Math.abs(e.clientY - dragStartDy) > configs.minimalDragDistance
-                ) callback(e, 'drag')
-            } 
-        }));
+        document.addEventListener("dragstart",dragStartListener);
+        document.addEventListener("dragend",dragEndListener);
+    } else {
+        document.removeEventListener("dragstart",dragStartListener);
+        document.removeEventListener("dragend",dragEndListener);
     }
-    if (configs.openByShiftClick){
-        document.addEventListener("click",(e=>{
-            if (e.shiftKey && (e.target.href || e.target.src || e.target.parentNode.href)){
-                e.preventDefault();
-                callback(e, 'shiftClick');
-            }
-        }));
-    }
-    if (configs.escKeyClosesPopup){
-        document.addEventListener('keyup',(e)=>{
-            if (e.key == 'Escape'){
-                if (e.ctrlKey){
-                    chrome.runtime.sendMessage({action: 'requestOpenInMainWindow'})
-                } else {
-                    chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
-                }
-            } 
-        })
-    }
-})
 
-function callback(e, type){
+    /* Shift+Click */
+    if (configs.openByShiftClick){
+        document.addEventListener("click",onClickListener);
+    } else {
+        document.removeEventListener("click",onClickListener);
+    }
+
+    /* Escape key to close popup */
+    if (configs.escKeyClosesPopup){
+        document.addEventListener('keyup', keyUpListener)
+    } else {
+        document.removeEventListener('keyup', keyUpListener)
+    }
+}
+
+let dragStartDx, dragStartDy;
+
+function dragStartListener(e){
+    dragStartDx = e.clientX; dragStartDy = e.clientY;
+}
+function dragEndListener(e){
+    if (e.dataTransfer.dropEffect == 'none'){
+        if (
+            Math.abs(e.clientX - dragStartDx) > configs.minimalDragDistance ||
+            Math.abs(e.clientY - dragStartDy) > configs.minimalDragDistance
+        ) onTrigger(e, 'drag')
+    } 
+}
+
+function keyUpListener(e){
+    if (e.key == 'Escape'){
+        if (e.ctrlKey){
+            chrome.runtime.sendMessage({action: 'requestOpenInMainWindow'})
+        } else {
+            chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
+        }
+    } 
+}
+
+function onClickListener(e){
+    if (e.shiftKey && (e.target.href || e.target.src || e.target.parentNode.href)){
+        e.preventDefault();
+        onTrigger(e, 'shiftClick');
+    }
+}
+
+function onTrigger(e, type){
     const t = e.target,
     message = {
         mouseX: e.screenX, mouseY: e.screenY,
