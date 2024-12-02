@@ -1,6 +1,6 @@
 # <sub><img src="./src/assets/icon.png" height="48" width="48"></sub> Open in Popup Window
 
-[![Mozilla Add-on Version](https://img.shields.io/amo/v/open-in-popup-window?label=version&color=red)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
+[![Mozilla Add-on Version](https://img.shields.io/amo/v/open-in-popup-window?label=version&color=red)](./CHANGELOG.md)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/gmnkpkmmkhbgnljljcchnakehlkihhie?label=users&logo=googlechrome&logoColor=white&color=blue)](https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie)
 [![Mozilla Add-on](https://img.shields.io/amo/users/open-in-popup-window?color=%23FF6611&label=users&logo=Firefox)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
 [![Mozilla Add-on Stars](https://img.shields.io/amo/stars/open-in-popup-window)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
