@@ -1,3 +1,9 @@
+### 0.3.4
+- Add option for images wrapped in link to prefer link or image
+- Apply configs immediately, without the need to reload the page
+- Improve options page appearance on Firefox
+- Add white background to the black icon for better visibility on dark backgrounds, and fix white icon vertical alignment
+
 ### 0.3.3
 - Handle images wrapped inside links, to favor links
 - Fix shift+click on image ignoring disabled image viewer
