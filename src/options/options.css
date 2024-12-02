@@ -1,5 +1,6 @@
 body {
     min-width: 381px;
+    padding: 4px;
 }
 #settingsTitle{
     padding: 0 6px;
