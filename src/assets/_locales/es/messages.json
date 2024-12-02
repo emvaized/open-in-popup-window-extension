@@ -41,6 +41,9 @@
     "imageViewer": {
         "message": "Visor de imágenes"
     },
+    "imageWithLinkPreferLink": {
+        "message": "Cuando la imagen está envuelta en un enlace, prefiera el enlace"
+    },
     "minimalDragDistance": {
         "message": "Distancia mínima de arrastre (px)"
     },

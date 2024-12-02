@@ -93,3 +93,10 @@ div:has(h5){
         background-color: rgb(256, 256, 256, 0.1);
     }
 }
+
+@-moz-document url-prefix() {
+    body {
+        font-family: sans-serif !important; 
+        /* line-height: 1.0 !important; */
+    }
+}
