@@ -73,28 +73,38 @@ function onTrigger(e, type){
         availLeft: window.screen.availLeft, type: type
     }
     if (type == 'drag' || type == 'shiftClick') {
+        let nodeName, link;
 
         /// Handle IMG wrapped in A
         if (t.parentNode && t.parentNode.nodeName == 'A'){
             if (configs.imageWithLinkPreferLink){
-                message['link'] = t.parentNode.href;
-                message['nodeName'] = t.parentNode.nodeName;
+                nodeName = t.parentNode.nodeName;
+                link = t.parentNode.href;
             } else {
-                message['link'] = t.src;
-                message['nodeName'] = t.nodeName;
+                nodeName = t.nodeName;
+                link = t.src;
             }
         } else if (t.childNodes && t.childNodes.length == 1 && t.firstChild.nodeName == 'IMG') {
             if (configs.imageWithLinkPreferLink){
-                message['link'] = t.href;
-                message['nodeName'] = t.nodeName;
+                nodeName = t.nodeName;
+                link = t.href;
             } else {
-                message['link'] = t.firstChild.src;
-                message['nodeName'] = t.firstChild.nodeName;
+                nodeName = t.firstChild.nodeName;
+                link = t.firstChild.src;
             }
         } else {
-            message['link'] = t.src ?? t.href ?? t.parentNode.href;
-            message['nodeName'] = t.nodeName;
+            nodeName = t.nodeName;
+            link = t.src ?? t.href ?? t.parentNode.href;
         }
+
+        /// Handle IMG with source in sourceset
+        if (nodeName == 'IMG' && !link) {
+            const src = t.parentNode.querySelector('source');
+            if (src) link = src.getAttribute('srcset');
+        }
+
+        message['nodeName'] = nodeName;
+        message['link'] = link;
     }
     chrome.runtime.sendMessage(message)
 }
