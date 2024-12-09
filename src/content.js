@@ -72,9 +72,9 @@ function onTrigger(e, type){
         selectedText: window.getSelection().toString().trim(),
         availLeft: window.screen.availLeft, type: type
     }
-    if (type == 'drag' || type == 'shiftClick') {
-        let nodeName, link;
 
+    let nodeName, link;
+    if (type == 'drag' || type == 'shiftClick') {
         /// Handle IMG wrapped in A
         if (t.parentNode && t.parentNode.nodeName == 'A'){
             if (configs.imageWithLinkPreferLink){
@@ -98,7 +98,7 @@ function onTrigger(e, type){
         }
 
         /// Handle IMG with source in sourceset
-        if (nodeName == 'IMG' && !link) {
+        if (nodeName == 'IMG' && !link && t.parentNode && t.parentNode.nodeName == 'PICTURE') {
             const src = t.parentNode.querySelector('source');
             if (src) link = src.getAttribute('srcset');
         }
@@ -106,5 +106,7 @@ function onTrigger(e, type){
         message['nodeName'] = nodeName;
         message['link'] = link;
     }
-    chrome.runtime.sendMessage(message)
+
+    if (link)
+        chrome.runtime.sendMessage(message)
 }
