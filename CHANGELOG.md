@@ -1,3 +1,8 @@
+### 0.3.5
+- Added support for images with source in `sourceset`
+- Added check to not launch popup window with no found link
+- Added padding to options page
+
 ### 0.3.4
 - Add option for images wrapped in link to prefer link or image
 - Apply configs immediately, without the need to reload the page
