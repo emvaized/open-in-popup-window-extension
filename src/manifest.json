@@ -47,7 +47,7 @@
 		"default_icon": {
 			"64": "page-action-icon.svg"
 		},
-		"default_title": "Open in Popup Window",
+		"default_title": "Open in popup window",
         "show_matches": [
             "*://*/*"
         ]
