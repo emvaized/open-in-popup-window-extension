@@ -403,3 +403,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
         }
     );
 }
+
+browser.pageAction.onClicked.addListener((t,d) => onClick(t,d));
+function onClick(t,data){
+    if (!t.url) return
+    openPopupWindowForLink(t.url, false);
+}

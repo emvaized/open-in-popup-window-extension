@@ -43,6 +43,15 @@
     "default_title": "Open in Popup Window",
     "default_popup": "options/options.html"
   },
+  "page_action": {
+		"default_icon": {
+			"64": "page-action-icon.svg"
+		},
+		"default_title": "Open in Popup Window",
+        "show_matches": [
+            "*://*/*"
+        ]
+	},
   "browser_specific_settings": {
     "gecko": {
       "id": "open_in_popup_window@emvaized.dev"
