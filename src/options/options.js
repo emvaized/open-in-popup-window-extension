@@ -70,6 +70,7 @@ function init(){
         }
         updateDisabledOptions();
         setFooterButtons();
+        setVersionLabel();
     });
     
     setTranslatedLabels();
@@ -116,6 +117,16 @@ function setFooterButtons(){
         const isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
         window.open(isFirefox ? 'https://addons.mozilla.org/firefox/addon/open-in-popup-window/' : 'https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie/reviews', '_blank');
     });
+}
+
+function setVersionLabel() {
+    const label = document.getElementById('versionLabel');
+    const manifestData = chrome.runtime.getManifest();
+    label.innerHTML = 'v' + manifestData.version;
+    label.title = 'Release notes';
+    label.onclick = function () {
+        window.open('https://github.com/emvaized/open-in-popup-window-extension/blob/main/CHANGELOG.md')
+    }
 }
 
 function saveAllSettings(){
