@@ -70,6 +70,7 @@ function init(){
         }
         updateDisabledOptions();
         setFooterButtons();
+        setVersionLabel();
     });
     
     setTranslatedLabels();
@@ -85,6 +86,7 @@ function setTranslatedLabels(){
     document.getElementById('imageViewer').innerText = chrome.i18n.getMessage('imageViewer');
     document.getElementById('popupWindowSize').innerText = chrome.i18n.getMessage('popupWindowSize');
     document.getElementById('generalSettings').innerText = chrome.i18n.getMessage('generalSettings');
+    document.getElementById('openPageInPopupWindowHeader').innerText = chrome.i18n.getMessage('openPageInPopupWindow');
 }
 
 function updateDisabledOptions() {
@@ -95,6 +97,7 @@ function updateDisabledOptions() {
     document.getElementById("useBuiltInImageViewer").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("minimalDragDistance").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("openDragAndDropUnderMouse").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("keepOpenPageInPopupWindowOpen").parentNode.className = document.getElementById("addOptionOpenPageInPopupWindow").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("fallbackPopupWindowLocation").parentNode.className = 
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 
@@ -103,7 +106,7 @@ function updateDisabledOptions() {
 
 function setFooterButtons(){
     document.querySelector("#donateButton").addEventListener("click", function (val) {
-        window.open('https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#support', '_blank');
+        window.open('https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#support-project-%EF%B8%8F', '_blank');
     });
     
     document.querySelector("#githubButton").addEventListener("click", function (val) {
@@ -114,6 +117,16 @@ function setFooterButtons(){
         const isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
         window.open(isFirefox ? 'https://addons.mozilla.org/firefox/addon/open-in-popup-window/' : 'https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie/reviews', '_blank');
     });
+}
+
+function setVersionLabel() {
+    const label = document.getElementById('versionLabel');
+    const manifestData = chrome.runtime.getManifest();
+    label.innerHTML = 'v' + manifestData.version;
+    label.title = 'Release notes';
+    label.onclick = function () {
+        window.open('https://github.com/emvaized/open-in-popup-window-extension/blob/main/CHANGELOG.md')
+    }
 }
 
 function saveAllSettings(){

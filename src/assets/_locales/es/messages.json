@@ -1,4 +1,10 @@
 {
+    "addOptionOpenPageInPopupWindow": {
+        "message": "Agregar opción para abrir la página en una ventana emergente"
+    },
+    "keepOpenPageInPopupWindowOpen": {
+        "message": "No cerrar la ventana emergente de la página al perder el foco"
+    },
     "bottomLeft": {
         "message": "Abajo a la izquierda"
     },
@@ -66,6 +72,12 @@
         "message": "Abrir enlace en ventana emergente"
     },
     "openLinkInMainWindow": {
+        "message": "Abrir página en la ventana principal"
+    },
+    "openPageInPopupWindow": {
+        "message": "Abrir página en ventana emergente"
+    },
+    "openPageInMainWindow": {
         "message": "Abrir página en la ventana principal"
     },
     "popupHeight": {

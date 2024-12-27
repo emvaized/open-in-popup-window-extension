@@ -42,6 +42,10 @@ hr { width: 100%; opacity: 0.2; }
     cursor: pointer;
 }
 
+#versionLabel {
+    opacity: 0.5;
+}
+
 
 h2{
     margin: 6px 0;

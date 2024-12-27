@@ -107,6 +107,5 @@ function onTrigger(e, type){
         message['link'] = link;
     }
 
-    if (link)
-        chrome.runtime.sendMessage(message)
+    chrome.runtime.sendMessage(message)
 }

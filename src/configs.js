@@ -19,6 +19,8 @@ const configs = {
     //, 'rememberWindowResize': false,
     'debugMode': false,
     'openDragAndDropUnderMouse': true,
+    'addOptionOpenPageInPopupWindow': true,
+    'keepOpenPageInPopupWindowOpen': true,
 }
 
 function loadUserConfigs(callback) {

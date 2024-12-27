@@ -78,6 +78,11 @@ const openLinkContextMenuItem = {
     "title": chrome.i18n.getMessage('openInPopupWindow'),
     "contexts": ["link"]
 }
+const openPageContextMenuItem = {
+    "id": "openPageInPopupWindow",
+    "title": chrome.i18n.getMessage('openPageInPopupWindow'),
+    "contexts": ["page"]
+}
 const openInMainWindowContextMenuItem = {
     "id": "openInMainWindow",
     "title": chrome.i18n.getMessage('openPageInMainWindow'),
@@ -96,6 +101,7 @@ const viewImageContextMenuItem = {
 }  
 
 chrome.contextMenus.create(openLinkContextMenuItem);
+chrome.contextMenus.create(openPageContextMenuItem);
 chrome.contextMenus.create(openInMainWindowContextMenuItem);
 chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
 chrome.contextMenus.create(viewImageContextMenuItem);
@@ -104,7 +110,10 @@ chrome.contextMenus.create(viewImageContextMenuItem);
 chrome.windows.onFocusChanged.addListener(function(wId){
         if (wId == undefined || wId < 0) return; /// don't process when window lost focus
         chrome.windows.get(wId, {},
-            (w) => { if (w) chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup'})},
+            (w) => { if (w) {
+                chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup'});
+                chrome.contextMenus.update("openPageInPopupWindow", {"visible": w.type !== 'popup'});
+            } },
         );
     }
 ); 
@@ -115,6 +124,8 @@ chrome.storage.onChanged.addListener((changes) => {
         chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
     if (changes.viewInPopupEnabled)
         chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
+    if (changes.addOptionOpenPageInPopupWindow)
+        chrome.contextMenus.update("openPageInPopupWindow", {"visible": changes.addOptionOpenPageInPopupWindow.newValue });
     applyUserConfigs(changes);
 });
 
@@ -139,11 +150,16 @@ chrome.windows.onCreated.addListener(
     }
 )
 
-chrome.contextMenus.onClicked.addListener(function(clickData) {
+chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     if (clickData.menuItemId == 'openInMainWindow') {
-            chrome.tabs.query({active: true, lastFocusedWindow: true}, ([tab]) => {
-                if (tab) moveTabToRegularWindow(tab)
-            });
+            // if (tab) moveTabToRegularWindow(tab)
+            chrome.tabs.remove(tab.id);
+            chrome.tabs.create({ url: clickData.pageUrl, active: true });
+        return;
+    }
+    
+    if (clickData.menuItemId == 'openPageInPopupWindow') {
+            if (tab) openPopupWindowForLink(clickData.pageUrl, false, false, undefined, true);
         return;
     }
 
@@ -153,7 +169,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId) {
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId, isCurrentPage = false) {
     loadUserConfigs(function(){
 
         /* 
@@ -338,7 +354,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData) {
                 });
 
                 /// close popup on focus normal window
-                if (configs.closeWhenFocusedInitialWindow) {
+                if (configs.closeWhenFocusedInitialWindow && (!isCurrentPage || !configs.keepOpenPageInPopupWindowOpen)){
                     function windowFocusListener(wId) {
                         if (wId > -1) 
                             chrome.windows.get(wId,{}, (w) => {
