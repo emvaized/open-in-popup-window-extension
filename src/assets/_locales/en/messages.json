@@ -65,6 +65,9 @@
     "openInPopupWindow": {
         "message": "Open link in popup window"
     },
+    "openPageInPopupWindow": {
+        "message": "Open page in popup window"
+    },
     "openPageInMainWindow": {
         "message": "Open page in main window"
     },
