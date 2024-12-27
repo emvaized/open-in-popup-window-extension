@@ -1,4 +1,10 @@
 {
+    "addOptionOpenPageInPopupWindow": {
+        "message": "Включить опцию открытия текущей страницы во вспл. окне"
+    },
+    "keepOpenPageInPopupWindowOpen": {
+        "message": "Не закрывать вспл. окно текущей страницы при потере фокуса"
+    },
     "bottomLeft": {
         "message": "Слева внизу"
     },
