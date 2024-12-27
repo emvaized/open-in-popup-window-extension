@@ -159,7 +159,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     }
     
     if (clickData.menuItemId == 'openPageInPopupWindow') {
-            if (tab) openPopupWindowForLink(clickData.pageUrl, false);
+            if (tab) openPopupWindowForLink(clickData.pageUrl, false, false, undefined, true);
         return;
     }
 
@@ -169,7 +169,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId) {
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId, isCurrentPage = false) {
     loadUserConfigs(function(){
 
         /* 
@@ -354,7 +354,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 });
 
                 /// close popup on focus normal window
-                if (configs.closeWhenFocusedInitialWindow) {
+                if (configs.closeWhenFocusedInitialWindow && (!isCurrentPage || !configs.keepOpenPageInPopupWindowOpen)){
                     function windowFocusListener(wId) {
                         if (wId > -1) 
                             chrome.windows.get(wId,{}, (w) => {
