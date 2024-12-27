@@ -148,18 +148,16 @@ chrome.windows.onCreated.addListener(
     }
 )
 
-chrome.contextMenus.onClicked.addListener(function(clickData) {
+chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     if (clickData.menuItemId == 'openInMainWindow') {
-            chrome.tabs.query({active: true, lastFocusedWindow: true}, ([tab]) => {
-                if (tab) moveTabToRegularWindow(tab)
-            });
+            // if (tab) moveTabToRegularWindow(tab)
+            chrome.tabs.remove(tab.id);
+            chrome.tabs.create({ url: clickData.pageUrl, active: true });
         return;
     }
     
     if (clickData.menuItemId == 'openPageInPopupWindow') {
-            chrome.tabs.query({active: true, lastFocusedWindow: true}, ([tab]) => {
-                if (tab) openPopupWindowForLink(tab.url, false);
-            });
+            if (tab) openPopupWindowForLink(clickData.pageUrl, false);
         return;
     }
 
