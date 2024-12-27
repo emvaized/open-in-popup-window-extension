@@ -1,3 +1,9 @@
+### 0.3.6
+- Added option to open current page in popup window to main context menu
+- Added option to not close current page popup window on focus lost
+- Fix opening popup on drag and drop of the selected text
+- 'Open in the main window' now works more reliable
+
 ### 0.3.5
 - Added support for images with source in `sourceset`
 - Added check to not launch popup window with no found link
