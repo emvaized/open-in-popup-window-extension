@@ -68,6 +68,12 @@
     "openLinkInMainWindow": {
         "message": "Abrir página en la ventana principal"
     },
+    "openPageInPopupWindow": {
+        "message": "Abrir página en ventana emergente"
+    },
+    "openPageInMainWindow": {
+        "message": "Abrir página en la ventana principal"
+    },
     "popupHeight": {
         "message": "Altura emergente (px)"
     },

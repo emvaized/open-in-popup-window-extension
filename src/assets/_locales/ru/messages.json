@@ -68,6 +68,9 @@
     "openPageInMainWindow": {
         "message": "Открыть страницу в основном окне"
     },
+    "openPageInPopupWindow": {
+        "message": "Открыть страницу во вспл. окне"
+    },
     "popupHeight": {
         "message": "Высота окна (px)"
     },

@@ -63,13 +63,13 @@
         "message": "Always open by drag and drop under mouse cursor"
     },
     "openInPopupWindow": {
-        "message": "Open link in popup window"
+        "message": "Open Link in Popup Window"
     },
     "openPageInPopupWindow": {
-        "message": "Open page in popup window"
+        "message": "Open Page in Popup Window"
     },
     "openPageInMainWindow": {
-        "message": "Open page in main window"
+        "message": "Open Page in Main Window"
     },
     "popupHeight": {
         "message": "Popup height (px)"
@@ -99,7 +99,7 @@
         "message": "Option to search selection in popup enabled"
     },
     "searchInPopupWindow": {
-        "message": "Search text in popup window"
+        "message": "Search Text in Popup Window"
     },
     "settingsTitle": {
         "message": "Settings"
@@ -126,7 +126,7 @@
         "message": "Enable option to view images in popup window"
     },
     "viewInPopupWindow": {
-        "message": "View image in popup window"
+        "message": "View Image in Popup Window"
     },
     "writeAReviewButton": {
         "message": "Write a review"
