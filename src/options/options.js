@@ -106,7 +106,7 @@ function updateDisabledOptions() {
 
 function setFooterButtons(){
     document.querySelector("#donateButton").addEventListener("click", function (val) {
-        window.open('https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#support', '_blank');
+        window.open('https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#support-project-%EF%B8%8F', '_blank');
     });
     
     document.querySelector("#githubButton").addEventListener("click", function (val) {
