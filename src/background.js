@@ -124,6 +124,8 @@ chrome.storage.onChanged.addListener((changes) => {
         chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
     if (changes.viewInPopupEnabled)
         chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
+    if (changes.addOptionOpenPageInPopupWindow)
+        chrome.contextMenus.update("openPageInPopupWindow", {"visible": changes.addOptionOpenPageInPopupWindow.newValue });
     applyUserConfigs(changes);
 });
 

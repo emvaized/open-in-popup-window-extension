@@ -95,6 +95,7 @@ function updateDisabledOptions() {
     document.getElementById("useBuiltInImageViewer").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("minimalDragDistance").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("openDragAndDropUnderMouse").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("keepOpenPageInPopupWindowOpen").parentNode.className = document.getElementById("addOptionOpenPageInPopupWindow").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("fallbackPopupWindowLocation").parentNode.className = 
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 

@@ -1,4 +1,10 @@
 {
+    "addOptionOpenPageInPopupWindow": {
+        "message": "Add option to open page in popup window"
+    },
+    "keepOpenPageInPopupWindowOpen": {
+        "message": "Don't close page popup window on focus lost"
+    },
     "bottomLeft": {
         "message": "Bottom left"
     },
