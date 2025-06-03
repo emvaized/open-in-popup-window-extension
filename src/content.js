@@ -103,6 +103,8 @@ function onTrigger(e, type){
             if (src) link = src.getAttribute('srcset');
         }
 
+        if (!link) link = t.href || t.src || t.parentNode.href;
+
         message['nodeName'] = nodeName;
         message['link'] = link;
     }
