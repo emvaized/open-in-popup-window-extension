@@ -5,9 +5,9 @@
   "default_locale": "en",
   "version": "0.3.6",
   "icons": {
-    "48": "icon.png",
-    "96": "icon.png",
-    "128": "icon.png"
+    "48": "icon_new.png",
+    "96": "icon_new.png",
+    "128": "icon_new.png"
   },
   "background": {
     "scripts": ["background.js"],
@@ -34,10 +34,10 @@
     "page": "options/options.html"
   },
   "action": {
-    "default_icon": "icon.png",
+    "default_icon": "icon_new.png",
     "theme_icons": [{
-      "light": "icon_white.png",
-      "dark": "icon.png",
+      "light": "icon_new.png",
+      "dark": "icon_new.png",
       "size": 32
     }],
     "default_title": "Open in Popup Window",
