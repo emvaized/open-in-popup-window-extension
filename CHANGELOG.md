@@ -1,3 +1,9 @@
+### 0.3.7
+- New extension icon for better visibility, e.g. in the dark mode
+- Fixed issue with shift+click opening empty page on Google search
+- Disable by default "Don't close page popup window on focus lost"
+- Update translations
+
 ### 0.3.6
 - Added option to open current page in popup window to main context menu
 - Added option to not close current page popup window on focus lost

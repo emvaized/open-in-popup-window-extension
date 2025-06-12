@@ -1,4 +1,4 @@
-# <sub><img src="./src/assets/icon.png" height="48" width="48"></sub> Open in Popup Window
+# <sub><img src="./src/assets/icon_new.png" height="48" width="48"></sub> Open in Popup Window
 
 [![Mozilla Add-on Version](https://img.shields.io/amo/v/open-in-popup-window?label=version&color=red)](./CHANGELOG.md)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/gmnkpkmmkhbgnljljcchnakehlkihhie?label=users&logo=googlechrome&logoColor=white&color=blue)](https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie)
@@ -16,7 +16,7 @@ This tiny browser extension provides ability to quickly preview links without le
 - [x] New popups can be opened from existing popups
 - [x] Automatically reopen new single tab windows as popup windows
 
-This extension is intended to be used as an analogue of <i>Safari Link Preview</i>, or the new <i>Arc Peek</i>. It's a great way to preview links, which works everywhere and is not affected by the CORS problem like extensions which are using iframe element for link preview.
+This extension is intended to be used as an analogue of <i>Safari Link Preview</i> or <i>Arc Peek</i>. It's a great way to preview links, which works everywhere and is not affected by the CORS problem like other extensions which are using `iframe` element for the link preview.
 
 <a href="https://addons.mozilla.org/firefox/addon/open-in-popup-window/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get for Firefox"></a> &nbsp; <a href="https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie"><img src="https://developer.chrome.com/static/docs/webstore/branding/image/iNEddTyWiMfLSwFD6qGq.png" alt="Get for Chrome" height=65 ></a>
 
@@ -38,12 +38,13 @@ If you really enjoy this project, please consider supporting its further develop
 #### How to close the popup using keyboard?
 - <kbd>Alt</kbd> + <kbd>F4</kbd>
 - <kbd>Ctrl</kbd> + <kbd>W</kbd>
-- <kbd>Escape</kbd> key (if option is enabled in extension settings)
+- <kbd>Escape</kbd> key (if enabled in extension settings)
 
 #### How to open page from the popup in the main window? 
 You can do it in 2 ways: 
-- <kbd>Ctrl</kbd> + <kbd>Escape</kbd> hotkey (if enabled in extension settings)
 - By right clicking on the page in popup window and selecting "Open page in main window"
+- <kbd>Ctrl</kbd> + <kbd>Escape</kbd> hotkey (if enabled in extension settings)
+
 <details>
     <summary>Demonstration</summary>
     <img src="./screenshots/open-in-main-window.png" />
@@ -87,4 +88,3 @@ You might need to manually allow this extension to run in private windows
 
 ## Privacy
 This extension doesn't collect any private data. It only requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened.
-
