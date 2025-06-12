@@ -20,7 +20,7 @@ const configs = {
     'debugMode': false,
     'openDragAndDropUnderMouse': true,
     'addOptionOpenPageInPopupWindow': true,
-    'keepOpenPageInPopupWindowOpen': true,
+    'keepOpenPageInPopupWindowOpen': false,
 }
 
 function loadUserConfigs(callback) {
