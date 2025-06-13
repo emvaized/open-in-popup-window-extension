@@ -13,7 +13,8 @@ function init(){
     image = document.getElementById('image');
     image.src = imageUrl;
     document.title = imageUrl;
-    mouseListener = document.getElementById('mouseListener');
+    // mouseListener = document.getElementById('mouseListener');
+    mouseListener = document.body;
     rotationWrapper = document.getElementById('wrapper');
 
     /// add mouse listeners
