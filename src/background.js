@@ -152,9 +152,9 @@ chrome.windows.onCreated.addListener(
 
 chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     if (clickData.menuItemId == 'openInMainWindow') {
-            // if (tab) moveTabToRegularWindow(tab)
-            chrome.tabs.remove(tab.id);
-            chrome.tabs.create({ url: clickData.pageUrl, active: true });
+            if (tab) moveTabToRegularWindow(tab)
+            // chrome.tabs.remove(tab.id);
+            // chrome.tabs.create({ url: clickData.pageUrl, active: true });
         return;
     }
     
@@ -413,9 +413,14 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     chrome.windows.getAll(
         { windowTypes: ['normal'] },
         function(windows){
-            chrome.tabs.move(tab.id, { index: 0, windowId: windows[0].id}, function(t){
-                if (t) chrome.tabs.update(t[0].id, { 'active': true });
+            chrome.tabs.move(tab.id, { 
+                    index: -1, 
+                    windowId: windows[0].id
+            }, function(t){
+                // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
+                chrome.tabs.update(tab.id, { 'active': true });
             });
+            
         }
     );
 }
