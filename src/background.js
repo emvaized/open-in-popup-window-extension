@@ -420,7 +420,25 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
                 chrome.tabs.update(tab.id, { 'active': true });
             });
-            
         }
     );
 }
+
+chrome.tabs.onCreated.addListener(newTab => {
+    const openerId = newTab.openerTabId;
+    if (openerId){
+        loadUserConfigs((c) => {
+            if (configs.reopenAutoCreatedTabAsPopup) {
+                chrome.tabs.get(openerId, openerTab => {
+                    if (openerTab) {
+                        if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
+                            // chrome.tabs.remove(newTab.id);
+                            // moveTabToPopupWindow(newTab);
+                            openPopupWindowForLink(newTab.url, false, false, newTab.id);
+                        } 
+                    }
+                });
+            }
+        }) 
+    }
+});

@@ -13,6 +13,8 @@ const configs = {
     'openByShiftClick': false,
     'escKeyClosesPopup': false,
     'reopenSingleTabWindowAsPopup': false,
+    'reopenAutoCreatedTabAsPopup': false,
+    'reopenAutoCreatedTabsOnlyPinned': true,
     'popupWindowLocation': 'mousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
     'imageWithLinkPreferLink': false,
     'fallbackPopupWindowLocation': 'center',
