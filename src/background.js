@@ -349,7 +349,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
 
             chrome.windows.create(createParams, function (popupWindow) {
                 /// set coordinates again (workaround for old firefox bug)
-                chrome.windows.update(popupWindow.id, {
+                let popupWindowId = popupWindow.id;
+                chrome.windows.update(popupWindowId, {
                     'top': dy, 'left': dx, 'width': width, 'height': height
                 });
 
@@ -359,7 +360,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                         if (wId > -1) 
                             chrome.windows.get(wId,{}, (w) => {
                                     if (w && w.type == 'normal') {
-                                        chrome.windows.remove(popupWindow.id);
+                                        chrome.windows.remove(popupWindowId);
                                         chrome.windows.onFocusChanged.removeListener(windowFocusListener);
 
                                         // if (originalWindowIsFullscreen) 
