@@ -70,9 +70,13 @@ This way it can operate with links, which it couldn't access otherwise, for exam
 
 Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
 
-#### If private windows are not reopened as popup with this option enabled
+#### Private windows are not reopened as popup with this option enabled
 
 You might need to manually allow this extension to run in private windows
+
+#### How to reopen externally opened links as popup windows — similar to _Little Arc_ from the Arc browser? 
+
+It is possible in Firefox by toggling the `Reopen new single tab windows as popup windows` feature and setting `browser.link.open_newwindow.override.external` config on `about:config` page to `2`
 
 ## Troubleshooting
 - ⚠️ If "Open by drag" and "Shift+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
