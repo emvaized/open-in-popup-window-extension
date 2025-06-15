@@ -67,7 +67,7 @@ chrome.runtime.onMessage.addListener(
 
                 const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
                 if (isViewer && !cfg.viewInPopupEnabled) return;
-                openPopupWindowForLink(request.link, isViewer, request.type == 'drag'); 
+                openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg); 
             });
         }
     }
@@ -134,7 +134,7 @@ chrome.windows.onCreated.addListener(
     (w) => {
         loadUserConfigs((c) => {
             if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
-                setTimeout(()=> 
+                // setTimeout(()=> 
                     chrome.tabs.query({windowId: w.id}, (tabs) => {
                         if (tabs.length == 1){
                             const tab = tabs[0];
@@ -145,7 +145,7 @@ chrome.windows.onCreated.addListener(
                             }
                         } 
                     })
-                , 5)
+                // , 5)
         })   
     }
 )
@@ -169,8 +169,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId, isCurrentPage = false) {
-    loadUserConfigs(function(){
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId, isCurrentPage = false, cfg) {
+    const callback = function(){
 
         /* 
             This logic was created in order to counter MacOS behavior,
@@ -407,7 +407,12 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 lastPopupId = popupWindow.id;
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
-    });
+    }
+    if (cfg) {
+        callback();
+    } else {
+        loadUserConfigs(callback);
+    }
  }
 
  function moveTabToRegularWindow(tab){
@@ -428,6 +433,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
 chrome.tabs.onCreated.addListener(newTab => {
     const openerId = newTab.openerTabId;
     if (openerId){
+        /// Reopen tabs that were opened by other tabs
         loadUserConfigs((c) => {
             if (configs.reopenAutoCreatedTabAsPopup) {
                 chrome.tabs.get(openerId, openerTab => {
@@ -435,7 +441,7 @@ chrome.tabs.onCreated.addListener(newTab => {
                         if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
                             // chrome.tabs.remove(newTab.id);
                             // moveTabToPopupWindow(newTab);
-                            openPopupWindowForLink(newTab.url, false, false, newTab.id);
+                            openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c);
                         } 
                     }
                 });
