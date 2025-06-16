@@ -434,8 +434,9 @@ chrome.tabs.onCreated.addListener(newTab => {
     if (openerId){
         loadUserConfigs((c) => {
             if (configs.reopenAutoCreatedTabAsPopup)
-                 chrome.tabs.get(newTab.id, newTab => {
-
+                /// fetch newly opened tab again, because it may not be ready yet
+                chrome.tabs.get(newTab.id, newTab => {
+                    
                     if (!newTab.active) return;
                     const newTabUrl = newTab.url || newTab.pendingUrl;
                     if (isNewTabUrl(newTabUrl)) return;
