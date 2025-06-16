@@ -433,22 +433,24 @@ chrome.tabs.onCreated.addListener(newTab => {
     const openerId = newTab.openerTabId;
     if (openerId){
         loadUserConfigs((c) => {
-            if (configs.reopenAutoCreatedTabAsPopup) {
+            if (configs.reopenAutoCreatedTabAsPopup)
+                 chrome.tabs.get(newTab.id, newTab => {
+                console.log('New tab created: ', newTab);
 
-                if (!newTab.active) return;
-                const newTabUrl = newTab.url || newTab.pendingUrl;
-                if (isNewTabUrl(newTabUrl)) return;
+                    if (!newTab.active) return;
+                    const newTabUrl = newTab.url || newTab.pendingUrl;
+                    if (isNewTabUrl(newTabUrl)) return;
 
-                chrome.tabs.get(openerId, openerTab => {
-                    if (openerTab) {
-                        if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
-                            // chrome.tabs.remove(newTab.id);
-                            // moveTabToPopupWindow(newTab);
-                            openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c);
-                        } 
-                    }
+                    chrome.tabs.get(openerId, openerTab => {
+                        if (openerTab) {
+                            if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
+                                    // chrome.tabs.remove(newTab.id);
+                                    // moveTabToPopupWindow(newTab);
+                                    openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c);
+                            } 
+                        }
+                    });
                 });
-            }
         }) 
     }
 });
