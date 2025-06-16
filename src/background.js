@@ -129,27 +129,6 @@ chrome.storage.onChanged.addListener((changes) => {
     applyUserConfigs(changes);
 });
 
-/// Reopen new single tab windows as popups
-chrome.windows.onCreated.addListener(
-    (w) => {
-        loadUserConfigs((c) => {
-            if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
-                // setTimeout(()=> 
-                    chrome.tabs.query({windowId: w.id}, (tabs) => {
-                        if (tabs.length == 1){
-                            const tab = tabs[0];
-                            if (tab.url !== 'about:home' && tab.url !== 'about:privatebrowsing' &&
-                                tab.url !== 'chrome://newtab/' &&tab.url !== 'edge://newtab/'
-                            ) {
-                                openPopupWindowForLink(undefined, false, false, tab.id)
-                            }
-                        } 
-                    })
-                // , 5)
-        })   
-    }
-)
-
 chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     if (clickData.menuItemId == 'openInMainWindow') {
             if (tab) moveTabToRegularWindow(tab)
@@ -430,12 +409,35 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     );
 }
 
+/// Reopen new single tab windows as popups
+chrome.windows.onCreated.addListener(
+    (w) => {
+        loadUserConfigs((c) => {
+            if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
+                // setTimeout(()=> 
+                    chrome.tabs.query({windowId: w.id}, (tabs) => {
+                        if (tabs.length == 1){
+                            const tab = tabs[0];
+                            if (isNewTabUrl(tab.url) || isNewTabUrl(tab.pendingUrl)) return;
+                            openPopupWindowForLink(undefined, false, false, tab.id)
+                            
+                        } 
+                    })
+                // , 5)
+        })   
+    }
+)
+
+/// Reopen tabs that were opened by other tabs
 chrome.tabs.onCreated.addListener(newTab => {
     const openerId = newTab.openerTabId;
     if (openerId){
-        /// Reopen tabs that were opened by other tabs
         loadUserConfigs((c) => {
             if (configs.reopenAutoCreatedTabAsPopup) {
+
+                const newTabUrl = newTab.url || newTab.pendingUrl;
+                if (isNewTabUrl(newTabUrl)) return;
+
                 chrome.tabs.get(openerId, openerTab => {
                     if (openerTab) {
                         if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
@@ -449,3 +451,8 @@ chrome.tabs.onCreated.addListener(newTab => {
         }) 
     }
 });
+
+function isNewTabUrl(url) {
+    return url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' ||
+        url == 'chrome://newtab/' || url == 'edge://newtab/';
+}
