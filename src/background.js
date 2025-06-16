@@ -154,7 +154,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         /* 
             This logic was created in order to counter MacOS behavior,
             where popup windows could not be opened above the fullscreen window.
-            It should determine MacOS native fullscreen specifically
+            It should detect MacOS native fullscreen, but causes issues on other platforms, so it is disabled for now.
         */
         // let originalWindowIsFullscreen = false;
         // chrome.windows.getCurrent(
@@ -414,7 +414,6 @@ chrome.windows.onCreated.addListener(
     (w) => {
         loadUserConfigs((c) => {
             if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
-                // setTimeout(()=> 
                     chrome.tabs.query({windowId: w.id}, (tabs) => {
                         if (tabs.length == 1){
                             const tab = tabs[0];
@@ -423,7 +422,6 @@ chrome.windows.onCreated.addListener(
                             
                         } 
                     })
-                // , 5)
         })   
     }
 )
@@ -444,9 +442,9 @@ chrome.tabs.onCreated.addListener(newTab => {
                     chrome.tabs.get(openerId, openerTab => {
                         if (openerTab) {
                             if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
-                                    // chrome.tabs.remove(newTab.id);
-                                    // moveTabToPopupWindow(newTab);
-                                    openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c);
+                                // chrome.tabs.remove(newTab.id);
+                                // moveTabToPopupWindow(newTab);
+                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c);
                             } 
                         }
                     });
