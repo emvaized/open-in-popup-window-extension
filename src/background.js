@@ -148,7 +148,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId, isCurrentPage = false, cfg) {
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId, isCurrentPage = false, cfg, forceFallbackLocation = false) {
     const callback = function(){
 
         /* 
@@ -277,7 +277,12 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 } break;
             }
         }
-        setPopupLocation(popupLocation);
+
+        if (forceFallbackLocation) {
+            setFallbackPopupLocation();
+        } else {
+            setPopupLocation(popupLocation);
+        }
 
         if (configs.debugMode){
             console.log('~~~');
@@ -418,7 +423,7 @@ chrome.windows.onCreated.addListener(
                         if (tabs.length == 1){
                             const tab = tabs[0];
                             if (isNewTabUrl(tab.url) || isNewTabUrl(tab.pendingUrl)) return;
-                            openPopupWindowForLink(undefined, false, false, tab.id)
+                            openPopupWindowForLink(undefined, false, false, tab.id, false, undefined, true)
                             
                         } 
                     })
@@ -444,7 +449,7 @@ chrome.tabs.onCreated.addListener(newTab => {
                             if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
                                 // chrome.tabs.remove(newTab.id);
                                 // moveTabToPopupWindow(newTab);
-                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c);
+                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c, true);
                             } 
                         }
                     });
