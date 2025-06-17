@@ -26,6 +26,7 @@
   ],
   "permissions": [
     "<all_urls>",
+    "activeTab",
     "contextMenus",
     "tabs",
     "storage",
@@ -62,7 +63,7 @@
       },
       "description": "__MSG_openPageInPopupWindowHotkeyDescription__"
     },
-    "open-search-popup-window": {
+    "open-search-in-popup-window": {
       "suggested_key": {
         "default": "Alt+S"
       },

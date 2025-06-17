@@ -468,7 +468,7 @@ chrome.commands.onCommand.addListener((command, senderTab) => {
         moveTabToRegularWindow(senderTab)
     } else if (command === "open-in-popup-window") {
         openPopupWindowForLink(senderTab.url, false, false, undefined, true);
-    } else if (command === "open-search-popup-window") {
+    } else if (command === "open-search-in-popup-window") {
         loadUserConfigs((c) => {
             chrome.scripting.executeScript({
                 target: {
