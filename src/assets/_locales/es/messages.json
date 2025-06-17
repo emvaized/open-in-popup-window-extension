@@ -95,6 +95,12 @@
     "popupWindowSize": {
         "message": "Tamaño de la ventana emergente"
     },
+    "reopenAutoCreatedTabAsPopup": {
+        "message": "Reabrir las pestañas abiertas por página como ventanas emergentes"
+    },
+    "reopenAutoCreatedTabsOnlyPinned": {
+        "message": "Reabrir solo las pestañas creadas por pestañas ancladas"
+    },
     "reopenSingleTabWindowAsPopup": {
         "message": "Reabrir nuevas ventanas de una sola pestaña como ventanas emergentes"
     },
