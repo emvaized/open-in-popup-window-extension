@@ -462,3 +462,40 @@ function isNewTabUrl(url) {
     return url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' ||
         url == 'chrome://newtab/' || url == 'edge://newtab/';
 }
+
+chrome.commands.onCommand.addListener((command, senderTab) => {
+    if (command === "open-popup-in-main-window") {
+        moveTabToRegularWindow(senderTab)
+    } else if (command === "open-in-popup-window") {
+        openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+    } else if (command === "open-search-popup-window") {
+        loadUserConfigs((c) => {
+            chrome.scripting.executeScript({
+                target: {
+                    tabId: senderTab.id,
+                    allFrames: false,
+                },
+                func: function() {
+                    let selectedText = document.selection ? document.selection.createRange()
+                        .text :
+                        window.getSelection ? window.getSelection() :
+                        document.getSelection ? document.getSelection() :
+                        "";
+                    selectedText = String(selectedText)
+                        .replace(/\r?\n|\r/g, ''); /// Remove line breaks
+                    return encodeURIComponent(selectedText);
+                }
+            }).then((results) => {
+                const selectedText = results[0].result ?? ''; 
+                searchSelectedText(selectedText);
+            }).catch((e) => {
+                searchSelectedText('');
+            });
+
+            function searchSelectedText(selectedText) {
+                const link = configs.popupSearchUrl.replace('%s', selectedText);
+                openPopupWindowForLink(link);
+            }
+        });
+    }
+});

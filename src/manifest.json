@@ -28,7 +28,8 @@
     "<all_urls>",
     "contextMenus",
     "tabs",
-    "storage"
+    "storage",
+    "scripting"
   ],
   "options_ui": {
     "page": "options/options.html"
@@ -46,6 +47,26 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "open_in_popup_window@emvaized.dev"
+    }
+  },
+  "commands": {
+    "open-popup-in-main-window": {
+      "suggested_key": {
+        "default": "Alt+W"
+      },
+      "description": "__MSG_openPageInMainWindowHotkeyDescription__"
+    },
+    "open-in-popup-window": {
+      "suggested_key": {
+        "default": "Alt+T"
+      },
+      "description": "__MSG_openPageInPopupWindowHotkeyDescription__"
+    },
+    "open-search-popup-window": {
+      "suggested_key": {
+        "default": "Alt+S"
+      },
+      "description": "__MSG_openSearchPopupWindowHotkeyDescription__"
     }
   }
 }
