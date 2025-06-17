@@ -3,7 +3,7 @@
   "name": "Open in Popup Window",
   "description": "__MSG_extensionDescription__",
   "default_locale": "en",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "icons": {
     "48": "icon_new.png",
     "96": "icon_new.png",

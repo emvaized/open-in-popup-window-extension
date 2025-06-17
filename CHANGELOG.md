@@ -1,3 +1,10 @@
+### 0.3.8
+- Added new feature to reopen tabs opened by page as popup windows, along with option to do it only for pinned tabs (_disabled_ by default)
+- "Open Page in Main Window" will now move the tab to the main window without reopening it
+- Change "Open in main window" hotkey to <kbd>Alt</kbd>+<kbd> Enter</kbd>
+- Bug fixes and improvements for the built-in image viewer
+- Small improvements for options page appearance
+
 ### 0.3.7
 - New extension icon for better visibility, e.g. in the dark mode
 - Fixed issue with shift+click opening empty page on Google search
