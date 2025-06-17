@@ -67,7 +67,7 @@ chrome.runtime.onMessage.addListener(
 
                 const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
                 if (isViewer && !cfg.viewInPopupEnabled) return;
-                openPopupWindowForLink(request.link, isViewer, request.type == 'drag'); 
+                openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg); 
             });
         }
     }
@@ -129,32 +129,11 @@ chrome.storage.onChanged.addListener((changes) => {
     applyUserConfigs(changes);
 });
 
-/// Reopen new single tab windows as popups
-chrome.windows.onCreated.addListener(
-    (w) => {
-        loadUserConfigs((c) => {
-            if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
-                setTimeout(()=> 
-                    chrome.tabs.query({windowId: w.id}, (tabs) => {
-                        if (tabs.length == 1){
-                            const tab = tabs[0];
-                            if (tab.url !== 'about:home' && tab.url !== 'about:privatebrowsing' &&
-                                tab.url !== 'chrome://newtab/' &&tab.url !== 'edge://newtab/'
-                            ) {
-                                openPopupWindowForLink(undefined, false, false, tab.id)
-                            }
-                        } 
-                    })
-                , 5)
-        })   
-    }
-)
-
 chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     if (clickData.menuItemId == 'openInMainWindow') {
-            // if (tab) moveTabToRegularWindow(tab)
-            chrome.tabs.remove(tab.id);
-            chrome.tabs.create({ url: clickData.pageUrl, active: true });
+            if (tab) moveTabToRegularWindow(tab)
+            // chrome.tabs.remove(tab.id);
+            // chrome.tabs.create({ url: clickData.pageUrl, active: true });
         return;
     }
     
@@ -169,13 +148,13 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId, isCurrentPage = false) {
-    loadUserConfigs(function(){
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId, isCurrentPage = false, cfg, forceFallbackLocation = false) {
+    const callback = function(){
 
         /* 
             This logic was created in order to counter MacOS behavior,
             where popup windows could not be opened above the fullscreen window.
-            It should determine MacOS native fullscreen specifically
+            It should detect MacOS native fullscreen, but causes issues on other platforms, so it is disabled for now.
         */
         // let originalWindowIsFullscreen = false;
         // chrome.windows.getCurrent(
@@ -298,7 +277,12 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 } break;
             }
         }
-        setPopupLocation(popupLocation);
+
+        if (forceFallbackLocation) {
+            setFallbackPopupLocation();
+        } else {
+            setPopupLocation(popupLocation);
+        }
 
         if (configs.debugMode){
             console.log('~~~');
@@ -349,7 +333,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
 
             chrome.windows.create(createParams, function (popupWindow) {
                 /// set coordinates again (workaround for old firefox bug)
-                chrome.windows.update(popupWindow.id, {
+                let popupWindowId = popupWindow.id;
+                chrome.windows.update(popupWindowId, {
                     'top': dy, 'left': dx, 'width': width, 'height': height
                 });
 
@@ -359,7 +344,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                         if (wId > -1) 
                             chrome.windows.get(wId,{}, (w) => {
                                     if (w && w.type == 'normal') {
-                                        chrome.windows.remove(popupWindow.id);
+                                        chrome.windows.remove(popupWindowId);
                                         chrome.windows.onFocusChanged.removeListener(windowFocusListener);
 
                                         // if (originalWindowIsFullscreen) 
@@ -406,16 +391,74 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 lastPopupId = popupWindow.id;
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
-    });
+    }
+    if (cfg) {
+        callback();
+    } else {
+        loadUserConfigs(callback);
+    }
  }
 
  function moveTabToRegularWindow(tab){
     chrome.windows.getAll(
         { windowTypes: ['normal'] },
         function(windows){
-            chrome.tabs.move(tab.id, { index: 0, windowId: windows[0].id}, function(t){
-                if (t) chrome.tabs.update(t[0].id, { 'active': true });
+            chrome.tabs.move(tab.id, { 
+                    index: -1, 
+                    windowId: windows[0].id
+            }, function(t){
+                // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
+                chrome.tabs.update(tab.id, { 'active': true });
             });
         }
     );
+}
+
+/// Reopen new single tab windows as popups
+chrome.windows.onCreated.addListener(
+    (w) => {
+        loadUserConfigs((c) => {
+            if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
+                    chrome.tabs.query({windowId: w.id}, (tabs) => {
+                        if (tabs.length == 1){
+                            const tab = tabs[0];
+                            if (isNewTabUrl(tab.url) || isNewTabUrl(tab.pendingUrl)) return;
+                            openPopupWindowForLink(undefined, false, false, tab.id, false, undefined, true)
+                            
+                        } 
+                    })
+        })   
+    }
+)
+
+/// Reopen tabs that were opened by other tabs
+chrome.tabs.onCreated.addListener(newTab => {
+    const openerId = newTab.openerTabId;
+    if (openerId){
+        loadUserConfigs((c) => {
+            if (configs.reopenAutoCreatedTabAsPopup)
+                /// fetch newly opened tab again, because it may not be ready yet
+                chrome.tabs.get(newTab.id, newTab => {
+                    
+                    if (!newTab.active) return;
+                    const newTabUrl = newTab.url || newTab.pendingUrl;
+                    if (isNewTabUrl(newTabUrl)) return;
+
+                    chrome.tabs.get(openerId, openerTab => {
+                        if (openerTab) {
+                            if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
+                                // chrome.tabs.remove(newTab.id);
+                                // moveTabToPopupWindow(newTab);
+                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c, true);
+                            } 
+                        }
+                    });
+                });
+        }) 
+    }
+});
+
+function isNewTabUrl(url) {
+    return url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' ||
+        url == 'chrome://newtab/' || url == 'edge://newtab/';
 }

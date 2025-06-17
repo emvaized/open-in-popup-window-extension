@@ -4,13 +4,15 @@
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/gmnkpkmmkhbgnljljcchnakehlkihhie?label=users&logo=googlechrome&logoColor=white&color=blue)](https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie)
 [![Mozilla Add-on](https://img.shields.io/amo/users/open-in-popup-window?color=%23FF6611&label=users&logo=Firefox)](https://addons.mozilla.org/firefox/addon/open-in-popup-window/)
 [![Chrome Web Store rating](https://img.shields.io/chrome-web-store/rating/gmnkpkmmkhbgnljljcchnakehlkihhie)](https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie/reviews)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/rating-count/gmnkpkmmkhbgnljljcchnakehlkihhie?style=flat&label=reviews)](https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie/reviews)
+![Created](https://img.shields.io/github/created-at/emvaized/open-in-popup-window-extension?color=darkgrey&label=created)
 
 This tiny browser extension provides ability to quickly preview links without leaving the current page context. It adds entry in context menu of links, and when clicked, opens new small window at cursor position, with no tab bar and addressbar. 
 
 <b>Features:</b>
 - [x] Ability to open images and search selected text in popup window
-- [x] Use drag and drop to open in popup window (disabled by default)
-- [x] Use <kbd>Shift</kbd> + Click to open in popup window (disabled by default)
+- [x] Use drag and drop to open in popup window (_disabled_ by default)
+- [x] Use <kbd>Shift</kbd> + Click to open in popup window (_disabled_ by default)
 - [x] Configurable popup height, width and position on screen
 - [x] Option to close popup window when origin window regains focus
 - [x] New popups can be opened from existing popups
@@ -31,7 +33,7 @@ This extension is intended to be used as an analogue of <i>Safari Link Preview</
 ## Support project ❤️
 If you really enjoy this project, please consider supporting its further development by making a small donation using one of the ways below! 
 
-<a href="https://ko-fi.com/emvaized"><img src="https://storage.ko-fi.com/cdn/kofi1.png?v=6" alt="Support on Ko-fi" height="40"></a> &nbsp; <a href="https://liberapay.com/emvaized/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"></a> &nbsp; <a href="https://emvaized.github.io/donate/bitcoin/"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/bitcoin/assets/bitcoin-donate-button.png?raw=true" alt="Donate Bitcoin" height="40" /></a>
+<a href="https://ko-fi.com/emvaized"><img src="https://storage.ko-fi.com/cdn/kofi5.png?v=6" alt="Support on Ko-fi" height="40"></a> &nbsp; <a href="https://patreon.com/emvaized"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/assets/patreon-donate-button.png?raw=true" alt="Patreon" height="40" /></a> &nbsp; <a href="https://liberapay.com/emvaized/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"></a> &nbsp; <a href="https://emvaized.github.io/donate/bitcoin/"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/bitcoin/assets/bitcoin-donate-button.png?raw=true" alt="Donate Bitcoin" height="40" /></a>
 
 ## FAQ
 
@@ -43,7 +45,7 @@ If you really enjoy this project, please consider supporting its further develop
 #### How to open page from the popup in the main window? 
 You can do it in 2 ways: 
 - By right clicking on the page in popup window and selecting "Open page in main window"
-- <kbd>Ctrl</kbd> + <kbd>Escape</kbd> hotkey (if enabled in extension settings)
+- <kbd>Alt</kbd> + <kbd>Enter</kbd> hotkey (if <kbd>Esc</kbd> hotkey is enabled in extension settings)
 
 <details>
     <summary>Demonstration</summary>
@@ -70,9 +72,13 @@ This way it can operate with links, which it couldn't access otherwise, for exam
 
 Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
 
-#### If private windows are not reopened as popup with this option enabled
+#### Private windows are not reopened as popup with this option enabled
 
 You might need to manually allow this extension to run in private windows
+
+#### How to reopen externally opened links as popup windows — similar to _Little Arc_ feature from the Arc browser? 
+
+It is possible in Firefox by toggling the `Reopen new single tab windows as popup windows` feature and setting `browser.link.open_newwindow.override.external` config to `2` on `about:config` page
 
 ## Troubleshooting
 - ⚠️ If "Open by drag" and "Shift+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!

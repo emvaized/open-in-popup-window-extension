@@ -86,6 +86,7 @@ function setTranslatedLabels(){
     document.getElementById('imageViewer').innerText = chrome.i18n.getMessage('imageViewer');
     document.getElementById('popupWindowSize').innerText = chrome.i18n.getMessage('popupWindowSize');
     document.getElementById('generalSettings').innerText = chrome.i18n.getMessage('generalSettings');
+    document.getElementById('reopenSettings').innerText = chrome.i18n.getMessage('reopenSettings');
     document.getElementById('openPageInPopupWindowHeader').innerText = chrome.i18n.getMessage('openPageInPopupWindow');
 }
 
@@ -98,6 +99,7 @@ function updateDisabledOptions() {
     document.getElementById("minimalDragDistance").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("openDragAndDropUnderMouse").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("keepOpenPageInPopupWindowOpen").parentNode.className = document.getElementById("addOptionOpenPageInPopupWindow").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("reopenAutoCreatedTabsOnlyPinned").parentNode.className = document.getElementById("reopenAutoCreatedTabAsPopup").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("fallbackPopupWindowLocation").parentNode.className = 
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 

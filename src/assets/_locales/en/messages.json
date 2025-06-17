@@ -27,7 +27,7 @@
         "message": "Close popup window with an Escape key"
     },
     "escKeyClosesPopupHint": {
-        "message": "Ctrl + Escape will also open page in the main window"
+        "message": "Alt + Enter will also open page in the main window"
     },
     "extensionDescription": {
         "message": "Open any links and images in a popup window"
@@ -95,8 +95,17 @@
     "rememberWindowResize": {
         "message": "Remember dimensions on manual resize"
     },
+    "reopenAutoCreatedTabAsPopup": {
+        "message": "Reopen tabs opened by page as popup windows"
+    },
+    "reopenAutoCreatedTabsOnlyPinned": {
+        "message": "Reopen only tabs created by pinned tabs"
+    },
     "reopenSingleTabWindowAsPopup": {
         "message": "Reopen new single tab windows as popup windows"
+    },
+    "reopenSettings": {
+        "message": "Reopening settings"
     },
     "reopenSingleTabWindowAsPopupHint": {
         "message": "With this option enabled, any new browser window with only one tab will be automatically reopened as a popup window. It allows extension to create popup for links which it usually can't access (for example, bookmarks bar). But it can lead to unwanted behavior if you usually open many browser windows, so use with caution!"

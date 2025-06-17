@@ -47,12 +47,10 @@ function dragEndListener(e){
 
 function keyUpListener(e){
     if (e.key == 'Escape'){
-        if (e.ctrlKey){
-            chrome.runtime.sendMessage({action: 'requestOpenInMainWindow'})
-        } else {
-            chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
-        }
-    } 
+         chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
+    } else if (e.key == 'Enter' && e.altKey){
+        chrome.runtime.sendMessage({action: 'requestOpenInMainWindow'})
+    }
 }
 
 function onClickListener(e){
