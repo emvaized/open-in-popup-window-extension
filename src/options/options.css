@@ -6,7 +6,7 @@ body {
     padding: 0 6px;
 }
 .option {
-    padding: 5px 6px;
+    padding: 6px;
 }
 .option, .option label {
     cursor: pointer;
@@ -95,6 +95,11 @@ div:has(h5){
 
     .option:hover {
         background-color: rgb(256, 256, 256, 0.1);
+    }
+
+    h5{
+        color: lightgray;
+        opacity: 0.7;
     }
 }
 
