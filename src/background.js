@@ -355,9 +355,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                                 });
                     }
         
-                    setTimeout(function () {
+                    // setTimeout(function () {
                         chrome.windows.onFocusChanged.addListener(windowFocusListener);
-                    }, 300);
+                    // }, 300);
                 }
 
                 /* remember dimensions on window resize 
