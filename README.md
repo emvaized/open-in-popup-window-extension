@@ -11,8 +11,8 @@ This tiny browser extension provides ability to quickly preview links without le
 
 <b>Features:</b>
 - [x] Ability to open images and search selected text in popup window
-- [x] Use drag and drop to open in popup window (disabled by default)
-- [x] Use <kbd>Shift</kbd> + Click to open in popup window (disabled by default)
+- [x] Use drag and drop to open in popup window (_disabled_ by default)
+- [x] Use <kbd>Shift</kbd> + Click to open in popup window (_disabled_ by default)
 - [x] Configurable popup height, width and position on screen
 - [x] Option to close popup window when origin window regains focus
 - [x] New popups can be opened from existing popups
