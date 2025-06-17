@@ -12,7 +12,7 @@ This tiny browser extension provides ability to quickly preview links without le
 <b>Features:</b>
 - [x] Ability to open images and search selected text in popup window
 - [x] Use drag and drop to open in popup window (_disabled_ by default)
-- [x] Use <kbd>Shift</kbd> + Click to open in popup window (_disabled_ by default)
+- [x] Use <kbd>Shift</kbd> + click to open in popup window (_disabled_ by default)
 - [x] Configurable popup height, width and position on screen
 - [x] Option to close popup window when origin window regains focus
 - [x] New popups can be opened from existing popups
@@ -35,7 +35,7 @@ If you really enjoy this project, please consider supporting its further develop
 
 <a href="https://ko-fi.com/emvaized"><img src="https://storage.ko-fi.com/cdn/kofi5.png?v=6" alt="Support on Ko-fi" height="40"></a> &nbsp; <a href="https://patreon.com/emvaized"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/assets/patreon-donate-button.png?raw=true" alt="Patreon" height="40" /></a> &nbsp; <a href="https://liberapay.com/emvaized/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"></a> &nbsp; <a href="https://emvaized.github.io/donate/bitcoin/"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/bitcoin/assets/bitcoin-donate-button.png?raw=true" alt="Donate Bitcoin" height="40" /></a>
 
-## FAQ
+## FAQ (Frequently Asked Questions)
 
 #### How to close the popup using keyboard?
 - <kbd>Alt</kbd> + <kbd>F4</kbd>
