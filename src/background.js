@@ -14,13 +14,13 @@ chrome.runtime.onMessage.addListener(
             });
             return;
         }
-        if (request.action == 'requestOpenInMainWindow') {
-            loadUserConfigs((c) => {
-                if (configs.escKeyClosesPopup && sender.tab)
-                    moveTabToRegularWindow(sender.tab)
-            });
-            return;
-        }
+        // if (request.action == 'requestOpenInMainWindow') {
+        //     loadUserConfigs((c) => {
+        //         if (configs.escKeyClosesPopup && sender.tab)
+        //             moveTabToRegularWindow(sender.tab)
+        //     });
+        //     return;
+        // }
 
         if (request.action == 'updateAspectRatio') {
             if (request.aspectRatio && configs.tryFitWindowSizeToImage) {
