@@ -45,7 +45,7 @@ If you really enjoy this project, please consider supporting its further develop
 #### How to open page from the popup in the main window? 
 You can do it in 2 ways: 
 - By right clicking on the page in popup window and selecting "Open page in main window"
-- <kbd>Ctrl</kbd> + <kbd>Escape</kbd> hotkey (if enabled in extension settings)
+- <kbd>Alt</kbd> + <kbd>Enter</kbd> hotkey (if <kbd>Esc</kbd> hotkey is enabled in extension settings)
 
 <details>
     <summary>Demonstration</summary>

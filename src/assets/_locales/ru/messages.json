@@ -27,7 +27,7 @@
         "message": "Закрывать всплывающее окно клавишей Escape"
     },
     "escKeyClosesPopupHint": {
-        "message": "Ctrl + Escape также откроет страницу в основном окне"
+        "message": "Alt + Enter также откроет страницу в основном окне"
     },
     "extensionDescription": {
         "message": "Открывает ссылки и изображения во вплывающем окне"
