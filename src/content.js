@@ -3,7 +3,17 @@ chrome.storage.onChanged.addListener((c) => {
     loadUserConfigs((c) => setMouseListeners())
 });
 
-loadUserConfigs((c) => setMouseListeners())
+loadUserConfigs(function(c) {
+    setMouseListeners();
+
+    /// Cache screen size for the background script
+    if (configs.screenWidth !== window.screen.width || configs.availLeft !== window.screen.availLeft) {
+        configs.screenWidth = window.screen.width;
+        configs.screenHeight = window.screen.height;
+        configs.availLeft = window.screen.availLeft;
+        chrome.storage.sync.set(configs);
+    }
+})
 
 function setMouseListeners(){
 
@@ -28,14 +38,6 @@ function setMouseListeners(){
         document.addEventListener('keyup', keyUpListener)
     } else {
         document.removeEventListener('keyup', keyUpListener)
-    }
-
-    /// Cache screen size for the background script
-    if (configs.screenWidth !== window.screen.width || configs.availLeft !== window.screen.availLeft) {
-        configs.screenWidth = window.screen.width;
-        configs.screenHeight = window.screen.height;
-        configs.availLeft = window.screen.availLeft;
-        chrome.storage.sync.set(configs);
     }
 }
 
