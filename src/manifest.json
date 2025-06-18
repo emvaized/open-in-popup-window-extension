@@ -53,13 +53,13 @@
   "commands": {
     "open-popup-in-main-window": {
       "suggested_key": {
-        "default": "Alt+W"
+        "default": "Alt+Y"
       },
       "description": "__MSG_openPageInMainWindowHotkeyDescription__"
     },
     "open-in-popup-window": {
       "suggested_key": {
-        "default": "Alt+T"
+        "default": "Alt+P"
       },
       "description": "__MSG_openPageInPopupWindowHotkeyDescription__"
     },

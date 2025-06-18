@@ -50,8 +50,8 @@ This extension implements the following keyboard hotkeys:
 
 | Action Description                                      | Default Hotkey         |
 |---------------------------------------------------------|-------------------------|
-| Open popup window in the main window                    | <kbd>Alt</kbd> + <kbd>W</kbd>      |
-| Open the currently opened page in a popup window        | <kbd>Alt</kbd> + <kbd>T</kbd>      |
+| Open popup window in the main window                    | <kbd>Alt</kbd> + <kbd>Y</kbd>      |
+| Open the currently opened page in a popup window        | <kbd>Alt</kbd> + <kbd>P</kbd>      |
 | Search selected text in a popup window <br>*(or open empty search page if no selected text found)*| <kbd>Alt</kbd> + <kbd>S</kbd>      |
 
 
