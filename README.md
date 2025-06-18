@@ -17,6 +17,9 @@ This tiny browser extension provides ability to quickly preview links without le
 - [x] Option to close popup window when origin window regains focus
 - [x] New popups can be opened from existing popups
 - [x] Automatically reopen new single tab windows as popup windows
+- [x] Automatically reopen tabs opened by page as popup windows
+- [x] Customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
+
 
 This extension is intended to be used as an analogue of <i>Safari Link Preview</i> or <i>Arc Peek</i>. It's a great way to preview links, which works everywhere and is not affected by the CORS problem like other extensions which are using `iframe` element for the link preview.
 
@@ -41,6 +44,17 @@ If you really enjoy this project, please consider supporting its further develop
 - <kbd>Alt</kbd> + <kbd>F4</kbd>
 - <kbd>Ctrl</kbd> + <kbd>W</kbd>
 - <kbd>Escape</kbd> key (if enabled in extension settings)
+
+#### What keyboard hotkeys are available? 
+This extension exposes 3 keyboard hotkeys. 
+
+- Open popup window in the main window 
+- Open the currently opened page in a popup window 
+- Search the selected text in a popup window. Opens empty search page if no text is selected
+
+You can change these hotkeys the following ways: 
+- In Chromium-based browsers (Chrome, Edge, Vivaldi, Brave etc), navigate to `chrome://extensions/shortcuts` and scroll down to *Open in Popup Window*
+- In Firefox, navigate to `about:addons`, click cogwheel icon in top right corner and select "Manage Extension Shortcuts" ([instruction](https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox))
 
 #### How to open page from the popup in the main window? 
 You can do it in 2 ways: 
