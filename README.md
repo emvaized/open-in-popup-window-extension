@@ -16,12 +16,12 @@ This tiny browser extension provides ability to quickly preview links without le
 - [x] Configurable popup height, width and position on screen
 - [x] Option to close popup window when origin window regains focus
 - [x] New popups can be opened from existing popups
-- [x] Automatically reopen new single tab windows as popup windows
+- [x] Automatically reopen new single tab windows as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension/tree/main?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
 - [x] Automatically reopen tabs opened by page as popup windows
 - [x] Customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
 
 
-This extension is intended to be used as an analogue of <i>Safari Link Preview</i> or <i>Arc Peek</i>. It's a great way to preview links, which works everywhere and is not affected by the CORS problem like other extensions which are using `iframe` element for the link preview.
+This extension is intended to be used as an analogue of <i>Safari Link Preview</i>, <i>Arc Peek</i> or <i>Zen Glance</i>. It's a great way to preview links, which works everywhere and is not affected by the CORS problem like other extensions which are using `iframe` element for the link preview.
 
 <a href="https://addons.mozilla.org/firefox/addon/open-in-popup-window/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get for Firefox"></a> &nbsp; <a href="https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie"><img src="https://developer.chrome.com/static/docs/webstore/branding/image/iNEddTyWiMfLSwFD6qGq.png" alt="Get for Chrome" height=65 ></a>
 
@@ -66,7 +66,7 @@ You can do it in 2 ways:
     <img src="./screenshots/open-in-main-window.png" />
 </details>
 
-#### In fullscreen mode on Mac OS popup windows do not appear
+#### On Mac OS, popup windows do not appear in the fullscreen mode
 Due to the specifics of fullscreen mode on Mac OS (fullscreen apps separate in their own Desktop space), popup windows do not appear above the fullcreen window. They either open on the "main" desktop (Firefox), or as a new fullscreen window (Chrome). To use this extension on Mac OS, you would have to open browser not in the fullscreen mode.
 
 #### How to make popups remain always on top? 
@@ -86,7 +86,7 @@ This way it can operate with links, which it couldn't access otherwise, for exam
 
 Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
 
-#### Private windows are not reopened as popup with this option enabled
+#### Private windows are not reopened as popups with this option enabled
 
 You might need to manually allow this extension to run in private windows
 
