@@ -29,6 +29,14 @@ function setMouseListeners(){
     } else {
         document.removeEventListener('keyup', keyUpListener)
     }
+
+    /// Cache screen size for the background script
+    if (configs.screenWidth !== window.screen.width || configs.availLeft !== window.screen.availLeft) {
+        configs.screenWidth = window.screen.width;
+        configs.screenHeight = window.screen.height;
+        configs.availLeft = window.screen.availLeft;
+        chrome.storage.sync.set(configs);
+    }
 }
 
 let dragStartDx, dragStartDy;

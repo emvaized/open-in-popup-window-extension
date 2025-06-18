@@ -195,7 +195,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             availHeight = window.screen.height;
         } catch(e){}
         if (configs.debugMode) console.log('Initial availLeft: ', availLeft)
-        if (!availLeft) availLeft = 0;
+        if (!availLeft) availLeft = configs.availLeft ?? 0;
+        if (!availWidth) availWidth = configs.screenWidth;
+        if (!availHeight) availHeight = configs.screenHeight;
+        if (configs.debugMode) console.log('availWidth: ', availWidth, 'availHeight: ', availHeight);
 
         function setCenterCoordinates(){
             if (availHeight && availWidth){
@@ -287,11 +290,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         if (configs.debugMode){
             console.log('~~~');
             console.log('Trying to open a popup window...');
-            console.log('window.screen.width: ', window.screen.width);
-            console.log('window.screen.availWidth: ', window.screen.availWidth);
-            console.log('window.screenLeft: ', window.screenLeft);
-            console.log('window.screenX: ', window.screenX);
-            console.log('window.availLeft: ', window.screen.availLeft);
+            console.log('availWidth: ', availWidth);
+            console.log('availHeight: ', availHeight);
             console.log('availLeft: ', availLeft);
             console.log('Selected popup window placement: ', popupLocation);
             console.log('Calculated popup window dx: ', dx);
