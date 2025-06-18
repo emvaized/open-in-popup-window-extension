@@ -107,15 +107,14 @@ function updateDisabledOptions() {
 }
 
 function setFooterButtons(){
-    document.querySelector("#donateButton").addEventListener("click", function (val) {
-        window.open('https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#support-project-%EF%B8%8F', '_blank');
+    document.querySelector("#donateButton").addEventListener("click", function () {
+        window.open('https://github.com/emvaized/emvaized.github.io/wiki/Donate-Page', '_blank');
     });
     
-    document.querySelector("#githubButton").addEventListener("click", function (val) {
+    document.querySelector("#githubButton").addEventListener("click", function () {
         window.open('https://github.com/emvaized/open-in-popup-window-extension', '_blank');
     });
-    document.querySelector("#writeAReviewButton").addEventListener("click", function (val) {
-    
+    document.querySelector("#writeAReviewButton").addEventListener("click", function () {
         const isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
         window.open(isFirefox ? 'https://addons.mozilla.org/firefox/addon/open-in-popup-window/' : 'https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie/reviews', '_blank');
     });
