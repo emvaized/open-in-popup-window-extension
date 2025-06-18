@@ -46,11 +46,14 @@ If you really enjoy this project, please consider supporting its further develop
 - <kbd>Escape</kbd> key (if enabled in extension settings)
 
 #### What keyboard hotkeys are available? 
-This extension exposes 3 keyboard hotkeys. 
+This extension implements the following keyboard hotkeys: 
 
-- Open popup window in the main window 
-- Open the currently opened page in a popup window 
-- Search the selected text in a popup window. Opens empty search page if no text is selected
+| Action Description                                      | Default Hotkey         |
+|---------------------------------------------------------|-------------------------|
+| Open popup window in the main window                    | <kbd>Alt</kbd> + <kbd>W</kbd>      |
+| Open the currently opened page in a popup window        | <kbd>Alt</kbd> + <kbd>T</kbd>      |
+| Search selected text in a popup window <br>*(or open empty search page if no selected text found)*| <kbd>Alt</kbd> + <kbd>S</kbd>      |
+
 
 You can change these hotkeys the following ways: 
 - In Chromium-based browsers (Chrome, Edge, Vivaldi, Brave etc), navigate to `chrome://extensions/shortcuts` and scroll down to *Open in Popup Window*
