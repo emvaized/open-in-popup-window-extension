@@ -43,7 +43,7 @@ If you really enjoy this project, please consider supporting its further develop
 ### How to close the popup using keyboard?
 - <kbd>Alt</kbd> + <kbd>F4</kbd>
 - <kbd>Ctrl</kbd> + <kbd>W</kbd>
-- <kbd>Escape</kbd> key (if enabled in extension settings)
+- <kbd>Escape</kbd> key (if enabled in the extension settings)
 
 ### What keyboard hotkeys are available? 
 This extension implements the following keyboard hotkeys: 
