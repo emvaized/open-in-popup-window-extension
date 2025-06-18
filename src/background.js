@@ -393,6 +393,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         // }, originalWindowIsFullscreen ? 600 : 0)
     }
     if (cfg) {
+        /// Use cached configs
         callback();
     } else {
         loadUserConfigs(callback);
@@ -423,8 +424,7 @@ chrome.windows.onCreated.addListener(
                         if (tabs.length == 1){
                             const tab = tabs[0];
                             if (isNewTabUrl(tab.url) || isNewTabUrl(tab.pendingUrl)) return;
-                            openPopupWindowForLink(undefined, false, false, tab.id, false, undefined, true)
-                            
+                            openPopupWindowForLink(undefined, false, false, tab.id, false, c, true);  
                         } 
                     })
         })   
