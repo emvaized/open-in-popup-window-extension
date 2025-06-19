@@ -40,62 +40,61 @@ If you really enjoy this project, please consider supporting its further develop
 
 ## FAQ (Frequently Asked Questions)
 
-### How to close the popup using keyboard?
-- <kbd>Alt</kbd> + <kbd>F4</kbd>
-- <kbd>Ctrl</kbd> + <kbd>W</kbd>
-- <kbd>Escape</kbd> key (if enabled in the extension settings)
+#### How to close the popup using keyboard?
+> - <kbd>Alt</kbd> + <kbd>F4</kbd>
+> - <kbd>Ctrl</kbd> + <kbd>W</kbd>
+> - <kbd>Escape</kbd> key (if enabled in the extension settings)
 
-### What keyboard hotkeys are available? 
-This extension implements the following keyboard hotkeys: 
+#### What keyboard hotkeys are available? 
+> This extension implements the following keyboard hotkeys: 
+> 
+> | Action Description                                      | Default Hotkey         |
+> |---------------------------------------------------------|-------------------------|
+> | Open popup window in the main window                    | <kbd>Alt</kbd> + <kbd>Y</kbd>      |
+> | Open the currently opened page in a popup window        | <kbd>Alt</kbd> + <kbd>P</kbd>      |
+> | Search selected text in a popup window <br>*(or open empty search page if no selected text found)*| <kbd>Alt</kbd> + <kbd>S</kbd>      |
+> 
+> You can change these hotkeys these ways: 
+> - In Chromium-based browsers (Chrome, Edge, Vivaldi, Brave etc), navigate to `chrome://extensions/shortcuts` and scroll down to *Open in Popup Window* category
+> - In Firefox, navigate to `about:addons`, click cogwheel icon in top right corner and select "Manage Extension Shortcuts" ([more details](https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox))
 
-| Action Description                                      | Default Hotkey         |
-|---------------------------------------------------------|-------------------------|
-| Open popup window in the main window                    | <kbd>Alt</kbd> + <kbd>Y</kbd>      |
-| Open the currently opened page in a popup window        | <kbd>Alt</kbd> + <kbd>P</kbd>      |
-| Search selected text in a popup window <br>*(or open empty search page if no selected text found)*| <kbd>Alt</kbd> + <kbd>S</kbd>      |
+#### How to open page from the popup in the main window? 
+> You can do it in 2 ways: 
+> - By right clicking on the page in popup window and selecting "Open page in main window"
+> - <kbd>Alt</kbd> + <kbd>Enter</kbd> hotkey (if <kbd>Esc</kbd> hotkey is enabled in extension settings)
+> 
+> <details>
+>     <summary>Demonstration</summary>
+>     <img src="./screenshots/open-in-main-window.png" />
+> </details>
 
+#### On Mac OS, popup windows do not appear in the fullscreen mode
+> Due to the specifics of fullscreen mode on Mac OS (fullscreen apps separate in their own Desktop space), popup windows do not appear above the fullcreen window. They either open on the "main" desktop (Firefox), or as a new fullscreen window (Chrome). To use this extension on Mac OS, you would have to open browser not in the fullscreen mode.
 
-You can change these hotkeys these ways: 
-- In Chromium-based browsers (Chrome, Edge, Vivaldi, Brave etc), navigate to `chrome://extensions/shortcuts` and scroll down to *Open in Popup Window* category
-- In Firefox, navigate to `about:addons`, click cogwheel icon in top right corner and select "Manage Extension Shortcuts" ([more details](https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox))
+#### How to make popups remain always on top? 
+> Unfortunately, browser extensions currently are [not capable](https://github.com/w3c/webextensions/issues/443) of manually setting "always on top" flag. 
+>
+> But you can use third-party programs in your system which can do it, for example [PowerToys](https://github.com/microsoft/PowerToys) on Windows. Don't forget to disable autoclosing popup window when it loses focus in the extension settings.
 
-### How to open page from the popup in the main window? 
-You can do it in 2 ways: 
-- By right clicking on the page in popup window and selecting "Open page in main window"
-- <kbd>Alt</kbd> + <kbd>Enter</kbd> hotkey (if <kbd>Esc</kbd> hotkey is enabled in extension settings)
+#### How to use the new feature "Reopen new single tab windows as popup windows"?
 
-<details>
-    <summary>Demonstration</summary>
-    <img src="./screenshots/open-in-main-window.png" />
-</details>
+> This powerful feature, introduced in version `0.3`, allows to extend extension abilities and open any link anywhere as a popup window. With this option enabled, extension will be waiting in the background for any new windows to open, and once a new window with only one tab opens, it will reopen it as a popup. 
+>
+> This way it can operate with links, which it couldn't access otherwise, for example: sites on new tab page, in bookmarks panel, links on browser-protected pages (`chrome://`, `about:`) etc. You could create a popup window the following ways:
+>
+> - Using right click context menu and selecting "Open in new window"
+> - <kbd>Shift</kbd> + left click in Firefox (+ <kbd>Ctrl</kbd> in Chrome) – this will essentially duplicate extension's "Open with shift+click" option
+> - <kbd>Shift</kbd> + <kbd>Enter</kbd> in Firefox (+ <kbd>Ctrl</kbd> in Chrome) on any focused element, for example search suggestion in address bar
+> 
+> Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
 
-### On Mac OS, popup windows do not appear in the fullscreen mode
-Due to the specifics of fullscreen mode on Mac OS (fullscreen apps separate in their own Desktop space), popup windows do not appear above the fullcreen window. They either open on the "main" desktop (Firefox), or as a new fullscreen window (Chrome). To use this extension on Mac OS, you would have to open browser not in the fullscreen mode.
+#### Private windows are not reopened as popups with this option enabled
 
-### How to make popups remain always on top? 
-Unfortunately, browser extensions currently are [not capable](https://github.com/w3c/webextensions/issues/443) of manually setting "always on top" flag. 
+> You might need to manually allow this extension to run in private windows
 
-But you can use third-party programs in your system which can do it, for example [PowerToys](https://github.com/microsoft/PowerToys) on Windows. Don't forget to disable autoclosing popup window when it loses focus in the extension settings.
+#### How to reopen externally opened links as popup windows — similar to _Little Arc_ feature from the Arc browser? 
 
-### How to use the new feature "Reopen new single tab windows as popup windows"?
-
-This powerful feature, introduced in version `0.3`, allows to extend extension abilities and open any link anywhere as a popup window. With this option enabled, extension will be waiting in the background for any new windows to open, and once a new window with only one tab opens, it will reopen it as a popup. 
-
-This way it can operate with links, which it couldn't access otherwise, for example: sites on new tab page, in bookmarks panel, links on browser-protected pages (`chrome://`, `about:`) etc. You could create a popup window the following ways:
-
-- Using right click context menu and selecting "Open in new window"
-- <kbd>Shift</kbd> + left click in Firefox (+ <kbd>Ctrl</kbd> in Chrome) – this will essentially duplicate extension's "Open with shift+click" option
-- <kbd>Shift</kbd> + <kbd>Enter</kbd> in Firefox (+ <kbd>Ctrl</kbd> in Chrome) on any focused element, for example search suggestion in address bar
-
-Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
-
-### Private windows are not reopened as popups with this option enabled
-
-You might need to manually allow this extension to run in private windows
-
-### How to reopen externally opened links as popup windows — similar to _Little Arc_ feature from the Arc browser? 
-
-It is possible in Firefox by toggling the `Reopen new single tab windows as popup windows` feature and setting `browser.link.open_newwindow.override.external` config to `2` on `about:config` page
+> It is possible in Firefox by toggling the `Reopen new single tab windows as popup windows` feature and setting `browser.link.open_newwindow.override.external` config to `2` on `about:config` page
 
 ## Troubleshooting
 - ⚠️ If "Open by drag" and "Shift+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
