@@ -16,7 +16,7 @@ This tiny browser extension provides ability to quickly preview links without le
 - [x] Configurable popup height, width and position on screen
 - [x] Option to close popup window when origin window regains focus
 - [x] New popups can be opened from existing popups
-- [x] Automatically reopen new single tab windows as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension/tree/main?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
+- [x] Automatically reopen new single tab windows as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
 - [x] Automatically reopen tabs opened by page as popup windows
 - [x] Customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
 
