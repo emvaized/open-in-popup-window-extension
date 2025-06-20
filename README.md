@@ -11,13 +11,13 @@ This tiny browser extension provides ability to quickly preview links without le
 
 <b>Features:</b>
 - [x] Ability to open images and search selected text in popup window
-- [x] Use drag and drop to open in popup window (_disabled_ by default)
 - [x] Use <kbd>Shift</kbd> + click to open in popup window (_disabled_ by default)
+- [x] Use drag and drop to open in popup window (_disabled_ by default)
 - [x] Configurable popup height, width and position on screen
 - [x] Option to close popup window when origin window regains focus
 - [x] New popups can be opened from existing popups
 - [x] Automatically reopen new single tab windows as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
-- [x] Automatically reopen tabs opened by page as popup windows
+- [x] Automatically reopen tabs opened from page as popup windows
 - [x] Customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
 
 
