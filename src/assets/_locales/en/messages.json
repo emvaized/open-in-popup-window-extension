@@ -77,6 +77,15 @@
     "openPageInMainWindow": {
         "message": "Open Page in Main Window"
     },
+    "openPageInPopupWindowHotkeyDescription": {
+        "message": "Open the currently opened page in a popup window"
+    },
+    "openPageInMainWindowHotkeyDescription": {
+        "message": "Open popup window in the main window"
+    },
+    "openSearchPopupWindowHotkeyDescription": {
+        "message": "Search the selected text in a popup window. Opens empty search page if no text is selected"
+    },
     "popupHeight": {
         "message": "Popup height (px)"
     },

@@ -80,6 +80,15 @@
     "openPageInMainWindow": {
         "message": "Abrir página en la ventana principal"
     },
+     "openPageInPopupWindowHotkeyDescription": {
+        "message": "Abrir la página actualmente abierta en una ventana emergente"
+    },
+    "openPageInMainWindowHotkeyDescription": {
+        "message": "Abrir la ventana emergente actualmente abierta en la ventana principal"
+    },
+    "openSearchPopupWindowHotkeyDescription": {
+        "message": "Busca el texto seleccionado en una ventana emergente. Abre una página de búsqueda vacía si no hay ningún texto seleccionado."
+    },
     "popupHeight": {
         "message": "Altura emergente (px)"
     },
@@ -94,6 +103,12 @@
     },
     "popupWindowSize": {
         "message": "Tamaño de la ventana emergente"
+    },
+    "reopenAutoCreatedTabAsPopup": {
+        "message": "Reabrir las pestañas abiertas por página como ventanas emergentes"
+    },
+    "reopenAutoCreatedTabsOnlyPinned": {
+        "message": "Reabrir solo las pestañas creadas por pestañas ancladas"
     },
     "reopenSingleTabWindowAsPopup": {
         "message": "Reabrir nuevas ventanas de una sola pestaña como ventanas emergentes"

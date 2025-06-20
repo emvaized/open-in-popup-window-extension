@@ -77,6 +77,15 @@
     "openPageInPopupWindow": {
         "message": "Открыть страницу во всплыв. окне"
     },
+    "openPageInPopupWindowHotkeyDescription": {
+        "message": "Открыть текущую страницу во всплывающем окне"
+    },
+    "openPageInMainWindowHotkeyDescription": {
+        "message": "Открыть всплывающее окно в основном окне"
+    },
+     "openSearchPopupWindowHotkeyDescription": {
+        "message": "Искать выделенный текст во всплывающем окне. Открывает пустую страницу поиска, если нет выделенного текста"
+    },
     "popupHeight": {
         "message": "Высота окна (px)"
     },

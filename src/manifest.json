@@ -26,9 +26,11 @@
   ],
   "permissions": [
     "<all_urls>",
+    "activeTab",
     "contextMenus",
     "tabs",
-    "storage"
+    "storage",
+    "scripting"
   ],
   "options_ui": {
     "page": "options/options.html"
@@ -46,6 +48,26 @@
   "browser_specific_settings": {
     "gecko": {
       "id": "open_in_popup_window@emvaized.dev"
+    }
+  },
+  "commands": {
+    "open-popup-in-main-window": {
+      "suggested_key": {
+        "default": "Alt+Y"
+      },
+      "description": "__MSG_openPageInMainWindowHotkeyDescription__"
+    },
+    "open-in-popup-window": {
+      "suggested_key": {
+        "default": "Alt+P"
+      },
+      "description": "__MSG_openPageInPopupWindowHotkeyDescription__"
+    },
+    "open-search-in-popup-window": {
+      "suggested_key": {
+        "default": "Alt+S"
+      },
+      "description": "__MSG_openSearchPopupWindowHotkeyDescription__"
     }
   }
 }

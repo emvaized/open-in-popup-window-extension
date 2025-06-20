@@ -23,6 +23,9 @@ const configs = {
     'openDragAndDropUnderMouse': true,
     'addOptionOpenPageInPopupWindow': true,
     'keepOpenPageInPopupWindowOpen': false,
+    'screenWidth': 1920,
+    'screenHeight': 1080,
+    'availLeft': 0,
 }
 
 function loadUserConfigs(callback) {

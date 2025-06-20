@@ -3,7 +3,17 @@ chrome.storage.onChanged.addListener((c) => {
     loadUserConfigs((c) => setMouseListeners())
 });
 
-loadUserConfigs((c) => setMouseListeners())
+loadUserConfigs(function(c) {
+    setMouseListeners();
+
+    /// Cache screen size for the background script
+    if (configs.screenWidth !== window.screen.width || configs.availLeft !== window.screen.availLeft) {
+        configs.screenWidth = window.screen.width;
+        configs.screenHeight = window.screen.height;
+        configs.availLeft = window.screen.availLeft;
+        chrome.storage.sync.set(configs);
+    }
+})
 
 function setMouseListeners(){
 
@@ -48,8 +58,6 @@ function dragEndListener(e){
 function keyUpListener(e){
     if (e.key == 'Escape'){
          chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
-    } else if (e.key == 'Enter' && e.altKey){
-        chrome.runtime.sendMessage({action: 'requestOpenInMainWindow'})
     }
 }
 

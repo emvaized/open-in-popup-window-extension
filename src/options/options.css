@@ -1,5 +1,5 @@
 body {
-    min-width: 381px;
+    min-width: 430px;
     padding: 4px;
 }
 #settingsTitle{
@@ -111,5 +111,6 @@ div:has(h5):not(:first-child){
     body {
         font-family: sans-serif !important; 
         /* line-height: 1.0 !important; */
+        min-width: 360px;
     }
 }
