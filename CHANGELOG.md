@@ -1,3 +1,9 @@
+### 0.3.9
+- Added support for customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
+- Fixed bug with reopened popup windows not respecting window location settings (https://github.com/emvaized/open-in-popup-window-extension/issues/20)
+- Small options page improvements
+- Added missing translations
+
 ### 0.3.8
 - Added new feature to reopen tabs opened by page as popup windows, along with option to do it only for pinned tabs (_disabled_ by default)
 - "Open Page in Main Window" will now move the tab to the main window without reopening it
