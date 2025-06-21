@@ -7,6 +7,8 @@ function init(){
         for (let i = 0, l = keys.length; i < l; i++) {
             const key = keys[i];
 
+            console.log('Setting up option: ', key, userConfigs[key]);
+
             /// set corresponing input value
             let input = document.getElementById(key.toString());
 
@@ -104,6 +106,13 @@ function updateDisabledOptions() {
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 
             ? 'enabled-option' : 'disabled-option';
+
+    /// Remove options that are not available in Firefox
+    const isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
+    if (isFirefox){
+        document.getElementById("rememberWindowResize").parentNode.parentNode.remove();
+        document.getElementById("moveToMainWindowOnMaximize").parentNode.parentNode.remove();
+    }
 }
 
 function setFooterButtons(){

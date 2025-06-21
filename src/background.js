@@ -51,6 +51,13 @@ chrome.runtime.onMessage.addListener(
             return;
         }
 
+        /// Check if boundsChanged event is available for the options page
+        if (request.action == 'checkOnBoundsChangedAvailability') {
+            sendResponse(typeof chrome.windows.onBoundsChanged);
+            console.log(typeof chrome.windows.onBoundsChanged)
+            return;
+        }
+
         mouseX = request.mouseX;
         mouseY = request.mouseY;
         elementHeight = request.elementHeight;
@@ -361,28 +368,45 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 }
 
                 /* remember dimensions on window resize 
-                [draft until onBoundsChanged is supported in Firefox]
+                [onBoundsChanged is not supported in Firefox]
                 {@link https://bugzilla.mozilla.org/show_bug.cgi?id=1762975}
                 */
-                // if (configs.rememberWindowResize){
-                //     function resizeListener(w){
-                //         const newSize = {
-                //             'popupHeight': w.height,
-                //             'popupWidth': w.width,
-                //         }
-                //         console.log(newSize);
-                //         chrome.storage.sync.set(configs)
+                if (chrome.windows.onBoundsChanged && (configs.rememberWindowResize || configs.moveToMainWindowOnMaximize)) {
+                    function resizeListener(w){
+                        if (configs.debugMode) console.log('Popup window resized: ', w);
 
-                //     }
-                //     function removedListener(wId){
-                //         if (wId && wId > -1 && wId == popupWindow.id) {
-                //             chrome.windows.onBoundsChanged.removeListener(resizeListener);
-                //             chrome.windows.onRemoved.removeListener(removedListener);
-                //         }
-                //     }
-                //     chrome.windows.onBoundsChanged.addListener(resizeListener);
-                //     chrome.windows.onRemoved.addListener(removedListener);
-                // }
+                        if (w.state == 'maximized'){
+                            /// Move to main window on popup maximize
+                            if (configs.moveToMainWindowOnMaximize) 
+                                chrome.tabs.query({windowId: w.id}, (tabs) => {
+                                    if (tabs && tabs.length > 0) {
+                                        const tab = tabs[0];
+                                        if (tab.id && tab.id > -1) 
+                                            moveTabToRegularWindow(tab);
+                                        
+                                    }
+                                });
+                        } else {
+                            /// Save new popup window size
+                            if (configs.rememberWindowResize){
+                                if (configs.popupHeight == w.height && configs.popupWidth == w.width) return;
+                                configs.popupHeight = w.height;
+                                configs.popupWidth = w.width;
+                                chrome.storage.sync.set(configs);
+                                if (configs.debugMode) console.log('Popup window size saved: ', w.height, w.width);
+                            }
+                        }
+
+                    }
+                    function removedListener(wId){
+                        if (wId && wId > -1 && wId == popupWindow.id) {
+                            chrome.windows.onBoundsChanged.removeListener(resizeListener);
+                            chrome.windows.onRemoved.removeListener(removedListener);
+                        }
+                    }
+                    chrome.windows.onBoundsChanged.addListener(resizeListener);
+                    chrome.windows.onRemoved.addListener(removedListener);
+                }
 
                 /// clear variables
                 elementHeight = undefined; elementWidth = undefined;

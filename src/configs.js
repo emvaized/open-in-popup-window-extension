@@ -18,7 +18,6 @@ const configs = {
     'popupWindowLocation': 'mousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
     'imageWithLinkPreferLink': false,
     'fallbackPopupWindowLocation': 'center',
-    //, 'rememberWindowResize': false,
     'debugMode': false,
     'openDragAndDropUnderMouse': true,
     'addOptionOpenPageInPopupWindow': true,
@@ -26,6 +25,8 @@ const configs = {
     'screenWidth': 1920,
     'screenHeight': 1080,
     'availLeft': 0,
+    'rememberWindowResize': true,
+    'moveToMainWindowOnMaximize': true,
 }
 
 function loadUserConfigs(callback) {

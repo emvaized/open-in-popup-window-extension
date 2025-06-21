@@ -53,6 +53,9 @@
     "minimalDragDistance": {
         "message": "Minimal drag distance (px)"
     },
+    "moveToMainWindowOnMaximize": {
+        "message": "Open popup in main window when maximized"
+    },
     "mousePosition": {
         "message": "Mouse cursor position"
     },
@@ -102,7 +105,7 @@
         "message": "Popup window size"
     },
     "rememberWindowResize": {
-        "message": "Remember dimensions on manual resize"
+        "message": "Remember popup size on manual resize"
     },
     "reopenAutoCreatedTabAsPopup": {
         "message": "Reopen tabs opened by page as popup windows"
