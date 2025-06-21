@@ -514,27 +514,14 @@ chrome.commands.onCommand.addListener((command, senderTab) => {
         openPopupWindowForLink(senderTab.url, false, false, undefined, true);
     } else if (command === "open-search-in-popup-window") {
         loadUserConfigs((c) => {
-            chrome.scripting.executeScript({
-                target: {
-                    tabId: senderTab.id,
-                    allFrames: false,
-                },
-                func: function() {
-                    let selectedText = document.selection ? document.selection.createRange()
-                        .text :
-                        window.getSelection ? window.getSelection() :
-                        document.getSelection ? document.getSelection() :
-                        "";
-                    selectedText = String(selectedText)
-                        .replace(/\r?\n|\r/g, ''); /// Remove line breaks
-                    return encodeURIComponent(selectedText);
+            chrome.tabs.sendMessage(senderTab.id, { command: "get_selected_text" }, response => {
+                if (response) {
+                    const selectedText = decodeURIComponent(response);
+                    searchSelectedText(selectedText);
+                } else {
+                    searchSelectedText('');
                 }
-            }).then((results) => {
-                const selectedText = results[0].result ?? ''; 
-                searchSelectedText(selectedText);
-            }).catch((e) => {
-                searchSelectedText('');
-            });
+             });
 
             function searchSelectedText(selectedText) {
                 const link = configs.popupSearchUrl.replace('%s', selectedText);

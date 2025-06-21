@@ -117,3 +117,12 @@ function onTrigger(e, type){
 
     chrome.runtime.sendMessage(message)
 }
+
+/// For 'search in popup' keyboard hotkey
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.command == 'get_selected_text') {
+        let selectedText = window.getSelection().toString().trim();
+        selectedText = selectedText.replace(/\r?\n|\r/g, ''); /// Remove line breaks
+        return sendResponse(encodeURIComponent(selectedText));
+    }
+});
