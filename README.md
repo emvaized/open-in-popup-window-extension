@@ -17,7 +17,7 @@ This tiny browser extension provides ability to quickly preview links without le
 - [x] Option to close popup window when origin window regains focus
 - [x] New popups can be opened from existing popups
 - [x] Automatically reopen new single tab windows as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
-- [x] Automatically reopen tabs opened from page as popup windows
+- [x] Automatically reopen tabs opened from page as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-reopen-tabs-opened-by-page-as-popup-windows))
 - [x] Customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
 
 
@@ -87,6 +87,10 @@ If you really enjoy this project, please consider supporting its further develop
 > - <kbd>Shift</kbd> + <kbd>Enter</kbd> in Firefox (+ <kbd>Ctrl</kbd> in Chrome) on any focused element, for example search suggestion in address bar
 > 
 > Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
+
+#### How to use "Reopen tabs opened by page as popup windows"?
+
+> With this option enabled, new tabs opened by another tab (usually those opened by clicking links with `target: _blank`) will be automatically reopened as popup windows. This setting has an additional option to do it only for pinned tabs, which is _enabled_ by default.
 
 #### Private windows are not reopened as popups with this option enabled
 
