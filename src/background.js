@@ -351,9 +351,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                         if (wId > -1) 
                             chrome.windows.get(wId,{}, (w) => {
                                     if (w && w.type == 'normal') {
-                                        chrome.windows.remove(popupWindowId);
-                                        chrome.windows.onFocusChanged.removeListener(windowFocusListener);
-
+                                            chrome.windows.get(popupWindowId,{}, (w) => {
+                                                if (w.state == 'minimized') return; /// don't close minimized popup window
+                                                chrome.windows.remove(popupWindowId);
+                                                chrome.windows.onFocusChanged.removeListener(windowFocusListener);
+                                            });
                                         // if (originalWindowIsFullscreen) 
                                         //     chrome.windows.update(parentWindow.id, {
                                         //         'state': 'fullscreen'

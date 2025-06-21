@@ -14,6 +14,9 @@
     "closeWhenFocusedInitialWindow": {
         "message": "Cerrar la ventana emergente cuando la ventana normal obtiene el foco"
     },
+    "closeWhenFocusedInitialWindowHint": {
+        "message": "La ventana emergente no se cerrará si se minimizó"
+    },
     "debugMode": {
         "message": "Depurar"
     },

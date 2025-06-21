@@ -14,6 +14,9 @@
     "closeWhenFocusedInitialWindow": {
         "message": "Закрыть всплывающее окно, когда обычное окно получает фокус"
     },
+    "closeWhenFocusedInitialWindowHint": {
+        "message": "Всплывающее окно не будет закрыто, если оно было свернуто"
+    },
     "debugMode": {
         "message": "Отладка"
     },
