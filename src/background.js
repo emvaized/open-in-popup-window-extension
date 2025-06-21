@@ -139,12 +139,12 @@ chrome.storage.onChanged.addListener((changes) => {
     if (chrome.pageAction) {
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
             if (tabs && tabs.length > 0 && tabs[0].id) {
-                console.log(tabs);
                 if (changes.showAddressbarIcon.newValue) 
                     chrome.pageAction.show(tabs[0].id);
                 else 
                     chrome.pageAction.hide(tabs[0].id);
-            }});
+            }
+        });
     }
 });
 
@@ -364,9 +364,13 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                             chrome.windows.get(wId,{}, (w) => {
                                     if (w && w.type == 'normal') {
                                             chrome.windows.get(popupWindowId,{}, (w) => {
-                                                if (w.state == 'minimized') return; /// don't close minimized popup window
-                                                chrome.windows.remove(popupWindowId);
-                                                chrome.windows.onFocusChanged.removeListener(windowFocusListener);
+                                                if (w){
+                                                    if (w.state == 'minimized') return; /// don't close minimized popup window
+                                                    chrome.windows.remove(popupWindowId);
+                                                    chrome.windows.onFocusChanged.removeListener(windowFocusListener);
+                                                } else {
+                                                    chrome.windows.onFocusChanged.removeListener(windowFocusListener);
+                                                }
                                             });
                                         // if (originalWindowIsFullscreen) 
                                         //     chrome.windows.update(parentWindow.id, {
