@@ -7,7 +7,7 @@
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/rating-count/gmnkpkmmkhbgnljljcchnakehlkihhie?style=flat&label=reviews)](https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie/reviews)
 ![Created](https://img.shields.io/github/created-at/emvaized/open-in-popup-window-extension?color=darkgrey&label=created)
 
-This tiny browser extension provides ability to quickly preview links without leaving the current page context. It adds entry in context menu of links, and when clicked, opens new small window at cursor position, with no tab bar and addressbar. 
+This tiny and lightweight browser extension provides ability to quickly preview links without leaving the current page context. It adds entry in context menu of links, and when clicked, opens new small window at cursor position, with no tab bar and addressbar. 
 
 <b>Features:</b>
 - [x] Ability to open images and search selected text in popup window
