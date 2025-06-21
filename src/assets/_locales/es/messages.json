@@ -2,9 +2,6 @@
     "addOptionOpenPageInPopupWindow": {
         "message": "Agregar opción para abrir la página en una ventana emergente"
     },
-    "keepOpenPageInPopupWindowOpen": {
-        "message": "No cerrar la ventana emergente de la página al perder el foco"
-    },
     "bottomLeft": {
         "message": "Abajo a la izquierda"
     },
@@ -22,6 +19,9 @@
     },
     "donateButton": {
         "message": "Proyecto de apoyo"
+    },
+    "dragAndDropSettings": {
+        "message": "Configuración de arrastrar y soltar"
     },
     "escKeyClosesPopup": {
         "message": "Cerrar ventana emergente con la tecla Escape"
@@ -50,11 +50,17 @@
     "imageWithLinkPreferLink": {
         "message": "Cuando la imagen está envuelta en un enlace, prefiera el enlace"
     },
+    "keepOpenPageInPopupWindowOpen": {
+        "message": "No cerrar la ventana emergente de la página al perder el foco"
+    },
     "minimalDragDistance": {
         "message": "Distancia mínima de arrastre (px)"
     },
     "mousePosition": {
         "message": "Posición del cursor del ratón"
+    },
+    "moveToMainWindowOnMaximize": {
+        "message": "Abrir ventana emergente en la ventana principal cuando se maximiza"
     },
     "nearMousePosition": {
         "message": "Cerca del cursor"
@@ -74,17 +80,17 @@
     "openLinkInMainWindow": {
         "message": "Abrir página en la ventana principal"
     },
-    "openPageInPopupWindow": {
-        "message": "Abrir página en ventana emergente"
-    },
     "openPageInMainWindow": {
         "message": "Abrir página en la ventana principal"
     },
-     "openPageInPopupWindowHotkeyDescription": {
-        "message": "Abrir la página actualmente abierta en una ventana emergente"
-    },
     "openPageInMainWindowHotkeyDescription": {
         "message": "Abrir la ventana emergente actualmente abierta en la ventana principal"
+    },
+    "openPageInPopupWindow": {
+        "message": "Abrir página en ventana emergente"
+    },
+    "openPageInPopupWindowHotkeyDescription": {
+        "message": "Abrir la página actualmente abierta en una ventana emergente"
     },
     "openSearchPopupWindowHotkeyDescription": {
         "message": "Busca el texto seleccionado en una ventana emergente. Abre una página de búsqueda vacía si no hay ningún texto seleccionado."
@@ -103,6 +109,9 @@
     },
     "popupWindowSize": {
         "message": "Tamaño de la ventana emergente"
+    },
+    "rememberWindowResize": {
+        "message": "Recordar tamaño de la ventana emergente al cambiar el tamaño manualmente"
     },
     "reopenAutoCreatedTabAsPopup": {
         "message": "Reabrir las pestañas abiertas por página como ventanas emergentes"

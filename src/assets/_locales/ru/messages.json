@@ -2,9 +2,6 @@
     "addOptionOpenPageInPopupWindow": {
         "message": "Включить опцию открытия текущей страницы во вспл. окне"
     },
-    "keepOpenPageInPopupWindowOpen": {
-        "message": "Не закрывать вспл. окно текущей страницы при потере фокуса"
-    },
     "bottomLeft": {
         "message": "Слева внизу"
     },
@@ -22,6 +19,9 @@
     },
     "donateButton": {
         "message": "Поддержать проект"
+    },
+    "dragAndDropSettings": {
+        "message": "Настройки перетаскивания"
     },
     "escKeyClosesPopup": {
         "message": "Закрывать всплывающее окно клавишей Escape"
@@ -50,11 +50,17 @@
     "imageWithLinkPreferLink": {
         "message": "Когда изображение вложено в ссылку, предпочитать ссылку"
     },
+    "keepOpenPageInPopupWindowOpen": {
+        "message": "Не закрывать вспл. окно текущей страницы при потере фокуса"
+    },
     "minimalDragDistance": {
         "message": "Минимальное расстояние перетаскивания (px)"
     },
     "mousePosition": {
         "message": "Под курсором мыши"
+    },
+    "moveToMainWindowOnMaximize": {
+        "message": "Открыть страницу в основном окне при разворачивании всплыв. окна"
     },
     "nearMousePosition": {
         "message": "Возле курсора мыши"
@@ -74,16 +80,16 @@
     "openPageInMainWindow": {
         "message": "Открыть страницу в основном окне"
     },
+    "openPageInMainWindowHotkeyDescription": {
+        "message": "Открыть всплывающее окно в основном окне"
+    },
     "openPageInPopupWindow": {
         "message": "Открыть страницу во всплыв. окне"
     },
     "openPageInPopupWindowHotkeyDescription": {
         "message": "Открыть текущую страницу во всплывающем окне"
     },
-    "openPageInMainWindowHotkeyDescription": {
-        "message": "Открыть всплывающее окно в основном окне"
-    },
-     "openSearchPopupWindowHotkeyDescription": {
+    "openSearchPopupWindowHotkeyDescription": {
         "message": "Искать выделенный текст во всплывающем окне. Открывает пустую страницу поиска, если нет выделенного текста"
     },
     "popupHeight": {
@@ -101,17 +107,20 @@
     "popupWindowSize": {
         "message": "Размер всплывающего окна"
     },
+    "rememberWindowResize": {
+        "message": "Запомнить размер всплыв. окна при ручном изменении размера"
+    },
     "reopenAutoCreatedTabAsPopup": {
         "message": "Переоткрывать вкладки, открытые страницей, как всплыв. окна"
     },
     "reopenAutoCreatedTabsOnlyPinned": {
         "message": "Переоткрывать только вкладки, открытые c закрепленных вкладок"
     },
-    "reopenSingleTabWindowAsPopup": {
-        "message": "Переоткрывать новые окна с одной вкладкой в виде всплыв. окон"
-    },
     "reopenSettings": {
         "message": "Настройки переоткрытия"
+    },
+    "reopenSingleTabWindowAsPopup": {
+        "message": "Переоткрывать новые окна с одной вкладкой в виде всплыв. окон"
     },
     "reopenSingleTabWindowAsPopupHint": {
         "message": "При включении этой опции любое новое окно браузера с одной вкладкой будет автоматически переоткрыто как всплывающее окно. Это позволит расширению создавать всплывающие окна для ссылок, к которым оно обычно не имеет доступа (например, панель закладок). Но это также может привести к нежелательному поведению, если вы обычно открываете вручную несколько окон браузера, поэтому используйте эту опцию с осторожностью!"
