@@ -107,6 +107,7 @@ If you really enjoy this project, please consider supporting its further develop
 ## Plans for future
 - [ ] Option to remember popup window size on manual resize (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 - [ ] Option to open page in the main window on clicking "Maximize" window button (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
+- [ ] Option to keep popup windows always on top (_improssible in both Crhome and Firefox_ – [bug report](https://github.com/w3c/webextensions/issues/443))
 
 ## Privacy
 This extension doesn't collect any private data. It only requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened.
