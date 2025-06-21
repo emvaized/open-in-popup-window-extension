@@ -104,7 +104,7 @@ If you really enjoy this project, please consider supporting its further develop
 - `npm install` to install all dependencies
 - `npm run build` to generate `dist` folder with minimized code of the extension
 
-## Plans for future
+## Ideas for future updates
 - [ ] Option to remember popup window size on manual resize (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 - [ ] Option to open page in the main window on clicking "Maximize" window button (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 - [ ] Option to keep popup windows always on top (_improssible in both Crhome and Firefox_ – [bug report](https://github.com/w3c/webextensions/issues/443))
