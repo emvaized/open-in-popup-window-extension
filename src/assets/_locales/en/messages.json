@@ -23,6 +23,9 @@
     "donateButton": {
         "message": "Support project"
     },
+    "dragAndDropSettings": {
+        "message": "Drag and drop settings"
+    },
     "escKeyClosesPopup": {
         "message": "Close popup window with an Escape key"
     },
