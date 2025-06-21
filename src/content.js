@@ -48,6 +48,7 @@ function dragStartListener(e){
 }
 function dragEndListener(e){
     if (e.dataTransfer.dropEffect == 'none'){
+        if (e.dataTransfer.mozUserCancelled) return; /// use Esc key to cancel drag on Firefox
         if (
             Math.abs(e.clientX - dragStartDx) > configs.minimalDragDistance ||
             Math.abs(e.clientY - dragStartDy) > configs.minimalDragDistance
