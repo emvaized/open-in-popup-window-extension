@@ -351,6 +351,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             }
 
             chrome.windows.create(createParams, function (popupWindow) {
+                if (!popupWindow) return;
+
                 /// set coordinates again (workaround for old firefox bug)
                 let popupWindowId = popupWindow.id;
                 chrome.windows.update(popupWindowId, {
