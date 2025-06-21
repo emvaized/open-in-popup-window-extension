@@ -128,6 +128,9 @@
     "reopenSingleTabWindowAsPopupHint": {
         "message": "With this option enabled, any new browser window with only one tab will be automatically reopened as a popup window. It allows extension to create popup for links which it usually can't access (for example, bookmarks bar). But it can lead to unwanted behavior if you usually open many browser windows, so use with caution!"
     },
+    "showAddressbarIcon": {
+        "message": "Show button in address bar to open page in a popup window"
+    },
     "searchInPopupEnabled": {
         "message": "Option to search selection in popup enabled"
     },

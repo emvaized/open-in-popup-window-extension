@@ -109,12 +109,17 @@ function updateDisabledOptions() {
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 
             ? 'enabled-option' : 'disabled-option';
 
-    /// Remove options that are not available in Firefox
-    const isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
-    if (isFirefox){
-        document.getElementById("rememberWindowResize").parentNode.parentNode.remove();
-        document.getElementById("moveToMainWindowOnMaximize").parentNode.parentNode.remove();
-    }
+    try {
+        let isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
+        if (isFirefox){
+            /// Remove options that are not available in Firefox
+            document.getElementById("rememberWindowResize").parentNode.parentNode.remove();
+            document.getElementById("moveToMainWindowOnMaximize").parentNode.parentNode.remove();
+        } else {
+            /// Remove options that are not available in Chromium-based browsers
+            document.getElementById("showAddressbarIcon").parentNode.parentNode.remove();
+        }
+    } catch(e){}
 }
 
 function setFooterButtons(){

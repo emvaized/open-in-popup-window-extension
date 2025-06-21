@@ -128,6 +128,9 @@
     "reopenSingleTabWindowAsPopupHint": {
         "message": "Con esta opción activada, cualquier ventana nueva del navegador con una sola pestaña se reabrirá automáticamente como ventana emergente. Permite a la extensión crear ventanas emergentes para enlaces a los que normalmente no puede acceder (por ejemplo, la barra de marcadores). Pero puede conducir a un comportamiento no deseado si sueles abrir muchas ventanas del navegador, ¡así que úsalo con precaución!"
     },
+    "showAddressbarIcon": {
+        "message": "Mostrar botón en la barra de direcciones para abrir la página en una ventana emergente"
+    },
     "searchInPopupEnabled": {
         "message": "Opción para buscar selección en ventana emergente habilitada"
     },

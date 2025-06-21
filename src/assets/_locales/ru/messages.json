@@ -137,6 +137,9 @@
     "settingsTitle": {
         "message": "Настройки"
     },
+    "showAddressbarIcon": {
+        "message": "Показывать кнопку в адресной строке для открытия во всплыв. окне"
+    },
     "textSelectionHeader": {
         "message": "Выделение текста"
     },
