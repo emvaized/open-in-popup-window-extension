@@ -21,11 +21,11 @@ const configs = {
     'debugMode': false,
     'openDragAndDropUnderMouse': true,
     'addOptionOpenPageInPopupWindow': true,
-    'keepOpenPageInPopupWindowOpen': false,
+    'keepOpenPageInPopupWindowOpen': true,
     'screenWidth': 1920,
     'screenHeight': 1080,
     'availLeft': 0,
-    'rememberWindowResize': true,
+    'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
 }
 
