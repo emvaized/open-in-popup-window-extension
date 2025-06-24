@@ -14,10 +14,10 @@ This tiny and lightweight browser extension provides ability to quickly preview 
 - [x] Use <kbd>Shift</kbd> + click to open in popup window (_disabled_ by default)
 - [x] Use drag and drop to open in popup window (_disabled_ by default)
 - [x] Configurable popup height, width and position on screen
-- [x] Option to close popup window when origin window regains focus
-- [x] New popups can be opened from existing popups
-- [x] Automatically reopen new single tab windows as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
-- [x] Automatically reopen tabs opened from page as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-reopen-tabs-opened-by-page-as-popup-windows))
+- [x] Close popup window when origin window regains focus (excludes minimized and "always-on-top" windows)
+- [x] Remember popup window size on manual resize (only in Chrome – see [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
+- [x] Open popup page in the main window on maximize (only in Chrome – see [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
+- [x] Automatically reopen new single tab windows and tabs opened from page as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
 - [x] Customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
 
 
@@ -100,6 +100,18 @@ If you really enjoy this project, please consider supporting its further develop
 
 > It is possible in Firefox by toggling the `Reopen new single tab windows as popup windows` feature and setting `browser.link.open_newwindow.override.external` config to `2` on `about:config` page
 
+#### What features are browser-specific?
+> Features of this extension may vary depending on which browser are you using due to technical availability. On Firefox, you may get slightly more limited experience. 
+>
+> **Chrome-specific features** (also Edge, Opera, Vivaldi, Brave etc)
+> - [x] Option to remember popup window size on manual resize (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
+> - [x] Option to open page in the main window on clicking "Maximize" window button (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
+> - [x] Excluding "always-on-top" windows from "Close popup when normal window is focused"
+> 
+> **Firefox-specific features**
+> - [x] Option to show address bar button, which on click opens the page in popup window
+> - [x] `Escape` key press during drag-n-drop cancels the "open in popup window" action (not availble in Chrome — https://github.com/emvaized/open-in-popup-window-extension/issues/24#issuecomment-2993699343)
+
 ## Troubleshooting
 - ⚠️ If "Open by drag" and "Shift+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
 - It was also previously [reported](https://github.com/emvaized/open-in-popup-window-extension/issues/1#issuecomment-1637067834) that Firefox Multi-Account Containers might interfere with "Search in popup" action, enforcing it's own redirection and preventing popup window from opening. If you face such issues, I recommend using another search URL in the extension settings
@@ -108,10 +120,10 @@ If you really enjoy this project, please consider supporting its further develop
 - `npm install` to install all dependencies
 - `npm run build` to generate `dist` folder with minimized code of the extension
 
-## Ideas for future updates
-- [ ] Option to remember popup window size on manual resize (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-- [ ] Option to open page in the main window on clicking "Maximize" window button (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
+## Ideas for future releases
 - [ ] Option to keep popup windows always on top (_improssible in both Chrome and Firefox_ – [bug report](https://github.com/w3c/webextensions/issues/443))
+- [ ] Option to open popup windows in _incognito_ mode
+- [ ] Option to open current page in popup window on clicking the toolbar icon (instead of opening settings popup)
 
 ## Privacy
 This extension doesn't collect any private data. It only requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened.
