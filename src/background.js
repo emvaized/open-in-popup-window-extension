@@ -94,7 +94,7 @@ const openInMainWindowContextMenuItem = {
     "id": "openInMainWindow",
     "title": chrome.i18n.getMessage('openPageInMainWindow'),
     "visible": false,
-    "contexts": ["page"]
+    "contexts": ["page_action"] /// change to "page" when should be available
 }
 const searchInPopupWindowContextMenuItem = {
     "id": "searchInPopupWindow",
