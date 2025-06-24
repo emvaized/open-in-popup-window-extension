@@ -103,14 +103,14 @@ If you really enjoy this project, please consider supporting its further develop
 #### What features are browser-specific?
 > Features of this extension may vary depending on which browser are you using due to technical availability. On Firefox, you may get slightly more limited experience. 
 >
-> **Chrome-specific features** (also Edge, Opera, Vivaldi, Brave etc)
+> <img src="https://www.gstatic.com/marketing-cms/assets/images/aa/d2/356851cc4224bc17a230a98e6000/chrome.webp=s48-fcrop64=1,00000000ffffffff-rw" height="16" width="16"/> **Chrome-specific features** (also Edge, Opera, Vivaldi, Brave etc)
 > - [x] Option to remember popup window size on manual resize (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 > - [x] Option to open page in the main window on clicking "Maximize" window button (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 > - [x] Excluding "always-on-top" windows from "Close popup when normal window is focused"
 > 
-> **Firefox-specific features**
+> <img src="http://blog.mozilla.org/design/files/2019/10/Fx-Browser-icon-fullColor.svg" height="16" width="16"/> **Firefox-specific features**
 > - [x] Option to show address bar button, which on click opens the page in popup window
-> - [x] `Escape` key press during drag-n-drop cancels the "open in popup window" action (not availble in Chrome — https://github.com/emvaized/open-in-popup-window-extension/issues/24#issuecomment-2993699343)
+> - [x] `Escape` key press during drag-and-drop cancels the "open in popup window" action (_not availble_ in Chrome — https://github.com/emvaized/open-in-popup-window-extension/issues/24#issuecomment-2993699343)
 
 ## Troubleshooting
 - ⚠️ If "Open by drag" and "Shift+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
