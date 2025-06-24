@@ -368,6 +368,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                                             chrome.windows.get(popupWindowId,{}, (w) => {
                                                 if (w){
                                                     if (w.state == 'minimized') return; /// don't close minimized popup window
+                                                    if (w.alwaysOnTop) return; /// don't close always-on-top window
                                                     chrome.windows.remove(popupWindowId);
                                                     chrome.windows.onFocusChanged.removeListener(windowFocusListener);
                                                 } else {

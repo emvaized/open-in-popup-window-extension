@@ -18,7 +18,7 @@
         "message": "Close popup when normal window is focused"
     },
     "closeWhenFocusedInitialWindowHint": {
-        "message": "Popup window will not be closed if it was minimized"
+        "message": "Popup window will not be closed if it was minimized or set as always on top"
     },
     "debugMode": {
         "message": "Debug mode"
