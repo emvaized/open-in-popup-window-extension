@@ -31,7 +31,10 @@ This extension is intended to be used as an analogue of <i>Safari Link Preview</
 
 <img src="./screenshots/open-in-popup-screenshot.png">
 
-<img src="./screenshots/options-firefox.png">
+<details>
+    <summary>Options page</summary>
+    <img src="./screenshots/options-chrome.png" />
+</details>
 
 ## Support project ❤️
 If you really enjoy this project, please consider supporting its further development by making a small donation using one of the options below! 
