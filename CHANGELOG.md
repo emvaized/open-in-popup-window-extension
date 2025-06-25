@@ -1,3 +1,14 @@
+### 0.4
+- New options:
+  - Remember popup window size on manual resize (_Chromium_ only)
+  - Open popup page in the main window on maximize (_Chromium_ only)
+- Exclude minimized and "always on top" windows from "Close popup when normal window is focused"
+- Fixed single context menu entries getting grouped in Chromium-based browsers
+- Fixed options page being opened in separate tab
+- Reimplemented "search in popup shortcut" without using the Scripting API
+- Make <kbd>Escape</kbd> key cancel the drag event on Firefox
+- Options page reordered for easier readability
+
 ### 0.3.9
 - Added support for customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
 - Fixed bug with reopened popup windows not respecting window location settings (https://github.com/emvaized/open-in-popup-window-extension/issues/20)
@@ -7,7 +18,7 @@
 ### 0.3.8
 - Added new feature to reopen tabs opened by page as popup windows, along with option to do it only for pinned tabs (_disabled_ by default)
 - "Open Page in Main Window" will now move the tab to the main window without reopening it
-- Change "Open in main window" hotkey to <kbd>Alt</kbd>+<kbd> Enter</kbd>
+- Change "Open in main window" hotkey to <kbd>Alt</kbd>+<kbd>Enter</kbd>
 - Bug fixes and improvements for the built-in image viewer
 - Small improvements for options page appearance
 
