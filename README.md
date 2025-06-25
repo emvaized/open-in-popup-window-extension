@@ -123,6 +123,7 @@ If you really enjoy this project, please consider supporting its further develop
 - [ ] Option to keep popup windows always on top (_improssible in both Chrome and Firefox_ – [bug report](https://github.com/w3c/webextensions/issues/443))
 - [ ] Option to open popup windows in _incognito_ mode
 - [ ] Option to open current page in popup window on clicking the toolbar icon (instead of opening settings popup)
+- [ ] Option to translate selected text in popup window (along with keyboard hotkey)
 
 ## Privacy
 This extension doesn't collect any private data. It only requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened.
