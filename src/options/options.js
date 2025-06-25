@@ -7,6 +7,9 @@ function init(){
         for (let i = 0, l = keys.length; i < l; i++) {
             const key = keys[i];
 
+            if (userConfigs.debugMode)
+                console.log('Setting up option: ', key, userConfigs[key]);
+
             /// set corresponing input value
             let input = document.getElementById(key.toString());
 
@@ -88,6 +91,7 @@ function setTranslatedLabels(){
     document.getElementById('generalSettings').innerText = chrome.i18n.getMessage('generalSettings');
     document.getElementById('reopenSettings').innerText = chrome.i18n.getMessage('reopenSettings');
     document.getElementById('openPageInPopupWindowHeader').innerText = chrome.i18n.getMessage('openPageInPopupWindow');
+    document.getElementById('dragAndDropSettings').innerText = chrome.i18n.getMessage('dragAndDropSettings');
 }
 
 function updateDisabledOptions() {
@@ -104,6 +108,18 @@ function updateDisabledOptions() {
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 
             ? 'enabled-option' : 'disabled-option';
+
+    try {
+        let isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
+        if (isFirefox){
+            /// Remove options that are not available in Firefox
+            document.getElementById("rememberWindowResize").parentNode.parentNode.remove();
+            document.getElementById("moveToMainWindowOnMaximize").parentNode.parentNode.remove();
+        } else {
+            /// Remove options that are not available in Chromium-based browsers
+            // document.getElementById("showAddressbarIcon").parentNode.parentNode.remove();
+        }
+    } catch(e){}
 }
 
 function setFooterButtons(){

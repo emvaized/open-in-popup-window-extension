@@ -26,11 +26,9 @@
   ],
   "permissions": [
     "<all_urls>",
-    "activeTab",
     "contextMenus",
     "tabs",
-    "storage",
-    "scripting"
+    "storage"
   ],
   "options_ui": {
     "page": "options/options.html"

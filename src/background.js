@@ -51,6 +51,13 @@ chrome.runtime.onMessage.addListener(
             return;
         }
 
+        /// Check if boundsChanged event is available for the options page
+        if (request.action == 'checkOnBoundsChangedAvailability') {
+            sendResponse(typeof chrome.windows.onBoundsChanged);
+            console.log(typeof chrome.windows.onBoundsChanged)
+            return;
+        }
+
         mouseX = request.mouseX;
         mouseY = request.mouseY;
         elementHeight = request.elementHeight;
@@ -87,7 +94,7 @@ const openInMainWindowContextMenuItem = {
     "id": "openInMainWindow",
     "title": chrome.i18n.getMessage('openPageInMainWindow'),
     "visible": false,
-    "contexts": ["page"]
+    "contexts": ["page_action"] /// change to "page" when should be available
 }
 const searchInPopupWindowContextMenuItem = {
     "id": "searchInPopupWindow",
@@ -111,8 +118,8 @@ chrome.windows.onFocusChanged.addListener(function(wId){
         if (wId == undefined || wId < 0) return; /// don't process when window lost focus
         chrome.windows.get(wId, {},
             (w) => { if (w) {
-                chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup'});
-                chrome.contextMenus.update("openPageInPopupWindow", {"visible": w.type !== 'popup'});
+                chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup', "contexts": w.type == 'popup' ? ["page"] : ["page_action"] });
+                chrome.contextMenus.update("openPageInPopupWindow", {"visible": w.type !== 'popup', "contexts": w.type == 'popup' ? ["page_action"] : ["page"]});
             } },
         );
     }
@@ -127,6 +134,18 @@ chrome.storage.onChanged.addListener((changes) => {
     if (changes.addOptionOpenPageInPopupWindow)
         chrome.contextMenus.update("openPageInPopupWindow", {"visible": changes.addOptionOpenPageInPopupWindow.newValue });
     applyUserConfigs(changes);
+
+    /// For page action, supported only in Firefox
+    // if (chrome.pageAction) {
+    //     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+    //         if (tabs && tabs.length > 0 && tabs[0].id) {
+    //             if (changes.showAddressbarIcon.newValue) 
+    //                 chrome.pageAction.show(tabs[0].id);
+    //             else 
+    //                 chrome.pageAction.hide(tabs[0].id);
+    //         }
+    //     });
+    // }
 });
 
 chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
@@ -332,6 +351,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             }
 
             chrome.windows.create(createParams, function (popupWindow) {
+                if (!popupWindow) return;
+
                 /// set coordinates again (workaround for old firefox bug)
                 let popupWindowId = popupWindow.id;
                 chrome.windows.update(popupWindowId, {
@@ -344,9 +365,16 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                         if (wId > -1) 
                             chrome.windows.get(wId,{}, (w) => {
                                     if (w && w.type == 'normal') {
-                                        chrome.windows.remove(popupWindowId);
-                                        chrome.windows.onFocusChanged.removeListener(windowFocusListener);
-
+                                            chrome.windows.get(popupWindowId,{}, (w) => {
+                                                if (w){
+                                                    if (w.state == 'minimized') return; /// don't close minimized popup window
+                                                    if (w.alwaysOnTop) return; /// don't close always-on-top window
+                                                    chrome.windows.remove(popupWindowId);
+                                                    chrome.windows.onFocusChanged.removeListener(windowFocusListener);
+                                                } else {
+                                                    chrome.windows.onFocusChanged.removeListener(windowFocusListener);
+                                                }
+                                            });
                                         // if (originalWindowIsFullscreen) 
                                         //     chrome.windows.update(parentWindow.id, {
                                         //         'state': 'fullscreen'
@@ -361,28 +389,45 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 }
 
                 /* remember dimensions on window resize 
-                [draft until onBoundsChanged is supported in Firefox]
+                [onBoundsChanged is not supported in Firefox]
                 {@link https://bugzilla.mozilla.org/show_bug.cgi?id=1762975}
                 */
-                // if (configs.rememberWindowResize){
-                //     function resizeListener(w){
-                //         const newSize = {
-                //             'popupHeight': w.height,
-                //             'popupWidth': w.width,
-                //         }
-                //         console.log(newSize);
-                //         chrome.storage.sync.set(configs)
+                if (chrome.windows.onBoundsChanged && (configs.rememberWindowResize || configs.moveToMainWindowOnMaximize)) {
+                    function resizeListener(w){
+                        if (configs.debugMode) console.log('Popup window resized: ', w);
 
-                //     }
-                //     function removedListener(wId){
-                //         if (wId && wId > -1 && wId == popupWindow.id) {
-                //             chrome.windows.onBoundsChanged.removeListener(resizeListener);
-                //             chrome.windows.onRemoved.removeListener(removedListener);
-                //         }
-                //     }
-                //     chrome.windows.onBoundsChanged.addListener(resizeListener);
-                //     chrome.windows.onRemoved.addListener(removedListener);
-                // }
+                        if (w.state == 'maximized'){
+                            /// Move to main window on popup maximize
+                            if (configs.moveToMainWindowOnMaximize) 
+                                chrome.tabs.query({windowId: w.id}, (tabs) => {
+                                    if (tabs && tabs.length > 0) {
+                                        const tab = tabs[0];
+                                        if (tab.id && tab.id > -1) 
+                                            moveTabToRegularWindow(tab);
+                                        
+                                    }
+                                });
+                        } else {
+                            /// Save new popup window size
+                            if (configs.rememberWindowResize){
+                                if (configs.popupHeight == w.height && configs.popupWidth == w.width) return;
+                                configs.popupHeight = w.height;
+                                configs.popupWidth = w.width;
+                                chrome.storage.sync.set(configs);
+                                if (configs.debugMode) console.log('Popup window size saved: ', w.height, w.width);
+                            }
+                        }
+
+                    }
+                    function removedListener(wId){
+                        if (wId && wId > -1 && wId == popupWindow.id) {
+                            chrome.windows.onBoundsChanged.removeListener(resizeListener);
+                            chrome.windows.onRemoved.removeListener(removedListener);
+                        }
+                    }
+                    chrome.windows.onBoundsChanged.addListener(resizeListener);
+                    chrome.windows.onRemoved.addListener(removedListener);
+                }
 
                 /// clear variables
                 elementHeight = undefined; elementWidth = undefined;
@@ -470,27 +515,14 @@ chrome.commands.onCommand.addListener((command, senderTab) => {
         openPopupWindowForLink(senderTab.url, false, false, undefined, true);
     } else if (command === "open-search-in-popup-window") {
         loadUserConfigs((c) => {
-            chrome.scripting.executeScript({
-                target: {
-                    tabId: senderTab.id,
-                    allFrames: false,
-                },
-                func: function() {
-                    let selectedText = document.selection ? document.selection.createRange()
-                        .text :
-                        window.getSelection ? window.getSelection() :
-                        document.getSelection ? document.getSelection() :
-                        "";
-                    selectedText = String(selectedText)
-                        .replace(/\r?\n|\r/g, ''); /// Remove line breaks
-                    return encodeURIComponent(selectedText);
+            chrome.tabs.sendMessage(senderTab.id, { command: "get_selected_text" }, response => {
+                if (response) {
+                    const selectedText = decodeURIComponent(response);
+                    searchSelectedText(selectedText);
+                } else {
+                    searchSelectedText('');
                 }
-            }).then((results) => {
-                const selectedText = results[0].result ?? ''; 
-                searchSelectedText(selectedText);
-            }).catch((e) => {
-                searchSelectedText('');
-            });
+             });
 
             function searchSelectedText(selectedText) {
                 const link = configs.popupSearchUrl.replace('%s', selectedText);
@@ -499,3 +531,19 @@ chrome.commands.onCommand.addListener((command, senderTab) => {
         });
     }
 });
+
+/// For page action, supported only in Firefox
+// if (chrome.pageAction) {
+//     chrome.pageAction.onClicked.addListener(function(senderTab, clickData){
+//             openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+//         });
+
+//     chrome.tabs.onActivated.addListener(activeInfo => {
+//         chrome.storage.sync.get('showAddressbarIcon', result => {
+//             if (result.showAddressbarIcon) 
+//                 chrome.pageAction.show(activeInfo.tabId);
+//             else 
+//                 chrome.pageAction.hide(activeInfo.tabId);
+//         });
+//     });
+// }

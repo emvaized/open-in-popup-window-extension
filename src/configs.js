@@ -18,14 +18,16 @@ const configs = {
     'popupWindowLocation': 'mousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
     'imageWithLinkPreferLink': false,
     'fallbackPopupWindowLocation': 'center',
-    //, 'rememberWindowResize': false,
     'debugMode': false,
     'openDragAndDropUnderMouse': true,
     'addOptionOpenPageInPopupWindow': true,
-    'keepOpenPageInPopupWindowOpen': false,
+    'keepOpenPageInPopupWindowOpen': true,
     'screenWidth': 1920,
     'screenHeight': 1080,
     'availLeft': 0,
+    'rememberWindowResize': false,
+    'moveToMainWindowOnMaximize': true,
+    // 'showAddressbarIcon': false,
 }
 
 function loadUserConfigs(callback) {

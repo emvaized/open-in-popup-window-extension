@@ -48,6 +48,7 @@ function dragStartListener(e){
 }
 function dragEndListener(e){
     if (e.dataTransfer.dropEffect == 'none'){
+        if (e.dataTransfer.mozUserCancelled) return; /// use Esc key to cancel drag on Firefox
         if (
             Math.abs(e.clientX - dragStartDx) > configs.minimalDragDistance ||
             Math.abs(e.clientY - dragStartDy) > configs.minimalDragDistance
@@ -117,3 +118,12 @@ function onTrigger(e, type){
 
     chrome.runtime.sendMessage(message)
 }
+
+/// For 'search in popup' keyboard hotkey
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.command == 'get_selected_text') {
+        let selectedText = window.getSelection().toString().trim();
+        selectedText = selectedText.replace(/\r?\n|\r/g, ''); /// Remove line breaks
+        return sendResponse(encodeURIComponent(selectedText));
+    }
+});

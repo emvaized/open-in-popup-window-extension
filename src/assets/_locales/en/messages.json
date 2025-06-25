@@ -17,11 +17,17 @@
     "closeWhenFocusedInitialWindow": {
         "message": "Close popup when normal window is focused"
     },
+    "closeWhenFocusedInitialWindowHint": {
+        "message": "Popup window will not be closed if it was minimized or set as always on top"
+    },
     "debugMode": {
         "message": "Debug mode"
     },
     "donateButton": {
         "message": "Support project"
+    },
+    "dragAndDropSettings": {
+        "message": "Drag and drop settings"
     },
     "escKeyClosesPopup": {
         "message": "Close popup window with an Escape key"
@@ -52,6 +58,9 @@
     },
     "minimalDragDistance": {
         "message": "Minimal drag distance (px)"
+    },
+    "moveToMainWindowOnMaximize": {
+        "message": "Open popup in main window when maximized"
     },
     "mousePosition": {
         "message": "Mouse cursor position"
@@ -102,7 +111,7 @@
         "message": "Popup window size"
     },
     "rememberWindowResize": {
-        "message": "Remember dimensions on manual resize"
+        "message": "Remember popup size on manual resize"
     },
     "reopenAutoCreatedTabAsPopup": {
         "message": "Reopen tabs opened by page as popup windows"
@@ -118,6 +127,9 @@
     },
     "reopenSingleTabWindowAsPopupHint": {
         "message": "With this option enabled, any new browser window with only one tab will be automatically reopened as a popup window. It allows extension to create popup for links which it usually can't access (for example, bookmarks bar). But it can lead to unwanted behavior if you usually open many browser windows, so use with caution!"
+    },
+    "showAddressbarIcon": {
+        "message": "Show button in address bar to open page in a popup window"
     },
     "searchInPopupEnabled": {
         "message": "Option to search selection in popup enabled"
