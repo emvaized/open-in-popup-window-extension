@@ -125,7 +125,8 @@ If you really enjoy this project, please consider supporting its further develop
 ## Ideas for future releases
 - [ ] Option to keep popup windows always on top (_improssible in both Chrome and Firefox_ – [bug report](https://github.com/w3c/webextensions/issues/443))
 - [ ] Option to open popup windows in _incognito_ mode
-- [ ] Option to open current page in popup window on clicking the toolbar icon (instead of opening settings popup)
+- [ ] Option to open current page in popup window on clicking the toolbar icon (instead of opening the settings popup)
+- [ ] Use text selection coordinates to align the "search" popup window when opened with keyboard shortcut
 - [ ] Option to translate selected text in popup window (along with keyboard hotkey)
 
 ## Privacy
