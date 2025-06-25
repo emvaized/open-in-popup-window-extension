@@ -27,7 +27,7 @@ const configs = {
     'availLeft': 0,
     'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
-    'showAddressbarIcon': false,
+    // 'showAddressbarIcon': false,
 }
 
 function loadUserConfigs(callback) {

@@ -117,7 +117,7 @@ function updateDisabledOptions() {
             document.getElementById("moveToMainWindowOnMaximize").parentNode.parentNode.remove();
         } else {
             /// Remove options that are not available in Chromium-based browsers
-            document.getElementById("showAddressbarIcon").parentNode.parentNode.remove();
+            // document.getElementById("showAddressbarIcon").parentNode.parentNode.remove();
         }
     } catch(e){}
 }

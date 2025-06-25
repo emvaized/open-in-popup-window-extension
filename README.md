@@ -109,7 +109,6 @@ If you really enjoy this project, please consider supporting its further develop
 > - [x] Excluding "always-on-top" windows from "Close popup when normal window is focused"
 > 
 > <img src="http://blog.mozilla.org/design/files/2019/10/Fx-Browser-icon-fullColor.svg" height="16" width="16"/> **Firefox-specific features**
-> - [x] Option to show address bar button, which on click opens the page in popup window
 > - [x] `Escape` key press during drag-and-drop cancels the "open in popup window" action (_not availble_ in Chrome — https://github.com/emvaized/open-in-popup-window-extension/issues/24#issuecomment-2993699343)
 
 ## Troubleshooting
