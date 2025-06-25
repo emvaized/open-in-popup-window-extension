@@ -411,6 +411,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                             /// Save new popup window size
                             if (configs.rememberWindowResize){
                                 if (configs.popupHeight == w.height && configs.popupWidth == w.width) return;
+                                if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
                                 configs.popupHeight = w.height;
                                 configs.popupWidth = w.width;
                                 chrome.storage.sync.set(configs);
