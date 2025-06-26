@@ -536,7 +536,6 @@ function setToolbarIconClickAction(){
 }
 
 chrome.action.onClicked.addListener(function (senderTab) {
-    // openPopupWindowForLink(senderTab.url, false, false, undefined, true);
     loadUserConfigs((c) => {
         switch(configs.toolbarIconClickAction){
             case 'openPageInPopupWindow': {
