@@ -119,7 +119,9 @@ chrome.windows.onFocusChanged.addListener(function(wId){
         chrome.windows.get(wId, {},
             (w) => { if (w) {
                 chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup', "contexts": w.type == 'popup' ? ["page"] : ["page_action"] });
-                chrome.contextMenus.update("openPageInPopupWindow", {"visible": w.type !== 'popup', "contexts": w.type == 'popup' ? ["page_action"] : ["page"]});
+                loadUserConfigs((c) => {
+                    chrome.contextMenus.update("openPageInPopupWindow", {"visible": w.type !== 'popup' && configs.addOptionOpenPageInPopupWindow, "contexts": w.type == 'popup' ? ["page_action"] : ["page"]});
+                });
             } },
         );
     }
