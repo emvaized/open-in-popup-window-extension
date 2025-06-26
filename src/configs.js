@@ -45,6 +45,8 @@ function applyUserConfigs(cfg, keys){
     const l = keys.length;
     for (let i = 0; i < l; i++) {
         const key = keys[i];
-        if (cfg[key] !== undefined) configs[key] = cfg[key];
+        const value = cfg[key];
+        if (value === undefined) continue;
+        configs[key] = value['newValue'] ?? value;
     }
 }
