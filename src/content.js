@@ -16,7 +16,6 @@ loadUserConfigs(function(c) {
 })
 
 function setMouseListeners(){
-
     /* Drag listeners */
     if (configs.openByDragAndDrop){
         document.addEventListener("dragstart",dragStartListener);

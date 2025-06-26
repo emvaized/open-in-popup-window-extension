@@ -135,19 +135,7 @@ chrome.storage.onChanged.addListener((changes) => {
         chrome.contextMenus.update("openPageInPopupWindow", {"visible": changes.addOptionOpenPageInPopupWindow.newValue });
     applyUserConfigs(changes);
 
-    /// For page action, supported only in Firefox
-    // if (chrome.pageAction) {
-    //     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-    //         if (tabs && tabs.length > 0 && tabs[0].id) {
-    //             if (changes.showAddressbarIcon.newValue) 
-    //                 chrome.pageAction.show(tabs[0].id);
-    //             else 
-    //                 chrome.pageAction.hide(tabs[0].id);
-    //         }
-    //     });
-    // }
-
-    setToolbarIconClick();
+    setToolbarIconClickAction();
 });
 
 chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
@@ -535,28 +523,12 @@ chrome.commands.onCommand.addListener((command, senderTab) => {
     }
 });
 
-/// For page action, supported only in Firefox
-// if (chrome.pageAction) {
-//     chrome.pageAction.onClicked.addListener(function(senderTab, clickData){
-//             openPopupWindowForLink(senderTab.url, false, false, undefined, true);
-//         });
-
-//     chrome.tabs.onActivated.addListener(activeInfo => {
-//         chrome.storage.sync.get('showAddressbarIcon', result => {
-//             if (result.showAddressbarIcon) 
-//                 chrome.pageAction.show(activeInfo.tabId);
-//             else 
-//                 chrome.pageAction.hide(activeInfo.tabId);
-//         });
-//     });
-// }
-
 /// Set toolbar icon click action
 loadUserConfigs((c) => {
-    setToolbarIconClick();
+    setToolbarIconClickAction();
 });
 
-function setToolbarIconClick(){
+function setToolbarIconClickAction(){
     if (configs.openPopupToolbarIconClick) {
         chrome.action.setPopup({ popup: "" });
     } else {
