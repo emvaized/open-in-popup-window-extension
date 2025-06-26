@@ -2,9 +2,6 @@
     "addOptionOpenPageInPopupWindow": {
         "message": "Add option to open page in popup window"
     },
-    "keepOpenPageInPopupWindowOpen": {
-        "message": "Don't close page popup window on focus lost"
-    },
     "bottomLeft": {
         "message": "Bottom left"
     },
@@ -59,14 +56,17 @@
     "imageWithLinkPreferLink": {
         "message": "When image is wrapped in link, prefer link"
     },
+    "keepOpenPageInPopupWindowOpen": {
+        "message": "Don't close page popup window on focus lost"
+    },
     "minimalDragDistance": {
         "message": "Minimal drag distance (px)"
     },
-    "moveToMainWindowOnMaximize": {
-        "message": "Open popup in main window when maximized"
-    },
     "mousePosition": {
         "message": "Mouse cursor position"
+    },
+    "moveToMainWindowOnMaximize": {
+        "message": "Open popup in main window when maximized"
     },
     "nearMousePosition": {
         "message": "Near mouse cursor"
@@ -83,20 +83,17 @@
     "openInPopupWindow": {
         "message": "Open Link in Popup Window"
     },
-    "openPageInPopupWindow": {
-        "message": "Open Page in Popup Window"
-    },
     "openPageInMainWindow": {
         "message": "Open Page in Main Window"
-    },
-    "openPageInPopupWindowHotkeyDescription": {
-        "message": "Open the currently opened page in a popup window"
     },
     "openPageInMainWindowHotkeyDescription": {
         "message": "Open popup window in the main window"
     },
-    "openPopupToolbarIconClick": {
-        "message": "Open current page in popup window on toolbar icon click"
+    "openPageInPopupWindow": {
+        "message": "Open Page in Popup Window"
+    },
+    "openPageInPopupWindowHotkeyDescription": {
+        "message": "Open the currently opened page in a popup window"
     },
     "openSearchPopupWindowHotkeyDescription": {
         "message": "Search the selected text in a popup window. Opens empty search page if no text is selected"
@@ -125,17 +122,14 @@
     "reopenAutoCreatedTabsOnlyPinned": {
         "message": "Reopen only tabs created by pinned tabs"
     },
-    "reopenSingleTabWindowAsPopup": {
-        "message": "Reopen new single tab windows as popup windows"
-    },
     "reopenSettings": {
         "message": "Reopening settings"
     },
+    "reopenSingleTabWindowAsPopup": {
+        "message": "Reopen new single tab windows as popup windows"
+    },
     "reopenSingleTabWindowAsPopupHint": {
         "message": "With this option enabled, any new browser window with only one tab will be automatically reopened as a popup window. It allows extension to create popup for links which it usually can't access (for example, bookmarks bar). But it can lead to unwanted behavior if you usually open many browser windows, so use with caution!"
-    },
-    "showAddressbarIcon": {
-        "message": "Show button in address bar to open page in a popup window"
     },
     "searchInPopupEnabled": {
         "message": "Option to search selection in popup enabled"
@@ -146,8 +140,17 @@
     "settingsTitle": {
         "message": "Settings"
     },
+    "showAddressbarIcon": {
+        "message": "Show button in address bar to open page in a popup window"
+    },
+    "showExtensionSettings": {
+        "message": "Show extension settings"
+    },
     "textSelectionHeader": {
         "message": "Text selection"
+    },
+    "toolbarIconClickAction": {
+        "message": "When clicking on toolbar icon"
     },
     "topCenter": {
         "message": "Top center"

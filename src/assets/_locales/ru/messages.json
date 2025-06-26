@@ -95,9 +95,6 @@
     "openPageInPopupWindowHotkeyDescription": {
         "message": "Открыть текущую страницу во всплывающем окне"
     },
-    "openPopupToolbarIconClick": {
-        "message": "Открыть страницу во всплыв. окне при клике на иконку расширения"
-    },
     "openSearchPopupWindowHotkeyDescription": {
         "message": "Искать выделенный текст во всплывающем окне. Открывает пустую страницу поиска, если нет выделенного текста"
     },
@@ -146,8 +143,14 @@
     "showAddressbarIcon": {
         "message": "Показывать кнопку в адресной строке для открытия во всплыв. окне"
     },
+    "showExtensionSettings": {
+        "message": "Показать настройки расширения"
+    },
     "textSelectionHeader": {
         "message": "Выделение текста"
+    },
+    "toolbarIconClickAction": {
+        "message": "При клике на иконку расширения"
     },
     "topCenter": {
         "message": "Центр вверху"

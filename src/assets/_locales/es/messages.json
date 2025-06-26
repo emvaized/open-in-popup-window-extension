@@ -98,9 +98,6 @@
     "openPageInPopupWindowHotkeyDescription": {
         "message": "Abrir la página actualmente abierta en una ventana emergente"
     },
-    "openPopupToolbarIconClick": {
-        "message": "Abrir la página en una ventana emergente al hacer clic en el icono de la barra de herramientas"
-    },
     "openSearchPopupWindowHotkeyDescription": {
         "message": "Busca el texto seleccionado en una ventana emergente. Abre una página de búsqueda vacía si no hay ningún texto seleccionado."
     },
@@ -134,9 +131,6 @@
     "reopenSingleTabWindowAsPopupHint": {
         "message": "Con esta opción activada, cualquier ventana nueva del navegador con una sola pestaña se reabrirá automáticamente como ventana emergente. Permite a la extensión crear ventanas emergentes para enlaces a los que normalmente no puede acceder (por ejemplo, la barra de marcadores). Pero puede conducir a un comportamiento no deseado si sueles abrir muchas ventanas del navegador, ¡así que úsalo con precaución!"
     },
-    "showAddressbarIcon": {
-        "message": "Mostrar botón en la barra de direcciones para abrir la página en una ventana emergente"
-    },
     "searchInPopupEnabled": {
         "message": "Opción para buscar selección en ventana emergente habilitada"
     },
@@ -146,8 +140,17 @@
     "settingsTitle": {
         "message": "Configuración"
     },
+    "showAddressbarIcon": {
+        "message": "Mostrar botón en la barra de direcciones para abrir la página en una ventana emergente"
+    },
+    "showExtensionSettings": {
+        "message": "Mostrar configuración"
+    },
     "textSelectionHeader": {
         "message": "Selección de texto"
+    },
+    "toolbarIconClickAction": {
+        "message": "Al hacer clic en el icono"
     },
     "topCenter": {
         "message": "Arriba medio"

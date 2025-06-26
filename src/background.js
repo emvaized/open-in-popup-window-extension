@@ -528,14 +528,24 @@ loadUserConfigs((c) => {
 });
 
 function setToolbarIconClickAction(){
-    if (configs.openPopupToolbarIconClick) {
-        chrome.action.setPopup({ popup: "" });
-    } else {
+    if (configs.toolbarIconClickAction == 'showExtensionSettings') {
         chrome.action.setPopup({ popup: "options/options.html" });
-    }
+    } else {
+        chrome.action.setPopup({ popup: "" });
+    } 
 }
 
 chrome.action.onClicked.addListener(function (senderTab) {
-    openPopupWindowForLink(senderTab.url, false, false, undefined, true);
-    // openSearchPopup(senderTab);
+    // openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+    loadUserConfigs((c) => {
+        switch(configs.toolbarIconClickAction){
+            case 'openPageInPopupWindow': {
+                openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+            } break;
+            case 'searchInPopupWindow': {
+                openSearchPopup(senderTab);
+            } break;
+            default: return;
+        }
+    });
 });

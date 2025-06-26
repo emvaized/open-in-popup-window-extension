@@ -27,7 +27,7 @@ const configs = {
     'availLeft': 0,
     'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
-    'openPopupToolbarIconClick': false,
+    'toolbarIconClickAction': 'showExtensionSettings', // possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 
 function loadUserConfigs(callback) {
