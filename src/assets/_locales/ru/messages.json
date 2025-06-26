@@ -92,6 +92,9 @@
     "openPageInPopupWindowHotkeyDescription": {
         "message": "Открыть текущую страницу во всплывающем окне"
     },
+    "openPopupToolbarIconClick": {
+        "message": "Открыть страницу во всплыв. окне при клике на иконку расширения"
+    },
     "openSearchPopupWindowHotkeyDescription": {
         "message": "Искать выделенный текст во всплывающем окне. Открывает пустую страницу поиска, если нет выделенного текста"
     },

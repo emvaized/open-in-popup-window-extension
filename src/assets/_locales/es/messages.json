@@ -95,6 +95,9 @@
     "openPageInPopupWindowHotkeyDescription": {
         "message": "Abrir la página actualmente abierta en una ventana emergente"
     },
+    "openPopupToolbarIconClick": {
+        "message": "Abrir la página en una ventana emergente al hacer clic en el icono de la barra de herramientas"
+    },
     "openSearchPopupWindowHotkeyDescription": {
         "message": "Busca el texto seleccionado en una ventana emergente. Abre una página de búsqueda vacía si no hay ningún texto seleccionado."
     },

@@ -92,6 +92,9 @@
     "openPageInMainWindowHotkeyDescription": {
         "message": "Open popup window in the main window"
     },
+    "openPopupToolbarIconClick": {
+        "message": "Open current page in popup window on toolbar icon click"
+    },
     "openSearchPopupWindowHotkeyDescription": {
         "message": "Search the selected text in a popup window. Opens empty search page if no text is selected"
     },

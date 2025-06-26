@@ -146,6 +146,8 @@ chrome.storage.onChanged.addListener((changes) => {
     //         }
     //     });
     // }
+
+    setToolbarIconClick();
 });
 
 chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
@@ -548,3 +550,20 @@ chrome.commands.onCommand.addListener((command, senderTab) => {
 //         });
 //     });
 // }
+
+/// Set toolbar icon click action
+loadUserConfigs((c) => {
+    setToolbarIconClick();
+});
+
+function setToolbarIconClick(){
+    if (configs.openPopupToolbarIconClick) {
+        chrome.action.setPopup({ popup: "" });
+    } else {
+        chrome.action.setPopup({ popup: "options/options.html" });
+    }
+}
+
+chrome.action.onClicked.addListener(function (tab) {
+    openPopupWindowForLink(tab.url, false, false, undefined, true);
+});

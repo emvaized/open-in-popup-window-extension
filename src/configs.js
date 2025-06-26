@@ -28,6 +28,7 @@ const configs = {
     'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
     // 'showAddressbarIcon': false,
+    'openPopupToolbarIconClick': false,
 }
 
 function loadUserConfigs(callback) {
