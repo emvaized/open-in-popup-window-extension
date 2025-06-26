@@ -102,13 +102,13 @@
         "message": "Busca el texto seleccionado en una ventana emergente. Abre una página de búsqueda vacía si no hay ningún texto seleccionado."
     },
     "popupHeight": {
-        "message": "Altura emergente (px)"
+        "message": "Altura (px)"
     },
     "popupSearchUrl": {
         "message": "URL de búsqueda (%s se reemplazará con la consulta de búsqueda)"
     },
     "popupWidth": {
-        "message": "Ancho de la ventana emergente (px)"
+        "message": "Anchura (px)"
     },
     "popupWindowLocation": {
         "message": "Ubicación de la ventana emergente"
