@@ -15,9 +15,9 @@ This tiny and lightweight browser extension provides ability to quickly preview 
 - [x] Use drag and drop to open in popup window (_disabled_ by default)
 - [x] Configurable popup height, width and position on screen
 - [x] Close popup window when origin window regains focus (excludes minimized and "always-on-top" windows)
-- [x] Remember popup window size on manual resize (only in Chrome – see [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
+- [x] Remember popup window size on manual resize (_only Chrome_ – see [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 - [x] Open popup page in the main window on maximize (only in Chrome – see [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-- [x] Automatically reopen new single tab windows and tabs opened from page as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
+- [x] Automatically reopen new single tab windows and tabs opened by page as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
 - [x] Customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
 
 
@@ -109,7 +109,7 @@ If you really enjoy this project, please consider supporting its further develop
 > <img src="https://www.gstatic.com/marketing-cms/assets/images/aa/d2/356851cc4224bc17a230a98e6000/chrome.webp=s48-fcrop64=1,00000000ffffffff-rw" height="16" width="16"/> **Chrome-specific features** (also Edge, Opera, Vivaldi, Brave etc)
 > - [x] Option to remember popup window size on manual resize (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 > - [x] Option to open page in the main window on clicking "Maximize" window button (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-> - [x] Excluding "always-on-top" windows from "Close popup when normal window is focused"
+> - [x] Excluding "always on top" windows from "Close popup when normal window is focused"
 > 
 > <img src="http://blog.mozilla.org/design/files/2019/10/Fx-Browser-icon-fullColor.svg" height="16" width="16"/> **Firefox-specific features**
 > - [x] `Escape` key press during drag-and-drop cancels the "open in popup window" action (_not availble_ in Chrome — https://github.com/emvaized/open-in-popup-window-extension/issues/24#issuecomment-2993699343)
