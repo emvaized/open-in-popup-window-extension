@@ -38,6 +38,9 @@
     "fallbackPopupWindowLocation": {
         "message": "Opción alternativa para la ubicación de la ventana emergente"
     },
+    "fallbackPopupWindowLocationHint": {
+        "message": "Se utiliza cuando la posición del cursor en la pantalla no está disponible"
+    },
     "generalSettings": {
         "message": "Configuración general"
     },

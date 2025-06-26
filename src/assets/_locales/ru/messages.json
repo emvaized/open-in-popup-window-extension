@@ -38,6 +38,9 @@
     "fallbackPopupWindowLocation": {
         "message": "Запасной вариант расположения всплывающего окна"
     },
+    "fallbackPopupWindowLocationHint": {
+        "message": "Используется, когда не удается получить позицию курсора на экране"
+    },
     "generalSettings": {
         "message": "Общие настройки"
     },

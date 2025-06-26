@@ -41,6 +41,9 @@
     "fallbackPopupWindowLocation": {
         "message": "Fallback option for popup window location"
     },
+    "fallbackPopupWindowLocationHint": {
+        "message": "Used when the screen cursor position is not available"
+    },
     "generalSettings": {
         "message": "General settings"
     },
