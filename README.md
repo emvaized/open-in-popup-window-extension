@@ -16,10 +16,9 @@ This tiny and lightweight browser extension provides ability to quickly preview 
 - [x] Configurable popup height, width and position on screen
 - [x] Close popup window when origin window regains focus (excludes minimized and "always-on-top" windows)
 - [x] Remember popup window size on manual resize (_only Chrome_ – see [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-- [x] Open popup page in the main window on maximize (only in Chrome – see [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
+- [x] Open popup page in the main window on maximize (_only Chrome_ – see [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 - [x] Automatically reopen new single tab windows and tabs opened by page as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
 - [x] Customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
-
 
 This extension is intended to be used as an analogue of <i>Safari Link Preview</i>, <i>Arc Peek</i> or <i>Zen Glance</i>. It's a great way to preview links, which works everywhere and is not affected by the CORS problem like other extensions which are using `iframe` element for the link preview.
 
@@ -75,7 +74,7 @@ If you really enjoy this project, please consider supporting its further develop
 > Due to the specifics of fullscreen mode on Mac OS (fullscreen apps separate in their own Desktop space), popup windows do not appear above the fullcreen window. They either open on the "main" desktop (Firefox), or as a new fullscreen window (Chrome). To use this extension on Mac OS, you would have to open browser not in the fullscreen mode.
 
 #### How to make popups remain always on top? 
-> Unfortunately, browser extensions currently are [not capable](https://github.com/w3c/webextensions/issues/443) of manually setting "always on top" flag. 
+> Unfortunately, browser extensions currently are [not capable](https://github.com/w3c/webextensions/issues/443) of manually setting the "always on top" flag. 
 >
 > But you can use third-party programs in your system which can do it, for example [PowerToys](https://github.com/microsoft/PowerToys) on Windows. Don't forget to disable autoclosing popup window when it loses focus in the extension settings.
 
@@ -109,7 +108,7 @@ If you really enjoy this project, please consider supporting its further develop
 > <img src="https://www.gstatic.com/marketing-cms/assets/images/aa/d2/356851cc4224bc17a230a98e6000/chrome.webp=s48-fcrop64=1,00000000ffffffff-rw" height="16" width="16"/> **Chrome-specific features** (also Edge, Opera, Vivaldi, Brave etc)
 > - [x] Option to remember popup window size on manual resize (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 > - [x] Option to open page in the main window on clicking "Maximize" window button (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-> - [x] Excluding "always on top" windows from "Close popup when normal window is focused"
+> - [x] Excluding "always on top" windows from "Close popup when normal window is focused" (may not work in Firefox)
 > 
 > <img src="http://blog.mozilla.org/design/files/2019/10/Fx-Browser-icon-fullColor.svg" height="16" width="16"/> **Firefox-specific features**
 > - [x] `Escape` key press during drag-and-drop cancels the "open in popup window" action (_not availble_ in Chrome — https://github.com/emvaized/open-in-popup-window-extension/issues/24#issuecomment-2993699343)
