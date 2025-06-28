@@ -11,7 +11,7 @@ This tiny and lightweight browser extension provides ability to quickly preview 
 
 <b>Features:</b>
 - [x] Ability to open images and search selected text in popup window
-- [x] Use <kbd>Shift</kbd> + click to open in popup window (_disabled_ by default)
+- [x] Use <kbd>Shift</kbd> + click to open in popup window (_enabled_ by default)
 - [x] Use drag and drop to open in popup window (_disabled_ by default)
 - [x] Configurable popup height, width and position on screen
 - [x] Close popup window when origin window regains focus (excludes minimized and "always-on-top" windows)

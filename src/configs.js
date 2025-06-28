@@ -10,7 +10,7 @@ const configs = {
     'minimalDragDistance': 50,
     'tryFitWindowSizeToImage': true,
     'useBuiltInImageViewer': false,
-    'openByShiftClick': false,
+    'openByShiftClick': true,
     'escKeyClosesPopup': false,
     'reopenSingleTabWindowAsPopup': false,
     'reopenAutoCreatedTabAsPopup': false,
