@@ -16,7 +16,7 @@ const configs = {
     'reopenAutoCreatedTabAsPopup': false,
     'reopenAutoCreatedTabsOnlyPinned': true,
     'popupWindowLocation': 'mousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
-    'imageWithLinkPreferLink': false,
+    'imageWithLinkPreferLink': true,
     'fallbackPopupWindowLocation': 'center',
     'debugMode': false,
     'openDragAndDropUnderMouse': true,
