@@ -173,6 +173,9 @@
     "viewInPopupWindow": {
         "message": "Посмотреть изображение во всплыв. окне"
     },
+    "whatsNew": {
+        "message": "Что нового"
+    },
     "writeAReviewButton": {
         "message": "Написать отзыв"
     }

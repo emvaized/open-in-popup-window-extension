@@ -173,6 +173,9 @@
     "viewInPopupWindow": {
         "message": "Ver imagen en ventana emergente"
     },
+    "whatsNew": {
+        "message": "Qué es nuevo"
+    },
     "writeAReviewButton": {
         "message": "Escribe una reseña"
     }

@@ -173,6 +173,9 @@
     "viewInPopupWindow": {
         "message": "View Image in Popup Window"
     },
+    "whatsNew": {
+        "message": "What's new"
+    },
     "writeAReviewButton": {
         "message": "Write a review"
     }

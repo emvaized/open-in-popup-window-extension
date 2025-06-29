@@ -139,7 +139,7 @@ function setVersionLabel() {
     const label = document.getElementById('versionLabel');
     const manifestData = chrome.runtime.getManifest();
     label.innerHTML = 'v' + manifestData.version;
-    label.title = 'Release notes';
+    label.title = chrome.i18n.getMessage('whatsNew', "What's new");
     label.onclick = function () {
         window.open('https://github.com/emvaized/open-in-popup-window-extension/blob/main/CHANGELOG.md')
     }
