@@ -1,4 +1,4 @@
-let mouseX, mouseY, elementHeight, elementWidth, lastPopupId;
+let mouseX, mouseY, elementHeight, elementWidth, lastPopupId, lastNormalWindowId;
 let textSelection, availWidth, availHeight, availLeft;
 
 chrome.runtime.onMessage.addListener(
@@ -115,6 +115,7 @@ chrome.windows.onFocusChanged.addListener(function(wId){
                 loadUserConfigs((c) => {
                     chrome.contextMenus.update("openPageInPopupWindow", {"visible": w.type !== 'popup' && configs.addOptionOpenPageInPopupWindow, "contexts": w.type == 'popup' ? ["page_action"] : ["page"]});
                 });
+                if (w.type == 'normal') lastNormalWindowId = wId;
             } },
         );
     }
@@ -432,12 +433,37 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
  function moveTabToRegularWindow(tab){
     // chrome.tabs.remove(tab.id);
     // chrome.tabs.create({ url: clickData.pageUrl, active: true });
+
+    /// getLastFocused only works in Chrome
+    // chrome.windows.getLastFocused(
+    //     { populate: false, windowTypes: ['normal'] }).then(function (windowInfo) {
+    //     if (windowInfo && windowInfo.id) {
+    //         chrome.tabs.move(tab.id, { 
+    //             index: -1, 
+    //             windowId: windowInfo.id
+    //         }, function(t){
+    //             chrome.tabs.update(tab.id, { 'active': true });
+    //         });
+    //     }
+    // });
+
     chrome.windows.getAll(
         { windowTypes: ['normal'] },
         function(windows){
+
+            /// Find last used normal window
+            let lastUsedWindowId;
+            for (let i = 0, l = windows.length; i < l; i++) {
+                const w = windows[i];
+                if (w.id && w.id == lastNormalWindowId) {
+                    lastUsedWindowId = w.id;
+                    break;
+                }
+            }
+
             chrome.tabs.move(tab.id, { 
                     index: -1, 
-                    windowId: windows[0].id
+                    windowId: lastUsedWindowId ?? windows[0].id
             }, function(t){
                 // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
                 chrome.tabs.update(tab.id, { 'active': true });
