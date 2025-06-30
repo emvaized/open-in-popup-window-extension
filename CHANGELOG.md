@@ -1,3 +1,11 @@
+### 0.4.1
+- Added configurable action on toolbar icon click
+- Don't save size for automatically resized image viewer
+- Use last used window in "Move to main window" instead of the first found
+- Fixed "open page in popup window" context menu item ignoring being disabled in options
+- Fixed bug with configs value restoring
+- Options page layout improvements
+
 ### 0.4
 - New options:
   - Remember popup window size on manual resize (_Chromium_ only)
