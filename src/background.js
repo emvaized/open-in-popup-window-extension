@@ -461,12 +461,14 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 }
             }
 
+            const targetWindowId = lastUsedWindowId ?? windows[0].id;
             chrome.tabs.move(tab.id, { 
                     index: -1, 
-                    windowId: lastUsedWindowId ?? windows[0].id
+                    windowId: targetWindowId
             }, function(t){
                 // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
                 chrome.tabs.update(tab.id, { 'active': true });
+                chrome.windows.update(targetWindowId, {focused: true});
             });
         }
     );
