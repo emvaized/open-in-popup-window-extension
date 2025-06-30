@@ -1,4 +1,4 @@
-let mouseX, mouseY, elementHeight, elementWidth, lastPopupId;
+let mouseX, mouseY, elementHeight, elementWidth, lastPopupId, lastNormalWindowId;
 let textSelection, availWidth, availHeight, availLeft;
 
 chrome.runtime.onMessage.addListener(
@@ -14,13 +14,6 @@ chrome.runtime.onMessage.addListener(
             });
             return;
         }
-        // if (request.action == 'requestOpenInMainWindow') {
-        //     loadUserConfigs((c) => {
-        //         if (configs.escKeyClosesPopup && sender.tab)
-        //             moveTabToRegularWindow(sender.tab)
-        //     });
-        //     return;
-        // }
 
         if (request.action == 'updateAspectRatio') {
             if (request.aspectRatio && configs.tryFitWindowSizeToImage) {
@@ -119,7 +112,10 @@ chrome.windows.onFocusChanged.addListener(function(wId){
         chrome.windows.get(wId, {},
             (w) => { if (w) {
                 chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup', "contexts": w.type == 'popup' ? ["page"] : ["page_action"] });
-                chrome.contextMenus.update("openPageInPopupWindow", {"visible": w.type !== 'popup', "contexts": w.type == 'popup' ? ["page_action"] : ["page"]});
+                loadUserConfigs((c) => {
+                    chrome.contextMenus.update("openPageInPopupWindow", {"visible": w.type !== 'popup' && configs.addOptionOpenPageInPopupWindow, "contexts": w.type == 'popup' ? ["page_action"] : ["page"]});
+                });
+                if (w.type == 'normal') lastNormalWindowId = wId;
             } },
         );
     }
@@ -135,24 +131,12 @@ chrome.storage.onChanged.addListener((changes) => {
         chrome.contextMenus.update("openPageInPopupWindow", {"visible": changes.addOptionOpenPageInPopupWindow.newValue });
     applyUserConfigs(changes);
 
-    /// For page action, supported only in Firefox
-    // if (chrome.pageAction) {
-    //     chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
-    //         if (tabs && tabs.length > 0 && tabs[0].id) {
-    //             if (changes.showAddressbarIcon.newValue) 
-    //                 chrome.pageAction.show(tabs[0].id);
-    //             else 
-    //                 chrome.pageAction.hide(tabs[0].id);
-    //         }
-    //     });
-    // }
+    setToolbarIconClickAction();
 });
 
 chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     if (clickData.menuItemId == 'openInMainWindow') {
             if (tab) moveTabToRegularWindow(tab)
-            // chrome.tabs.remove(tab.id);
-            // chrome.tabs.create({ url: clickData.pageUrl, active: true });
         return;
     }
     
@@ -411,6 +395,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                             /// Save new popup window size
                             if (configs.rememberWindowResize){
                                 if (configs.popupHeight == w.height && configs.popupWidth == w.width) return;
+                                if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
                                 configs.popupHeight = w.height;
                                 configs.popupWidth = w.width;
                                 chrome.storage.sync.set(configs);
@@ -446,12 +431,39 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
  }
 
  function moveTabToRegularWindow(tab){
+    // chrome.tabs.remove(tab.id);
+    // chrome.tabs.create({ url: clickData.pageUrl, active: true });
+
+    /// getLastFocused only works in Chrome
+    // chrome.windows.getLastFocused(
+    //     { populate: false, windowTypes: ['normal'] }).then(function (windowInfo) {
+    //     if (windowInfo && windowInfo.id) {
+    //         chrome.tabs.move(tab.id, { 
+    //             index: -1, 
+    //             windowId: windowInfo.id
+    //         }, function(t){
+    //             chrome.tabs.update(tab.id, { 'active': true });
+    //         });
+    //     }
+    // });
+
     chrome.windows.getAll(
         { windowTypes: ['normal'] },
         function(windows){
+
+            /// Find last used normal window
+            let lastUsedWindowId;
+            for (let i = 0, l = windows.length; i < l; i++) {
+                const w = windows[i];
+                if (w.id && w.id == lastNormalWindowId) {
+                    lastUsedWindowId = w.id;
+                    break;
+                }
+            }
+
             chrome.tabs.move(tab.id, { 
                     index: -1, 
-                    windowId: windows[0].id
+                    windowId: lastUsedWindowId ?? windows[0].id
             }, function(t){
                 // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
                 chrome.tabs.update(tab.id, { 'active': true });
@@ -514,36 +526,60 @@ chrome.commands.onCommand.addListener((command, senderTab) => {
     } else if (command === "open-in-popup-window") {
         openPopupWindowForLink(senderTab.url, false, false, undefined, true);
     } else if (command === "open-search-in-popup-window") {
-        loadUserConfigs((c) => {
-            chrome.tabs.sendMessage(senderTab.id, { command: "get_selected_text" }, response => {
-                if (response) {
-                    const selectedText = decodeURIComponent(response);
-                    searchSelectedText(selectedText);
-                } else {
-                    searchSelectedText('');
-                }
-             });
-
-            function searchSelectedText(selectedText) {
-                const link = configs.popupSearchUrl.replace('%s', selectedText);
-                openPopupWindowForLink(link);
-            }
-        });
+        openSearchPopup(senderTab);
     }
 });
 
-/// For page action, supported only in Firefox
-// if (chrome.pageAction) {
-//     chrome.pageAction.onClicked.addListener(function(senderTab, clickData){
-//             openPopupWindowForLink(senderTab.url, false, false, undefined, true);
-//         });
+function openSearchPopup(senderTab){
+    chrome.tabs.sendMessage(senderTab.id, { command: "get_selected_text" }, response => {
+        if (response) {
+            const selectedText = decodeURIComponent(response);
+            searchSelectedText(selectedText);
+        } else {
+            searchSelectedText('');
+        }
+    });
 
-//     chrome.tabs.onActivated.addListener(activeInfo => {
-//         chrome.storage.sync.get('showAddressbarIcon', result => {
-//             if (result.showAddressbarIcon) 
-//                 chrome.pageAction.show(activeInfo.tabId);
-//             else 
-//                 chrome.pageAction.hide(activeInfo.tabId);
-//         });
-//     });
-// }
+    function searchSelectedText(selectedText) {
+        loadUserConfigs((c) => {
+            const link = configs.popupSearchUrl.replace('%s', selectedText);
+            openPopupWindowForLink(link);
+        });
+    }
+}
+
+/// Set toolbar icon click action
+loadUserConfigs((c) => {
+    setToolbarIconClickAction();
+});
+
+function setToolbarIconClickAction(){
+    switch(configs.toolbarIconClickAction){
+        case 'openPageInPopupWindow': {
+            chrome.action.setPopup({ popup: "" });
+            chrome.action.setTitle({ title: chrome.i18n.getMessage('openPageInPopupWindow') });
+        } break;
+        case 'searchInPopupWindow': {
+            chrome.action.setPopup({ popup: "" });
+            chrome.action.setTitle({ title: chrome.i18n.getMessage('searchInPopupWindow') });
+        } break;
+        default: {chrome.i18n.getMessage('searchInPopupWindow')
+            chrome.action.setPopup({ popup: "options/options.html" });
+            chrome.action.setTitle({ title: chrome.i18n.getMessage('showExtensionSettings') + ' (Open in Popup Window)' });
+        }
+    }
+}
+
+chrome.action.onClicked.addListener(function (senderTab) {
+    loadUserConfigs((c) => {
+        switch(configs.toolbarIconClickAction){
+            case 'openPageInPopupWindow': {
+                openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+            } break;
+            case 'searchInPopupWindow': {
+                openSearchPopup(senderTab);
+            } break;
+            default: return;
+        }
+    });
+});

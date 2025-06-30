@@ -38,6 +38,9 @@
     "fallbackPopupWindowLocation": {
         "message": "Opción alternativa para la ubicación de la ventana emergente"
     },
+    "fallbackPopupWindowLocationHint": {
+        "message": "Se utiliza cuando la posición del cursor en la pantalla no está disponible"
+    },
     "generalSettings": {
         "message": "Configuración general"
     },
@@ -99,13 +102,13 @@
         "message": "Busca el texto seleccionado en una ventana emergente. Abre una página de búsqueda vacía si no hay ningún texto seleccionado."
     },
     "popupHeight": {
-        "message": "Altura emergente (px)"
+        "message": "Altura (px)"
     },
     "popupSearchUrl": {
         "message": "URL de búsqueda (%s se reemplazará con la consulta de búsqueda)"
     },
     "popupWidth": {
-        "message": "Ancho de la ventana emergente (px)"
+        "message": "Anchura (px)"
     },
     "popupWindowLocation": {
         "message": "Ubicación de la ventana emergente"
@@ -128,9 +131,6 @@
     "reopenSingleTabWindowAsPopupHint": {
         "message": "Con esta opción activada, cualquier ventana nueva del navegador con una sola pestaña se reabrirá automáticamente como ventana emergente. Permite a la extensión crear ventanas emergentes para enlaces a los que normalmente no puede acceder (por ejemplo, la barra de marcadores). Pero puede conducir a un comportamiento no deseado si sueles abrir muchas ventanas del navegador, ¡así que úsalo con precaución!"
     },
-    "showAddressbarIcon": {
-        "message": "Mostrar botón en la barra de direcciones para abrir la página en una ventana emergente"
-    },
     "searchInPopupEnabled": {
         "message": "Opción para buscar selección en ventana emergente habilitada"
     },
@@ -140,8 +140,17 @@
     "settingsTitle": {
         "message": "Configuración"
     },
+    "showAddressbarIcon": {
+        "message": "Mostrar botón en la barra de direcciones para abrir la página en una ventana emergente"
+    },
+    "showExtensionSettings": {
+        "message": "Mostrar configuración"
+    },
     "textSelectionHeader": {
         "message": "Selección de texto"
+    },
+    "toolbarIconClickAction": {
+        "message": "Al hacer clic en el icono"
     },
     "topCenter": {
         "message": "Arriba medio"
@@ -163,6 +172,9 @@
     },
     "viewInPopupWindow": {
         "message": "Ver imagen en ventana emergente"
+    },
+    "whatsNew": {
+        "message": "Qué es nuevo"
     },
     "writeAReviewButton": {
         "message": "Escribe una reseña"

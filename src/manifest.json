@@ -25,10 +25,9 @@
     }
   ],
   "permissions": [
-    "<all_urls>",
     "contextMenus",
-    "tabs",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "options_ui": {
     "page": "options/options.html"
@@ -40,8 +39,7 @@
       "dark": "icon_new.png",
       "size": 32
     }],
-    "default_title": "Open in Popup Window",
-    "default_popup": "options/options.html"
+    "default_title": "Open in Popup Window"
   },
   "browser_specific_settings": {
     "gecko": {

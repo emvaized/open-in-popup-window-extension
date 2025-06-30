@@ -7,8 +7,6 @@
 </head>
 
 <body>
-    <!-- <h2 id="settingsTitle">Settings</h2> -->
-    
     <div><h5 id="generalSettings">General settings</h5> <hr /></div>
 
     <div class='option'>
@@ -33,6 +31,7 @@
             <option value="bottomLeft">Bottom left</option>
             <option value="bottomRight">Bottom right</option>
         </select></label>
+        <span class="hint">?</span>
     </div>
 
     <div class='option'>
@@ -54,13 +53,32 @@
     </div>
 
     <div class='option'>
-        <label><input type="checkbox" id="rememberWindowResize"></input></label>
-    </div>
-    
-    <div class='option'>
         <label><input type="checkbox" id="moveToMainWindowOnMaximize"></input></label>
     </div>
-    
+
+    <div class='option'>
+        <label><select id="toolbarIconClickAction">
+            <option value="showExtensionSettings">Show Extension Settings</option>
+            <option value="openPageInPopupWindow">Open page in popup</option>
+            <option value="searchInPopupWindow">Search in popup</option>
+        </select></label>
+    </div>
+
+    <div><h5 id="popupWindowSize">Popup window size</h5> <hr /></div>
+
+    <div style="margin: 8px 0;">
+        <span class='option'>
+            <label><input type="number" max="10000" min="100" step="50" id="popupHeight"></input></label>
+        </span>  
+        <span class='option'>
+            <label><input type="number" max="10000" min="100" step="50" id="popupWidth"></input></label>
+        </span>
+    </div>
+
+    <div class='option'>
+        <label><input type="checkbox" id="rememberWindowResize"></input></label>
+    </div>
+
     <div><h5 id="dragAndDropSettings">Drag & drop settings</h5> <hr /></div>
 
     <div class='option'>
@@ -80,21 +98,6 @@
             <label><input type="number" max="10000" min="0" step="10" id="minimalDragDistance"></input></label>
         </div>
     </div>
-
-    <div><h5 id="popupWindowSize">Popup window size</h5> <hr /></div>
-
-    <div style="margin-bottom: 8px;">
-        <span class='option'>
-            <label><input type="number" max="10000" min="100" step="50" id="popupHeight"></input></label>
-        </span>  
-        <span class='option'>
-            <label><input type="number" max="10000" min="100" step="50" id="popupWidth"></input></label>
-        </span>
-    </div>
-
-    <!-- <div class='option'>
-        <label><input type="checkbox" id="rememberWindowResize"></input></label>
-    </div> -->
 
    <div><h5 id="imageViewer">Image viewer</h5> <hr /> </div>
 
@@ -130,16 +133,14 @@
         <label><input type="checkbox" id="addOptionOpenPageInPopupWindow"></input></label>
     </div>
 
-    <div class="subgroup">
-        <div class='option'>
-            <label><input type="checkbox" id="keepOpenPageInPopupWindowOpen"></input></label>
-        </div>
+    <div class='option'>
+        <label><input type="checkbox" id="keepOpenPageInPopupWindowOpen"></input></label>
     </div>
 
     <!-- <div class='option'>
         <label><input type="checkbox" id="showAddressbarIcon"></input></label>
-    </div> -->
-
+    </div> -->   
+    
     <div><h5 id="reopenSettings">Reopening settings</h5> <hr /></div>
 
     <div class='option'>

@@ -36,7 +36,10 @@
         "message": "Открывает ссылки и изображения во вплывающем окне"
     },
     "fallbackPopupWindowLocation": {
-        "message": "Запасной вариант расположения всплывающего окна"
+        "message": "Запасной вариант расположения всплыв. окна"
+    },
+    "fallbackPopupWindowLocationHint": {
+        "message": "Используется, когда не удается получить позицию курсора на экране"
     },
     "generalSettings": {
         "message": "Общие настройки"
@@ -96,13 +99,13 @@
         "message": "Искать выделенный текст во всплывающем окне. Открывает пустую страницу поиска, если нет выделенного текста"
     },
     "popupHeight": {
-        "message": "Высота окна (px)"
+        "message": "Высота (px)"
     },
     "popupSearchUrl": {
         "message": "URL поиска (%s будет заменено поисковым запросом)"
     },
     "popupWidth": {
-        "message": "Ширина окна (px)"
+        "message": "Ширина (px)"
     },
     "popupWindowLocation": {
         "message": "Расположение всплывающего окна"
@@ -140,8 +143,14 @@
     "showAddressbarIcon": {
         "message": "Показывать кнопку в адресной строке для открытия во всплыв. окне"
     },
+    "showExtensionSettings": {
+        "message": "Показать настройки расширения"
+    },
     "textSelectionHeader": {
         "message": "Выделение текста"
+    },
+    "toolbarIconClickAction": {
+        "message": "При клике на иконку расширения"
     },
     "topCenter": {
         "message": "Центр вверху"
@@ -153,7 +162,7 @@
         "message": "Справа вверху"
     },
     "tryFitWindowSizeToImage": {
-        "message": "Попытаться подогнать ширину окна под размер изображения"
+        "message": "Попробовать подогнать ширину окна под размер изображения"
     },
     "useBuiltInImageViewer": {
         "message": "Использовать встроенный в браузер просмотрщик изображений"
@@ -163,6 +172,9 @@
     },
     "viewInPopupWindow": {
         "message": "Посмотреть изображение во всплыв. окне"
+    },
+    "whatsNew": {
+        "message": "Что нового"
     },
     "writeAReviewButton": {
         "message": "Написать отзыв"

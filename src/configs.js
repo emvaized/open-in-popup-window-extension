@@ -10,13 +10,13 @@ const configs = {
     'minimalDragDistance': 50,
     'tryFitWindowSizeToImage': true,
     'useBuiltInImageViewer': false,
-    'openByShiftClick': false,
+    'openByShiftClick': true,
     'escKeyClosesPopup': false,
     'reopenSingleTabWindowAsPopup': false,
     'reopenAutoCreatedTabAsPopup': false,
     'reopenAutoCreatedTabsOnlyPinned': true,
     'popupWindowLocation': 'mousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
-    'imageWithLinkPreferLink': false,
+    'imageWithLinkPreferLink': true,
     'fallbackPopupWindowLocation': 'center',
     'debugMode': false,
     'openDragAndDropUnderMouse': true,
@@ -27,7 +27,7 @@ const configs = {
     'availLeft': 0,
     'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
-    // 'showAddressbarIcon': false,
+    'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 
 function loadUserConfigs(callback) {
@@ -45,6 +45,8 @@ function applyUserConfigs(cfg, keys){
     const l = keys.length;
     for (let i = 0; i < l; i++) {
         const key = keys[i];
-        if (cfg[key] !== undefined) configs[key] = cfg[key];
+        const value = cfg[key];
+        if (value === undefined) continue;
+        configs[key] = value['newValue'] ?? value;
     }
 }
