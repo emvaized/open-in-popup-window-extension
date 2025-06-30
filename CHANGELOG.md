@@ -4,6 +4,7 @@
 - Use last used window in "Move to main window" instead of the first found
 - Fixed "open page in popup window" context menu item ignoring being disabled in options
 - Fixed bug with configs value restoring
+- Enabled by default "use Shift + click" and "prefer link over image" options
 - Options page layout improvements
 
 ### 0.4
