@@ -468,7 +468,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             }, function(t){
                 // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
                 chrome.tabs.update(tab.id, { 'active': true });
-                chrome.windows.update(targetWindowId, {focused: true});
+                // chrome.windows.update(targetWindowId, {focused: true});
             });
         }
     );
