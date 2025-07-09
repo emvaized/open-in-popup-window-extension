@@ -5,7 +5,7 @@ const ConcatPlugin = require('@mcler/webpack-concat-plugin');
 const JsonMinimizerPlugin = require("json-minimizer-webpack-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 
-module.exports = {
+module.exports = env => ({
   /// background script
   entry: {
     index: "./src/content.js"
@@ -37,16 +37,31 @@ module.exports = {
     /// static files
     new CopyPlugin({
       patterns: [
-        { from: "src/manifest.json", to: "manifest.json" },
         { from: "src/assets/_locales", to: "_locales" },
-        // { from: "src/assets/icon.png", to: "icon.png" },
-        // { from: "src/assets/icon_white.png", to: "icon_white.png" },
         { from: "src/assets/icon_new.png", to: "icon_new.png" },
         { from: "src/options", to: "options" },
         { from: "src/viewer", to: "viewer" },
         /// additional dependencies for the options page
         { from: "src/configs.js", to: "configs.js" },
 
+        // { from: "src/manifest.json", to: "manifest.json" },
+        ... env.build == 'chrome' ? [
+          { 
+            from: "src/manifest.json", 
+            to: "manifest.json",
+            transform(content, absoluteFrom) {
+              const manifest = JSON.parse(content.toString());
+
+              if (env.build == 'chrome') {
+                delete manifest['background']['scripts'];
+              }
+              
+              return JSON.stringify(manifest);
+            },
+          }
+        ] : [
+          { from: "src/manifest.json", to: "manifest.json" }
+        ],
       ],
     }),
   ],
@@ -59,4 +74,4 @@ module.exports = {
       new JsonMinimizerPlugin(),
     ],
   },
-};
+});
