@@ -27,6 +27,7 @@ const configs = {
     'availLeft': 0,
     'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
+    'changeDragCursor': true,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 

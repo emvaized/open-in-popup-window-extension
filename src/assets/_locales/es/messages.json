@@ -11,6 +11,9 @@
     "center": {
         "message": "Centro"
     },
+    "changeDragCursor": {
+        "message": "Cambiar el cursor del ratón durante el arrastre"
+    },
     "closeWhenFocusedInitialWindow": {
         "message": "Cerrar la ventana emergente cuando la ventana normal obtiene el foco"
     },

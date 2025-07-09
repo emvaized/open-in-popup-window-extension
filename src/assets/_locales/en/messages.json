@@ -11,6 +11,9 @@
     "center": {
         "message": "Center"
     },
+    "changeDragCursor": {
+        "message": "Change mouse cursor during dragging"
+    },
     "closeWhenFocusedInitialWindow": {
         "message": "Close popup when normal window is focused"
     },
