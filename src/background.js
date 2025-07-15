@@ -141,7 +141,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     }
     
     if (clickData.menuItemId == 'openPageInPopupWindow') {
-            if (tab) openPopupWindowForLink(clickData.pageUrl, false, false, undefined, true);
+        if (tab)
+            loadUserConfigs((c) => {
+                openPopupWindowForLink(clickData.pageUrl, false, false, configs.copyTabInsteadOfMoving ? undefined : tab.id, true, c);
+            });
         return;
     }
 

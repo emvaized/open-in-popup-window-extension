@@ -20,6 +20,9 @@
     "closeWhenFocusedInitialWindowHint": {
         "message": "Всплывающее окно не будет закрыто, если оно было свернуто или установлено всегда поверх других окон"
     },
+    "copyTabInsteadOfMoving": {
+        "message": "Копировать вкладку вместо перемещения ее во всплыв. окно"
+    },
     "debugMode": {
         "message": "Отладка"
     },

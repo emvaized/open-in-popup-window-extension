@@ -20,6 +20,9 @@
     "closeWhenFocusedInitialWindowHint": {
         "message": "La ventana emergente no se cerrará si se ha minimizado o se ha configurado para que siempre esté visible"
     },
+    "copyTabInsteadOfMoving": {
+        "message": "Copiar pestaña en lugar de moverla a una ventana emergente"
+    },
     "debugMode": {
         "message": "Depurar"
     },

@@ -105,6 +105,7 @@ function updateDisabledOptions() {
     document.getElementById("imageWithLinkPreferLink").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("changeDragCursor").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("reopenAutoCreatedTabsOnlyPinned").parentNode.className = document.getElementById("reopenAutoCreatedTabAsPopup").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("copyTabInsteadOfMoving").parentNode.className = document.getElementById("addOptionOpenPageInPopupWindow").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("fallbackPopupWindowLocation").parentNode.className = 
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 

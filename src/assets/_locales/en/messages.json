@@ -20,6 +20,9 @@
     "closeWhenFocusedInitialWindowHint": {
         "message": "Popup window will not be closed if it was minimized or set as always on top"
     },
+    "copyTabInsteadOfMoving": {
+        "message": "Copy tab instead of moving it to a popup window"
+    },
     "debugMode": {
         "message": "Debug mode"
     },
