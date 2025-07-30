@@ -1,3 +1,8 @@
+### 0.4.2
+- Change "open in popup window" to move the tab + add option in settings to revert
+- Change default popup location to "near mouse cursor"
+- Add option to change mouse cursor during drag (default: on)
+
 ### 0.4.1
 - Added configurable action on toolbar icon click
 - Don't save size for automatically resized image viewer
