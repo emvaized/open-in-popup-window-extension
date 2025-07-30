@@ -11,11 +11,17 @@
     "center": {
         "message": "Центр экрана"
     },
+    "changeDragCursor": {
+        "message": "Изменить курсор мыши во время перетаскивания"
+    },
     "closeWhenFocusedInitialWindow": {
         "message": "Закрыть всплывающее окно, когда обычное окно получает фокус"
     },
     "closeWhenFocusedInitialWindowHint": {
         "message": "Всплывающее окно не будет закрыто, если оно было свернуто или установлено всегда поверх других окон"
+    },
+    "copyTabInsteadOfMoving": {
+        "message": "Копировать вкладку вместо перемещения ее во всплыв. окно"
     },
     "debugMode": {
         "message": "Отладка"

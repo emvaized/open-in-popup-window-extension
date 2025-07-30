@@ -15,7 +15,7 @@ const configs = {
     'reopenSingleTabWindowAsPopup': false,
     'reopenAutoCreatedTabAsPopup': false,
     'reopenAutoCreatedTabsOnlyPinned': true,
-    'popupWindowLocation': 'mousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
+    'popupWindowLocation': 'nearMousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
     'imageWithLinkPreferLink': true,
     'fallbackPopupWindowLocation': 'center',
     'debugMode': false,
@@ -27,6 +27,8 @@ const configs = {
     'availLeft': 0,
     'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
+    'changeDragCursor': true,
+    'copyTabInsteadOfMoving': false,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 

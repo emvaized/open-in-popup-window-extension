@@ -44,16 +44,53 @@ let dragStartDx, dragStartDy;
 
 function dragStartListener(e){
     dragStartDx = e.clientX; dragStartDy = e.clientY;
+    document.addEventListener('dragover', dragOverListener, true);
 }
 function dragEndListener(e){
-    if (e.dataTransfer.dropEffect == 'none'){
+    if (e.dataTransfer.dropEffect == 'none' || e.dataTransfer.dropEffect == 'link') {
         if (e.dataTransfer.mozUserCancelled) return; /// use Esc key to cancel drag on Firefox
         if (
             Math.abs(e.clientX - dragStartDx) > configs.minimalDragDistance ||
             Math.abs(e.clientY - dragStartDy) > configs.minimalDragDistance
         ) onTrigger(e, 'drag')
-    } 
+    }
+    document.removeEventListener('dragover', dragOverListener, true);
 }
+function dragOverListener(e){
+    if (!configs.changeDragCursor) return;
+    
+    // console.log('e', e);
+    if (!shouldOverrideDragCursor(e.target)){
+        e.dataTransfer.dropEffect = '';
+        return;
+    }
+    if (
+        Math.abs(e.clientX - dragStartDx) > configs.minimalDragDistance || 
+        Math.abs(e.clientY - dragStartDy) > configs.minimalDragDistance
+    ) {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'link';
+        // console.log('changed cursor to: move');
+    } else {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'none';
+        // console.log('changed cursor to: none');
+    }
+}
+function shouldOverrideDragCursor(target) {
+        /// Reject interactive elements
+        if (!target || !(target instanceof Element)) return true;
+        const tag = target.tagName;
+        /// Skip common interactive tags
+        if (['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'LABEL'].includes(tag)) return false;
+        /// Skip if editable (e.g., <div contenteditable>)
+        if (target.isContentEditable) return false;
+        /// Skip if inside any interactive zone
+        if (target.closest('input, textarea, select, button, [contenteditable], [ondrop], .custom-drop-target')) {
+            return false;
+        }
+        return true;
+    }
 
 function keyUpListener(e){
     if (e.key == 'Escape'){
