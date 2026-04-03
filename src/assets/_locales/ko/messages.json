@@ -1,0 +1,191 @@
+{
+  "addOptionOpenPageInPopupWindow": {
+    "message": "팝업 창에서 페이지 열기 옵션 추가"
+  },
+  "bottomLeft": {
+    "message": "좌하단"
+  },
+  "bottomRight": {
+    "message": "우하단"
+  },
+  "center": {
+    "message": "중앙"
+  },
+  "changeDragCursor": {
+    "message": "드래그 중 마우스 커서 변경"
+  },
+  "closeWhenFocusedInitialWindow": {
+    "message": "일반 창에 포커스하면 팝업 창 닫기"
+  },
+  "closeWhenFocusedInitialWindowHint": {
+    "message": "팝업 창을 최소화했거나 항상 위로 고정한 경우 닫히지 않습니다"
+  },
+  "copyTabInsteadOfMoving": {
+    "message": "탭을 팝업 창으로 이동하는 대신 복사"
+  },
+  "debugMode": {
+    "message": "디버그 모드"
+  },
+  "donateButton": {
+    "message": "프로젝트 지원"
+  },
+  "dragAndDropSettings": {
+    "message": "드래그 및 드롭 설정"
+  },
+  "escKeyClosesPopup": {
+    "message": "Esc 키로 팝업 창 닫기"
+  },
+  "escKeyClosesPopupHint": {
+    "message": "Alt + Enter도 메인 창에서 페이지를 엽니다"
+  },
+  "extensionDescription": {
+    "message": "아무 링크나 사진을 팝업 창에서 엽니다"
+  },
+  "fallbackPopupWindowLocation": {
+    "message": "대체 팝업 창 위치 설정"
+  },
+  "fallbackPopupWindowLocationHint": {
+    "message": "화면 커서 위치를 알 수 없으면 이 설정을 사용합니다"
+  },
+  "generalSettings": {
+    "message": "일반 설정"
+  },
+  "githubButton": {
+    "message": "소스 코드"
+  },
+  "hideBrowserControls": {
+    "message": "브라우저 컨트롤(주소 창, 탭 등) 숨기기"
+  },
+  "imageViewer": {
+    "message": "사진 뷰어"
+  },
+  "imageWithLinkPreferLink": {
+    "message": "사진에 링크가 있으면, 링크 우선"
+  },
+  "keepOpenPageInPopupWindowOpen": {
+    "message": "포커스를 잃어도 페이지 내 팝업 창 닫지 않기"
+  },
+  "minimalDragDistance": {
+    "message": "최소 드래그 거리 (px)"
+  },
+  "mousePosition": {
+    "message": "마우스 커서 위치"
+  },
+  "moveToMainWindowOnMaximize": {
+    "message": "최대화하면 팝업을 메인 창으로 이동해 열기"
+  },
+  "nearMousePosition": {
+    "message": "마우스 근처"
+  },
+  "openByDragAndDrop": {
+    "message": "빈 곳으로 드래그해 팝업 창에서 열기"
+  },
+  "openByModClick": {
+    "message": "조합 키 + 클릭으로 팝업 창에서 열기"
+  },
+  "modifierKey": {
+    "message": "클릭에 사용할 조합 키"
+  },
+  "openDragAndDropUnderMouse": {
+    "message": "드래그 시 항상 마우스 커서 위치에서 열기"
+  },
+  "openInPopupWindow": {
+    "message": "팝업 창에서 링크 열기"
+  },
+  "openPageInMainWindow": {
+    "message": "메인 창에서 페이지 열기"
+  },
+  "openPageInMainWindowHotkeyDescription": {
+    "message": "메인 창에서 팝업 창 열기"
+  },
+  "openPageInPopupWindow": {
+    "message": "팝업 창에서 페이지 열기"
+  },
+  "openPageInPopupWindowHotkeyDescription": {
+    "message": "현재 열린 페이지를 팝업 창에서 엽니다"
+  },
+  "openSearchPopupWindowHotkeyDescription": {
+    "message": "선택한 텍스트를 팝업 창에서 검색합니다. 선택한 텍스트가 없다면 빈 검색 페이지를 엽니다"
+  },
+  "popupHeight": {
+    "message": "높이 (px)"
+  },
+  "popupSearchUrl": {
+    "message": "검색 URL (%s 부분이 검색어로 치환됨)"
+  },
+  "popupWidth": {
+    "message": "너비 (px)"
+  },
+  "popupWindowLocation": {
+    "message": "팝업 창 위치"
+  },
+  "popupWindowSize": {
+    "message": "팝업 창 크기"
+  },
+  "rememberWindowResize": {
+    "message": "수동으로 크기 조절 시 팝업 창 크기 기억"
+  },
+  "reopenAutoCreatedTabAsPopup": {
+    "message": "페이지에서 연 탭을 팝업 창으로 다시 열기"
+  },
+  "reopenAutoCreatedTabsOnlyPinned": {
+    "message": "고정한 탭에서 생성한 탭만 다시 열기"
+  },
+  "reopenSettings": {
+    "message": "다시 열기 설정"
+  },
+  "reopenSingleTabWindowAsPopup": {
+    "message": "새 단일 탭 창을 팝업 창으로 다시 열기"
+  },
+  "reopenSingleTabWindowAsPopupHint": {
+    "message": "설정을 켠 경우, 탭이 하나만 열린 새 브라우저 창은 모두 자동으로 팝업 창으로 다시 열립니다. 이는 확장이 접근할 수 없는 (북마크 바 등의) 링크를 팝업으로 열 수 있도록 합니다. 하지만 브라우저 창을 많이 열어 두신 경우 원치 않는 현상이 발생할 수 있으니, 주의해 사용하시기 바랍니다!"
+  },
+  "searchInPopupEnabled": {
+    "message": "팝업 창에서 선택 항목 검색 옵션 켜기"
+  },
+  "searchInPopupWindow": {
+    "message": "팝업 창에서 텍스트 검색"
+  },
+  "settingsTitle": {
+    "message": "설정"
+  },
+  "showAddressbarIcon": {
+    "message": "주소창에 팝업 창에서 페이지 열기 버튼 표시"
+  },
+  "showExtensionSettings": {
+    "message": "확장 설정 표시"
+  },
+  "textSelectionHeader": {
+    "message": "텍스트 선택 항목"
+  },
+  "toolbarIconClickAction": {
+    "message": "툴바 아이콘 클릭 시"
+  },
+  "topCenter": {
+    "message": "상단 중앙"
+  },
+  "topLeft": {
+    "message": "좌상단"
+  },
+  "topRight": {
+    "message": "우상단"
+  },
+  "tryFitWindowSizeToImage": {
+    "message": "팝업 너비를 사진 종횡비에 맞추려 시도"
+  },
+  "useBuiltInImageViewer": {
+    "message": "브라우저 내장 사진 뷰어 사용"
+  },
+  "viewInPopupEnabled": {
+    "message": "팝업 창에서 사진 보기 옵션 활성화"
+  },
+  "viewInPopupWindow": {
+    "message": "팝업 창에서 사진 보기"
+  },
+  "whatsNew": {
+    "message": "새 기능"
+  },
+  "writeAReviewButton": {
+    "message": "리뷰 작성"
+  }
+}
