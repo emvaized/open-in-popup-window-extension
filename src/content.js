@@ -25,8 +25,8 @@ function setMouseListeners(){
         document.removeEventListener("dragend",dragEndListener);
     }
 
-    /* Shift+Click */
-    if (configs.openByShiftClick){
+    /* Mod+Click */
+    if (configs.openByModClick){
         document.addEventListener("click",onClickListener);
     } else {
         document.removeEventListener("click",onClickListener);
@@ -99,9 +99,24 @@ function keyUpListener(e){
 }
 
 function onClickListener(e){
-    if (e.shiftKey && (e.target.href || e.target.src || e.target.parentNode.href)){
+    let modPressed = false;
+    switch (configs.modifierKey) {
+        case 'shift':
+            modPressed = e.shiftKey;
+            break;
+        case 'ctrl':
+            modPressed = e.ctrlKey;
+            break;
+        case 'alt':
+            modPressed = e.altKey;
+            break;
+        case 'meta':
+            modPressed = e.metaKey;
+            break;
+    }
+    if (modPressed && (e.target.href || e.target.src || e.target.parentNode.href)){
         e.preventDefault();
-        onTrigger(e, 'shiftClick');
+        onTrigger(e, 'modClick');
     }
 }
 
@@ -117,7 +132,7 @@ function onTrigger(e, type){
     }
 
     let nodeName, link;
-    if (type == 'drag' || type == 'shiftClick') {
+    if (type == 'drag' || type == 'modClick') {
         /// Handle IMG wrapped in A
         if (t.parentNode && t.parentNode.nodeName == 'A'){
             if (configs.imageWithLinkPreferLink){
