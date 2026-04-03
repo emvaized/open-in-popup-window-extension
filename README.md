@@ -11,7 +11,7 @@ This tiny and lightweight browser extension provides ability to quickly preview 
 
 <b>Features:</b>
 - [x] Ability to open images and search selected text in popup window
-- [x] Use <kbd>Shift</kbd> + click to open in popup window (_enabled_ by default)
+- [x] Use <kbd>Ctrl</kbd> / <kbd>Shift</kbd> / <kbd>Alt</kbd> / <kbd>Meta</kbd> + click to open in popup window (_enabled with <kbd>Shift</kbd>_ by default)
 - [x] Use drag and drop to open in popup window (_disabled_ by default)
 - [x] Configurable popup height, width and position on screen
 - [x] Close popup window when origin window regains focus (excludes minimized and "always-on-top" windows)
@@ -85,7 +85,7 @@ If you really enjoy this project, please consider supporting its further develop
 > This way it can operate with links, which it couldn't access otherwise, for example: sites on new tab page, in bookmarks panel, links on browser-protected pages (`chrome://`, `about:`) etc. You could create a popup window the following ways:
 >
 > - Using right click context menu and selecting "Open in new window"
-> - <kbd>Shift</kbd> + left click in Firefox (+ <kbd>Ctrl</kbd> in Chrome) – this will essentially duplicate extension's "Open with shift+click" option
+> - <kbd>Shift</kbd> + left click in Firefox (+ <kbd>Ctrl</kbd> in Chrome) – this will essentially duplicate extension's "Open with mod+click" option
 > - <kbd>Shift</kbd> + <kbd>Enter</kbd> in Firefox (+ <kbd>Ctrl</kbd> in Chrome) on any focused element, for example search suggestion in address bar
 > 
 > Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
@@ -114,7 +114,7 @@ If you really enjoy this project, please consider supporting its further develop
 > - [x] `Escape` key press during drag-and-drop cancels the "open in popup window" action (_not availble_ in Chrome — https://github.com/emvaized/open-in-popup-window-extension/issues/24#issuecomment-2993699343)
 
 ## Troubleshooting
-- ⚠️ If "Open by drag" and "Shift+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
+- ⚠️ If "Open by drag" and "Mod+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
 - It was also previously [reported](https://github.com/emvaized/open-in-popup-window-extension/issues/1#issuecomment-1637067834) that Firefox Multi-Account Containers might interfere with "Search in popup" action, enforcing it's own redirection and preventing popup window from opening. If you face such issues, I recommend using another search URL in the extension settings
 
 ## Building
