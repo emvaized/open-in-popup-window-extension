@@ -36,7 +36,8 @@ function init(){
     }
 
     const url = decodeURIComponent(imageUrl);
-    document.title = url.split('/').pop().split('?')[0] || 'Image Viewer'; /// Use filename as title if available
+    const filename = url.split('/').pop().split('?')[0].split('#')[0];
+    document.title = filename ? 'Image Viewer ‒ ' + filename : 'Image Viewer';
     const isGif = url.toLowerCase().endsWith('.gif');
 
     if (isGif) {
@@ -241,5 +242,3 @@ function onResetZoomButtonClick() {
 function closeView() {
     window.close();
 }
-
-/* GIF playback moved to gifViewer.js */
