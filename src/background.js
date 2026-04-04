@@ -136,7 +136,10 @@ chrome.storage.onChanged.addListener((changes) => {
 
 chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     if (clickData.menuItemId == 'openInMainWindow') {
-            if (tab) moveTabToRegularWindow(tab)
+        let shouldFocusTab = true;
+        if (clickData.button && clickData.button == 1) shouldFocusTab = false; /// if middle mouse button was used, don't focus the tab
+        if (clickData.modifiers && (clickData.modifiers.includes('Ctrl') || clickData.modifiers.includes('Shift'))) shouldFocusTab = false;
+        if (tab) moveTabToRegularWindow(tab, shouldFocusTab);
         return;
     }
     
@@ -433,7 +436,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     }
  }
 
- function moveTabToRegularWindow(tab){
+ function moveTabToRegularWindow(tab, shouldFocusTab = true){
     // chrome.tabs.remove(tab.id);
     // chrome.tabs.create({ url: clickData.pageUrl, active: true });
 
@@ -470,7 +473,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     windowId: targetWindowId
             }, function(t){
                 // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
-                chrome.tabs.update(tab.id, { 'active': true });
+                chrome.tabs.update(tab.id, { 'active': shouldFocusTab });
                 // chrome.windows.update(targetWindowId, {focused: true});
             });
         }
