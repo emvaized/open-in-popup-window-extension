@@ -73,6 +73,19 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+/// Update configs
+chrome.storage.onChanged.addListener((changes) => {
+    if (changes.searchInPopupEnabled)
+        chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
+    if (changes.viewInPopupEnabled)
+        chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
+    if (changes.addOptionOpenPageInPopupWindow)
+        chrome.contextMenus.update("openPageInPopupWindow", {"visible": changes.addOptionOpenPageInPopupWindow.newValue });
+    applyUserConfigs(changes);
+
+    setToolbarIconClickAction();
+});
+
 const openLinkContextMenuItem = {
     "id": "openInPopupWindow",
     "title": chrome.i18n.getMessage('openInPopupWindow'),
@@ -120,19 +133,6 @@ chrome.windows.onFocusChanged.addListener(function(wId){
         );
     }
 ); 
-
-/// Update configs
-chrome.storage.onChanged.addListener((changes) => {
-    if (changes.searchInPopupEnabled)
-        chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
-    if (changes.viewInPopupEnabled)
-        chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
-    if (changes.addOptionOpenPageInPopupWindow)
-        chrome.contextMenus.update("openPageInPopupWindow", {"visible": changes.addOptionOpenPageInPopupWindow.newValue });
-    applyUserConfigs(changes);
-
-    setToolbarIconClickAction();
-});
 
 chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     if (clickData.menuItemId == 'openInMainWindow') {
