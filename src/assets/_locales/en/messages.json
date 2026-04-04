@@ -1,188 +1,191 @@
 {
-    "addOptionOpenPageInPopupWindow": {
-        "message": "Add option to open page in popup window"
-    },
-    "bottomLeft": {
-        "message": "Bottom left"
-    },
-    "bottomRight": {
-        "message": "Bottom right"
-    },
-    "center": {
-        "message": "Center"
-    },
-    "changeDragCursor": {
-        "message": "Change mouse cursor during dragging"
-    },
-    "closeWhenFocusedInitialWindow": {
-        "message": "Close popup when normal window is focused"
-    },
-    "closeWhenFocusedInitialWindowHint": {
-        "message": "Popup window will not be closed if it was minimized or set as always on top"
-    },
-    "copyTabInsteadOfMoving": {
-        "message": "Copy tab instead of moving it to a popup window"
-    },
-    "debugMode": {
-        "message": "Debug mode"
-    },
-    "donateButton": {
-        "message": "Support project"
-    },
-    "dragAndDropSettings": {
-        "message": "Drag and drop settings"
-    },
-    "escKeyClosesPopup": {
-        "message": "Close popup window with an Escape key"
-    },
-    "escKeyClosesPopupHint": {
-        "message": "Alt + Enter will also open page in the main window"
-    },
-    "extensionDescription": {
-        "message": "Open any links and images in a popup window"
-    },
-    "fallbackPopupWindowLocation": {
-        "message": "Fallback option for popup window location"
-    },
-    "fallbackPopupWindowLocationHint": {
-        "message": "Used when the screen cursor position is not available"
-    },
-    "generalSettings": {
-        "message": "General settings"
-    },
-    "githubButton": {
-        "message": "Source code"
-    },
-    "hideBrowserControls": {
-        "message": "Hide browser controls (addressbar, tabbar, etc)"
-    },
-    "imageViewer": {
-        "message": "Image viewer"
-    },
-    "imageWithLinkPreferLink": {
-        "message": "When image is wrapped in link, prefer link"
-    },
-    "keepOpenPageInPopupWindowOpen": {
-        "message": "Don't close page popup window on focus lost"
-    },
-    "minimalDragDistance": {
-        "message": "Minimal drag distance (px)"
-    },
-    "mousePosition": {
-        "message": "Mouse cursor position"
-    },
-    "moveToMainWindowOnMaximize": {
-        "message": "Open popup in main window when maximized"
-    },
-    "nearMousePosition": {
-        "message": "Near mouse cursor"
-    },
-    "openByDragAndDrop": {
-        "message": "Use drag and drop on empty place to open in popup"
-    },
-    "openByShiftClick": {
-        "message": "Use Shift + Click to open in popup"
-    },
-    "openDragAndDropUnderMouse": {
-        "message": "Always open by drag and drop under mouse cursor"
-    },
-    "openInPopupWindow": {
-        "message": "Open Link in Popup Window"
-    },
-    "openPageInMainWindow": {
-        "message": "Open Page in Main Window"
-    },
-    "openPageInMainWindowHotkeyDescription": {
-        "message": "Open popup window in the main window"
-    },
-    "openPageInPopupWindow": {
-        "message": "Open Page in Popup Window"
-    },
-    "openPageInPopupWindowHotkeyDescription": {
-        "message": "Open the currently opened page in a popup window"
-    },
-    "openSearchPopupWindowHotkeyDescription": {
-        "message": "Search the selected text in a popup window. Opens empty search page if no text is selected"
-    },
-    "popupHeight": {
-        "message": "Height (px)"
-    },
-    "popupSearchUrl": {
-        "message": "Search url (%s will be replaced with the search query)"
-    },
-    "popupWidth": {
-        "message": "Width (px)"
-    },
-    "popupWindowLocation": {
-        "message": "Popup window location"
-    },
-    "popupWindowSize": {
-        "message": "Popup window size"
-    },
-    "rememberWindowResize": {
-        "message": "Remember popup size on manual resize"
-    },
-    "reopenAutoCreatedTabAsPopup": {
-        "message": "Reopen tabs opened by page as popup windows"
-    },
-    "reopenAutoCreatedTabsOnlyPinned": {
-        "message": "Reopen only tabs created by pinned tabs"
-    },
-    "reopenSettings": {
-        "message": "Reopening settings"
-    },
-    "reopenSingleTabWindowAsPopup": {
-        "message": "Reopen new single tab windows as popup windows"
-    },
-    "reopenSingleTabWindowAsPopupHint": {
-        "message": "With this option enabled, any new browser window with only one tab will be automatically reopened as a popup window. It allows extension to create popup for links which it usually can't access (for example, bookmarks bar). But it can lead to unwanted behavior if you usually open many browser windows, so use with caution!"
-    },
-    "searchInPopupEnabled": {
-        "message": "Option to search selection in popup enabled"
-    },
-    "searchInPopupWindow": {
-        "message": "Search Text in Popup Window"
-    },
-    "settingsTitle": {
-        "message": "Settings"
-    },
-    "showAddressbarIcon": {
-        "message": "Show button in address bar to open page in a popup window"
-    },
-    "showExtensionSettings": {
-        "message": "Show extension settings"
-    },
-    "textSelectionHeader": {
-        "message": "Text selection"
-    },
-    "toolbarIconClickAction": {
-        "message": "When clicking on toolbar icon"
-    },
-    "topCenter": {
-        "message": "Top center"
-    },
-    "topLeft": {
-        "message": "Top left"
-    },
-    "topRight": {
-        "message": "Top right"
-    },
-    "tryFitWindowSizeToImage": {
-        "message": "Try to fit popup width to image aspect ratio"
-    },
-    "useBuiltInImageViewer": {
-        "message": "Use browser's built-in image viewer"
-    },
-    "viewInPopupEnabled": {
-        "message": "Enable option to view images in popup window"
-    },
-    "viewInPopupWindow": {
-        "message": "View Image in Popup Window"
-    },
-    "whatsNew": {
-        "message": "What's new"
-    },
-    "writeAReviewButton": {
-        "message": "Write a review"
-    }
+  "addOptionOpenPageInPopupWindow": {
+    "message": "Add option to open page in popup window"
+  },
+  "bottomLeft": {
+    "message": "Bottom left"
+  },
+  "bottomRight": {
+    "message": "Bottom right"
+  },
+  "center": {
+    "message": "Center"
+  },
+  "changeDragCursor": {
+    "message": "Change mouse cursor during dragging"
+  },
+  "closeWhenFocusedInitialWindow": {
+    "message": "Close popup when normal window is focused"
+  },
+  "closeWhenFocusedInitialWindowHint": {
+    "message": "Popup window will not be closed if it was minimized or set as always on top"
+  },
+  "copyTabInsteadOfMoving": {
+    "message": "Copy tab instead of moving it to a popup window"
+  },
+  "debugMode": {
+    "message": "Debug mode"
+  },
+  "donateButton": {
+    "message": "Support project"
+  },
+  "dragAndDropSettings": {
+    "message": "Drag and drop settings"
+  },
+  "escKeyClosesPopup": {
+    "message": "Close popup window with an Escape key"
+  },
+  "escKeyClosesPopupHint": {
+    "message": "Alt + Enter will also open page in the main window"
+  },
+  "extensionDescription": {
+    "message": "Open any links and images in a popup window"
+  },
+  "fallbackPopupWindowLocation": {
+    "message": "Fallback option for popup window location"
+  },
+  "fallbackPopupWindowLocationHint": {
+    "message": "Used when the screen cursor position is not available"
+  },
+  "generalSettings": {
+    "message": "General settings"
+  },
+  "githubButton": {
+    "message": "Source code"
+  },
+  "hideBrowserControls": {
+    "message": "Hide browser controls (addressbar, tabbar, etc)"
+  },
+  "imageViewer": {
+    "message": "Image viewer"
+  },
+  "imageWithLinkPreferLink": {
+    "message": "When image is wrapped in link, prefer link"
+  },
+  "keepOpenPageInPopupWindowOpen": {
+    "message": "Don't close page popup window on focus lost"
+  },
+  "minimalDragDistance": {
+    "message": "Minimal drag distance (px)"
+  },
+  "mousePosition": {
+    "message": "Mouse cursor position"
+  },
+  "moveToMainWindowOnMaximize": {
+    "message": "Open popup in main window when maximized"
+  },
+  "nearMousePosition": {
+    "message": "Near mouse cursor"
+  },
+  "openByDragAndDrop": {
+    "message": "Use drag and drop on empty place to open in popup"
+  },
+  "openByModClick": {
+    "message": "Use Modifier + Click to open in popup"
+  },
+  "modifierKey": {
+    "message": "Modifier key for click"
+  },
+  "openDragAndDropUnderMouse": {
+    "message": "Always open by drag and drop under mouse cursor"
+  },
+  "openInPopupWindow": {
+    "message": "Open Link in Popup Window"
+  },
+  "openPageInMainWindow": {
+    "message": "Open Page in Main Window"
+  },
+  "openPageInMainWindowHotkeyDescription": {
+    "message": "Open popup window in the main window"
+  },
+  "openPageInPopupWindow": {
+    "message": "Open Page in Popup Window"
+  },
+  "openPageInPopupWindowHotkeyDescription": {
+    "message": "Open the currently opened page in a popup window"
+  },
+  "openSearchPopupWindowHotkeyDescription": {
+    "message": "Search the selected text in a popup window. Opens empty search page if no text is selected"
+  },
+  "popupHeight": {
+    "message": "Height (px)"
+  },
+  "popupSearchUrl": {
+    "message": "Search url (%s will be replaced with the search query)"
+  },
+  "popupWidth": {
+    "message": "Width (px)"
+  },
+  "popupWindowLocation": {
+    "message": "Popup window location"
+  },
+  "popupWindowSize": {
+    "message": "Popup window size"
+  },
+  "rememberWindowResize": {
+    "message": "Remember popup size on manual resize"
+  },
+  "reopenAutoCreatedTabAsPopup": {
+    "message": "Reopen tabs opened by page as popup windows"
+  },
+  "reopenAutoCreatedTabsOnlyPinned": {
+    "message": "Reopen only tabs created by pinned tabs"
+  },
+  "reopenSettings": {
+    "message": "Reopening settings"
+  },
+  "reopenSingleTabWindowAsPopup": {
+    "message": "Reopen new single tab windows as popup windows"
+  },
+  "reopenSingleTabWindowAsPopupHint": {
+    "message": "With this option enabled, any new browser window with only one tab will be automatically reopened as a popup window. It allows extension to create popup for links which it usually can't access (for example, bookmarks bar). But it can lead to unwanted behavior if you usually open many browser windows, so use with caution!"
+  },
+  "searchInPopupEnabled": {
+    "message": "Option to search selection in popup enabled"
+  },
+  "searchInPopupWindow": {
+    "message": "Search Text in Popup Window"
+  },
+  "settingsTitle": {
+    "message": "Settings"
+  },
+  "showAddressbarIcon": {
+    "message": "Show button in address bar to open page in a popup window"
+  },
+  "showExtensionSettings": {
+    "message": "Show extension settings"
+  },
+  "textSelectionHeader": {
+    "message": "Text selection"
+  },
+  "toolbarIconClickAction": {
+    "message": "When clicking on toolbar icon"
+  },
+  "topCenter": {
+    "message": "Top center"
+  },
+  "topLeft": {
+    "message": "Top left"
+  },
+  "topRight": {
+    "message": "Top right"
+  },
+  "tryFitWindowSizeToImage": {
+    "message": "Try to fit popup width to image aspect ratio"
+  },
+  "useBuiltInImageViewer": {
+    "message": "Use browser's built-in image viewer"
+  },
+  "viewInPopupEnabled": {
+    "message": "Enable option to view images in popup window"
+  },
+  "viewInPopupWindow": {
+    "message": "View Image in Popup Window"
+  },
+  "whatsNew": {
+    "message": "What's new"
+  },
+  "writeAReviewButton": {
+    "message": "Write a review"
+  }
 }

@@ -60,10 +60,10 @@ chrome.runtime.onMessage.addListener(
         availHeight = request.availHeight;
         availLeft = request.availLeft;
 
-        if (request.type == 'drag' || request.type == 'shiftClick') {
+        if (request.type == 'drag' || request.type == 'modClick') {
             loadUserConfigs((cfg) => {
                 if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
-                if (request.type == 'shiftClick' && configs.openByShiftClick == false) return;
+                if (request.type == 'modClick' && configs.openByModClick == false) return;
 
                 const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
                 if (isViewer && !cfg.viewInPopupEnabled) return;

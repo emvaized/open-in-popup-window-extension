@@ -96,6 +96,7 @@ function setTranslatedLabels(){
 
 function updateDisabledOptions() {
     /// Grey out unavailable optoins
+    document.getElementById("modifierKey").parentNode.className = document.getElementById("openByModClick").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("popupSearchUrl").parentNode.className = document.getElementById("searchInPopupEnabled").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("tryFitWindowSizeToImage").parentNode.className = document.getElementById("useBuiltInImageViewer").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("tryFitWindowSizeToImage").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option'; 
