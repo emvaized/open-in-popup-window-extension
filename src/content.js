@@ -59,7 +59,6 @@ function dragEndListener(e){
 function dragOverListener(e){
     if (!configs.changeDragCursor) return;
     
-    // console.log('e', e);
     if (!shouldOverrideDragCursor(e.target)){
         e.dataTransfer.dropEffect = '';
         return;
@@ -70,11 +69,9 @@ function dragOverListener(e){
     ) {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'link';
-        // console.log('changed cursor to: move');
     } else {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'none';
-        // console.log('changed cursor to: none');
     }
 }
 function shouldOverrideDragCursor(target) {
@@ -101,18 +98,10 @@ function keyUpListener(e){
 function onClickListener(e){
     let modPressed = false;
     switch (configs.modifierKey) {
-        case 'shift':
-            modPressed = e.shiftKey;
-            break;
-        case 'ctrl':
-            modPressed = e.ctrlKey;
-            break;
-        case 'alt':
-            modPressed = e.altKey;
-            break;
-        case 'meta':
-            modPressed = e.metaKey;
-            break;
+        case 'shift': modPressed = e.shiftKey; break;
+        case 'ctrl': modPressed = e.ctrlKey; break;
+        case 'alt': modPressed = e.altKey; break;
+        case 'meta': modPressed = e.metaKey; break;
     }
     if (modPressed && (e.target.href || e.target.src || e.target.parentNode.href)){
         e.preventDefault();
@@ -165,10 +154,8 @@ function onTrigger(e, type){
 
         /// Handle links in shadow root
         if (!link) {
-            const shadowLink = t.closest('a');
-            if (target){
-                link = shadowLink.href || t.parentNode.href;
-            }
+            const closestA = t.closest('a');
+            if (closestA) link = closestA.href;
         }
 
         message['nodeName'] = nodeName;
