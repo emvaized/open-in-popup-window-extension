@@ -76,7 +76,7 @@ body {
     align-items: center;
     gap: 0.5rem;
     padding: 8px 12px;
-    padding: 6px;
+    padding: 4px;
     /* border-radius: 999px; */
     border-top-right-radius: 8px;
     background: rgba(0, 0, 0, 0.65);
@@ -87,19 +87,6 @@ body {
     box-sizing: border-box;
     font-family: sans-serif;
     border: 1px solid rgba(123,123,123,0.4);
-}
-
-#gifControls button {
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.08);
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-#gifControls button:hover {
-    background: rgba(255,255,255,0.16);
 }
 
 #gifControls input[type="range"] {
@@ -124,7 +111,7 @@ body {
     right: 0;
     align-items: center;
     gap: 0.5rem;
-    padding: 6px;
+    padding: 4px;
     /* border-radius: 999px; */
     border-top-left-radius: 8px;
     background: rgba(0, 0, 0, 0.65);
@@ -147,17 +134,30 @@ body {
     text-align: center;
 }
 
+#gifControls button,
 #imageControls button {
     border: 1px solid rgba(255,255,255,0.2);
     background: rgba(255,255,255,0.08);
+    border: none;
+    background: transparent;
     color: #fff;
     padding: 6px 10px;
     border-radius: 8px;
     cursor: pointer;
 }
 
+#gifControls button:hover,
 #imageControls button:hover {
     background: rgba(255,255,255,0.16);
+}
+
+#gifControls button img,
+#imageControls button img {
+    width: 20px;
+    height: 20px;
+    display: block;
+    object-fit: contain;
+    opacity: 0.85;
 }
 
 @media (max-width: 650px) {

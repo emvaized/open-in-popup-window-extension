@@ -355,8 +355,22 @@ function onGifSeekChange() {
 
 function updateGifControls() {
     if (!playPauseButton || !seekSlider || !loopButton) return;
-    playPauseButton.textContent = gifPlaying ? '⏸️' : '▶️';
-    loopButton.textContent = gifLooping ? '🔁' : '➡️';
+
+    const playIcon = gifPlaying ? 'pause_circle.svg' : 'play_circle_outline.svg';
+    const loopIcon = gifLooping ? 'repeat_on.svg' : 'repeat.svg';
+
+    const playImage = playPauseButton.querySelector('img');
+    const loopImage = loopButton.querySelector('img');
+    if (playImage) {
+        playImage.src = `icons/${playIcon}`;
+        playImage.alt = gifPlaying ? 'Pause GIF' : 'Play GIF';
+    }
+    if (loopImage) {
+        loopImage.src = `icons/${loopIcon}`;
+        loopImage.alt = gifLooping ? 'Loop GIF on' : 'Loop GIF off';
+    }
+
+    playPauseButton.title = gifPlaying ? 'Pause GIF' : 'Play GIF';
     loopButton.title = gifLooping ? 'Play once' : 'Repeat';
     seekSlider.max = Math.max(gifFrames.length - 1, 0);
     seekSlider.value = currentFrameIndex;
