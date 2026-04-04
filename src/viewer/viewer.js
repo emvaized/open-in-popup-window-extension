@@ -37,6 +37,7 @@ function init(){
     }
 
     const url = decodeURIComponent(imageUrl);
+    document.title = url.split('/').pop().split('?')[0] || 'Image Viewer'; /// Use filename as title if available
     const isGif = url.toLowerCase().endsWith('.gif');
 
     if (isGif) {
