@@ -148,6 +148,14 @@ function onTrigger(e, type){
 
         if (!link) link = t.href || t.src || t.parentNode.href;
 
+        /// Handle links in shadow root
+        if (!link) {
+            const shadowLink = t.closest('a');
+            if (target){
+                link = shadowLink.href || t.parentNode.href;
+            }
+        }
+
         message['nodeName'] = nodeName;
         message['link'] = link;
     }
