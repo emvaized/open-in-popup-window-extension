@@ -9,8 +9,17 @@
 
 <body>
     <div class="backgroundPattern"></div>
-    <img id="image">
-    <!-- <div id="mouseListener"></div> -->
+    <div id="wrapper">
+      <img id="image">
+      <canvas id="gifCanvas"></canvas>
+    </div>
+
+    <div id="gifControls">
+      <button id="gifPlayPause" type="button">▶️</button>
+      <input id="gifSeek" type="range" min="0" max="0" value="0" />
+      <span id="gifStatus"></span>
+      <button id="gifLoop" type="button">🔁</button>
+    </div>
 
   <!-- <script src="../configs.js"></script> -->
   <script src="../content.js"></script>
