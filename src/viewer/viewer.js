@@ -9,6 +9,8 @@ let mirroredX = false, mirroredY = false;
 let gifControlsContainer, seekSlider, playPauseButton, loopButton, gifStatus;
 let gifFrames = [], currentFrameIndex = 0, gifTimer = null, gifPlaying = false, gifLooping = true, listenersAdded = false;
 
+let zoomSlider, rotateButton, zoomPercent, resetZoomButton;
+
 function init(){
     const imageUrl = new URLSearchParams(window.location.search).get('src');
     if (!imageUrl) return;
@@ -22,6 +24,17 @@ function init(){
     gifStatus = document.getElementById('gifStatus');
     rotationWrapper = document.getElementById('wrapper');
     mouseListener = document.body;
+    zoomSlider = document.getElementById('zoomSlider');
+    rotateButton = document.getElementById('rotateButton');
+    zoomPercent = document.getElementById('zoomPercent');
+    resetZoomButton = document.getElementById('resetZoomButton');
+
+    if (zoomSlider) {
+        zoomSlider.value = scale;
+    }
+    if (zoomPercent) {
+        zoomPercent.textContent = Math.round(scale * 100) + '%';
+    }
 
     const url = decodeURIComponent(imageUrl);
     const isGif = url.toLowerCase().endsWith('.gif');
@@ -36,18 +49,39 @@ function init(){
         gifControlsContainer.style.display = 'none';
         initImageViewer(url);
     }
+    initImageControls();
+    setImageListeners();
 }
 
 function initImageViewer(url) {
     image.crossOrigin = 'anonymous';
     image.src = url;
     displayElement = image;
-    setImageListeners();
     image.onload = function(){
         onViewerLoaded(image.naturalWidth || image.clientWidth, image.naturalHeight || image.clientHeight);
     }
     image.onerror = function(){
         onViewerLoaded(image.clientWidth, image.clientHeight);
+    }
+}
+
+function initImageControls(){
+    /// Show image controls panel
+    const imageControls = document.getElementById('imageControls');
+    imageControls.style.display = 'flex';
+    imageControls.addEventListener('mousedown', function(e){ e.stopPropagation(); });
+    imageControls.addEventListener('wheel', function(e){ e.stopPropagation(); });
+
+    // Add listeners for zoom slider and rotate button
+    if (zoomSlider) {
+        zoomSlider.addEventListener('input', onZoomSliderInput);
+        zoomSlider.addEventListener('change', onZoomSliderChange);
+    }
+    if (rotateButton) {
+        rotateButton.addEventListener('click', onRotateButtonClick);
+    }
+    if (resetZoomButton) {
+        resetZoomButton.addEventListener('click', onResetZoomButtonClick);
     }
 }
 
@@ -61,7 +95,6 @@ function initGifViewer(url) {
     gifControlsContainer.addEventListener('mousedown', function(e){ e.stopPropagation(); });
     gifControlsContainer.addEventListener('wheel', function(e){ e.stopPropagation(); });
 
-    setImageListeners();
     fetchGif(url)
         .then(data => parseGif(new Uint8Array(data)))
         .then(result => {
@@ -87,7 +120,6 @@ function initGifViewer(url) {
             canvas.style.display = 'none';
             gifControlsContainer.style.display = 'none';
             displayElement = image;
-            setImageListeners();
             image.onload = function(){
                 onViewerLoaded(image.naturalWidth || image.clientWidth, image.naturalHeight || image.clientHeight);
             }
@@ -182,8 +214,12 @@ function panMouseDownListener(e) {
     if (displayElement) displayElement.style.transition = '';
 
     function mouseMoveListener(e) {
-        dxToShow += e.movementX;
-        dyToShow += e.movementY;
+        const rot = rotationSteps[rotationStepsCounter] || 0;
+        const rad = rot * Math.PI / 180;
+        const cos = Math.cos(rad);
+        const sin = Math.sin(rad);
+        dxToShow += e.movementX * cos + e.movementY * sin;
+        dyToShow += -e.movementX * sin + e.movementY * cos;
         updateTransform();
     }
 
@@ -216,6 +252,42 @@ function imageWheelListener(e) {
 function updateTransform() {
     if (!displayElement) return;
     displayElement.style.transform = `translate(${dxToShow}px, ${dyToShow}px) scale(${scale})`;
+    if (rotationWrapper) {
+        const rotation = rotationSteps[rotationStepsCounter] || 0;
+        rotationWrapper.style.transform = `rotate(${rotation}deg)`;
+    }
+    if (zoomSlider) {
+        zoomSlider.value = scale;
+    }
+    if (zoomPercent) {
+        zoomPercent.textContent = Math.round(scale * 100) + '%';
+    }
+}
+
+function onZoomSliderInput() {
+    scale = parseFloat(zoomSlider.value);
+    updateTransform();
+}
+
+function onZoomSliderChange() {
+    // Optional: add any logic when slider is released
+}
+
+function onRotateButtonClick() {
+    rotationStepsCounter = (rotationStepsCounter + 1) % rotationSteps.length;
+    updateTransform();
+}
+
+function onResetZoomButtonClick() {
+    scale = initialScale;
+    dxToShow = initialDx;
+    dyToShow = initialDy;
+    rotationStepsCounter = 0;
+    updateTransform();
+}
+
+function closeView() {
+    window.close();
 }
 
 function toggleGifPlayback() {
@@ -284,7 +356,6 @@ function onGifSeekChange() {
 function updateGifControls() {
     if (!playPauseButton || !seekSlider || !loopButton) return;
     playPauseButton.textContent = gifPlaying ? '⏸️' : '▶️';
-    playPauseButton.title = gifPlaying ? 'Pause GIF' : 'Play GIF';
     loopButton.textContent = gifLooping ? '🔁' : '➡️';
     loopButton.title = gifLooping ? 'Play once' : 'Repeat';
     seekSlider.max = Math.max(gifFrames.length - 1, 0);
@@ -586,8 +657,4 @@ function parseGif(bytes) {
         }
         return result;
     }
-}
-
-function closeView() {
-    window.close();
 }

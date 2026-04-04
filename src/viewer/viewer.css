@@ -68,9 +68,8 @@ body {
 #gifControls {
     display: none;
     position: fixed;
-    left: 50%;
+    left: 12px;
     bottom: 12px;
-    transform: translateX(-50%);
     align-items: center;
     gap: 0.5rem;
     padding: 8px 12px;
@@ -109,6 +108,59 @@ body {
     white-space: nowrap;
     min-width: 60px;
     text-align: right;
+}
+
+#imageControls {
+    display: flex;
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(5px);
+    color: #fff;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+#imageControls input[type="range"] {
+    width: 120px;
+}
+
+#zoomPercent {
+    opacity: 0.85;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    min-width: 40px;
+    text-align: center;
+}
+
+#imageControls button {
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#imageControls button:hover {
+    background: rgba(255,255,255,0.16);
+}
+
+@media (max-width: 499px) {
+    #gifControls {
+        display: none !important;
+    }
+}
+
+@media (max-width: 349px) {
+    #imageControls {
+        display: none !important;
+    }
 }
 
 @media (prefers-color-scheme: dark) {
