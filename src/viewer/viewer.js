@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", init);
 
 let dxToShow = 0, dyToShow = 0, scale = 1.0, image, canvas, canvasCtx, displayElement, mouseListener;
-const minScale = 0.1, maxScale = 50.0, initialScale  = 1.0, initialDx = 0, initialDy = 0, transitionDuration = 300;
+const minScale = 0.1, maxScale = 5.0, initialScale  = 1.0, initialDx = 0, initialDy = 0, transitionDuration = 300;
 let rotationWrapper, scaleSlider, zoomStepsCounter = 0, rotationStepsCounter = 0;
 const rotationSteps = [0, 90, 180, 270, 360], scaleSteps = [1.0, 2.0, 4.0];
 let mirroredX = false, mirroredY = false;
