@@ -69,8 +69,8 @@ body {
 #gifControls {
     display: none;
     position: fixed;
-    left: 0px;
-    bottom: 0px;
+    /* left: 12px;
+    bottom: 12px; */
     left: 0;
     bottom: 0;
     align-items: center;

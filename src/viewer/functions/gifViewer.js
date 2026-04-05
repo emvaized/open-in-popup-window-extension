@@ -102,6 +102,7 @@ function scheduleNextGifFrame() {
 }
 
 function onGifSeekInput() {
+    if (gifPlaying) stopGifPlayback();
     const index = parseInt(seekSlider.value, 10) || 0;
     currentFrameIndex = Math.min(Math.max(index, 0), gifFrames.length - 1);
     drawGifFrame(currentFrameIndex);
@@ -109,7 +110,7 @@ function onGifSeekInput() {
 }
 
 function onGifSeekChange() {
-    stopGifPlayback();
+    // stopGifPlayback();
 }
 
 function updateGifControls() {
