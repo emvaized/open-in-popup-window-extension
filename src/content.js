@@ -55,6 +55,7 @@ let dragStartDx, dragStartDy;
 function dragStartListener(e){
     dragStartDx = e.clientX; dragStartDy = e.clientY;
     document.addEventListener('dragover', dragOverListener, true);
+    document.addEventListener('dragenter', dragOverListener, true);
 }
 function dragEndListener(e){
     if (e.dataTransfer.dropEffect == 'none' || e.dataTransfer.dropEffect == 'link') {
@@ -65,6 +66,7 @@ function dragEndListener(e){
         ) onTrigger(e, 'drag')
     }
     document.removeEventListener('dragover', dragOverListener, true);
+    document.removeEventListener('dragenter', dragOverListener, true);
 }
 function dragOverListener(e){
     if (!configs.changeDragCursor) return;
@@ -73,16 +75,10 @@ function dragOverListener(e){
         e.dataTransfer.dropEffect = '';
         return;
     }
-    if (
-        Math.abs(e.clientX - dragStartDx) > configs.minimalDragDistance || 
-        Math.abs(e.clientY - dragStartDy) > configs.minimalDragDistance
-    ) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'link';
-    } else {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'none';
-    }
+
+    const hasMoved = Math.max(Math.abs(e.clientX - dragStartDx),  Math.abs(e.clientY - dragStartDy)) > configs.minimalDragDistance;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = hasMoved ? 'link' : 'none';
 }
 function shouldOverrideDragCursor(target) {
     /// Reject interactive elements
