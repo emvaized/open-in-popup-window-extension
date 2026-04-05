@@ -12,6 +12,7 @@ const configs = {
     'useBuiltInImageViewer': false,
     'openByModClick': true,
     'modifierKey': 'shift',
+    'doubleModifierKeyPressTrigger': false,
     'escKeyClosesPopup': false,
     'reopenSingleTabWindowAsPopup': false,
     'reopenAutoCreatedTabAsPopup': false,

@@ -34,12 +34,22 @@ function setMouseListeners(){
 
     /* Escape key to close popup */
     if (configs.escKeyClosesPopup){
-        document.addEventListener('keyup', keyUpListener)
+        document.addEventListener('keyup', EscKeyUpListener)
     } else {
-        document.removeEventListener('keyup', keyUpListener)
+        document.removeEventListener('keyup', EscKeyUpListener)
+    }
+
+    /* Double modifier key press to open in popup */
+    if (configs.openByModClick && configs.doubleModifierKeyPressTrigger){
+        document.addEventListener('keyup', doubleModKeyUpListener);
+        document.addEventListener('mouseover', mouseOverListener);
+    } else {
+        document.removeEventListener('keyup', doubleModKeyUpListener);
+        document.removeEventListener('mouseover', mouseOverListener);
     }
 }
 
+/* Change drag cursor and trigger popup on drag end */
 let dragStartDx, dragStartDy;
 
 function dragStartListener(e){
@@ -75,31 +85,50 @@ function dragOverListener(e){
     }
 }
 function shouldOverrideDragCursor(target) {
-        /// Reject interactive elements
-        if (!target || !(target instanceof Element)) return true;
-        const tag = target.tagName;
-        /// Skip common interactive tags
-        if (['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'LABEL'].includes(tag)) return false;
-        /// Skip if editable (e.g., <div contenteditable>)
-        if (target.isContentEditable) return false;
-        /// Skip if inside any interactive zone
-        if (target.closest('input, textarea, select, button, [contenteditable], [ondrop], .custom-drop-target')) {
-            return false;
-        }
-        return true;
+    /// Reject interactive elements
+    if (!target || !(target instanceof Element)) return true;
+    const tag = target.tagName;
+    /// Skip common interactive tags
+    if (['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'LABEL'].includes(tag)) return false;
+    /// Skip if editable (e.g., <div contenteditable>)
+    if (target.isContentEditable) return false;
+    /// Skip if inside any interactive zone
+    if (target.closest('input, textarea, select, button, [contenteditable], [ondrop], .custom-drop-target')) {
+        return false;
     }
+    return true;
+}
 
-function keyUpListener(e){
+/* Escape key to close popup */
+function EscKeyUpListener(e){
     if (e.key == 'Escape'){
          chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
     }
 }
+/* Double modifier key press to open in popup */
+let doublePressDelay = 300, lastKeypressTime = 0;
+let lastHoveredElement;
 
+function doubleModKeyUpListener(e){
+    if (e.key.toLowerCase() === configs.modifierKey && lastHoveredElement) {
+        const currentTime = Date.now();
+        if (currentTime - lastKeypressTime < doublePressDelay) {
+            onTrigger(undefined, 'modClick');
+        }
+        lastKeypressTime = currentTime;
+    }
+}
+
+function mouseOverListener(e){
+    lastHoveredElement = e.target;
+}
+
+/* Mod+Click to open in popup */
 function onClickListener(e){
     let modPressed = false;
     switch (configs.modifierKey) {
         case 'shift': modPressed = e.shiftKey; break;
-        case 'ctrl': modPressed = e.ctrlKey; break;
+        case 'control': modPressed = e.ctrlKey; break;
         case 'alt': modPressed = e.altKey; break;
         case 'meta': modPressed = e.metaKey; break;
     }
@@ -109,10 +138,11 @@ function onClickListener(e){
     }
 }
 
+/* Common trigger function for context menu, drag-and-drop, and mod+click */
 function onTrigger(e, type){
-    const t = e.target,
+    const t = e ? e.target : lastHoveredElement,
     message = {
-        mouseX: e.screenX, mouseY: e.screenY,
+        mouseX: e ? e.screenX : lastHoveredElement.screenX, mouseY: e ? e.screenY : lastHoveredElement.screenY,
         elementHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,

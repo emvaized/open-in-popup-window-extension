@@ -29,6 +29,9 @@
   "donateButton": {
     "message": "Поддержать проект"
   },
+   "doubleModifierKeyPressTrigger": {
+    "message": "Использовать двойное нажатие клавиши для открытия элемента под курсором"
+  },
   "dragAndDropSettings": {
     "message": "Настройки перетаскивания"
   },
