@@ -142,7 +142,7 @@ function onClickListener(e){
 function onTrigger(e, type){
     const t = e ? e.target : lastHoveredElement;
 
-    let selectedText = window.getSelection().toString().trim();
+    const selectedText = getSelectedText();
     let lastHoveredElementRect;
     if (!e) lastHoveredElementRect = lastHoveredElement.getBoundingClientRect();
 
@@ -200,11 +200,16 @@ function onTrigger(e, type){
     chrome.runtime.sendMessage(message)
 }
 
+const getSelectedText = () => {
+    let selectedText = window.getSelection().toString().trim();
+    selectedText = selectedText.replace(/\r?\n|\r/g, '');
+    return encodeURIComponent(selectedText);
+}
+
 /// For 'search in popup' keyboard hotkey
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.command == 'get_selected_text') {
-        let selectedText = window.getSelection().toString().trim();
-        selectedText = selectedText.replace(/\r?\n|\r/g, ''); /// Remove line breaks
-        return sendResponse(encodeURIComponent(selectedText));
+        const selectedText = getSelectedText(); /// Remove line breaks
+        return sendResponse(selectedText);
     }
 });
