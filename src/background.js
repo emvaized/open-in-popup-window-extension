@@ -25,19 +25,36 @@ chrome.runtime.onMessage.addListener(
                         availHeight = request.availHeight;
                     }
 
-                    let newWidth = w.height * request.aspectRatio;
-                    if (newWidth > availWidth)
-                        newWidth = availWidth * 0.7;
-    
-                    let dx = w.left;
-                    if (dx + newWidth > availWidth) 
-                        dx = dx - (dx + newWidth - availWidth);
+                    const titleBarHeight = request.titleBarHeight ?? 32;
+                    const toolbarWidth = request.toolbarWidth ?? 0;
+                    const contentHeight = Math.max(0, w.height - titleBarHeight);
+                    let newWidth = Math.round(contentHeight * request.aspectRatio + toolbarWidth);
+                    let newHeight = w.height;
 
-                    newWidth = Math.round(newWidth);
-                    dx = Math.round(dx);
+                    if (newWidth > availWidth) {
+                        newWidth = Math.round(availWidth * 0.7);
+                        const newContentWidth = Math.max(0, newWidth - toolbarWidth);
+                        const newContentHeight = Math.round(newContentWidth / request.aspectRatio);
+                        newHeight = newContentHeight + titleBarHeight;
+                    }
+
+                    let dx = w.left;
+                    let dy = w.top;
+                    dx -= Math.round((newWidth - w.width) / 2);
+                    dy -= Math.round((newHeight - w.height) / 2);
+
+                    if (dx + newWidth > availWidth)
+                        dx -= (dx + newWidth - availWidth);
+                    if (dx < 0) dx = 0;
+                    if (dy + newHeight > availHeight) 
+                        dy -= (dy + newHeight - availHeight);
+                    if (dy < 0) dy = 0;
+
                     chrome.windows.update(lastPopupId, {
-                        'width': newWidth, 
-                        'left': dx
+                        'width': newWidth,
+                        'height': newHeight,
+                        'left': dx,
+                        'top': dy
                     });
                 })
             }
