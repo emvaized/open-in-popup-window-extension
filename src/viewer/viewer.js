@@ -37,7 +37,7 @@ function init(){
 
     const url = decodeURIComponent(imageUrl);
     const filename = url.split('/').pop().split('?')[0].split('#')[0];
-    document.title = filename ? 'Image Viewer ‒ ' + filename : 'Image Viewer';
+    document.title = filename ?? 'Image Viewer';
     const isGif = url.toLowerCase().endsWith('.gif');
 
     if (isGif) {
@@ -87,6 +87,7 @@ function initImageControls(){
 }
 
 function onViewerLoaded(width, height) {
+    document.title += ` (${width}×${height})`;
     const aspectRatio = width / height;
     const toolbarHeight = window.outerHeight - window.innerHeight;
     const toolbarWidth = window.outerWidth - window.innerWidth;
