@@ -142,6 +142,7 @@ function onClickListener(e){
 function onTrigger(e, type){
     const t = e ? e.target : lastHoveredElement;
 
+    let selectedText = window.getSelection().toString().trim();
     let lastHoveredElementRect;
     if (!e) lastHoveredElementRect = lastHoveredElement.getBoundingClientRect();
 
@@ -150,12 +151,10 @@ function onTrigger(e, type){
         elementHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,
-        selectedText: window.getSelection().toString().trim(),
+        selectedText: selectedText,
         availLeft: window.screen.availLeft, type: type
     }
 
-    console.log(lastHoveredElement);
-    console.log(lastHoveredElement.screenX, lastHoveredElement.screenY);
     let nodeName, link;
     if (type == 'drag' || type == 'modClick') {
         /// Handle IMG wrapped in A
@@ -189,7 +188,7 @@ function onTrigger(e, type){
         if (!link) link = t.href || t.src || t.parentNode.href;
 
         /// Handle links in shadow root
-        if (!link) {
+        if (!link && !selectedText) {
             const closestA = t.closest('a');
             if (closestA) link = closestA.href;
         }
