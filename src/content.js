@@ -86,17 +86,9 @@ function dragOverListener(e){
 }
 function shouldOverrideDragCursor(target) {
     /// Reject interactive elements
-    if (!target || !(target instanceof Element)) return true;
-    const tag = target.tagName;
-    /// Skip common interactive tags
-    if (['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'LABEL'].includes(tag)) return false;
-    /// Skip if editable (e.g., <div contenteditable>)
-    if (target.isContentEditable) return false;
-    /// Skip if inside any interactive zone
-    if (target.closest('input, textarea, select, button, [contenteditable], [ondrop], .custom-drop-target')) {
-        return false;
-    }
-    return true;
+    if (!(target instanceof Element)) return true;
+    const interactiveSelector = 'input, textarea, select, button, label, [contenteditable], [ondrop], .custom-drop-target';
+    return !target.closest(interactiveSelector);
 }
 
 /* Escape key to close popup */
