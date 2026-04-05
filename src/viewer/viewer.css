@@ -69,14 +69,14 @@ body {
 #gifControls {
     display: none;
     position: fixed;
-    left: 12px;
-    bottom: 12px;
+    left: 0px;
+    bottom: 0px;
     left: 0;
     bottom: 0;
     align-items: center;
     gap: 0.5rem;
-    padding: 8px 12px;
-    padding: 4px;
+    /* padding: 8px 12px; */
+    padding: 2px 4px;
     /* border-radius: 999px; */
     border-top-right-radius: 8px;
     background: rgba(0, 0, 0, 0.65);
@@ -105,13 +105,13 @@ body {
 #imageControls {
     display: flex;
     position: fixed;
-    right: 12px;
-    bottom: 12px;
+    right: 0px;
+    bottom: 0px;
     bottom: 0;
     right: 0;
     align-items: center;
     gap: 0.5rem;
-    padding: 4px;
+    padding: 2px 4px;
     /* border-radius: 999px; */
     border-top-left-radius: 8px;
     background: rgba(0, 0, 0, 0.65);
