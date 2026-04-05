@@ -30,7 +30,7 @@
     "message": "Proyecto de apoyo"
   },
   "doubleModifierKeyPressTrigger": {
-    "message": "Usar doble presión de tecla modificadora para abrir el elemento señalado"
+    "message": "Usar doble presión para abrir el elemento señalado"
   },
   "dragAndDropSettings": {
     "message": "Configuración de arrastrar y soltar"
