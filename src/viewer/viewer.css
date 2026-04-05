@@ -166,7 +166,7 @@ body {
     }
 }
 
-@media (max-width: 350px) {
+@media (max-width: 275px) {
     #imageControls {
         display: none !important;
     }
