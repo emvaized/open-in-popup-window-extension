@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", init);
 
 let dxToShow = 0, dyToShow = 0, scale = 1.0, image, canvas, canvasCtx, displayElement, mouseListener;
 const minScale = 0.1, maxScale = 50.0, initialScale  = 1.0, initialDx = 0, initialDy = 0, transitionDuration = 300;
-let rotationWrapper, scaleSlider, rotationStepsCounter = 0;
+let rotationWrapper, scaleSlider, zoomStepsCounter = 0, rotationStepsCounter = 0;
 const rotationSteps = [0, 90, 180, 270, 360], scaleSteps = [1.0, 2.0, 4.0];
 let mirroredX = false, mirroredY = false;
 
@@ -130,20 +130,20 @@ function setImageListeners(){
         });
 
         if (scaleValueWithinSteps) {
-            if (stepsCounter === scaleSteps.length - 1) {
-                stepsCounter = 0;
+            if (zoomStepsCounter === scaleSteps.length - 1) {
+                zoomStepsCounter = 0;
                 scale = initialScale;
                 dxToShow = initialDx;
                 dyToShow = initialDy;
             } else {
-                stepsCounter += 1;
-                scale = initialScale * scaleSteps[stepsCounter];
+                zoomStepsCounter += 1;
+                scale = initialScale * scaleSteps[zoomStepsCounter];
                 dxToShow = e.clientX - xs * scale;
                 dyToShow = e.clientY - ys * scale;
             }
         } else {
             scale = initialScale;
-            stepsCounter = 0;
+            zoomStepsCounter = 0;
             rotationStepsCounter = 0;
             if (rotationWrapper) rotationWrapper.style.transform = 'rotate(0deg)';
             dxToShow = 0;
