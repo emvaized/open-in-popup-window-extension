@@ -140,9 +140,13 @@ function onClickListener(e){
 
 /* Common trigger function for context menu, drag-and-drop, and mod+click */
 function onTrigger(e, type){
-    const t = e ? e.target : lastHoveredElement,
-    message = {
-        mouseX: e ? e.screenX : lastHoveredElement.screenX, mouseY: e ? e.screenY : lastHoveredElement.screenY,
+    const t = e ? e.target : lastHoveredElement;
+
+    let lastHoveredElementRect;
+    if (!e) lastHoveredElementRect = lastHoveredElement.getBoundingClientRect();
+
+    const message = {
+        mouseX: e ? e.screenX : lastHoveredElementRect.left, mouseY: e ? e.screenY : lastHoveredElementRect.top,
         elementHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,
@@ -150,6 +154,8 @@ function onTrigger(e, type){
         availLeft: window.screen.availLeft, type: type
     }
 
+    console.log(lastHoveredElement);
+    console.log(lastHoveredElement.screenX, lastHoveredElement.screenY);
     let nodeName, link;
     if (type == 'drag' || type == 'modClick') {
         /// Handle IMG wrapped in A
