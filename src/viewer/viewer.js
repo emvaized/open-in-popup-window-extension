@@ -148,14 +148,7 @@ function setImageListeners(){
         }
 
         updateTransform();
-
-        if (displayElement && displayElement.style.transition === '') {
-            displayElement.style.transition = `transform ${transitionDuration}ms ease-in-out, scale ${transitionDuration}ms ease-in-out`;
-        }
-
-        setTimeout(function(){
-            if (displayElement) displayElement.style.transition = '';
-        }, transitionDuration);
+        enableTransitionsTemporarily();
     });
 }
 
@@ -232,12 +225,24 @@ function onRotateButtonClick() {
 }
 
 function onResetZoomButtonClick() {
+    enableTransitionsTemporarily();
     scale = initialScale;
     dxToShow = initialDx;
     dyToShow = initialDy;
     rotationStepsCounter = 0;
     updateTransform();
 }
+
+function enableTransitionsTemporarily() {
+    if (displayElement && displayElement.style.transition === '') {
+        displayElement.style.transition = `transform ${transitionDuration}ms ease-in-out, scale ${transitionDuration}ms ease-in-out`;
+    }
+
+    setTimeout(function(){
+        if (displayElement) displayElement.style.transition = '';
+    }, transitionDuration);
+}
+
 
 function closeView() {
     window.close();
