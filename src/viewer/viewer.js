@@ -214,7 +214,21 @@ function updateTransform() {
 }
 
 function onZoomSliderInput() {
+    const oldScale = scale;
     scale = parseFloat(zoomSlider.value);
+    
+    /// Calculate the center of the viewport
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    
+    /// Convert viewport center to image coordinates using old scale and offset
+    const xs = (centerX - dxToShow) / oldScale;
+    const ys = (centerY - dyToShow) / oldScale;
+    
+    /// Adjust offset to keep the center point under the same viewport position
+    dxToShow = centerX - xs * scale;
+    dyToShow = centerY - ys * scale;
+    
     updateTransform();
 }
 
