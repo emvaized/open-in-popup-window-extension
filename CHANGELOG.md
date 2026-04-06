@@ -1,3 +1,16 @@
+### 0.5.0
+- Added option to allow users to customize the modifier key to open popups (thanks [justcontributor](https://github.com/justcontributor))
+- Added Korean translation (thanks [justcontributor](https://github.com/justcontributor))
+- Added option to open popup by double pressing the modifier key when cursor is over element
+- Added basic handling for links in shadow root context (for example, sidebar on Reddit)
+- Big improvements to the built-in Image Viewer:
+  - Added toolbar with zoom slider and button to rotate the image
+  - Added ability to control GIF playback, play/pause and rewind, with its own toolbar
+  - Improved the function to fit popup window size to fit image size and aspect ratio
+  - Title of the Image Viewer popup window now shows the file name and dimensions of the image
+- Fix for drag cursor flickering on Chromium-based browsers 
+- On Firefox, when you middle click the "Open page in main window" context menu, it opens background tab
+
 ### 0.4.2
 - Change "open in popup window" to move the tab + add option in settings to revert
 - Change default popup location to "near mouse cursor"
