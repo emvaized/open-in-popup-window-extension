@@ -131,7 +131,7 @@ function updateGifControls() {
     }
 
     playPauseButton.title = gifPlaying ? 'Pause GIF' : 'Play GIF';
-    loopButton.title = gifLooping ? 'Play once' : 'Repeat';
+    loopButton.title = gifLooping ? 'Repeat' : 'Play once';
     seekSlider.max = Math.max(gifFrames.length - 1, 0);
     seekSlider.value = currentFrameIndex;
     gifStatus.textContent = gifFrames.length > 1 ? `${currentFrameIndex + 1}/${gifFrames.length}` : 'Single-frame GIF';
@@ -148,7 +148,7 @@ function buildGifFrames(parsed) {
     const offscreen = document.createElement('canvas');
     offscreen.width = width;
     offscreen.height = height;
-    const ctx = offscreen.getContext('2d');
+    const ctx = offscreen.getContext('2d', { willReadFrequently: true });
     ctx.clearRect(0, 0, width, height);
 
     const frames = [];
