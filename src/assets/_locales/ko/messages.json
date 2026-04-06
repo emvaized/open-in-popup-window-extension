@@ -29,6 +29,9 @@
   "donateButton": {
     "message": "프로젝트 지원"
   },
+  "doubleModifierKeyPressTrigger": {
+    "message": "호버된 요소를 열 때 조합 키를 두 번 누르기 사용"
+  },
   "dragAndDropSettings": {
     "message": "드래그 및 드롭 설정"
   },

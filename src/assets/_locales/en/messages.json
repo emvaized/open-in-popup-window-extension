@@ -29,6 +29,9 @@
   "donateButton": {
     "message": "Support project"
   },
+  "doubleModifierKeyPressTrigger": {
+    "message": "Use double key press to open hovered element in popup"
+  },
   "dragAndDropSettings": {
     "message": "Drag and drop settings"
   },

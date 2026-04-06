@@ -34,17 +34,28 @@ function setMouseListeners(){
 
     /* Escape key to close popup */
     if (configs.escKeyClosesPopup){
-        document.addEventListener('keyup', keyUpListener)
+        document.addEventListener('keyup', EscKeyUpListener)
     } else {
-        document.removeEventListener('keyup', keyUpListener)
+        document.removeEventListener('keyup', EscKeyUpListener)
+    }
+
+    /* Double modifier key press to open in popup */
+    if (configs.openByModClick && configs.doubleModifierKeyPressTrigger){
+        document.addEventListener('keyup', doubleModKeyUpListener);
+        document.addEventListener('mouseover', mouseOverListener);
+    } else {
+        document.removeEventListener('keyup', doubleModKeyUpListener);
+        document.removeEventListener('mouseover', mouseOverListener);
     }
 }
 
+/* Change drag cursor and trigger popup on drag end */
 let dragStartDx, dragStartDy;
 
 function dragStartListener(e){
     dragStartDx = e.clientX; dragStartDy = e.clientY;
     document.addEventListener('dragover', dragOverListener, true);
+    document.addEventListener('dragenter', dragOverListener, true);
 }
 function dragEndListener(e){
     if (e.dataTransfer.dropEffect == 'none' || e.dataTransfer.dropEffect == 'link') {
@@ -55,6 +66,7 @@ function dragEndListener(e){
         ) onTrigger(e, 'drag')
     }
     document.removeEventListener('dragover', dragOverListener, true);
+    document.removeEventListener('dragenter', dragOverListener, true);
 }
 function dragOverListener(e){
     if (!configs.changeDragCursor) return;
@@ -63,43 +75,48 @@ function dragOverListener(e){
         e.dataTransfer.dropEffect = '';
         return;
     }
-    if (
-        Math.abs(e.clientX - dragStartDx) > configs.minimalDragDistance || 
-        Math.abs(e.clientY - dragStartDy) > configs.minimalDragDistance
-    ) {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'link';
-    } else {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'none';
-    }
+
+    const hasMoved = Math.max(Math.abs(e.clientX - dragStartDx),  Math.abs(e.clientY - dragStartDy)) > configs.minimalDragDistance;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = hasMoved ? 'link' : 'none';
 }
 function shouldOverrideDragCursor(target) {
-        /// Reject interactive elements
-        if (!target || !(target instanceof Element)) return true;
-        const tag = target.tagName;
-        /// Skip common interactive tags
-        if (['INPUT', 'TEXTAREA', 'SELECT', 'BUTTON', 'LABEL'].includes(tag)) return false;
-        /// Skip if editable (e.g., <div contenteditable>)
-        if (target.isContentEditable) return false;
-        /// Skip if inside any interactive zone
-        if (target.closest('input, textarea, select, button, [contenteditable], [ondrop], .custom-drop-target')) {
-            return false;
-        }
-        return true;
-    }
+    /// Reject interactive elements
+    if (!(target instanceof Element)) return true;
+    const interactiveSelector = 'input, textarea, select, button, label, [contenteditable], [ondrop], .custom-drop-target';
+    return !target.closest(interactiveSelector);
+}
 
-function keyUpListener(e){
+/* Escape key to close popup */
+function EscKeyUpListener(e){
     if (e.key == 'Escape'){
          chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
     }
 }
+/* Double modifier key press to open in popup */
+let doublePressDelay = 300, lastKeypressTime = 0;
+let lastHoveredElement;
 
+function doubleModKeyUpListener(e){
+    if (e.key.toLowerCase() === configs.modifierKey && lastHoveredElement) {
+        const currentTime = Date.now();
+        if (currentTime - lastKeypressTime < doublePressDelay) {
+            onTrigger(undefined, 'modClick');
+        }
+        lastKeypressTime = currentTime;
+    }
+}
+
+function mouseOverListener(e){
+    lastHoveredElement = e.target;
+}
+
+/* Mod+Click to open in popup */
 function onClickListener(e){
     let modPressed = false;
     switch (configs.modifierKey) {
         case 'shift': modPressed = e.shiftKey; break;
-        case 'ctrl': modPressed = e.ctrlKey; break;
+        case 'control': modPressed = e.ctrlKey; break;
         case 'alt': modPressed = e.altKey; break;
         case 'meta': modPressed = e.metaKey; break;
     }
@@ -109,14 +126,20 @@ function onClickListener(e){
     }
 }
 
+/* Common trigger function for context menu, drag-and-drop, and mod+click */
 function onTrigger(e, type){
-    const t = e.target,
-    message = {
-        mouseX: e.screenX, mouseY: e.screenY,
+    const t = e ? e.target : lastHoveredElement;
+
+    const selectedText = getSelectedText();
+    let lastHoveredElementRect;
+    if (!e) lastHoveredElementRect = lastHoveredElement.getBoundingClientRect();
+
+    const message = {
+        mouseX: e ? e.screenX : lastHoveredElementRect.left, mouseY: e ? e.screenY : lastHoveredElementRect.top,
         elementHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,
-        selectedText: window.getSelection().toString().trim(),
+        selectedText: selectedText,
         availLeft: window.screen.availLeft, type: type
     }
 
@@ -153,7 +176,7 @@ function onTrigger(e, type){
         if (!link) link = t.href || t.src || t.parentNode.href;
 
         /// Handle links in shadow root
-        if (!link) {
+        if (!link && !selectedText) {
             const closestA = t.closest('a');
             if (closestA) link = closestA.href;
         }
@@ -165,11 +188,16 @@ function onTrigger(e, type){
     chrome.runtime.sendMessage(message)
 }
 
+const getSelectedText = () => {
+    let selectedText = window.getSelection().toString().trim();
+    selectedText = selectedText.replace(/\r?\n|\r/g, '');
+    return encodeURIComponent(selectedText);
+}
+
 /// For 'search in popup' keyboard hotkey
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.command == 'get_selected_text') {
-        let selectedText = window.getSelection().toString().trim();
-        selectedText = selectedText.replace(/\r?\n|\r/g, ''); /// Remove line breaks
-        return sendResponse(encodeURIComponent(selectedText));
+        const selectedText = getSelectedText(); /// Remove line breaks
+        return sendResponse(selectedText);
     }
 });

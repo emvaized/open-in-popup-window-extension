@@ -29,6 +29,9 @@
   "donateButton": {
     "message": "Proyecto de apoyo"
   },
+  "doubleModifierKeyPressTrigger": {
+    "message": "Usar doble presión para abrir el elemento señalado"
+  },
   "dragAndDropSettings": {
     "message": "Configuración de arrastrar y soltar"
   },
