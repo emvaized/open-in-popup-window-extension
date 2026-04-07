@@ -247,6 +247,7 @@ function onTrigger(e, type){
             if (closestA) link = closestA.href;
         }
 
+        if (!link && !selectedText) return;
         message['nodeName'] = nodeName;
         message['link'] = link;
     }
