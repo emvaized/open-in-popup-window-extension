@@ -536,7 +536,7 @@ chrome.tabs.onCreated.addListener(newTab => {
                             if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
                                 // chrome.tabs.remove(newTab.id);
                                 // moveTabToPopupWindow(newTab);
-                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c, true);
+                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c, true, openerId);
                             } 
                         }
                     });
