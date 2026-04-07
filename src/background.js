@@ -573,7 +573,7 @@ function openSearchPopup(senderTab){
     function searchSelectedText(selectedText) {
         loadUserConfigs((c) => {
             const link = configs.popupSearchUrl.replace('%s', selectedText);
-            openPopupWindowForLink(link);
+            openPopupWindowForLink(link, false, false, undefined, undefined, c, undefined, senderTab.id);
         });
     }
 }
