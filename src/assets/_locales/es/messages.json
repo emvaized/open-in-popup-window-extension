@@ -1,4 +1,7 @@
 {
+  "activationSettings": {
+    "message": "Métodos de activación"
+  },
   "addOptionOpenPageInPopupWindow": {
     "message": "Agregar opción para abrir la página en una ventana emergente"
   },
@@ -88,6 +91,9 @@
   },
   "openByModClick": {
     "message": "Utilice Modificador + Clic para abrir en ventana emergente"
+  },
+  "openByLongClick": {
+    "message": "Utilice un clic largo para abrir en ventana emergente"
   },
   "modifierKey": {
     "message": "Tecla modificadora para clic"

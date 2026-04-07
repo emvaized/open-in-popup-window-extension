@@ -1,4 +1,7 @@
 {
+  "activationSettings": {
+    "message": "활성화 방법"
+  },
   "addOptionOpenPageInPopupWindow": {
     "message": "팝업 창에서 페이지 열기 옵션 추가"
   },
@@ -88,6 +91,9 @@
   },
   "openByModClick": {
     "message": "조합 키 + 클릭으로 팝업 창에서 열기"
+  },
+  "openByLongClick": {
+    "message": "롱 클릭으로 팝업 창에서 열기"
   },
   "modifierKey": {
     "message": "클릭에 사용할 조합 키"

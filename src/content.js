@@ -1,10 +1,11 @@
 document.addEventListener("contextmenu",(e=>onTrigger(e,'context')));
 chrome.storage.onChanged.addListener((c) => {
-    loadUserConfigs((c) => setMouseListeners())
+    loadUserConfigs((c) => setMouseListeners(), setCssVariables())
 });
 
 loadUserConfigs(function(c) {
     setMouseListeners();
+    setCssVariables();
 
     /// Cache screen size for the background script
     if (configs.screenWidth !== window.screen.width || configs.availLeft !== window.screen.availLeft) {
@@ -46,6 +47,71 @@ function setMouseListeners(){
     } else {
         document.removeEventListener('keyup', doubleModKeyUpListener);
         document.removeEventListener('mouseover', mouseOverListener);
+    }
+
+    /* Hold click */
+    if (configs.openByLongClick){
+        document.addEventListener('mousedown', longClickMouseDownListener);
+        document.addEventListener('mouseup', longClickMouseUpListener);
+        document.addEventListener('selectstart', longClickMouseUpListener); /// Cancel hold if user starts selecting text
+        document.addEventListener('dragstart', longClickMouseUpListener); /// Cancel hold if user starts selecting text
+    } else {
+        document.removeEventListener('mousedown', longClickMouseDownListener);
+        document.removeEventListener('mouseup', longClickMouseUpListener);
+        document.removeEventListener('selectstart', longClickMouseUpListener);
+        document.removeEventListener('dragstart', longClickMouseUpListener);
+    }
+}
+
+/// hold click
+let holdTimeout, holdStartTimeout, holdIndicator;
+let holdClickDelay = configs.holdClickDelay || 500; /// Default to 500ms if not set
+
+function setCssVariables(){
+    const root = document.documentElement;
+    root.style.setProperty('--hold-click-delay', `${holdClickDelay}ms`);
+}
+
+function longClickMouseDownListener(e) {
+    holdStartTimeout = setTimeout(function(){
+        const x = e.clientX, y = e.clientY;
+
+        // Create the ring at cursor position
+        // holdIndicator = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        // holdIndicator.setAttribute("class", "long-click-indicator");
+        // holdIndicator.setAttribute("width", "40");
+        // holdIndicator.setAttribute("height", "40");
+        // holdIndicator.style.left = `${x}px`;
+        // holdIndicator.style.top = `${y}px`;
+        // holdIndicator.innerHTML = `<circle class="long-click-indicator-circle" cx="20" cy="20" r="18"></circle>`;
+        // document.body.appendChild(holdIndicator);
+
+        holdIndicator = document.createElement('div');
+        holdIndicator.className = 'long-click-indicator';
+        holdIndicator.style.left = `${x}px`;
+        holdIndicator.style.top = `${y + 15}px`;
+        document.body.appendChild(holdIndicator);
+        setTimeout(() => holdIndicator.style.opacity = 1, 1); /// Fade in
+
+        holdTimeout = setTimeout(function(){
+            removeHoldIndicator();
+            e.preventDefault();
+            e.stopPropagation();
+            onTrigger(e, 'modClick');
+        }, holdClickDelay);
+    }, 100); /// Short delay to prevent trigger when user is clicking normally
+}
+
+function longClickMouseUpListener(e) {
+    clearTimeout(holdStartTimeout);
+    clearTimeout(holdTimeout);
+    removeHoldIndicator();
+}
+
+function removeHoldIndicator(){
+    if (holdIndicator) {
+        holdIndicator.remove();
+        holdIndicator = null;
     }
 }
 
@@ -194,38 +260,15 @@ const getSelectedText = () => {
     return encodeURIComponent(selectedText);
 }
 
-let injectedOverlayStyles = false;
-function injectOverlayStyles() {    
-    if (injectedOverlayStyles) return;
-    const style = document.createElement('style');
-        style.textContent = `
-            #open-in-popup-dim-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.4);
-                z-index: 999998;
-                opacity:0;
-            }
-            @keyframes fadeIn {100% {opacity: 1;}}
-            @keyframes fadeOut {100% {opacity: 0;}}
-        `;  
-        document.head.appendChild(style);
-        injectedOverlayStyles = true;
-}
-
 let dimOverlay;
 const dimAnimDuration = 200; // Duration of the fade-out in milliseconds
 
 function dimPage(){
     if (!configs.dimPageOnPopupOpen) return;
 
-    injectOverlayStyles();
     if (dimOverlay) dimOverlay.remove();
     dimOverlay = document.createElement('div');
-    dimOverlay.id = 'open-in-popup-dim-overlay';
+    dimOverlay.id = 'oip-dim-overlay';
     dimOverlay.style.animation = `fadeIn ${dimAnimDuration}ms ease-in forwards`;
     document.body.appendChild(dimOverlay);
     window.addEventListener('focus', undimPage);

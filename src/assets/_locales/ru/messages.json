@@ -1,4 +1,7 @@
 {
+  "activationSettings": {
+    "message": "Методы активации"
+  },
   "addOptionOpenPageInPopupWindow": {
     "message": "Включить опцию открытия текущей страницы во вспл. окне"
   },
@@ -88,6 +91,9 @@
   },
   "openByModClick": {
     "message": "Использовать Модификатор + клик для открытия во вспл. окне"
+  },
+  "openByLongClick": {
+    "message": "Использовать долгий клик для открытия во вспл. окне"
   },
   "modifierKey": {
     "message": "Модификатор для клика"

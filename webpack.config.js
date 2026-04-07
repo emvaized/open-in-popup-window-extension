@@ -37,6 +37,7 @@ module.exports = env => ({
     /// static files
     new CopyPlugin({
       patterns: [
+        { from: "src/content.css", to: "content.css" },
         { from: "src/assets/_locales", to: "_locales" },
         { from: "src/assets/icon_new.png", to: "icon_new.png" },
         { from: "src/options", to: "options" },

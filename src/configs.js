@@ -32,6 +32,7 @@ const configs = {
     'changeDragCursor': true,
     'copyTabInsteadOfMoving': false,
     'dimPageOnPopupOpen': true,
+    'openByLongClick': false,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 

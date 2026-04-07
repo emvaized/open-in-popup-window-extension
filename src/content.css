@@ -1,0 +1,47 @@
+/* Styles for hold click indicator */
+
+/* circle style (deprecated) */
+/* .cursor-ring-svg {
+    position: fixed; z-index: 999999; pointer-events: none; transform: translate(-50%, -50%) rotate(-90deg);
+}
+.long-click-indicator-circle {
+    fill: none; animation: fillStroke var(--hold-click-delay, 500)ms linear forwards;
+    stroke: #3498db; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 113; stroke-dashoffset: 113;
+}
+@keyframes fillStroke { to { stroke-dashoffset: 0; } } */
+
+/* progress bar style */
+.long-click-indicator {
+    position: fixed; height: 4px; width: 40px;
+    background: #ccc; border-radius: 2px;
+    transform: translate(-50%, 10px); 
+    pointer-events: none; z-index: 999;
+    overflow: hidden;
+    transition: opacity 50ms ease-out;
+    opacity: 0;
+}
+.long-click-indicator::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: #3498db;
+    transform-origin: left;
+    animation: grow var(--hold-click-delay, 500) linear forwards;
+}
+@keyframes grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+/* Page dimmer */
+#oip-dim-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999998;
+    opacity:0;
+}
+@keyframes fadeIn {100% {opacity: 1;}}
+@keyframes fadeOut {100% {opacity: 0;}}
