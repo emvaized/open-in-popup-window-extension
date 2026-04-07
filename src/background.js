@@ -367,7 +367,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 });
 
                 /// Dim page for main window
-                if (senderTabId) {
+                if (configs.dimPageOnPopupOpen && senderTabId) {
                     chrome.tabs.sendMessage(senderTabId, { action: 'dimPage' });
                 }
 

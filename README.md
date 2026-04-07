@@ -10,7 +10,8 @@
 This tiny and lightweight browser extension provides ability to quickly preview links without leaving the current page context. It adds entry in context menu of links, and when clicked, opens new small window at cursor position, with no tab bar and addressbar. 
 
 <b>Features:</b>
-- [x] Ability to open images and search selected text in popup window
+- [x] Open links and search selected text in a popup window
+- [x] Advanced image viewer with GIF playback control
 - [x] Use <kbd>Ctrl</kbd> / <kbd>Shift</kbd> / <kbd>Alt</kbd> / <kbd>Meta</kbd> + click to open in popup window (_enabled with <kbd>Shift</kbd>_ by default)
 - [x] Use drag and drop to open in popup window (_disabled_ by default)
 - [x] Configurable popup height, width and position on screen
