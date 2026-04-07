@@ -26,6 +26,9 @@
   "debugMode": {
     "message": "디버그 모드"
   },
+  "dimPageOnPopupOpen": {
+    "message": "팝업 창이 열릴 때 페이지 어둡게 하기"
+  },
   "donateButton": {
     "message": "프로젝트 지원"
   },

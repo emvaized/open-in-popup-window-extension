@@ -31,6 +31,7 @@ const configs = {
     'moveToMainWindowOnMaximize': true,
     'changeDragCursor': true,
     'copyTabInsteadOfMoving': false,
+    'dimPageOnPopupOpen': true,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 

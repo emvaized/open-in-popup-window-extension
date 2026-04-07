@@ -26,6 +26,9 @@
   "debugMode": {
     "message": "Отладка"
   },
+  "dimPageOnPopupOpen": {
+      "message": "Затемнять страницу при открытии всплыв. окна"
+  },
   "donateButton": {
     "message": "Поддержать проект"
   },

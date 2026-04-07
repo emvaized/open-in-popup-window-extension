@@ -26,6 +26,9 @@
   "debugMode": {
     "message": "Depurar"
   },
+  "dimPageOnPopupOpen": {
+    "message": "Atenuar la página cuando se abre la ventana emergente"
+  },
   "donateButton": {
     "message": "Proyecto de apoyo"
   },

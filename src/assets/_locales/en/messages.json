@@ -26,6 +26,9 @@
   "debugMode": {
     "message": "Debug mode"
   },
+  "dimPageOnPopupOpen": {
+    "message": "Dim page when popup is opened"
+  },
   "donateButton": {
     "message": "Support project"
   },

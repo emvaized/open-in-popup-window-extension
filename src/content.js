@@ -194,10 +194,59 @@ const getSelectedText = () => {
     return encodeURIComponent(selectedText);
 }
 
-/// For 'search in popup' keyboard hotkey
+let injectedOverlayStyles = false;
+function injectOverlayStyles() {    
+    if (injectedOverlayStyles) return;
+    const style = document.createElement('style');
+        style.textContent = `
+            #open-in-popup-dim-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.4);
+                z-index: 999998;
+                opacity:0;
+            }
+            @keyframes fadeIn {100% {opacity: 1;}}
+            @keyframes fadeOut {100% {opacity: 0;}}
+        `;  
+        document.head.appendChild(style);
+        injectedOverlayStyles = true;
+}
+
+let dimOverlay;
+const dimAnimDuration = 200; // Duration of the fade-out in milliseconds
+
+function dimPage(){
+    if (!configs.dimPageOnPopupOpen) return;
+
+    injectOverlayStyles();
+    if (dimOverlay) dimOverlay.remove();
+    dimOverlay = document.createElement('div');
+    dimOverlay.id = 'open-in-popup-dim-overlay';
+    dimOverlay.style.animation = `fadeIn ${dimAnimDuration}ms ease-in forwards`;
+    document.body.appendChild(dimOverlay);
+    window.addEventListener('focus', undimPage);
+}
+
+function undimPage(){
+    if (dimOverlay) {
+        dimOverlay.style.opacity = 1;
+        dimOverlay.style.animation = `fadeOut ${dimAnimDuration}ms ease-out forwards`;
+        setTimeout(() => dimOverlay.remove(), dimAnimDuration);
+    }
+}
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    /// For 'search in popup' keyboard hotkey and toolbar injection
     if (message.command == 'get_selected_text') {
         const selectedText = getSelectedText(); /// Remove line breaks
         return sendResponse(selectedText);
+    }
+    if (message.action == 'dimPage') {
+        dimPage();
+        return;
     }
 });

@@ -84,7 +84,7 @@ chrome.runtime.onMessage.addListener(
 
                 const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
                 if (isViewer && !cfg.viewInPopupEnabled) return;
-                openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg); 
+                openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg, false, sender.tab ? sender.tab.id : undefined); 
             });
         }
     }
@@ -171,10 +171,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     const link = clickData.menuItemId == 'searchInPopupWindow' ? 
         configs.popupSearchUrl.replace('%s', clickData.selectionText) 
         : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
-    openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
+    openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow', undefined, undefined, undefined, undefined, false, tab ? tab.id : undefined);
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId, isCurrentPage = false, cfg, forceFallbackLocation = false) {
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTabId) {
     const callback = function(){
 
         /* 
@@ -346,8 +346,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 'top': dy, 'left': dx
             };
 
-            if (tabId) {
-                createParams.tabId = tabId;
+            if (tabIdToCopy) {
+                createParams.tabId = tabIdToCopy;
             } else {
                 createParams['url'] = isViewer ? 
                     (configs.useBuiltInImageViewer ? link :
@@ -365,6 +365,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 chrome.windows.update(popupWindowId, {
                     'top': dy, 'left': dx, 'width': width, 'height': height
                 });
+
+                /// Dim page for main window
+                if (senderTabId) {
+                    chrome.tabs.sendMessage(senderTabId, { action: 'dimPage' });
+                }
 
                 /// close popup on focus normal window
                 if (configs.closeWhenFocusedInitialWindow && (!isCurrentPage || !configs.keepOpenPageInPopupWindowOpen)){
