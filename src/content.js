@@ -73,6 +73,8 @@ function setCssVariables(){
 }
 
 function longClickMouseDownListener(e) {
+    if (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || 
+        e.target.id == 'oipImageViewer' || e.target.id == 'gifCanvas') return; /// Avoid conflict with viewer's own hold-to-zoom feature
     holdStartTimeout = setTimeout(function(){
         const x = e.clientX, y = e.clientY;
 
