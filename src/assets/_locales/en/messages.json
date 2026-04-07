@@ -96,7 +96,7 @@
     "message": "Use long click to open in popup"
   },
   "modifierKey": {
-    "message": "Modifier key for click"
+    "message": "Modifier key"
   },
   "openDragAndDropUnderMouse": {
     "message": "Always open by drag and drop under mouse cursor"

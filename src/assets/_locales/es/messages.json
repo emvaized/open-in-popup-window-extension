@@ -96,7 +96,7 @@
     "message": "Utilice un clic largo para abrir en ventana emergente"
   },
   "modifierKey": {
-    "message": "Tecla modificadora para clic"
+    "message": "Tecla modificadora"
   },
   "openDragAndDropUnderMouse": {
     "message": "Abrir siempre arrastrando y soltando bajo el cursor del ratón"
