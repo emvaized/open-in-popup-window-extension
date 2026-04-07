@@ -45,6 +45,15 @@ function loadUserConfigs(callback) {
     );
 }
 
+function loadUserConfig(key, callback) {
+    chrome.storage.sync.get(
+        key, (cfg)=>{
+            if (cfg) applyUserConfigs(cfg, [key]);
+            if (callback) callback(configs[key]);
+        }   
+    );
+}
+
 function applyUserConfigs(cfg, keys){
     if (!keys) keys = Object.keys(cfg);
     const l = keys.length;

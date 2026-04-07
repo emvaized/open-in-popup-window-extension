@@ -579,7 +579,7 @@ function openSearchPopup(senderTab){
 }
 
 /// Set toolbar icon click action
-loadUserConfigs((c) => {
+loadUserConfig('toolbarIconClickAction', () => {
     setToolbarIconClickAction();
 });
 
@@ -604,7 +604,7 @@ chrome.action.onClicked.addListener(function (senderTab) {
     loadUserConfigs((c) => {
         switch(configs.toolbarIconClickAction){
             case 'openPageInPopupWindow': {
-                openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+                openPopupWindowForLink(senderTab.url, false, false, undefined, true, c);
             } break;
             case 'searchInPopupWindow': {
                 openSearchPopup(senderTab);
