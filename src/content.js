@@ -180,11 +180,10 @@ let doublePressDelay = 300, lastKeypressTime = 0;
 let lastHoveredElement;
 
 function doubleModKeyUpListener(e){
-    if (!isValidElement(e.target)) return;
-
     if (e.key.toLowerCase() === configs.modifierKey && lastHoveredElement) {
         const currentTime = Date.now();
         if (currentTime - lastKeypressTime < doublePressDelay) {
+            if (!isValidElement(lastHoveredElement)) return;
             onTrigger(undefined, 'modClick');
         }
         lastKeypressTime = currentTime;
