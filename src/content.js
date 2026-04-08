@@ -63,7 +63,7 @@ function setMouseListeners(){
     }
 }
 
-/// hold click
+/* Hold click */
 let holdTimeout, holdStartTimeout, holdIndicator;
 let holdClickDelay = configs.holdClickDelay || 500; /// Default to 500ms if not set
 
@@ -278,6 +278,13 @@ function onTrigger(e, type){
         }
 
         if (!link && !selectedText) return;
+
+        /// Look up for high-res image source
+        if (configs.lookUpHighResImages && nodeName == 'IMG') {
+            const hiResLink = getHiResImg(t);
+            if (hiResLink) link = hiResLink;
+        }
+
         message['nodeName'] = nodeName;
         message['link'] = link;
     }
@@ -285,14 +292,31 @@ function onTrigger(e, type){
     chrome.runtime.sendMessage(message)
 }
 
+/* Looks for hight-res image source in srcset or data attributes */
+const getHiResImg = (img) => {
+    const fromSet = (s) => s?.split(',').at(-1).split(' ')[0];
+
+    let url = fromSet(img.closest('picture')?.querySelector('source')?.srcset) || 
+            fromSet(img.srcset) || 
+            img.getAttribute(img.getAttributeNames().find(a => /^data-(src|orig|full|zoom)/.test(a))) || 
+            img.src.replace(/[-_]\d+x\d+(?=\.[a-z]+$)/i, '');
+
+    if (url && url.startsWith('//'))
+        url = window.location.protocol + url;
+
+    return url ?? img.src;
+};
+
+/* Extract selected text from page */
 const getSelectedText = () => {
     let selectedText = window.getSelection().toString().trim();
     selectedText = selectedText.replace(/\r?\n|\r/g, '');
     return encodeURIComponent(selectedText);
 }
 
+/* Apply dim effect to page on popup open */
 let dimOverlay;
-const dimAnimDuration = 200; // Duration of the fade-out in milliseconds
+const dimAnimDuration = 200;
 
 function dimPage(){
     if (!configs.dimPageOnPopupOpen) return;

@@ -74,6 +74,9 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "Не закрывать вспл. окно текущей страницы при потере фокуса"
   },
+  "lookUpHighResImages": {
+    "message": "Искать источники изображений высокого разрешения"
+  },
   "minimalDragDistance": {
     "message": "Минимальное расстояние перетаскивания (px)"
   },

@@ -74,6 +74,9 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "Don't close page popup window on focus lost"
   },
+  "lookUpHighResImages": {
+    "message": "Look up high-resolution image sources"
+  },
   "minimalDragDistance": {
     "message": "Minimal drag distance (px)"
   },

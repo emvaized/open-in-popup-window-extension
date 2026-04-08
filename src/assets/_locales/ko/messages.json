@@ -74,6 +74,9 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "포커스를 잃어도 페이지 내 팝업 창 닫지 않기"
   },
+  "lookUpHighResImages": {
+    "message": "고해상도 이미지 소스 찾기"
+  },
   "minimalDragDistance": {
     "message": "최소 드래그 거리 (px)"
   },

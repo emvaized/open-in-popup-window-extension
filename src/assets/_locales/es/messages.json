@@ -74,6 +74,9 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "No cerrar la ventana emergente de la página al perder el foco"
   },
+  "lookUpHighResImages": {
+    "message": "Buscar fuentes de imágenes de alta resolución"
+  },
   "minimalDragDistance": {
     "message": "Distancia mínima de arrastre (px)"
   },
