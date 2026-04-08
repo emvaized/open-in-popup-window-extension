@@ -175,6 +175,7 @@ function EscKeyUpListener(e){
          chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
     }
 }
+
 /* Double modifier key press to open in popup */
 let doublePressDelay = 300, lastKeypressTime = 0;
 let lastHoveredElement;
@@ -196,8 +197,6 @@ function mouseOverListener(e){
 
 /* Mod+Click to open in popup */
 function onClickListener(e){
-    if (!isValidElement(e.target)) return;
-
     let modPressed = false;
     switch (configs.modifierKey) {
         case 'shift': modPressed = e.shiftKey; break;
@@ -205,21 +204,11 @@ function onClickListener(e){
         case 'alt': modPressed = e.altKey; break;
         case 'meta': modPressed = e.metaKey; break;
     }
-    if (modPressed && (e.target.href || e.target.src || e.target.parentNode.href)){
+    if (modPressed && isValidElement(e.target)){
         e.preventDefault();
         onTrigger(e, 'modClick');
     }
 }
-
-/// Check if element under cursor has a valid src or href, or is an image with source in srcset or picture element
-// const isValidElement = (el) => el.src ?? el.href ?? el.parentNode.href;
-const isValidElement = (el) => { 
-    const selection = window.getSelection();
-    const isSelectedText = selection && 
-    selection.toString().trim() !== '' && 
-    selection.containsNode(el, true);  // true = allow partial containment
-    return el.src || el.href || el.parentNode.href || el.srcset || isSelectedText; 
-};
 
 /* Common trigger callback */
 function onTrigger(e, type){
@@ -291,6 +280,38 @@ function onTrigger(e, type){
     chrome.runtime.sendMessage(message)
 }
 
+/* Apply dim effect to page on popup open */
+let dimOverlay;
+const dimAnimDuration = 200;
+
+function dimPage(){
+    if (!configs.dimPageOnPopupOpen) return;
+
+    if (dimOverlay) dimOverlay.remove();
+    dimOverlay = document.createElement('div');
+    dimOverlay.id = 'oip-dim-overlay';
+    dimOverlay.style.animation = `fadeIn ${dimAnimDuration}ms ease-in forwards`;
+    document.body.appendChild(dimOverlay);
+    window.addEventListener('focus', undimPage);
+}
+
+function undimPage(){
+    if (dimOverlay) {
+        dimOverlay.style.opacity = 1;
+        dimOverlay.style.animation = `fadeOut ${dimAnimDuration}ms ease-out forwards`;
+        setTimeout(() => dimOverlay.remove(), dimAnimDuration);
+    }
+}
+
+/* Check if element under cursor has a valid src or href, or is an image with source in srcset or picture element */
+const isValidElement = (el) => { 
+    const selection = window.getSelection();
+    const isSelectedText = selection && 
+    selection.toString().trim() !== '' && 
+    selection.containsNode(el, true);  // true = allow partial containment
+    return el.src || el.href || el.parentNode.href || el.srcset || isSelectedText; 
+};
+
 /* Looks for hight-res image source in srcset or data attributes */
 const getHiResImg = (img) => {
   const parseSrcset = (str) => {
@@ -327,29 +348,6 @@ const getSelectedText = () => {
     let selectedText = window.getSelection().toString().trim();
     selectedText = selectedText.replace(/\r?\n|\r/g, '');
     return encodeURIComponent(selectedText);
-}
-
-/* Apply dim effect to page on popup open */
-let dimOverlay;
-const dimAnimDuration = 200;
-
-function dimPage(){
-    if (!configs.dimPageOnPopupOpen) return;
-
-    if (dimOverlay) dimOverlay.remove();
-    dimOverlay = document.createElement('div');
-    dimOverlay.id = 'oip-dim-overlay';
-    dimOverlay.style.animation = `fadeIn ${dimAnimDuration}ms ease-in forwards`;
-    document.body.appendChild(dimOverlay);
-    window.addEventListener('focus', undimPage);
-}
-
-function undimPage(){
-    if (dimOverlay) {
-        dimOverlay.style.opacity = 1;
-        dimOverlay.style.animation = `fadeOut ${dimAnimDuration}ms ease-out forwards`;
-        setTimeout(() => dimOverlay.remove(), dimAnimDuration);
-    }
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {

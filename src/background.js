@@ -427,7 +427,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                                 configs.popupHeight = w.height;
                                 configs.popupWidth = w.width;
                                 chrome.storage.sync.set(configs);
-                                if (configs.debugMode) console.log('Popup window size saved: ', w.height, w.width);
+                                if (configs.debugMode) console.log('Popup window size saved: ', w.height, 'x', w.width);
                             }
                         }
 
