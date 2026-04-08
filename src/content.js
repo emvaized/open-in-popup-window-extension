@@ -294,17 +294,33 @@ function onTrigger(e, type){
 
 /* Looks for hight-res image source in srcset or data attributes */
 const getHiResImg = (img) => {
-    const fromSet = (s) => s?.split(',').at(-1).split(' ')[0];
+  const parseSrcset = (str) => {
+    if (!str) return null;
+    return str.split(',')
+      .map(s => {
+        const [url, desc] = s.trim().split(/\s+/);
+        return { url, val: parseFloat(desc) || 0 };
+      })
+      .sort((a, b) => b.val - a.val)[0]?.url;
+  };
 
-    let url = fromSet(img.closest('picture')?.querySelector('source')?.srcset) || 
-            fromSet(img.srcset) || 
-            img.getAttribute(img.getAttributeNames().find(a => /^data-(src|orig|full|zoom)/.test(a))) || 
-            img.src.replace(/[-_]\d+x\d+(?=\.[a-z]+$)/i, '');
+  /// Check <source> tags and <img> attributes
+  const pictureSources = Array.from(img.closest('picture')?.querySelectorAll('source') || []);
+  const rawUrl = 
+    parseSrcset(img.getAttribute('srcset') || img.getAttribute('data-srcset')) ||
+    pictureSources.map(s => parseSrcset(s.getAttribute('srcset') || s.getAttribute('data-srcset'))).find(u => u) ||
+    img.getAttribute(img.getAttributeNames().find(a => /data-(src|orig|full|hi|lazy|large|img)/i.test(a))) ||
+    img.src;
 
-    if (url && url.startsWith('//'))
-        url = window.location.protocol + url;
+  /// Resolve the URL to be absolute (Fixes // and relative paths)
+  let url = new URL(rawUrl, window.location.href).href;
 
-    return url ?? img.src;
+  /// 3. Strip query params and thumbnail suffixes
+  return url
+    .replace(/([?&])(w|width|h|height|size|resize|fit|quality|q|scale)=\d+/gi, '$1')
+    .replace(/[-_]\d+x\d+(?=\.[a-z]+(\?|$))/i, '')
+    .replace(/[?&]$|([?&])&+/g, '$1') /// Clean up trailing ?/& or double &&
+    .replace(/[?&]$/, '');
 };
 
 /* Extract selected text from page */
