@@ -50,7 +50,7 @@ function setMouseListeners(){
 
     /* Hold click */
     if (configs.openByLongClick){
-        document.documentElement.style.setProperty('--hold-click-delay', `${holdClickDelay}ms`);
+        document.documentElement.style.setProperty('--hold-click-delay', `${configs.holdClickDelay}ms`);
         document.addEventListener('mousedown', longClickMouseDownListener);
         document.addEventListener('mouseup', longClickMouseUpListener);
         document.addEventListener('selectstart', longClickMouseUpListener); /// Cancel hold if user starts selecting text
@@ -65,7 +65,6 @@ function setMouseListeners(){
 
 /* Hold click */
 let holdTimeout, holdStartTimeout, holdIndicator;
-let holdClickDelay = configs.holdClickDelay || 500; /// Default to 500ms if not set
 
 function longClickMouseDownListener(e) {
     if (!isValidElement(e.target)) return;
@@ -98,7 +97,7 @@ function longClickMouseDownListener(e) {
             e.stopPropagation();
             preventClick(); /// Prevent triggering click event after mouseup
             onTrigger(e, 'modClick');
-        }, holdClickDelay);
+        }, configs.holdClickDelay);
     }, 100); /// Short delay to prevent trigger when user is clicking normally
 }
 function longClickMouseUpListener(e) {

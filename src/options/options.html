@@ -82,10 +82,6 @@
     <div><hr/><h5 id="activationSettings">Activation methods</h5> <hr/></div>
 
     <div class='option'>
-        <label><input type="checkbox" id="openByLongClick"></input></label>
-    </div>
-
-    <div class='option'>
         <label><input type="checkbox" id="openByModClick"></input></label>
     </div>
 
@@ -101,6 +97,11 @@
         <div class='option'>
             <label><input type="checkbox" id="doubleModifierKeyPressTrigger"></input></label>
         </div>
+    </div>
+
+    <div class='option'>
+        <label><input type="checkbox" id="openByLongClick"></input></label>
+        <input style="display: inline; margin-left: 4px; max-width: 40px;" type="number" id="holdClickDelay" step="50" min="50" title="Long click duration (ms)"></input>
     </div>
 
     <div><hr/><h5 id="dragAndDropSettings">Drag & drop settings</h5> <hr /></div>

@@ -33,6 +33,7 @@ const configs = {
     'copyTabInsteadOfMoving': false,
     'dimPageOnPopupOpen': true,
     'openByLongClick': false,
+    'holdClickDelay': 600,
     'lookUpHighResImages': true,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
