@@ -1,11 +1,10 @@
 document.addEventListener("contextmenu",(e=>onTrigger(e,'context')));
 chrome.storage.onChanged.addListener((c) => {
-    loadUserConfigs((c) => setMouseListeners(), setCssVariables())
+    loadUserConfigs((c) => setMouseListeners())
 });
 
 loadUserConfigs(function(c) {
     setMouseListeners();
-    setCssVariables();
 
     /// Cache screen size for the background script
     if (configs.screenWidth !== window.screen.width || configs.availLeft !== window.screen.availLeft) {
@@ -51,6 +50,7 @@ function setMouseListeners(){
 
     /* Hold click */
     if (configs.openByLongClick){
+        document.documentElement.style.setProperty('--hold-click-delay', `${holdClickDelay}ms`);
         document.addEventListener('mousedown', longClickMouseDownListener);
         document.addEventListener('mouseup', longClickMouseUpListener);
         document.addEventListener('selectstart', longClickMouseUpListener); /// Cancel hold if user starts selecting text
@@ -66,11 +66,6 @@ function setMouseListeners(){
 /* Hold click */
 let holdTimeout, holdStartTimeout, holdIndicator;
 let holdClickDelay = configs.holdClickDelay || 500; /// Default to 500ms if not set
-
-function setCssVariables(){
-    const root = document.documentElement;
-    root.style.setProperty('--hold-click-delay', `${holdClickDelay}ms`);
-}
 
 function longClickMouseDownListener(e) {
     if (!isValidElement(e.target)) return;
@@ -106,20 +101,17 @@ function longClickMouseDownListener(e) {
         }, holdClickDelay);
     }, 100); /// Short delay to prevent trigger when user is clicking normally
 }
-
 function longClickMouseUpListener(e) {
     clearTimeout(holdStartTimeout);
     clearTimeout(holdTimeout);
     removeHoldIndicator();
 }
-
 function removeHoldIndicator(){
     if (holdIndicator) {
         holdIndicator.remove();
         holdIndicator = null;
     }
 }
-
 function preventClick(duration=100){
     function tempMouseUpListener(e){
         e.preventDefault();
@@ -190,7 +182,6 @@ function doubleModKeyUpListener(e){
         lastKeypressTime = currentTime;
     }
 }
-
 function mouseOverListener(e){
     lastHoveredElement = e.target;
 }
@@ -294,7 +285,6 @@ function dimPage(){
     document.body.appendChild(dimOverlay);
     window.addEventListener('focus', undimPage);
 }
-
 function undimPage(){
     if (dimOverlay) {
         dimOverlay.style.opacity = 1;
