@@ -1,5 +1,6 @@
 let mouseX, mouseY, elementHeight, elementWidth, lastPopupId, lastNormalWindowId;
 let textSelection, availWidth, availHeight, availLeft;
+let preventWindowResizeListener = false;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -50,12 +51,14 @@ chrome.runtime.onMessage.addListener(
                         dy -= (dy + newHeight - availHeight);
                     if (dy < 0) dy = 0;
 
+                    preventWindowResizeListener = true;
                     chrome.windows.update(lastPopupId, {
                         'width': newWidth,
                         'height': newHeight,
                         'left': dx,
                         'top': dy
                     });
+                    preventWindowResizeListener = false;
                 })
             }
             return;
@@ -407,6 +410,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 if (chrome.windows.onBoundsChanged && (configs.rememberWindowResize || configs.moveToMainWindowOnMaximize)) {
                     function resizeListener(w){
                         if (configs.debugMode) console.log('Popup window resized: ', w);
+                        if (preventWindowResizeListener) return;
 
                         if (w.state == 'maximized'){
                             /// Move to main window on popup maximize
@@ -416,7 +420,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                                         const tab = tabs[0];
                                         if (tab.id && tab.id > -1) 
                                             moveTabToRegularWindow(tab);
-                                        
                                     }
                                 });
                         } else {
