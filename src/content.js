@@ -73,8 +73,9 @@ function setCssVariables(){
 }
 
 function longClickMouseDownListener(e) {
-    if (e.target.nodeName == 'INPUT' || e.target.nodeName == 'TEXTAREA' || 
-        e.target.id == 'oipImageViewer' || e.target.id == 'gifCanvas') return; /// Avoid conflict with viewer's own hold-to-zoom feature
+    if (!isValidElement(e.target)) return;
+    if (e.target.id == 'oipImageViewer' || e.target.id == 'gifCanvas') return; /// Avoid conflict with viewer's own hold-to-zoom feature
+
     holdStartTimeout = setTimeout(function(){
         const x = e.clientX, y = e.clientY;
 
@@ -88,6 +89,7 @@ function longClickMouseDownListener(e) {
         // holdIndicator.innerHTML = `<circle class="long-click-indicator-circle" cx="20" cy="20" r="18"></circle>`;
         // document.body.appendChild(holdIndicator);
 
+        removeHoldIndicator();
         holdIndicator = document.createElement('div');
         holdIndicator.className = 'long-click-indicator';
         holdIndicator.style.left = `${x}px`;
@@ -99,6 +101,7 @@ function longClickMouseDownListener(e) {
             removeHoldIndicator();
             e.preventDefault();
             e.stopPropagation();
+            preventClick(); /// Prevent triggering click event after mouseup
             onTrigger(e, 'modClick');
         }, holdClickDelay);
     }, 100); /// Short delay to prevent trigger when user is clicking normally
@@ -117,10 +120,21 @@ function removeHoldIndicator(){
     }
 }
 
+function preventClick(duration=100){
+    function tempMouseUpListener(e){
+        e.preventDefault();
+        e.stopPropagation();
+        document.removeEventListener('mouseup', tempMouseUpListener);
+    }
+    document.addEventListener('mouseup', tempMouseUpListener);
+    setTimeout(() => document.removeEventListener('mouseup', tempMouseUpListener), duration);
+}
+
 /* Change drag cursor and trigger popup on drag end */
 let dragStartDx, dragStartDy;
 
 function dragStartListener(e){
+    if (!isValidElement(e.target)) return;
     dragStartDx = e.clientX; dragStartDy = e.clientY;
     document.addEventListener('dragover', dragOverListener, true);
     document.addEventListener('dragenter', dragOverListener, true);
@@ -166,6 +180,8 @@ let doublePressDelay = 300, lastKeypressTime = 0;
 let lastHoveredElement;
 
 function doubleModKeyUpListener(e){
+    if (!isValidElement(e.target)) return;
+
     if (e.key.toLowerCase() === configs.modifierKey && lastHoveredElement) {
         const currentTime = Date.now();
         if (currentTime - lastKeypressTime < doublePressDelay) {
@@ -181,6 +197,8 @@ function mouseOverListener(e){
 
 /* Mod+Click to open in popup */
 function onClickListener(e){
+    if (!isValidElement(e.target)) return;
+
     let modPressed = false;
     switch (configs.modifierKey) {
         case 'shift': modPressed = e.shiftKey; break;
@@ -194,7 +212,17 @@ function onClickListener(e){
     }
 }
 
-/* Common trigger function for context menu, drag-and-drop, and mod+click */
+/// Check if element under cursor has a valid src or href, or is an image with source in srcset or picture element
+// const isValidElement = (el) => el.src ?? el.href ?? el.parentNode.href;
+const isValidElement = (el) => { 
+    const selection = window.getSelection();
+    const isSelectedText = selection && 
+    selection.toString().trim() !== '' && 
+    selection.containsNode(el, true);  // true = allow partial containment
+    return el.src || el.href || el.parentNode.href || el.srcset || isSelectedText; 
+};
+
+/* Common trigger callback */
 function onTrigger(e, type){
     const t = e ? e.target : lastHoveredElement;
 
