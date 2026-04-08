@@ -160,13 +160,13 @@ body {
     opacity: 0.85;
 }
 
-@media (max-width: 650px) {
+@media (max-width: 650px) or (max-height: 50px) {
     #gifControls {
         display: none !important;
     }
 }
 
-@media (max-width: 275px) {
+@media (max-width: 275px) or (max-height: 50px) {
     #imageControls {
         display: none !important;
     }
