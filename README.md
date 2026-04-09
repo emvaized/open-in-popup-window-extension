@@ -12,7 +12,7 @@ This tiny and lightweight browser extension provides ability to quickly preview 
 <b>Features:</b>
 - [x] Open links and search selected text in a popup window
 - [x] Configurable popup height, width and default position on screen
-- Ways to open in popup window: 
+- [x] Several ways to open a popup window: 
     - [x] Context menu
     - [x] Keyboard hotkeys ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available))
     - [x] Drag and drop
