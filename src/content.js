@@ -72,17 +72,6 @@ function longClickMouseDownListener(e) {
 
     holdStartTimeout = setTimeout(function(){
         const x = e.clientX, y = e.clientY;
-
-        // Create the ring at cursor position
-        // holdIndicator = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        // holdIndicator.setAttribute("class", "long-click-indicator");
-        // holdIndicator.setAttribute("width", "40");
-        // holdIndicator.setAttribute("height", "40");
-        // holdIndicator.style.left = `${x}px`;
-        // holdIndicator.style.top = `${y}px`;
-        // holdIndicator.innerHTML = `<circle class="long-click-indicator-circle" cx="20" cy="20" r="18"></circle>`;
-        // document.body.appendChild(holdIndicator);
-
         removeHoldIndicator();
         holdIndicator = document.createElement('div');
         holdIndicator.className = 'long-click-indicator';

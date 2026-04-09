@@ -1,16 +1,4 @@
 /* Styles for hold click indicator */
-
-/* circle style (deprecated) */
-/* .cursor-ring-svg {
-    position: fixed; z-index: 999999; pointer-events: none; transform: translate(-50%, -50%) rotate(-90deg);
-}
-.long-click-indicator-circle {
-    fill: none; animation: fillStroke var(--hold-click-delay, 500)ms linear forwards;
-    stroke: #3498db; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 113; stroke-dashoffset: 113;
-}
-@keyframes fillStroke { to { stroke-dashoffset: 0; } } */
-
-/* progress bar style */
 .long-click-indicator {
     position: fixed; height: 4px; width: 40px;
     background: #ccc; border-radius: 2px;
