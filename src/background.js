@@ -57,8 +57,7 @@ chrome.runtime.onMessage.addListener(
                         'height': newHeight,
                         'left': dx,
                         'top': dy
-                    });
-                    preventWindowResizeListener = false;
+                    }, () => preventWindowResizeListener = false);
                 })
             }
             return;
@@ -444,6 +443,20 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     chrome.windows.onBoundsChanged.addListener(resizeListener);
                     chrome.windows.onRemoved.addListener(removedListener);
                 }
+
+                /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent opening multiple popups on top of each other
+                if (lastPopupId)
+                    chrome.windows.get(lastPopupId,{}, (w) => {
+                        if (!w) return;
+                        let lastPopupDx = w.left, lastPopupDy = w.top, lastPopupWidth = w.width, lastPopupHeight = w.height;
+                        if (lastPopupDx && lastPopupDy && lastPopupWidth && lastPopupHeight &&
+                        Math.abs(dx - lastPopupDx) < 5 && Math.abs(dy - lastPopupDy) < 5 &&
+                        Math.abs(width - lastPopupWidth) < 5 && Math.abs(height - lastPopupHeight) < 5) {
+                            dy = lastPopupDy + (configs.titleBarHeight ?? 30);
+                            // height = lastPopupHeight - (configs.titleBarHeight ?? 30);
+                            chrome.windows.update(popupWindow.id, { top: dy });
+                        }
+                    });
 
                 /// clear variables
                 elementHeight = undefined; elementWidth = undefined;
