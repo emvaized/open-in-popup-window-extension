@@ -11,15 +11,18 @@ This tiny and lightweight browser extension provides ability to quickly preview 
 
 <b>Features:</b>
 - [x] Open links and search selected text in a popup window
+- [x] Configurable popup height, width and default position on screen
+- Ways to open in popup window: 
+    - [x] Context menu
+    - [x] Keyboard hotkeys ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available))
+    - [x] Drag and drop
+    - [x] Modifier key + left click (possible options: <kbd>Shift</kbd> / <kbd>Ctrl</kbd> / <kbd>Alt</kbd> / <kbd>Meta</kbd>)
+    - [x] Double press modifier key when item is hovered
 - [x] Advanced image viewer with GIF playback control
-- [x] Use <kbd>Ctrl</kbd> / <kbd>Shift</kbd> / <kbd>Alt</kbd> / <kbd>Meta</kbd> + click to open in popup window (_enabled with <kbd>Shift</kbd>_ by default)
-- [x] Use drag and drop to open in popup window (_disabled_ by default)
-- [x] Configurable popup height, width and position on screen
 - [x] Close popup window when origin window regains focus (excludes minimized and "always-on-top" windows)
-- [x] Remember popup window size on manual resize (_only Chrome_ – see [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-- [x] Open popup page in the main window on maximize (_only Chrome_ – see [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-- [x] Automatically reopen new single tab windows and tabs opened by page as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
-- [x] Customizable [keyboard hotkeys](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available)
+- [x] Remember popup window size on manual resize (_only Chrome_ ~ [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
+- [x] Open popup page in the main window on maximize (_only Chrome_ ~ [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
+- [x] Automatically reopen new single tab windows, and tabs opened by page, as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
 
 This extension is intended to be used as an analogue of <i>Safari Link Preview</i>, <i>Arc Peek</i> or <i>Zen Glance</i>. It's a great way to preview links, which works everywhere and is not affected by the CORS problem like other extensions which are using `iframe` element for the link preview.
 
