@@ -1,5 +1,6 @@
 let mouseX, mouseY, elementHeight, elementWidth, lastPopupId, lastNormalWindowId;
 let textSelection, availWidth, availHeight, availLeft;
+let preventWindowResizeListener = false;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -50,12 +51,13 @@ chrome.runtime.onMessage.addListener(
                         dy -= (dy + newHeight - availHeight);
                     if (dy < 0) dy = 0;
 
+                    preventWindowResizeListener = true;
                     chrome.windows.update(lastPopupId, {
                         'width': newWidth,
                         'height': newHeight,
                         'left': dx,
                         'top': dy
-                    });
+                    }, () => preventWindowResizeListener = false);
                 })
             }
             return;
@@ -84,7 +86,7 @@ chrome.runtime.onMessage.addListener(
 
                 const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
                 if (isViewer && !cfg.viewInPopupEnabled) return;
-                openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg); 
+                openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg, false, sender.tab ? sender.tab : undefined); 
             });
         }
     }
@@ -171,10 +173,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     const link = clickData.menuItemId == 'searchInPopupWindow' ? 
         configs.popupSearchUrl.replace('%s', clickData.selectionText) 
         : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
-    openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow');
+    openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow', undefined, undefined, undefined, undefined, false, tab ? tab : undefined);
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabId, isCurrentPage = false, cfg, forceFallbackLocation = false) {
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTab) {
     const callback = function(){
 
         /* 
@@ -346,8 +348,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 'top': dy, 'left': dx
             };
 
-            if (tabId) {
-                createParams.tabId = tabId;
+            if (tabIdToCopy) {
+                createParams.tabId = tabIdToCopy;
             } else {
                 createParams['url'] = isViewer ? 
                     (configs.useBuiltInImageViewer ? link :
@@ -355,6 +357,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     : link ?? (textSelection ? 
                         (configs.popupSearchUrl.replace('%s', textSelection))
                         : 'about:blank');
+            }
+
+            /// Preserve Firefox container
+            if (senderTab && senderTab.cookieStoreId) {
+                createParams['cookieStoreId'] = senderTab.cookieStoreId;
             }
 
             chrome.windows.create(createParams, function (popupWindow) {
@@ -365,6 +372,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 chrome.windows.update(popupWindowId, {
                     'top': dy, 'left': dx, 'width': width, 'height': height
                 });
+
+                /// Dim page for main window
+                if (configs.dimPageOnPopupOpen && senderTab) {
+                    chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
+                }
 
                 /// close popup on focus normal window
                 if (configs.closeWhenFocusedInitialWindow && (!isCurrentPage || !configs.keepOpenPageInPopupWindowOpen)){
@@ -402,6 +414,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 if (chrome.windows.onBoundsChanged && (configs.rememberWindowResize || configs.moveToMainWindowOnMaximize)) {
                     function resizeListener(w){
                         if (configs.debugMode) console.log('Popup window resized: ', w);
+                        if (preventWindowResizeListener) return;
 
                         if (w.state == 'maximized'){
                             /// Move to main window on popup maximize
@@ -411,7 +424,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                                         const tab = tabs[0];
                                         if (tab.id && tab.id > -1) 
                                             moveTabToRegularWindow(tab);
-                                        
                                     }
                                 });
                         } else {
@@ -422,7 +434,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                                 configs.popupHeight = w.height;
                                 configs.popupWidth = w.width;
                                 chrome.storage.sync.set(configs);
-                                if (configs.debugMode) console.log('Popup window size saved: ', w.height, w.width);
+                                if (configs.debugMode) console.log('Popup window size saved: ', w.height, 'x', w.width);
                             }
                         }
 
@@ -436,6 +448,20 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     chrome.windows.onBoundsChanged.addListener(resizeListener);
                     chrome.windows.onRemoved.addListener(removedListener);
                 }
+
+                /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent opening multiple popups on top of each other
+                // if (lastPopupId)
+                //     chrome.windows.get(lastPopupId,{}, (w) => {
+                //         if (!w) return;
+                //         let lastPopupDx = w.left, lastPopupDy = w.top, lastPopupWidth = w.width, lastPopupHeight = w.height;
+                //         if (lastPopupDx && lastPopupDy && lastPopupWidth && lastPopupHeight &&
+                //         Math.abs(dx - lastPopupDx) < 5 && Math.abs(dy - lastPopupDy) < 5 &&
+                //         Math.abs(width - lastPopupWidth) < 5 && Math.abs(height - lastPopupHeight) < 5) {
+                //             dy = lastPopupDy + (configs.titleBarHeight ?? 30);
+                //             // height = lastPopupHeight - (configs.titleBarHeight ?? 30);
+                //             chrome.windows.update(popupWindow.id, { top: dy });
+                //         }
+                //     });
 
                 /// clear variables
                 elementHeight = undefined; elementWidth = undefined;
@@ -517,7 +543,7 @@ chrome.windows.onCreated.addListener(
 chrome.tabs.onCreated.addListener(newTab => {
     const openerId = newTab.openerTabId;
     if (openerId){
-        loadUserConfigs((c) => {
+        loadUserConfig('reopenAutoCreatedTabAsPopup', () => {
             if (configs.reopenAutoCreatedTabAsPopup)
                 /// fetch newly opened tab again, because it may not be ready yet
                 chrome.tabs.get(newTab.id, newTab => {
@@ -531,7 +557,7 @@ chrome.tabs.onCreated.addListener(newTab => {
                             if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
                                 // chrome.tabs.remove(newTab.id);
                                 // moveTabToPopupWindow(newTab);
-                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c, true);
+                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, undefined, true, openerTab);
                             } 
                         }
                     });
@@ -540,10 +566,8 @@ chrome.tabs.onCreated.addListener(newTab => {
     }
 });
 
-function isNewTabUrl(url) {
-    return url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' ||
-        url == 'chrome://newtab/' || url == 'edge://newtab/';
-}
+const isNewTabUrl = (url) => url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' 
+    || url == 'chrome://newtab/' || url == 'edge://newtab/' || url.startsWith('chrome://vivaldi-webui/startpage?');
 
 chrome.commands.onCommand.addListener((command, senderTab) => {
     if (command === "open-popup-in-main-window") {
@@ -568,13 +592,13 @@ function openSearchPopup(senderTab){
     function searchSelectedText(selectedText) {
         loadUserConfigs((c) => {
             const link = configs.popupSearchUrl.replace('%s', selectedText);
-            openPopupWindowForLink(link);
+            openPopupWindowForLink(link, false, false, undefined, undefined, c, undefined, senderTab);
         });
     }
 }
 
 /// Set toolbar icon click action
-loadUserConfigs((c) => {
+loadUserConfig('toolbarIconClickAction', () => {
     setToolbarIconClickAction();
 });
 
@@ -599,7 +623,7 @@ chrome.action.onClicked.addListener(function (senderTab) {
     loadUserConfigs((c) => {
         switch(configs.toolbarIconClickAction){
             case 'openPageInPopupWindow': {
-                openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+                openPopupWindowForLink(senderTab.url, false, false, undefined, true, c);
             } break;
             case 'searchInPopupWindow': {
                 openSearchPopup(senderTab);

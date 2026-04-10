@@ -1,0 +1,35 @@
+/* Styles for hold click indicator */
+.long-click-indicator {
+    position: fixed; height: 4px; width: 40px;
+    background: #ccc; border-radius: 2px;
+    transform: translate(-50%, 10px); 
+    pointer-events: none; z-index: 999;
+    overflow: hidden;
+    transition: opacity 50ms ease-out;
+    opacity: 0;
+}
+.long-click-indicator::before {
+    content: '';
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: #3498db;
+    transform-origin: left;
+    animation: grow var(--hold-click-delay, 500) linear forwards;
+}
+@keyframes grow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+/* Page dimmer */
+#oip-dim-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999998;
+    opacity:0;
+}
+@keyframes fadeIn {100% {opacity: 1;}}
+@keyframes fadeOut {100% {opacity: 0;}}

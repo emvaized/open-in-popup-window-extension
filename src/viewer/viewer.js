@@ -14,7 +14,7 @@ function init(){
     const imageUrl = new URLSearchParams(window.location.search).get('src');
     if (!imageUrl) return;
 
-    image = document.getElementById('image');
+    image = document.getElementById('oipImageViewer');
     canvas = document.getElementById('gifCanvas');
     seekSlider = document.getElementById('gifSeek');
     playPauseButton = document.getElementById('gifPlayPause');

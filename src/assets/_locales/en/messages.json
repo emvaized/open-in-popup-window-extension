@@ -1,4 +1,7 @@
 {
+  "activationSettings": {
+    "message": "Activation methods"
+  },
   "addOptionOpenPageInPopupWindow": {
     "message": "Add option to open page in popup window"
   },
@@ -25,6 +28,9 @@
   },
   "debugMode": {
     "message": "Debug mode"
+  },
+  "dimPageOnPopupOpen": {
+    "message": "Dim page when popup is opened"
   },
   "donateButton": {
     "message": "Support project"
@@ -68,6 +74,9 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "Don't close page popup window on focus lost"
   },
+  "lookUpHighResImages": {
+    "message": "Look up high-resolution image sources"
+  },
   "minimalDragDistance": {
     "message": "Minimal drag distance (px)"
   },
@@ -86,8 +95,11 @@
   "openByModClick": {
     "message": "Use Modifier + Click to open in popup"
   },
+  "openByLongClick": {
+    "message": "Use long click to open in popup"
+  },
   "modifierKey": {
-    "message": "Modifier key for click"
+    "message": "Modifier key"
   },
   "openDragAndDropUnderMouse": {
     "message": "Always open by drag and drop under mouse cursor"

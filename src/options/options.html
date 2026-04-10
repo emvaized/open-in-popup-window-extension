@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <div><h5 id="generalSettings">General settings</h5> <hr /></div>
+    <div><hr/><h5 id="generalSettings">General settings</h5> <hr /></div>
 
     <div class='option'>
         <label><select id="popupWindowLocation">
@@ -44,6 +44,44 @@
     </div> -->
 
     <div class='option'>
+        <label><input type="checkbox" id="escKeyClosesPopup"></input></label>
+        <!-- <span class="hint">?</span> -->
+    </div>
+
+    <div class='option'>
+        <label><input type="checkbox" id="dimPageOnPopupOpen"></input></label>
+    </div>
+
+    <div class='option'>
+        <label><input type="checkbox" id="moveToMainWindowOnMaximize"></input></label>
+    </div>
+
+    <div class='option'>
+        <label><select id="toolbarIconClickAction">
+            <option value="showExtensionSettings">Show Extension Settings</option>
+            <option value="openPageInPopupWindow">Open page in popup</option>
+            <option value="searchInPopupWindow">Search in popup</option>
+        </select></label>
+    </div>
+
+    <div><hr/><h5 id="popupWindowSize">Popup window size</h5> <hr /></div>
+
+    <div style="margin: 8px 0;">
+        <span class='option'>
+            <label><input type="number" max="10000" min="100" step="50" id="popupHeight"></input></label>
+        </span>  
+        <span class='option'>
+            <label><input type="number" max="10000" min="100" step="50" id="popupWidth"></input></label>
+        </span>
+    </div>
+
+    <div class='option'>
+        <label><input type="checkbox" id="rememberWindowResize"></input></label>
+    </div>
+
+    <div><hr/><h5 id="activationSettings">Activation methods</h5> <hr/></div>
+
+    <div class='option'>
         <label><input type="checkbox" id="openByModClick"></input></label>
     </div>
 
@@ -62,38 +100,11 @@
     </div>
 
     <div class='option'>
-        <label><input type="checkbox" id="escKeyClosesPopup"></input></label>
-        <!-- <span class="hint">?</span> -->
+        <label><input type="checkbox" id="openByLongClick"></input></label>
+        <input style="display: inline; margin-left: 4px; max-width: 45px;" type="number" id="holdClickDelay" step="50" min="50" title="Long click duration (ms)"></input>
     </div>
 
-    <div class='option'>
-        <label><input type="checkbox" id="moveToMainWindowOnMaximize"></input></label>
-    </div>
-
-    <div class='option'>
-        <label><select id="toolbarIconClickAction">
-            <option value="showExtensionSettings">Show Extension Settings</option>
-            <option value="openPageInPopupWindow">Open page in popup</option>
-            <option value="searchInPopupWindow">Search in popup</option>
-        </select></label>
-    </div>
-
-    <div><h5 id="popupWindowSize">Popup window size</h5> <hr /></div>
-
-    <div style="margin: 8px 0;">
-        <span class='option'>
-            <label><input type="number" max="10000" min="100" step="50" id="popupHeight"></input></label>
-        </span>  
-        <span class='option'>
-            <label><input type="number" max="10000" min="100" step="50" id="popupWidth"></input></label>
-        </span>
-    </div>
-
-    <div class='option'>
-        <label><input type="checkbox" id="rememberWindowResize"></input></label>
-    </div>
-
-    <div><h5 id="dragAndDropSettings">Drag & drop settings</h5> <hr /></div>
+    <div><hr/><h5 id="dragAndDropSettings">Drag & drop settings</h5> <hr /></div>
 
     <div class='option'>
         <label><input type="checkbox" id="openByDragAndDrop"></input></label>
@@ -117,7 +128,7 @@
         </div>
     </div>
 
-   <div><h5 id="imageViewer">Image viewer</h5> <hr /> </div>
+   <div><hr/><h5 id="imageViewer">Image viewer</h5> <hr /> </div>
 
     <div class='option'>
         <label><input type="checkbox" id="viewInPopupEnabled"></input></label>
@@ -129,11 +140,15 @@
         </div>
 
         <div class='option'>
+            <label><input type="checkbox" id="lookUpHighResImages"></input></label>
+        </div>
+
+        <div class='option'>
             <label><input type="checkbox" id="useBuiltInImageViewer"></input></label>
         </div>
     </div>
 
-   <div><h5 id="textSelectionHeader">Text selection</h5> <hr /> </div>
+   <div><hr/><h5 id="textSelectionHeader">Text selection</h5> <hr /> </div>
 
     <div class='option'>
         <label><input type="checkbox" id="searchInPopupEnabled"></input></label>
@@ -145,7 +160,7 @@
         </div>
     </div>
 
-    <div><h5 id="openPageInPopupWindowHeader">Open page in popup window</h5> <hr /> </div>
+    <div><hr/><h5 id="openPageInPopupWindowHeader">Open page in popup window</h5> <hr /> </div>
 
     <div class='option'>
         <label><input type="checkbox" id="addOptionOpenPageInPopupWindow"></input></label>
@@ -165,7 +180,7 @@
         <label><input type="checkbox" id="showAddressbarIcon"></input></label>
     </div> -->   
     
-    <div><h5 id="reopenSettings">Reopening settings</h5> <hr /></div>
+    <div><hr/><h5 id="reopenSettings">Reopening settings</h5> <hr /></div>
 
     <div class='option'>
         <label><input type="checkbox" id="reopenSingleTabWindowAsPopup"></input></label>

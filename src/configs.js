@@ -31,6 +31,10 @@ const configs = {
     'moveToMainWindowOnMaximize': true,
     'changeDragCursor': true,
     'copyTabInsteadOfMoving': false,
+    'dimPageOnPopupOpen': true,
+    'openByLongClick': false,
+    'holdClickDelay': 600,
+    'lookUpHighResImages': true,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 
@@ -41,6 +45,15 @@ function loadUserConfigs(callback) {
             if (cfg) applyUserConfigs(cfg, keys);
             if (callback) callback(configs);
         }
+    );
+}
+
+function loadUserConfig(key, callback) {
+    chrome.storage.sync.get(
+        key, (cfg)=>{
+            if (cfg) applyUserConfigs(cfg, [key]);
+            if (callback) callback(configs[key]);
+        }   
     );
 }
 

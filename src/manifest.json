@@ -21,13 +21,18 @@
       "js": [
         "content.js"
       ],
+      "css": [
+        "content.css"
+      ],
       "run_at": "document_start"
     }
   ],
   "permissions": [
     "contextMenus",
     "storage",
-    "tabs"
+    "tabs",
+    "contextualIdentities",
+    "cookies"
   ],
   "options_ui": {
     "page": "options/options.html"

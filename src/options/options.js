@@ -89,6 +89,7 @@ function setTranslatedLabels(){
     document.getElementById('imageViewer').innerText = chrome.i18n.getMessage('imageViewer');
     document.getElementById('popupWindowSize').innerText = chrome.i18n.getMessage('popupWindowSize');
     document.getElementById('generalSettings').innerText = chrome.i18n.getMessage('generalSettings');
+    document.getElementById('activationSettings').innerText = chrome.i18n.getMessage('activationSettings');
     document.getElementById('reopenSettings').innerText = chrome.i18n.getMessage('reopenSettings');
     document.getElementById('openPageInPopupWindowHeader').innerText = chrome.i18n.getMessage('openPageInPopupWindow');
     document.getElementById('dragAndDropSettings').innerText = chrome.i18n.getMessage('dragAndDropSettings');
@@ -101,6 +102,7 @@ function updateDisabledOptions() {
     document.getElementById("popupSearchUrl").parentNode.className = document.getElementById("searchInPopupEnabled").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("tryFitWindowSizeToImage").parentNode.className = document.getElementById("useBuiltInImageViewer").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("tryFitWindowSizeToImage").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option'; 
+    document.getElementById("lookUpHighResImages").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option'; 
     document.getElementById("useBuiltInImageViewer").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("minimalDragDistance").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("openDragAndDropUnderMouse").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
@@ -108,6 +110,7 @@ function updateDisabledOptions() {
     document.getElementById("changeDragCursor").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("reopenAutoCreatedTabsOnlyPinned").parentNode.className = document.getElementById("reopenAutoCreatedTabAsPopup").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("copyTabInsteadOfMoving").parentNode.className = document.getElementById("addOptionOpenPageInPopupWindow").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("holdClickDelay").className = document.getElementById("openByLongClick").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("fallbackPopupWindowLocation").parentNode.className = 
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 

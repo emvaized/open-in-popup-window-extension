@@ -1,4 +1,7 @@
 {
+  "activationSettings": {
+    "message": "Métodos de activación"
+  },
   "addOptionOpenPageInPopupWindow": {
     "message": "Agregar opción para abrir la página en una ventana emergente"
   },
@@ -25,6 +28,9 @@
   },
   "debugMode": {
     "message": "Depurar"
+  },
+  "dimPageOnPopupOpen": {
+    "message": "Atenuar la página cuando se abre la ventana emergente"
   },
   "donateButton": {
     "message": "Proyecto de apoyo"
@@ -68,6 +74,9 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "No cerrar la ventana emergente de la página al perder el foco"
   },
+  "lookUpHighResImages": {
+    "message": "Buscar fuentes de imágenes de alta resolución"
+  },
   "minimalDragDistance": {
     "message": "Distancia mínima de arrastre (px)"
   },
@@ -86,8 +95,11 @@
   "openByModClick": {
     "message": "Utilice Modificador + Clic para abrir en ventana emergente"
   },
+  "openByLongClick": {
+    "message": "Utilice un clic largo para abrir en ventana emergente"
+  },
   "modifierKey": {
-    "message": "Tecla modificadora para clic"
+    "message": "Tecla modificadora"
   },
   "openDragAndDropUnderMouse": {
     "message": "Abrir siempre arrastrando y soltando bajo el cursor del ratón"

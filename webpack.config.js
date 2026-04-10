@@ -37,6 +37,7 @@ module.exports = env => ({
     /// static files
     new CopyPlugin({
       patterns: [
+        { from: "src/content.css", to: "content.css" },
         { from: "src/assets/_locales", to: "_locales" },
         { from: "src/assets/icon_new.png", to: "icon_new.png" },
         { from: "src/options", to: "options" },
@@ -52,9 +53,14 @@ module.exports = env => ({
             transform(content, absoluteFrom) {
               const manifest = JSON.parse(content.toString());
 
-              if (env.build == 'chrome') {
-                delete manifest['background']['scripts'];
-              }
+              /// Remove background.scripts (from manifest v2)
+              delete manifest['background']['scripts'];
+
+              /// Remove Firefox-specific permissions
+              const permissionsToRemove = ['contextualIdentities', 'cookies'];
+              manifest.permissions = manifest.permissions.filter(
+                permission => !permissionsToRemove.includes(permission)
+              );
               
               return JSON.stringify(manifest);
             },
