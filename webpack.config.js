@@ -53,9 +53,14 @@ module.exports = env => ({
             transform(content, absoluteFrom) {
               const manifest = JSON.parse(content.toString());
 
-              if (env.build == 'chrome') {
-                delete manifest['background']['scripts'];
-              }
+              /// Remove background.scripts (from manifest v2)
+              delete manifest['background']['scripts'];
+
+              /// Remove Firefox-specific permissions
+              const permissionsToRemove = ['contextualIdentities', 'cookies'];
+              manifest.permissions = manifest.permissions.filter(
+                permission => !permissionsToRemove.includes(permission)
+              );
               
               return JSON.stringify(manifest);
             },

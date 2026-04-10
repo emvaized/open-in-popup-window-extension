@@ -128,7 +128,7 @@ If you really enjoy this project, please consider supporting its further develop
 
 ## Building
 - `npm install` to install all dependencies
-- `npm run build` to generate `dist` folder with minimized code of the extension
+- `npm run build` to generate `dist` folder with minimized code of the extension, or `npm run build.v3` to create chromium-specific version with few manifest key removed
 
 ## Ideas for future releases
 - [ ] Option to keep popup windows always on top (_improssible in both Chrome and Firefox_ – [bug report](https://github.com/w3c/webextensions/issues/443))
