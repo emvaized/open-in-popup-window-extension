@@ -30,7 +30,9 @@
   "permissions": [
     "contextMenus",
     "storage",
-    "tabs"
+    "tabs",
+    "contextualIdentities",
+    "cookies"
   ],
   "options_ui": {
     "page": "options/options.html"

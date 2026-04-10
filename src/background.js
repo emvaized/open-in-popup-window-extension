@@ -86,7 +86,7 @@ chrome.runtime.onMessage.addListener(
 
                 const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
                 if (isViewer && !cfg.viewInPopupEnabled) return;
-                openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg, false, sender.tab ? sender.tab.id : undefined); 
+                openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg, false, sender.tab ? sender.tab : undefined); 
             });
         }
     }
@@ -173,10 +173,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     const link = clickData.menuItemId == 'searchInPopupWindow' ? 
         configs.popupSearchUrl.replace('%s', clickData.selectionText) 
         : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
-    openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow', undefined, undefined, undefined, undefined, false, tab ? tab.id : undefined);
+    openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow', undefined, undefined, undefined, undefined, false, tab ? tab : undefined);
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTabId) {
+ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTab) {
     const callback = function(){
 
         /* 
@@ -359,6 +359,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                         : 'about:blank');
             }
 
+            /// Preserve Firefox container
+            if (senderTab && senderTab.cookieStoreId) {
+                createParams['cookieStoreId'] = senderTab.cookieStoreId;
+            }
+
             chrome.windows.create(createParams, function (popupWindow) {
                 if (!popupWindow) return;
 
@@ -369,8 +374,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 });
 
                 /// Dim page for main window
-                if (configs.dimPageOnPopupOpen && senderTabId) {
-                    chrome.tabs.sendMessage(senderTabId, { action: 'dimPage' });
+                if (configs.dimPageOnPopupOpen && senderTab) {
+                    chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
                 }
 
                 /// close popup on focus normal window
@@ -552,7 +557,7 @@ chrome.tabs.onCreated.addListener(newTab => {
                             if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
                                 // chrome.tabs.remove(newTab.id);
                                 // moveTabToPopupWindow(newTab);
-                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c, true, openerId);
+                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c, true, openerTab);
                             } 
                         }
                     });
@@ -589,7 +594,7 @@ function openSearchPopup(senderTab){
     function searchSelectedText(selectedText) {
         loadUserConfigs((c) => {
             const link = configs.popupSearchUrl.replace('%s', selectedText);
-            openPopupWindowForLink(link, false, false, undefined, undefined, c, undefined, senderTab.id);
+            openPopupWindowForLink(link, false, false, undefined, undefined, c, undefined, senderTab);
         });
     }
 }
