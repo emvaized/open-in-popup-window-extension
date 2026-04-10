@@ -543,7 +543,7 @@ chrome.windows.onCreated.addListener(
 chrome.tabs.onCreated.addListener(newTab => {
     const openerId = newTab.openerTabId;
     if (openerId){
-        loadUserConfigs((c) => {
+        loadUserConfig('reopenAutoCreatedTabAsPopup', () => {
             if (configs.reopenAutoCreatedTabAsPopup)
                 /// fetch newly opened tab again, because it may not be ready yet
                 chrome.tabs.get(newTab.id, newTab => {
@@ -557,7 +557,7 @@ chrome.tabs.onCreated.addListener(newTab => {
                             if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
                                 // chrome.tabs.remove(newTab.id);
                                 // moveTabToPopupWindow(newTab);
-                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, c, true, openerTab);
+                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, undefined, true, openerTab);
                             } 
                         }
                     });
@@ -566,10 +566,7 @@ chrome.tabs.onCreated.addListener(newTab => {
     }
 });
 
-function isNewTabUrl(url) {
-    return url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' ||
-        url == 'chrome://newtab/' || url == 'edge://newtab/';
-}
+const isNewTabUrl = (url) => url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' || url == 'chrome://newtab/' || url == 'edge://newtab/';
 
 chrome.commands.onCommand.addListener((command, senderTab) => {
     if (command === "open-popup-in-main-window") {

@@ -330,13 +330,14 @@ const getSelectedText = () => {
 }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    /// Dim page on popup open
+    if (message.action == 'dimPage') {
+        dimPage();
+        return;
+    }
     /// For 'search in popup' keyboard hotkey and toolbar injection
     if (message.command == 'get_selected_text') {
         const selectedText = getSelectedText(); /// Remove line breaks
         return sendResponse(selectedText);
-    }
-    if (message.action == 'dimPage') {
-        dimPage();
-        return;
     }
 });
