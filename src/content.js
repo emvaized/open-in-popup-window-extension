@@ -166,6 +166,7 @@ function doubleModKeyUpListener(e){
         if (currentTime - lastKeypressTime < doublePressDelay) {
             if (!isValidElement(lastHoveredElement)) return;
             onTrigger(undefined, 'modClick');
+            return;
         }
         lastKeypressTime = currentTime;
     }
