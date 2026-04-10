@@ -27,6 +27,7 @@ This extension is intended to be used as an analogue of <i>Safari Link Preview</
     - [x] Click on toolbar icon (search/open current page in popup)
 - [x] Advanced image viewer with GIF playback control
 - [x] Close popup window when origin window regains focus (excludes minimized and "always-on-top" windows)
+- [x] Dim page when popup window is opened
 - [x] Remember popup window size on manual resize (_only Chrome_ ~ [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 - [x] Open popup page in the main window on maximize (_only Chrome_ ~ [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 - [x] Automatically reopen new single tab windows, and tabs opened by page, as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))

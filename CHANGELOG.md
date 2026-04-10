@@ -1,3 +1,13 @@
+### 0.5.1
+- New options:
+  - Dim page when popup window is open
+  - Open links in popup window by long left click
+  - Look up for high-res image sources
+- Preserve current tabs container for popup window (Firefox)
+- Prevent storing resized popup size when updating image viewer size to fit image
+- Removed background blur from image viewer control panels
+- Other small fixes and improvements
+
 ### 0.5.0
 - Added option to allow users to customize the modifier key to open popups (thanks [justcontributor](https://github.com/justcontributor))
 - Added Korean translation (thanks [justcontributor](https://github.com/justcontributor))
