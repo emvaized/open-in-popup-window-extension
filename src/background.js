@@ -566,7 +566,8 @@ chrome.tabs.onCreated.addListener(newTab => {
     }
 });
 
-const isNewTabUrl = (url) => url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' || url == 'chrome://newtab/' || url == 'edge://newtab/';
+const isNewTabUrl = (url) => url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' 
+    || url == 'chrome://newtab/' || url == 'edge://newtab/' || url.startsWith('chrome://vivaldi-webui/startpage?');
 
 chrome.commands.onCommand.addListener((command, senderTab) => {
     if (command === "open-popup-in-main-window") {
