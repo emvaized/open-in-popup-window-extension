@@ -551,27 +551,25 @@ chrome.windows.onCreated.addListener(
 chrome.tabs.onCreated.addListener(newTab => {
     if (preventNewTabListeners) return;
 
-    const openerId = newTab.openerTabId;
-    if (openerId){
+    if (newTab.openerTabId){
         loadUserConfigs((cfg) => {
             if (cfg.reopenAutoCreatedTabAsPopup)
-                /// fetch newly opened tab again, because it may not be ready yet
-                chrome.tabs.get(newTab.id, newTab => {
-                    
-                    if (!newTab.active) return;
-                    const newTabUrl = newTab.url || newTab.pendingUrl;
-                    if (isNewTabUrl(newTabUrl)) return;
+                Promise.all([
+                    chrome.tabs.get(newTab.id),
+                    chrome.tabs.get(newTab.openerTabId),
+                ])
+                .then((tabs) => {
+                    let newTab = tabs[0], openerTab = tabs[1];
+                    if (!newTab || !openerTab) return;
 
-                    chrome.tabs.get(openerId, openerTab => {
-                        if (openerTab) {
-                            if (!cfg.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
-                                // chrome.tabs.remove(newTab.id);
-                                // moveTabToPopupWindow(newTab);
-                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, undefined, true, openerTab);
-                            } 
-                        }
-                    });
-                });
+                    if (!cfg.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
+                        if (!newTab.active) return;
+                        const newTabUrl = newTab.url || newTab.pendingUrl;
+                        if (isNewTabUrl(newTabUrl)) return;
+
+                        openPopupWindowForLink(newTab.url, false, false, newTab.id, false, undefined, true, openerTab);
+                    } 
+                }).catch((e) => {});
         }, ['reopenAutoCreatedTabAsPopup', 'reopenAutoCreatedTabsOnlyPinned']) 
     }
 });
