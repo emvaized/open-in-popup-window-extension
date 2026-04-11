@@ -1,6 +1,7 @@
 document.addEventListener("contextmenu",(e=>onTrigger(e,'context')));
 chrome.storage.onChanged.addListener((c) => {
-    loadUserConfigs((c) => setMouseListeners())
+    // loadUserConfigs((c) => setMouseListeners())
+    applyUserConfigs(c, undefined, () => setMouseListeners());
 });
 
 loadUserConfigs(function(c) {

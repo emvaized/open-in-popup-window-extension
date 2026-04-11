@@ -39,16 +39,23 @@ const configs = {
 }
 
 function loadUserConfigs(callback, specificKeys) {
+    if (configs.loaded){
+        // console.log('returned cached configs', configs);
+        if (callback) callback(configs);
+        return;
+    }
     const keys = specificKeys ?? Object.keys(configs);
     chrome.storage.sync.get(
         keys, (cfg)=>{
             if (cfg) applyUserConfigs(cfg, keys);
+            if (!specificKeys) configs.loaded = true;
             if (callback) callback(configs);
+            // console.log('loaded configs from memory', specificKeys, configs);
         }
     );
 }
 
-function applyUserConfigs(cfg, keys){
+function applyUserConfigs(cfg, keys, callback){
     if (!keys) keys = Object.keys(cfg);
     const l = keys.length;
     for (let i = 0; i < l; i++) {
@@ -57,4 +64,5 @@ function applyUserConfigs(cfg, keys){
         if (value === undefined) continue;
         configs[key] = value['newValue'] ?? value;
     }
+    if (callback) callback(configs);
 }
