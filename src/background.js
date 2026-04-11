@@ -1,6 +1,7 @@
 let mouseX, mouseY, elementHeight, elementWidth, lastPopupId, lastNormalWindowId;
 let textSelection, availWidth, availHeight, availLeft;
 let preventWindowResizeListener = false;
+let preventNewTabListeners = false;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -364,6 +365,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 createParams['cookieStoreId'] = senderTab.cookieStoreId;
             }
 
+            preventNewTabListeners = true;
             chrome.windows.create(createParams, function (popupWindow) {
                 if (!popupWindow) return;
 
@@ -471,6 +473,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 mouseX = undefined; mouseY = undefined;
                 textSelection = undefined;
                 lastPopupId = popupWindow.id;
+                preventNewTabListeners = false;
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
     }
@@ -529,6 +532,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
 /// Reopen new single tab windows as popups
 chrome.windows.onCreated.addListener(
     (w) => {
+        if (preventNewTabListeners) return;
+        
         loadUserConfigs((c) => {
             if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
                     chrome.tabs.query({windowId: w.id}, (tabs) => {
@@ -544,6 +549,8 @@ chrome.windows.onCreated.addListener(
 
 /// Reopen tabs that were opened by other tabs
 chrome.tabs.onCreated.addListener(newTab => {
+    if (preventNewTabListeners) return;
+
     const openerId = newTab.openerTabId;
     if (openerId){
         loadUserConfigs((cfg) => {
