@@ -546,8 +546,8 @@ chrome.windows.onCreated.addListener(
 chrome.tabs.onCreated.addListener(newTab => {
     const openerId = newTab.openerTabId;
     if (openerId){
-        loadUserConfig('reopenAutoCreatedTabAsPopup', (reopenAutoCreatedTabAsPopup) => {
-            if (reopenAutoCreatedTabAsPopup)
+        loadUserConfigs((cfg) => {
+            if (cfg.reopenAutoCreatedTabAsPopup)
                 /// fetch newly opened tab again, because it may not be ready yet
                 chrome.tabs.get(newTab.id, newTab => {
                     
@@ -557,7 +557,7 @@ chrome.tabs.onCreated.addListener(newTab => {
 
                     chrome.tabs.get(openerId, openerTab => {
                         if (openerTab) {
-                            if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
+                            if (!cfg.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
                                 // chrome.tabs.remove(newTab.id);
                                 // moveTabToPopupWindow(newTab);
                                 openPopupWindowForLink(newTab.url, false, false, newTab.id, false, undefined, true, openerTab);
@@ -565,7 +565,7 @@ chrome.tabs.onCreated.addListener(newTab => {
                         }
                     });
                 });
-        }) 
+        }, ['reopenAutoCreatedTabAsPopup', 'reopenAutoCreatedTabsOnlyPinned']) 
     }
 });
 
@@ -601,9 +601,9 @@ function openSearchPopup(senderTab){
 }
 
 /// Set toolbar icon click action
-loadUserConfig('toolbarIconClickAction', () => {
+loadUserConfigs(() => {
     setToolbarIconClickAction();
-});
+}, ['toolbarIconClickAction']);
 
 function setToolbarIconClickAction(){
     switch(configs.toolbarIconClickAction){

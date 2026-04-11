@@ -38,22 +38,13 @@ const configs = {
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 
-function loadUserConfigs(callback) {
-    const keys = Object.keys(configs);
+function loadUserConfigs(callback, specificKeys) {
+    const keys = specificKeys ?? Object.keys(configs);
     chrome.storage.sync.get(
         keys, (cfg)=>{
             if (cfg) applyUserConfigs(cfg, keys);
             if (callback) callback(configs);
         }
-    );
-}
-
-function loadUserConfig(key, callback) {
-    chrome.storage.sync.get(
-        key, (cfg)=>{
-            if (cfg) applyUserConfigs(cfg, [key]);
-            if (callback) callback(configs[key]);
-        }   
     );
 }
 
