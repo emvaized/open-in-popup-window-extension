@@ -65,6 +65,9 @@
   "hideBrowserControls": {
     "message": "브라우저 컨트롤(주소 창, 탭 등) 숨기기"
   },
+  "holdClickDelay": {
+    "message": "롱 클릭 지속 시간 (ms)"
+  },
   "imageViewer": {
     "message": "사진 뷰어"
   },

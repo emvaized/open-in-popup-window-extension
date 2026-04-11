@@ -68,7 +68,7 @@ function setMouseListeners(){
 let holdTimeout, holdStartTimeout, holdIndicator;
 
 function longClickMouseDownListener(e) {
-    if (e.button !== 0) return;
+    if (e.button != configs.longClickButton) return;
     if (!isValidElement(e.target)) return;
     if (e.target.id == 'oipImageViewer' || e.target.id == 'gifCanvas') return; /// Avoid conflict with viewer's own hold-to-zoom feature
 

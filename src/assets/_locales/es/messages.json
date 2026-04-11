@@ -65,6 +65,9 @@
   "hideBrowserControls": {
     "message": "Ocultar los controles del navegador (barra de direcciones, barra de pestañas, etc.)"
   },
+  "holdClickDelay": {
+    "message": "Duración del clic largo (ms)"
+  },
   "imageViewer": {
     "message": "Visor de imágenes"
   },

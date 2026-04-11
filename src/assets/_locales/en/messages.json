@@ -74,6 +74,9 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "Don't close page popup window on focus lost"
   },
+  "holdClickDelay": {
+    "message": "Duration for long click (ms)"
+  },
   "lookUpHighResImages": {
     "message": "Look up high-resolution image sources"
   },
