@@ -198,6 +198,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         //             });
         //         }
         // });
+
+        /// Dim page for main window
+        if (configs.dimPageOnPopupOpen && senderTab) {
+            chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
+        }
     
         /// calculate popup size
         let height, width;
@@ -374,11 +379,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 chrome.windows.update(popupWindowId, {
                     'top': dy, 'left': dx, 'width': width, 'height': height
                 });
-
-                /// Dim page for main window
-                if (configs.dimPageOnPopupOpen && senderTab) {
-                    chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
-                }
 
                 /// close popup on focus normal window
                 if (configs.closeWhenFocusedInitialWindow && (!isCurrentPage || !configs.keepOpenPageInPopupWindowOpen)){
