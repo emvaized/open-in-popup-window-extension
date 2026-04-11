@@ -449,6 +449,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     chrome.windows.onRemoved.addListener(removedListener);
                 }
 
+                /// TODO:
                 /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent opening multiple popups on top of each other
                 // if (lastPopupId)
                 //     chrome.windows.get(lastPopupId,{}, (w) => {
@@ -458,8 +459,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 //         Math.abs(dx - lastPopupDx) < 5 && Math.abs(dy - lastPopupDy) < 5 &&
                 //         Math.abs(width - lastPopupWidth) < 5 && Math.abs(height - lastPopupHeight) < 5) {
                 //             dy = lastPopupDy + (configs.titleBarHeight ?? 30);
-                //             // height = lastPopupHeight - (configs.titleBarHeight ?? 30);
-                //             chrome.windows.update(popupWindow.id, { top: dy });
+                //             height = lastPopupHeight - (configs.titleBarHeight ?? 30);
+
+                //             preventWindowResizeListener = true;
+                //             chrome.windows.update(popupWindow.id, { top: dy, height: height }, ()=> preventWindowResizeListener = false);
                 //         }
                 //     });
 
@@ -543,8 +546,8 @@ chrome.windows.onCreated.addListener(
 chrome.tabs.onCreated.addListener(newTab => {
     const openerId = newTab.openerTabId;
     if (openerId){
-        loadUserConfig('reopenAutoCreatedTabAsPopup', () => {
-            if (configs.reopenAutoCreatedTabAsPopup)
+        loadUserConfig('reopenAutoCreatedTabAsPopup', (reopenAutoCreatedTabAsPopup) => {
+            if (reopenAutoCreatedTabAsPopup)
                 /// fetch newly opened tab again, because it may not be ready yet
                 chrome.tabs.get(newTab.id, newTab => {
                     
