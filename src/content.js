@@ -273,14 +273,16 @@ function dimPage(){
     dimOverlay.id = 'oip-dim-overlay';
     dimOverlay.style.animation = `fadeIn ${dimAnimDuration}ms ease-in forwards`;
     document.body.appendChild(dimOverlay);
-    window.addEventListener('focus', undimPage);
+
+    setTimeout(() => window.addEventListener('focus', undimPage),100);
 }
 function undimPage(){
-    if (dimOverlay) {
+    if (dimOverlay && dimOverlay.isConnected) {
         dimOverlay.style.opacity = 1;
         dimOverlay.style.animation = `fadeOut ${dimAnimDuration}ms ease-out forwards`;
         setTimeout(() => dimOverlay.remove(), dimAnimDuration);
     }
+    window.removeEventListener('focus', undimPage)
 }
 
 /* Check if element under cursor has a valid src or href, or is an image with source in srcset or picture element */
