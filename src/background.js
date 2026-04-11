@@ -310,7 +310,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             }
         }
 
-        if (forceFallbackLocation) {
+        if (forceFallbackLocation && (configs.popupWindowLocation == 'mousePosition' || configs.popupWindowLocation == 'nearMousePosition')) {
             setFallbackPopupLocation();
         } else {
             setPopupLocation(popupLocation);
