@@ -75,12 +75,13 @@ function longClickMouseDownListener(e) {
     holdStartTimeout = setTimeout(function(){
         const x = e.clientX, y = e.clientY;
         removeHoldIndicator();
-        holdIndicator = document.createElement('div');
-        holdIndicator.className = 'long-click-indicator';
+        if (!holdIndicator){
+            holdIndicator = document.createElement('div');
+            holdIndicator.className = 'long-click-indicator';
+        }
         holdIndicator.style.left = `${x}px`;
         holdIndicator.style.top = `${y + 15}px`;
         document.body.appendChild(holdIndicator);
-        setTimeout(() => holdIndicator.style.opacity = 1, 1); /// Fade in
 
         holdTimeout = setTimeout(function(){
             removeHoldIndicator();
@@ -97,10 +98,7 @@ function longClickMouseUpListener(e) {
     removeHoldIndicator();
 }
 function removeHoldIndicator(){
-    if (holdIndicator) {
-        holdIndicator.remove();
-        holdIndicator = null;
-    }
+    if (holdIndicator) holdIndicator.remove();
 }
 function preventClick(duration=100){
     function tempMouseUpListener(e){

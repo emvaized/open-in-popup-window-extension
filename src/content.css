@@ -5,8 +5,7 @@
     transform: translate(-50%, 10px); 
     pointer-events: none; z-index: 999;
     overflow: hidden;
-    transition: opacity 50ms ease-out;
-    opacity: 0;
+    will-change: transform;
 }
 .long-click-indicator::before {
     content: '';
