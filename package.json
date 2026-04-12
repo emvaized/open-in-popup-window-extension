@@ -18,10 +18,10 @@
     "terser-webpack-plugin": "^5.3.10",
     "webpack": "^5.93.0",
     "webpack-cli": "^5.1.4",
-    "webpack-concat-files-plugin": "^0.5.2"
+    "webpack-concat-files-plugin": "^0.5.2",
+    "copy-webpack-plugin": "^12.0.2"
   },
   "dependencies": {
-    "copy-webpack-plugin": "^12.0.2"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
