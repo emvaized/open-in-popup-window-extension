@@ -131,13 +131,23 @@ const viewImageContextMenuItem = {
     "id": "viewInPopupWindow",
     "title": chrome.i18n.getMessage('viewInPopupWindow'),
     "contexts": ["image"]
-}  
+}
 
 chrome.contextMenus.create(openLinkContextMenuItem);
 chrome.contextMenus.create(openPageContextMenuItem);
 chrome.contextMenus.create(openInMainWindowContextMenuItem);
 chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
 chrome.contextMenus.create(viewImageContextMenuItem);
+
+/// Draft for "Open tab in popup window" in Firefox
+// if (navigator.userAgent.indexOf("Firefox") > -1){
+//     const openTabInPopupWindow = {
+//         "id": "openTabInPopupWindow",
+//         "title": chrome.i18n.getMessage('openPageInPopupWindow'),
+//         "contexts": ["tab"]
+//     } 
+//     chrome.contextMenus.create(openTabInPopupWindow);
+// }
 
 /// Update context menu availability
 chrome.windows.onFocusChanged.addListener(function(wId){
@@ -163,7 +173,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         return;
     }
     
-    if (clickData.menuItemId == 'openPageInPopupWindow') {
+    if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow') {
         if (tab)
             loadUserConfigs((c) => {
                 openPopupWindowForLink(clickData.pageUrl, false, false, configs.copyTabInsteadOfMoving ? undefined : tab.id, true, c);
