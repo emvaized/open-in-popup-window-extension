@@ -62,6 +62,11 @@ function setMouseListeners(){
         document.removeEventListener('selectstart', longClickMouseUpListener);
         document.removeEventListener('dragstart', longClickMouseUpListener);
     }
+
+    /* Dim page overlay */
+    if (configs.dimPageOnPopupOpen){
+        document.documentElement.style.setProperty('--oip-dim-overlay-bg', `rgba(0, 0, 0, ${configs.dimPageAmount ?? 0.4})`);
+    }
 }
 
 /* Hold click */
