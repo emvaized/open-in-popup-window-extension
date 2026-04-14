@@ -21,7 +21,7 @@ function initGifViewer(url) {
             canvasCtx = canvas.getContext('2d');
             displayElement = canvas;
             gifFrames = buildGifFrames(result);
-            if (gifFrames.length === 0) throw new Error('No GIF frames decoded');
+            if (gifFrames.length < 2) throw new Error('No GIF frames decoded');
             currentFrameIndex = 0;
             drawGifFrame(0);
             updateGifControls();
