@@ -85,7 +85,7 @@ chrome.runtime.onMessage.addListener(
                 if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
                 if (request.type == 'modClick' && configs.openByModClick == false) return;
 
-                const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
+                const isViewer = request.isViewer ?? false;
                 if (isViewer && !cfg.viewInPopupEnabled) return;
                 openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg, false, sender.tab ? sender.tab : undefined); 
             });

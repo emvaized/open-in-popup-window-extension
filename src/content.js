@@ -74,7 +74,7 @@ let holdTimeout, holdStartTimeout, holdIndicator;
 
 function longClickMouseDownListener(e) {
     if (e.button != configs.longClickButton) return;
-    if (!isValidElement(e.target)) return;
+    if (!elementIsValid(e.target)) return;
     if (e.target.id == 'oipImageViewer' || e.target.id == 'gifCanvas') return; /// Avoid conflict with viewer's own hold-to-zoom feature
 
     holdStartTimeout = setTimeout(function(){
@@ -119,7 +119,7 @@ function preventClick(duration=100){
 let dragStartDx, dragStartDy;
 
 function dragStartListener(e){
-    if (!isValidElement(e.target)) return;
+    if (!elementIsValid(e.target)) return;
     dragStartDx = e.clientX; dragStartDy = e.clientY;
     document.addEventListener('dragover', dragOverListener, true);
     document.addEventListener('dragenter', dragOverListener, true);
@@ -169,7 +169,7 @@ function doubleModKeyUpListener(e){
     if (e.key.toLowerCase() === configs.modifierKey && lastHoveredElement) {
         const currentTime = Date.now();
         if (currentTime - lastKeypressTime < doublePressDelay) {
-            if (!isValidElement(lastHoveredElement)) return;
+            if (!elementIsValid(lastHoveredElement)) return;
             onTrigger(undefined, 'modClick');
             return;
         }
@@ -189,7 +189,7 @@ function onClickListener(e){
         case 'alt': modPressed = e.altKey; break;
         case 'meta': modPressed = e.metaKey; break;
     }
-    if (modPressed && isValidElement(e.target)){
+    if (modPressed && elementIsValid(e.target)){
         e.preventDefault();
         onTrigger(e, 'modClick');
     }
@@ -212,57 +212,57 @@ function onTrigger(e, type){
         availLeft: window.screen.availLeft, type: type
     }
 
-    let nodeName, link;
+    let link, isViewer = false;
     if (type == 'drag' || type == 'modClick') {
-        /// Handle IMG wrapped in A
-        if (t.parentNode && t.parentNode.nodeName == 'A'){
+        const imgElement = t.closest("img");
+        const linkElement = t.closest("a");
+
+        if (imgElement && linkElement) {
+            /// Image wrapped in link
             if (configs.imageWithLinkPreferLink){
-                nodeName = t.parentNode.nodeName;
-                link = t.parentNode.href;
+                nodeName = linkElement.nodeName;
+                link = linkElement.href;
             } else {
-                nodeName = t.nodeName;
-                link = t.src;
+                nodeName = imgElement.nodeName;
+                link = imgElement.currentSrc || imgElement.src;
+                isViewer = true;
             }
-        } else if (t.childNodes && t.childNodes.length == 1 && t.firstChild.nodeName == 'IMG') {
-            if (configs.imageWithLinkPreferLink){
-                nodeName = t.nodeName;
-                link = t.href;
-            } else {
-                nodeName = t.firstChild.nodeName;
-                link = t.firstChild.src;
+        } else if (imgElement){
+            /// Image
+            nodeName = imgElement.nodeName;
+            link = imgElement.currentSrc || imgElement.src;
+            isViewer = true;
+
+            if (configs.lookUpHighResImages){
+                const hiResLink = getHiResImg(t);
+                if (hiResLink) link = hiResLink;
             }
-        } else {
-            nodeName = t.nodeName;
-            link = t.src ?? t.href ?? t.parentNode.href;
+        } else if (linkElement){
+            /// Link
+            nodeName = linkElement.nodeName;
+            link = linkElement.href;
         }
-
-        /// Handle IMG with source in sourceset
-        if (nodeName == 'IMG' && !link && t.parentNode && t.parentNode.nodeName == 'PICTURE') {
-            const src = t.parentNode.querySelector('source');
-            if (src) link = src.getAttribute('srcset');
-        }
-
-        if (!link) link = t.href || t.src || t.parentNode.href;
-
-        /// Handle links in shadow root
-        if (!link && !selectedText) {
-            const closestA = t.closest('a');
-            if (closestA) link = closestA.href;
-        }
-
+    
         if (!link && !selectedText) return;
 
-        /// Look up for high-res image source
-        if (configs.lookUpHighResImages && nodeName == 'IMG') {
-            const hiResLink = getHiResImg(t);
-            if (hiResLink) link = hiResLink;
-        }
-
-        message['nodeName'] = nodeName;
+        message['isViewer'] = isViewer;
         message['link'] = link;
     }
 
     chrome.runtime.sendMessage(message)
+}
+
+/* Check if element under cursor is an image or a link */
+const elementIsValid = (el) => { 
+    return (el.closest && el.closest('a, img')) || elementWithinSelection(el);
+};
+
+const elementWithinSelection = (el) => {
+    const selection = window.getSelection();
+    const isSelectedText = selection && 
+    selection.toString().trim() !== '' && 
+    selection.containsNode(el, true);  /// true = allow partial containment
+    return isSelectedText;
 }
 
 /* Apply dim effect to page on popup open */
@@ -288,15 +288,6 @@ function undimPage(){
     }
     window.removeEventListener('focus', undimPage)
 }
-
-/* Check if element under cursor has a valid src or href, or is an image with source in srcset or picture element */
-const isValidElement = (el) => { 
-    const selection = window.getSelection();
-    const isSelectedText = selection && 
-    selection.toString().trim() !== '' && 
-    selection.containsNode(el, true);  // true = allow partial containment
-    return el.src || el.href || el.parentNode.href || el.srcset || isSelectedText; 
-};
 
 /* Looks for hight-res image source in srcset or data attributes */
 const getHiResImg = (img) => {
