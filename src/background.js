@@ -1,6 +1,7 @@
 let mouseX, mouseY, elementHeight, elementWidth, lastPopupId, lastNormalWindowId;
 let textSelection, availWidth, availHeight, availLeft;
 let preventWindowResizeListener = false;
+let preventNewTabListeners = false;
 
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
@@ -84,7 +85,7 @@ chrome.runtime.onMessage.addListener(
                 if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
                 if (request.type == 'modClick' && configs.openByModClick == false) return;
 
-                const isViewer = request.nodeName == 'IMG' || request.nodeName == 'VIDEO';
+                const isViewer = request.isViewer ?? false;
                 if (isViewer && !cfg.viewInPopupEnabled) return;
                 openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg, false, sender.tab ? sender.tab : undefined); 
             });
@@ -130,13 +131,23 @@ const viewImageContextMenuItem = {
     "id": "viewInPopupWindow",
     "title": chrome.i18n.getMessage('viewInPopupWindow'),
     "contexts": ["image"]
-}  
+}
 
 chrome.contextMenus.create(openLinkContextMenuItem);
 chrome.contextMenus.create(openPageContextMenuItem);
 chrome.contextMenus.create(openInMainWindowContextMenuItem);
 chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
 chrome.contextMenus.create(viewImageContextMenuItem);
+
+/// Draft for "Open tab in popup window" in Firefox
+// if (navigator.userAgent.indexOf("Firefox") > -1){
+//     const openTabInPopupWindow = {
+//         "id": "openTabInPopupWindow",
+//         "title": chrome.i18n.getMessage('openPageInPopupWindow'),
+//         "contexts": ["tab"]
+//     } 
+//     chrome.contextMenus.create(openTabInPopupWindow);
+// }
 
 /// Update context menu availability
 chrome.windows.onFocusChanged.addListener(function(wId){
@@ -162,7 +173,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         return;
     }
     
-    if (clickData.menuItemId == 'openPageInPopupWindow') {
+    if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow') {
         if (tab)
             loadUserConfigs((c) => {
                 openPopupWindowForLink(clickData.pageUrl, false, false, configs.copyTabInsteadOfMoving ? undefined : tab.id, true, c);
@@ -177,8 +188,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
  });
 
  function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTab) {
-    const callback = function(){
-
+    loadUserConfigs(function(){
         /* 
             This logic was created in order to counter MacOS behavior,
             where popup windows could not be opened above the fullscreen window.
@@ -197,7 +207,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         //             });
         //         }
         // });
-    
+
         /// calculate popup size
         let height, width;
     
@@ -228,26 +238,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         if (!availHeight) availHeight = configs.screenHeight;
         if (configs.debugMode) console.log('availWidth: ', availWidth, 'availHeight: ', availHeight);
 
-        function setCenterCoordinates(){
-            if (availHeight && availWidth){
-                dx =  availLeft + availWidth / 2;
-                dy =  availHeight / 2;
-            } else {
-                dx = availLeft; dy = 0;
-            }
-            dx -= width / 2;
-            dy -= height / 2;
-        }
-
-        function setCursorCoordinates(){
-            if (mouseX && mouseY){
-                dx = mouseX - (width / 2), dy = mouseY - (height / 2);
-            } else {
-                /// if no dx stored, switch to fallback
-                setFallbackPopupLocation();
-            }
-        }
-
         function setFallbackPopupLocation(){
             setPopupLocation(configs.fallbackPopupWindowLocation ?? 'center');
         }
@@ -256,7 +246,12 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             switch(preference){
                 case 'mousePosition': {
                     /// open at last known mouse position
-                    setCursorCoordinates();
+                    if (mouseX && mouseY){
+                        dx = mouseX - (width / 2), dy = mouseY - (height / 2);
+                    } else {
+                        /// if no dx stored, switch to fallback
+                        setFallbackPopupLocation();
+                    }
                 } break;
                 case 'nearMousePosition': {
                     if (!mouseX) {
@@ -291,7 +286,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     dy = 0;
                 } break;
                 case 'topCenter': {
-                    setCenterCoordinates();
+                    dx = availWidth ? (availLeft + availWidth / 2) : availLeft;
+                    dx -= width / 2;
                     dy = 0;
                 } break;
                 case 'bottomRight': {
@@ -304,12 +300,15 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 } break;
                 default: {
                     /// open at center of screen
-                    setCenterCoordinates();
+                    dx = availWidth ? availLeft + availWidth / 2 : availLeft;
+                    dy = availHeight ? availHeight / 2 : 0;
+                    dx -= width / 2;
+                    dy -= height / 2;
                 } break;
             }
         }
 
-        if (forceFallbackLocation) {
+        if (forceFallbackLocation && (configs.popupWindowLocation == 'mousePosition' || configs.popupWindowLocation == 'nearMousePosition')) {
             setFallbackPopupLocation();
         } else {
             setPopupLocation(popupLocation);
@@ -364,6 +363,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 createParams['cookieStoreId'] = senderTab.cookieStoreId;
             }
 
+            preventNewTabListeners = true;
             chrome.windows.create(createParams, function (popupWindow) {
                 if (!popupWindow) return;
 
@@ -384,10 +384,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                         if (wId > -1) 
                             chrome.windows.get(wId,{}, (w) => {
                                     if (w && w.type == 'normal') {
-                                            chrome.windows.get(popupWindowId,{}, (w) => {
-                                                if (w){
-                                                    if (w.state == 'minimized') return; /// don't close minimized popup window
-                                                    if (w.alwaysOnTop) return; /// don't close always-on-top window
+                                            chrome.windows.get(popupWindowId,{}, (pW) => {
+                                                if (pW){
+                                                    if (pW.state == 'minimized') return; /// don't close minimized popup window
+                                                    if (pW.alwaysOnTop) return; /// don't close always-on-top window
                                                     chrome.windows.remove(popupWindowId);
                                                     chrome.windows.onFocusChanged.removeListener(windowFocusListener);
                                                 } else {
@@ -449,6 +449,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     chrome.windows.onRemoved.addListener(removedListener);
                 }
 
+                /// TODO:
                 /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent opening multiple popups on top of each other
                 // if (lastPopupId)
                 //     chrome.windows.get(lastPopupId,{}, (w) => {
@@ -458,8 +459,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 //         Math.abs(dx - lastPopupDx) < 5 && Math.abs(dy - lastPopupDy) < 5 &&
                 //         Math.abs(width - lastPopupWidth) < 5 && Math.abs(height - lastPopupHeight) < 5) {
                 //             dy = lastPopupDy + (configs.titleBarHeight ?? 30);
-                //             // height = lastPopupHeight - (configs.titleBarHeight ?? 30);
-                //             chrome.windows.update(popupWindow.id, { top: dy });
+                //             height = lastPopupHeight - (configs.titleBarHeight ?? 30);
+
+                //             preventWindowResizeListener = true;
+                //             chrome.windows.update(popupWindow.id, { top: dy, height: height }, ()=> preventWindowResizeListener = false);
                 //         }
                 //     });
 
@@ -468,15 +471,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 mouseX = undefined; mouseY = undefined;
                 textSelection = undefined;
                 lastPopupId = popupWindow.id;
+                preventNewTabListeners = false;
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
-    }
-    if (cfg) {
-        /// Use cached configs
-        callback();
-    } else {
-        loadUserConfigs(callback);
-    }
+    })
  }
 
  function moveTabToRegularWindow(tab, shouldFocusTab = true){
@@ -526,6 +524,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
 /// Reopen new single tab windows as popups
 chrome.windows.onCreated.addListener(
     (w) => {
+        if (preventNewTabListeners) return;
+        
         loadUserConfigs((c) => {
             if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
                     chrome.tabs.query({windowId: w.id}, (tabs) => {
@@ -541,28 +541,28 @@ chrome.windows.onCreated.addListener(
 
 /// Reopen tabs that were opened by other tabs
 chrome.tabs.onCreated.addListener(newTab => {
-    const openerId = newTab.openerTabId;
-    if (openerId){
-        loadUserConfig('reopenAutoCreatedTabAsPopup', () => {
-            if (configs.reopenAutoCreatedTabAsPopup)
-                /// fetch newly opened tab again, because it may not be ready yet
-                chrome.tabs.get(newTab.id, newTab => {
-                    
-                    if (!newTab.active) return;
-                    const newTabUrl = newTab.url || newTab.pendingUrl;
-                    if (isNewTabUrl(newTabUrl)) return;
+    if (preventNewTabListeners) return;
 
-                    chrome.tabs.get(openerId, openerTab => {
-                        if (openerTab) {
-                            if (!configs.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
-                                // chrome.tabs.remove(newTab.id);
-                                // moveTabToPopupWindow(newTab);
-                                openPopupWindowForLink(newTab.url, false, false, newTab.id, false, undefined, true, openerTab);
-                            } 
-                        }
-                    });
-                });
-        }) 
+    if (newTab.openerTabId){
+        loadUserConfigs((cfg) => {
+            if (cfg.reopenAutoCreatedTabAsPopup)
+                Promise.all([
+                    chrome.tabs.get(newTab.id),
+                    chrome.tabs.get(newTab.openerTabId),
+                ])
+                .then((tabs) => {
+                    let newTab = tabs[0], openerTab = tabs[1];
+                    if (!newTab || !openerTab) return;
+
+                    if (!cfg.reopenAutoCreatedTabsOnlyPinned || openerTab.pinned) {
+                        if (!newTab.active) return;
+                        const newTabUrl = newTab.url || newTab.pendingUrl;
+                        if (isNewTabUrl(newTabUrl)) return;
+
+                        openPopupWindowForLink(newTab.url, false, false, newTab.id, false, undefined, true, openerTab);
+                    } 
+                }).catch((e) => {});
+        }, ['reopenAutoCreatedTabAsPopup', 'reopenAutoCreatedTabsOnlyPinned']) 
     }
 });
 
@@ -598,9 +598,9 @@ function openSearchPopup(senderTab){
 }
 
 /// Set toolbar icon click action
-loadUserConfig('toolbarIconClickAction', () => {
+loadUserConfigs(() => {
     setToolbarIconClickAction();
-});
+}, ['toolbarIconClickAction']);
 
 function setToolbarIconClickAction(){
     switch(configs.toolbarIconClickAction){

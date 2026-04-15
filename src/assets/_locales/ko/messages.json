@@ -1,6 +1,6 @@
 {
   "activationSettings": {
-    "message": "활성화 방법"
+    "message": "기타 활성화 방법"
   },
   "addOptionOpenPageInPopupWindow": {
     "message": "팝업 창에서 페이지 열기 옵션 추가"
@@ -64,6 +64,9 @@
   },
   "hideBrowserControls": {
     "message": "브라우저 컨트롤(주소 창, 탭 등) 숨기기"
+  },
+  "holdClickDelay": {
+    "message": "롱 클릭 지속 시간 (ms)"
   },
   "imageViewer": {
     "message": "사진 뷰어"

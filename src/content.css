@@ -5,8 +5,7 @@
     transform: translate(-50%, 10px); 
     pointer-events: none; z-index: 999;
     overflow: hidden;
-    transition: opacity 50ms ease-out;
-    opacity: 0;
+    will-change: transform;
 }
 .long-click-indicator::before {
     content: '';
@@ -27,9 +26,14 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.4);
+    background: var(--oip-dim-overlay-bg, rgba(0, 0, 0, 0.4));
     z-index: 999998;
     opacity:0;
 }
 @keyframes fadeIn {100% {opacity: 1;}}
 @keyframes fadeOut {100% {opacity: 0;}}
+
+/* For preventing click event on element */
+.oip-prevent-click{
+    pointer-events: none !important;
+}

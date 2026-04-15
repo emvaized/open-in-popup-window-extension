@@ -92,7 +92,7 @@ function setTranslatedLabels(){
     document.getElementById('activationSettings').innerText = chrome.i18n.getMessage('activationSettings');
     document.getElementById('reopenSettings').innerText = chrome.i18n.getMessage('reopenSettings');
     document.getElementById('openPageInPopupWindowHeader').innerText = chrome.i18n.getMessage('openPageInPopupWindow');
-    document.getElementById('dragAndDropSettings').innerText = chrome.i18n.getMessage('dragAndDropSettings');
+    // document.getElementById('dragAndDropSettings').innerText = chrome.i18n.getMessage('dragAndDropSettings');
 }
 
 function updateDisabledOptions() {
@@ -106,11 +106,13 @@ function updateDisabledOptions() {
     document.getElementById("useBuiltInImageViewer").parentNode.className = document.getElementById("viewInPopupEnabled").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("minimalDragDistance").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("openDragAndDropUnderMouse").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
-    document.getElementById("imageWithLinkPreferLink").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
+    // document.getElementById("imageWithLinkPreferLink").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("changeDragCursor").parentNode.className = document.getElementById("openByDragAndDrop").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("reopenAutoCreatedTabsOnlyPinned").parentNode.className = document.getElementById("reopenAutoCreatedTabAsPopup").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("copyTabInsteadOfMoving").parentNode.className = document.getElementById("addOptionOpenPageInPopupWindow").checked ? 'enabled-option' : 'disabled-option';
-    document.getElementById("holdClickDelay").className = document.getElementById("openByLongClick").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("holdClickDelay").parentNode.className = document.getElementById("openByLongClick").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("longClickButton").className = document.getElementById("openByLongClick").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("dimPageAmount").className = document.getElementById("dimPageOnPopupOpen").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("fallbackPopupWindowLocation").parentNode.className = 
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 

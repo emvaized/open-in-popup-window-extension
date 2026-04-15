@@ -177,3 +177,11 @@ body {
         background: black;
     }
 }
+
+body.force-dark {
+    background: black !important;
+}
+
+body.force-light {
+    background: white !important;
+}

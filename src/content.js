@@ -1,6 +1,7 @@
 document.addEventListener("contextmenu",(e=>onTrigger(e,'context')));
 chrome.storage.onChanged.addListener((c) => {
-    loadUserConfigs((c) => setMouseListeners())
+    // loadUserConfigs((c) => setMouseListeners())
+    applyUserConfigs(c, undefined, () => setMouseListeners());
 });
 
 loadUserConfigs(function(c) {
@@ -42,10 +43,10 @@ function setMouseListeners(){
     /* Double modifier key press to open in popup */
     if (configs.openByModClick && configs.doubleModifierKeyPressTrigger){
         document.addEventListener('keyup', doubleModKeyUpListener);
-        document.addEventListener('mouseover', mouseOverListener);
+        document.addEventListener('mouseover', mouseOverListener, { passive: true });
     } else {
         document.removeEventListener('keyup', doubleModKeyUpListener);
-        document.removeEventListener('mouseover', mouseOverListener);
+        document.removeEventListener('mouseover', mouseOverListener, { passive: true });
     }
 
     /* Hold click */
@@ -61,30 +62,37 @@ function setMouseListeners(){
         document.removeEventListener('selectstart', longClickMouseUpListener);
         document.removeEventListener('dragstart', longClickMouseUpListener);
     }
+
+    /* Dim page overlay */
+    if (configs.dimPageOnPopupOpen){
+        document.documentElement.style.setProperty('--oip-dim-overlay-bg', `rgba(0, 0, 0, ${configs.dimPageAmount ?? 0.4})`);
+    }
 }
 
 /* Hold click */
 let holdTimeout, holdStartTimeout, holdIndicator;
 
 function longClickMouseDownListener(e) {
-    if (!isValidElement(e.target)) return;
+    if (e.button != configs.longClickButton) return;
+    if (!elementIsValid(e.target)) return;
     if (e.target.id == 'oipImageViewer' || e.target.id == 'gifCanvas') return; /// Avoid conflict with viewer's own hold-to-zoom feature
 
     holdStartTimeout = setTimeout(function(){
         const x = e.clientX, y = e.clientY;
         removeHoldIndicator();
-        holdIndicator = document.createElement('div');
-        holdIndicator.className = 'long-click-indicator';
+        if (!holdIndicator){
+            holdIndicator = document.createElement('div');
+            holdIndicator.className = 'long-click-indicator';
+        }
         holdIndicator.style.left = `${x}px`;
         holdIndicator.style.top = `${y + 15}px`;
         document.body.appendChild(holdIndicator);
-        setTimeout(() => holdIndicator.style.opacity = 1, 1); /// Fade in
 
         holdTimeout = setTimeout(function(){
             removeHoldIndicator();
             e.preventDefault();
             e.stopPropagation();
-            preventClick(); /// Prevent triggering click event after mouseup
+            preventClick(e.target); /// Prevent triggering click event after mouseup
             onTrigger(e, 'modClick');
         }, configs.holdClickDelay);
     }, 100); /// Short delay to prevent trigger when user is clicking normally
@@ -95,26 +103,18 @@ function longClickMouseUpListener(e) {
     removeHoldIndicator();
 }
 function removeHoldIndicator(){
-    if (holdIndicator) {
-        holdIndicator.remove();
-        holdIndicator = null;
-    }
+    if (holdIndicator) holdIndicator.remove();
 }
-function preventClick(duration=100){
-    function tempMouseUpListener(e){
-        e.preventDefault();
-        e.stopPropagation();
-        document.removeEventListener('mouseup', tempMouseUpListener);
-    }
-    document.addEventListener('mouseup', tempMouseUpListener);
-    setTimeout(() => document.removeEventListener('mouseup', tempMouseUpListener), duration);
+function preventClick(element, duration = 500) {
+    element.classList.add('oip-prevent-click');
+    setTimeout(() => element.classList.remove('oip-prevent-click'), duration);
 }
 
 /* Change drag cursor and trigger popup on drag end */
 let dragStartDx, dragStartDy;
 
 function dragStartListener(e){
-    if (!isValidElement(e.target)) return;
+    if (!elementIsValid(e.target)) return;
     dragStartDx = e.clientX; dragStartDy = e.clientY;
     document.addEventListener('dragover', dragOverListener, true);
     document.addEventListener('dragenter', dragOverListener, true);
@@ -158,21 +158,24 @@ function EscKeyUpListener(e){
 
 /* Double modifier key press to open in popup */
 let doublePressDelay = 300, lastKeypressTime = 0;
-let lastHoveredElement;
 
 function doubleModKeyUpListener(e){
-    if (e.key.toLowerCase() === configs.modifierKey && lastHoveredElement) {
+    if (e.key.toLowerCase() === configs.modifierKey && lastMouseOverData.target) {
         const currentTime = Date.now();
         if (currentTime - lastKeypressTime < doublePressDelay) {
-            if (!isValidElement(lastHoveredElement)) return;
+            if (!elementIsValid(lastMouseOverData.target)) return;
             onTrigger(undefined, 'modClick');
             return;
         }
         lastKeypressTime = currentTime;
     }
 }
+
+const lastMouseOverData = {target: null, x: 0, y: 0 }
 function mouseOverListener(e){
-    lastHoveredElement = e.target;
+    lastMouseOverData.target = e.target;
+    lastMouseOverData.x = e.screenX;
+    lastMouseOverData.y = e.screenY;
 }
 
 /* Mod+Click to open in popup */
@@ -184,7 +187,7 @@ function onClickListener(e){
         case 'alt': modPressed = e.altKey; break;
         case 'meta': modPressed = e.metaKey; break;
     }
-    if (modPressed && isValidElement(e.target)){
+    if (modPressed && elementIsValid(e.target)){
         e.preventDefault();
         onTrigger(e, 'modClick');
     }
@@ -192,14 +195,11 @@ function onClickListener(e){
 
 /* Common trigger callback */
 function onTrigger(e, type){
-    const t = e ? e.target : lastHoveredElement;
-
+    const t = e ? e.target : lastMouseOverData.target;
     const selectedText = getSelectedText();
-    let lastHoveredElementRect;
-    if (!e) lastHoveredElementRect = lastHoveredElement.getBoundingClientRect();
 
     const message = {
-        mouseX: e ? e.screenX : lastHoveredElementRect.left, mouseY: e ? e.screenY : lastHoveredElementRect.top,
+        mouseX: e ? e.screenX : lastMouseOverData.x, mouseY: e ? e.screenY : lastMouseOverData.y,
         elementHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,
@@ -207,57 +207,57 @@ function onTrigger(e, type){
         availLeft: window.screen.availLeft, type: type
     }
 
-    let nodeName, link;
+    let link, isViewer = false;
     if (type == 'drag' || type == 'modClick') {
-        /// Handle IMG wrapped in A
-        if (t.parentNode && t.parentNode.nodeName == 'A'){
+        const imgElement = t.closest("img");
+        const linkElement = t.closest("a");
+
+        if (imgElement && linkElement) {
+            /// Image wrapped in link
             if (configs.imageWithLinkPreferLink){
-                nodeName = t.parentNode.nodeName;
-                link = t.parentNode.href;
+                nodeName = linkElement.nodeName;
+                link = linkElement.href;
             } else {
-                nodeName = t.nodeName;
-                link = t.src;
+                nodeName = imgElement.nodeName;
+                link = imgElement.currentSrc || imgElement.src;
+                isViewer = true;
             }
-        } else if (t.childNodes && t.childNodes.length == 1 && t.firstChild.nodeName == 'IMG') {
-            if (configs.imageWithLinkPreferLink){
-                nodeName = t.nodeName;
-                link = t.href;
-            } else {
-                nodeName = t.firstChild.nodeName;
-                link = t.firstChild.src;
+        } else if (imgElement){
+            /// Image
+            nodeName = imgElement.nodeName;
+            link = imgElement.currentSrc || imgElement.src;
+            isViewer = true;
+
+            if (configs.lookUpHighResImages){
+                const hiResLink = getHiResImg(t);
+                if (hiResLink) link = hiResLink;
             }
-        } else {
-            nodeName = t.nodeName;
-            link = t.src ?? t.href ?? t.parentNode.href;
+        } else if (linkElement){
+            /// Link
+            nodeName = linkElement.nodeName;
+            link = linkElement.href;
         }
-
-        /// Handle IMG with source in sourceset
-        if (nodeName == 'IMG' && !link && t.parentNode && t.parentNode.nodeName == 'PICTURE') {
-            const src = t.parentNode.querySelector('source');
-            if (src) link = src.getAttribute('srcset');
-        }
-
-        if (!link) link = t.href || t.src || t.parentNode.href;
-
-        /// Handle links in shadow root
-        if (!link && !selectedText) {
-            const closestA = t.closest('a');
-            if (closestA) link = closestA.href;
-        }
-
+    
         if (!link && !selectedText) return;
 
-        /// Look up for high-res image source
-        if (configs.lookUpHighResImages && nodeName == 'IMG') {
-            const hiResLink = getHiResImg(t);
-            if (hiResLink) link = hiResLink;
-        }
-
-        message['nodeName'] = nodeName;
+        message['isViewer'] = isViewer;
         message['link'] = link;
     }
 
     chrome.runtime.sendMessage(message)
+}
+
+/* Check if element under cursor is an image or a link */
+const elementIsValid = (el) => { 
+    return (el.closest && el.closest('a, img')) || elementWithinSelection(el);
+};
+
+const elementWithinSelection = (el) => {
+    const selection = window.getSelection();
+    const isSelectedText = selection && 
+    selection.toString().trim() !== '' && 
+    selection.containsNode(el, true);  /// true = allow partial containment
+    return isSelectedText;
 }
 
 /* Apply dim effect to page on popup open */
@@ -272,24 +272,17 @@ function dimPage(){
     dimOverlay.id = 'oip-dim-overlay';
     dimOverlay.style.animation = `fadeIn ${dimAnimDuration}ms ease-in forwards`;
     document.body.appendChild(dimOverlay);
-    window.addEventListener('focus', undimPage);
+
+    setTimeout(() => window.addEventListener('focus', undimPage),100);
 }
 function undimPage(){
-    if (dimOverlay) {
+    if (dimOverlay && dimOverlay.isConnected) {
         dimOverlay.style.opacity = 1;
         dimOverlay.style.animation = `fadeOut ${dimAnimDuration}ms ease-out forwards`;
         setTimeout(() => dimOverlay.remove(), dimAnimDuration);
     }
+    window.removeEventListener('focus', undimPage)
 }
-
-/* Check if element under cursor has a valid src or href, or is an image with source in srcset or picture element */
-const isValidElement = (el) => { 
-    const selection = window.getSelection();
-    const isSelectedText = selection && 
-    selection.toString().trim() !== '' && 
-    selection.containsNode(el, true);  // true = allow partial containment
-    return el.src || el.href || el.parentNode.href || el.srcset || isSelectedText; 
-};
 
 /* Looks for hight-res image source in srcset or data attributes */
 const getHiResImg = (img) => {

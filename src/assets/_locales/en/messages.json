@@ -1,6 +1,6 @@
 {
   "activationSettings": {
-    "message": "Activation methods"
+    "message": "Additional activation methods"
   },
   "addOptionOpenPageInPopupWindow": {
     "message": "Add option to open page in popup window"
@@ -74,6 +74,9 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "Don't close page popup window on focus lost"
   },
+  "holdClickDelay": {
+    "message": "Duration for long click (ms)"
+  },
   "lookUpHighResImages": {
     "message": "Look up high-resolution image sources"
   },
@@ -90,7 +93,7 @@
     "message": "Near mouse cursor"
   },
   "openByDragAndDrop": {
-    "message": "Use drag and drop on empty place to open in popup"
+    "message": "Use drag and drop on empty place"
   },
   "openByModClick": {
     "message": "Use Modifier + Click to open in popup"

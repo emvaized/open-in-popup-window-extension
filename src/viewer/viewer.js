@@ -8,7 +8,7 @@ let mirroredX = false, mirroredY = false;
 
 let listenersAdded = false;
 
-let zoomSlider, rotateButton, zoomPercent, resetZoomButton;
+let zoomSlider, rotateButton, zoomPercent, resetZoomButton, darkModeButton;
 
 function init(){
     const imageUrl = new URLSearchParams(window.location.search).get('src');
@@ -27,6 +27,7 @@ function init(){
     rotateButton = document.getElementById('rotateButton');
     zoomPercent = document.getElementById('zoomPercent');
     resetZoomButton = document.getElementById('resetZoomButton');
+    darkModeButton = document.getElementById('darkModeButton');
 
     if (zoomSlider) {
         zoomSlider.value = scale;
@@ -83,6 +84,9 @@ function initImageControls(){
     }
     if (resetZoomButton) {
         resetZoomButton.addEventListener('click', onResetZoomButtonClick);
+    }
+    if (darkModeButton) {
+        darkModeButton.addEventListener('click', onDarkModeButtonClick);
     }
 }
 
@@ -248,6 +252,22 @@ function onResetZoomButtonClick() {
     dyToShow = initialDy;
     rotationStepsCounter = 0;
     updateTransform();
+}
+
+function onDarkModeButtonClick() {
+    if (document.body.classList.contains('force-dark')) {
+        document.body.classList.remove('force-dark');
+        document.body.classList.add('force-light');
+    } else if (document.body.classList.contains('force-light')) {
+        document.body.classList.remove('force-light');
+        document.body.classList.add('force-dark');
+    } else {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('force-light');
+        } else {
+            document.body.classList.add('force-dark');
+        }
+    }
 }
 
 function enableTransitionsTemporarily() {
