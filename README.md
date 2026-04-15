@@ -24,6 +24,7 @@ This extension is intended to be used as an analogue of <i>Safari Link Preview</
     - [x] Drag and drop
     - [x] Modifier key + left click (possible options: <kbd>Shift</kbd> / <kbd>Ctrl</kbd> / <kbd>Alt</kbd> / <kbd>Meta</kbd>)
     - [x] Double press modifier key when item is hovered
+    - [x] Long click mouse button (left/middle/right)
     - [x] Click on toolbar icon (search/open current page in popup)
 - [x] Super lightweight, with content script being less then 10 KBs
 - [x] Advanced Image Viewer with GIF playback control
