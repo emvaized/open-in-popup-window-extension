@@ -20,18 +20,18 @@ This extension is intended to be used as an analogue of <i>Safari Link Preview</
 - [x] Configurable popup height, width and default position on the screen
 - [x] Several ways to open in popup window: 
     - [x] Context menu
-    - [x] Keyboard hotkeys ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#what-keyboard-hotkeys-are-available))
+    - [x] Keyboard hotkeys ([more info](https://github.com/emvaized/open-in-popup-window-extension/wiki/FAQ-(Frequently-Asked-Questions)#what-keyboard-hotkeys-are-available))
     - [x] Drag and drop
     - [x] Modifier key + left click (possible options: <kbd>Shift</kbd> / <kbd>Ctrl</kbd> / <kbd>Alt</kbd> / <kbd>Meta</kbd>)
     - [x] Double press modifier key when item is hovered
     - [x] Click on toolbar icon (search/open current page in popup)
-- [x] Advanced image viewer with GIF playback control
+- [x] Super lightweight, with content script being less then 10 KBs
+- [x] Advanced Image Viewer with GIF playback control
 - [x] Close popup window when origin window regains focus (excludes minimized and "always-on-top" windows)
 - [x] Dim page when popup window is opened
 - [x] Remember popup window size on manual resize (_only Chrome_ ~ [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 - [x] Open popup page in the main window on maximize (_only Chrome_ ~ [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-- [x] Automatically reopen new single tab windows, and tabs opened by page, as popup windows ([more info](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
-
+- [x] Automatically reopen new single tab windows, and tabs opened by page, as popup windows (like [Little Arc](https://resources.arc.net/hc/en-us/articles/19235387524503-Little-Arc-Quick-Lookups-Instant-Triaging)) ([more info here](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
 
 
 ## Screenshots
@@ -50,82 +50,11 @@ If you really enjoy this project, please consider supporting its further develop
 
 <a href="https://ko-fi.com/emvaized"><img src="https://storage.ko-fi.com/cdn/kofi5.png?v=6" alt="Support on Ko-fi" height="40"></a> &nbsp; <a href="https://www.patreon.com/emvaized/membership"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/assets/patreon-donate-button.png?raw=true" alt="Patreon" height="40" /></a> &nbsp; <a href="https://liberapay.com/emvaized/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"></a> &nbsp; <a href="https://emvaized.github.io/donate/bitcoin/"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/bitcoin/assets/bitcoin-donate-button.png?raw=true" alt="Donate Bitcoin" height="40" /></a>
 
-## FAQ (Frequently Asked Questions)
-
-#### How to close the popup using keyboard?
-> - <kbd>Alt</kbd> + <kbd>F4</kbd>
-> - <kbd>Ctrl</kbd> + <kbd>W</kbd>
-> - <kbd>Escape</kbd> key (if enabled in the extension settings)
-
-#### What keyboard hotkeys are available? 
-> This extension implements the following keyboard hotkeys: 
-> 
-> | Action Description                                      | Default Hotkey         |
-> |---------------------------------------------------------|-------------------------|
-> | Open popup window in the main window                    | <kbd>Alt</kbd> + <kbd>Y</kbd>      |
-> | Open the currently opened page in a popup window        | <kbd>Alt</kbd> + <kbd>P</kbd>      |
-> | Search selected text in a popup window <br>*(or open empty search page if no selected text found)*| <kbd>Alt</kbd> + <kbd>S</kbd>      |
-> 
-> You can change these hotkeys these ways: 
-> - In Chromium-based browsers (Chrome, Edge, Vivaldi, Brave etc), navigate to `chrome://extensions/shortcuts` and scroll down to *Open in Popup Window* category
-> - In Firefox, navigate to `about:addons`, click cogwheel icon in top right corner and select "Manage Extension Shortcuts" ([more details](https://support.mozilla.org/en-US/kb/manage-extension-shortcuts-firefox))
-
-#### How to open page from the popup in the main window? 
-> You can do it in 2 ways: 
-> - By right clicking on the page in popup window and selecting "Open page in main window"
-> - <kbd>Alt</kbd> + <kbd>Enter</kbd> hotkey (if <kbd>Esc</kbd> hotkey is enabled in extension settings)
-> 
-> <details>
->     <summary>Demonstration</summary>
->     <img src="./screenshots/open-in-main-window.png" />
-> </details>
-
-#### On Mac OS, popup windows do not appear in the fullscreen mode
-> Due to the specifics of fullscreen mode on Mac OS (fullscreen apps separate in their own Desktop space), popup windows do not appear above the fullcreen window. They either open on the "main" desktop (Firefox), or as a new fullscreen window (Chrome). To use this extension on Mac OS, you would have to open browser not in the fullscreen mode.
-
-#### How to make popups remain always on top? 
-> Unfortunately, browser extensions currently are [not capable](https://github.com/w3c/webextensions/issues/443) of manually setting the "always on top" flag. 
->
-> But you can use third-party programs in your system which can do it, for example [PowerToys](https://github.com/microsoft/PowerToys) on Windows. Don't forget to disable autoclosing popup window when it loses focus in the extension settings.
-
-#### How to use the new feature "Reopen new single tab windows as popup windows"?
-
-> This powerful feature, introduced in version `0.3`, allows to extend extension abilities and open any link anywhere as a popup window. With this option enabled, extension will be waiting in the background for any new windows to open, and once a new window with only one tab opens, it will reopen it as a popup. 
->
-> This way it can operate with links, which it couldn't access otherwise, for example: sites on new tab page, in bookmarks panel, links on browser-protected pages (`chrome://`, `about:`) etc. You could create a popup window the following ways:
->
-> - Using right click context menu and selecting "Open in new window"
-> - <kbd>Shift</kbd> + left click in Firefox (+ <kbd>Ctrl</kbd> in Chrome) – this will essentially duplicate extension's "Open with mod+click" option
-> - <kbd>Shift</kbd> + <kbd>Enter</kbd> in Firefox (+ <kbd>Ctrl</kbd> in Chrome) on any focused element, for example search suggestion in address bar
-> 
-> Popup windows opened this way could not be positioned by mouse cursor location, so an alternative "Fallback popup window location" setting will be used ("Center" by default)
-
-#### How to use "Reopen tabs opened by page as popup windows"?
-
-> With this option enabled, new tabs opened by another tab (usually those opened by clicking links with `target: _blank`) will be automatically reopened as popup windows. This setting has an additional option to do it only for pinned tabs, which is _enabled_ by default.
-
-#### Private windows are not reopened as popups with this option enabled
-
-> You might need to manually allow this extension to run in private windows
-
-#### How to reopen externally opened links as popup windows — similar to _Little Arc_ feature from the Arc browser? 
-
-> It is possible in Firefox by toggling the `Reopen new single tab windows as popup windows` feature and setting `browser.link.open_newwindow.override.external` config to `2` on `about:config` page
-
-#### What features are browser-specific?
-> Features of this extension may vary depending on which browser are you using due to technical availability. On Firefox, you may get slightly more limited experience. 
->
-> <img src="https://www.gstatic.com/marketing-cms/assets/images/aa/d2/356851cc4224bc17a230a98e6000/chrome.webp=s48-fcrop64=1,00000000ffffffff-rw" height="16" width="16"/> **Chrome-specific features** (also Edge, Opera, Vivaldi, Brave etc)
-> - [x] Option to remember popup window size on manual resize (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-> - [x] Option to open page in the main window on clicking "Maximize" window button (_improssible in Firefox_ – [bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-> - [x] Excluding "always on top" windows from "Close popup when normal window is focused" (may not work in Firefox)
-> 
-> <img src="http://blog.mozilla.org/design/files/2019/10/Fx-Browser-icon-fullColor.svg" height="16" width="16"/> **Firefox-specific features**
-> - [x] `Escape` key press during drag-and-drop cancels the "open in popup window" action (_not availble_ in Chrome — https://github.com/emvaized/open-in-popup-window-extension/issues/24#issuecomment-2993699343)
-
 ## Troubleshooting
-- ⚠️ If "Open by drag" and "Mod+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
-- It was also previously [reported](https://github.com/emvaized/open-in-popup-window-extension/issues/1#issuecomment-1637067834) that Firefox Multi-Account Containers might interfere with "Search in popup" action, enforcing it's own redirection and preventing popup window from opening. If you face such issues, I recommend using another search URL in the extension settings
+⚠️ If "Open by drag" and "Mod+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
+
+## FAQ (Frequently Asked Questions)
+See answers to some common questions on [Wiki page](https://github.com/emvaized/open-in-popup-window-extension/wiki/FAQ-(Frequently-Asked-Questions))
 
 ## Building
 - `npm install` to install all dependencies
@@ -133,11 +62,10 @@ If you really enjoy this project, please consider supporting its further develop
 - `npm run build.chrome` to create chromium-specific version with few changes
 
 ## Ideas for future releases
-- [ ] Option to keep popup windows always on top (_improssible in both Chrome and Firefox_ – [bug report](https://github.com/w3c/webextensions/issues/443))
+- [ ] Option to keep popup windows always on top (_improssible until_ [bug report](https://github.com/w3c/webextensions/issues/443))
 - [ ] Option to open popup windows in _incognito_ mode
-- [x] Option to open current page in popup window on clicking the toolbar icon (instead of opening the settings popup)
 - [ ] Use text selection coordinates to align the "search" popup window when opened with keyboard shortcut
-- [ ] Option to translate selected text in popup window (along with keyboard hotkey)
+- [ ] Option to translate selected text in popup window, with dedicated keyboard hotkey
 
 ## Privacy
 This extension doesn't collect any private data. It only requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened.
