@@ -129,7 +129,8 @@ If you really enjoy this project, please consider supporting its further develop
 
 ## Building
 - `npm install` to install all dependencies
-- `npm run build` to generate `dist` folder with minimized code of the extension, or `npm run build.v3` to create chromium-specific version with few manifest key removed
+- `npm run build` to generate `dist` folder with minimized code of the extension, or
+- `npm run build.chrome` to create chromium-specific version with few changes
 
 ## Ideas for future releases
 - [ ] Option to keep popup windows always on top (_improssible in both Chrome and Firefox_ – [bug report](https://github.com/w3c/webextensions/issues/443))
@@ -142,7 +143,7 @@ If you really enjoy this project, please consider supporting its further develop
 This extension doesn't collect any private data. It only requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened.
 
 ## Some of my other projects
-* <img src="https://github.com/emvaized/selecton-extension/raw/master/src/assets/icons/logo-new.png" width="20"> [Selecton](https://github.com/emvaized/selecton-extension) – smart popup with actions on text selection 
+* <img src="https://github.com/emvaized/selecton-extension/raw/master/src/assets/icons/logo-new.png" width="20"> [SelectON](https://github.com/emvaized/selecton-extension) – smart popup with actions on text selection 
 * <img src="https://github.com/emvaized/circle-mouse-gestures/blob/master/src/assets/icons/icon-new.png?raw=true" width="20"> [Circle Mouse Gestures](https://github.com/emvaized/circle-mouse-gestures) – better mouse gestures, with visual representation of all available actions
 * <img src="https://github.com/emvaized/text-reflow-on-zoom-mobile/blob/main/src/icon.png?raw=true" width="20"> [Text reflow on zoom](https://github.com/emvaized/text-reflow-on-zoom-mobile) – userscript and mobile browser extension which reflows all text after a pinch gesture
 * <img src="https://github.com/emvaized/modern_inverted_mouse_cursors/blob/main/screenshots/illustration_of_inversion.gif?raw=true" width="20"> [Modern Inverted Mouse Cursors](https://www.patreon.com/emvaized/shop/modern-inverted-mouse-cursors-for-10-11-924356) – cursor pack for Windows 10/11 which inverts all colors behind cursors 
