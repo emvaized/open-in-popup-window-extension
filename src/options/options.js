@@ -92,7 +92,7 @@ function setTranslatedLabels(){
     document.getElementById('activationSettings').innerText = chrome.i18n.getMessage('activationSettings');
     document.getElementById('reopenSettings').innerText = chrome.i18n.getMessage('reopenSettings');
     document.getElementById('openPageInPopupWindowHeader').innerText = chrome.i18n.getMessage('openPageInPopupWindow');
-    document.getElementById('dragAndDropSettings').innerText = chrome.i18n.getMessage('dragAndDropSettings');
+    // document.getElementById('dragAndDropSettings').innerText = chrome.i18n.getMessage('dragAndDropSettings');
 }
 
 function updateDisabledOptions() {
