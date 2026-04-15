@@ -1,6 +1,6 @@
 {
   "activationSettings": {
-    "message": "Métodos de activación"
+    "message": "Otros métodos de activación"
   },
   "addOptionOpenPageInPopupWindow": {
     "message": "Agregar opción para abrir la página en una ventana emergente"
@@ -93,7 +93,7 @@
     "message": "Cerca del cursor"
   },
   "openByDragAndDrop": {
-    "message": "Utilice arrastrar y soltar en un lugar vacío para abrir una ventana emergente"
+    "message": "Arrastra y suelta en un espacio vacío"
   },
   "openByModClick": {
     "message": "Utilice Modificador + Clic para abrir en ventana emergente"
