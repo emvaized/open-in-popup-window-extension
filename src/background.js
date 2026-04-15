@@ -188,8 +188,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
  });
 
  function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTab) {
-    const callback = function(){
-
+    loadUserConfigs(function(){
         /* 
             This logic was created in order to counter MacOS behavior,
             where popup windows could not be opened above the fullscreen window.
@@ -239,26 +238,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         if (!availHeight) availHeight = configs.screenHeight;
         if (configs.debugMode) console.log('availWidth: ', availWidth, 'availHeight: ', availHeight);
 
-        function setCenterCoordinates(){
-            if (availHeight && availWidth){
-                dx =  availLeft + availWidth / 2;
-                dy =  availHeight / 2;
-            } else {
-                dx = availLeft; dy = 0;
-            }
-            dx -= width / 2;
-            dy -= height / 2;
-        }
-
-        function setCursorCoordinates(){
-            if (mouseX && mouseY){
-                dx = mouseX - (width / 2), dy = mouseY - (height / 2);
-            } else {
-                /// if no dx stored, switch to fallback
-                setFallbackPopupLocation();
-            }
-        }
-
         function setFallbackPopupLocation(){
             setPopupLocation(configs.fallbackPopupWindowLocation ?? 'center');
         }
@@ -267,7 +246,12 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             switch(preference){
                 case 'mousePosition': {
                     /// open at last known mouse position
-                    setCursorCoordinates();
+                    if (mouseX && mouseY){
+                        dx = mouseX - (width / 2), dy = mouseY - (height / 2);
+                    } else {
+                        /// if no dx stored, switch to fallback
+                        setFallbackPopupLocation();
+                    }
                 } break;
                 case 'nearMousePosition': {
                     if (!mouseX) {
@@ -302,7 +286,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     dy = 0;
                 } break;
                 case 'topCenter': {
-                    setCenterCoordinates();
+                    dx = availWidth ? (availLeft + availWidth / 2) : availLeft;
+                    dx -= width / 2;
                     dy = 0;
                 } break;
                 case 'bottomRight': {
@@ -315,7 +300,10 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 } break;
                 default: {
                     /// open at center of screen
-                    setCenterCoordinates();
+                    dx = availWidth ? availLeft + availWidth / 2 : availLeft;
+                    dy = availHeight ? availHeight / 2 : 0;
+                    dx -= width / 2;
+                    dy -= height / 2;
                 } break;
             }
         }
@@ -486,13 +474,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 preventNewTabListeners = false;
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
-    }
-    if (cfg) {
-        /// Use cached configs
-        callback();
-    } else {
-        loadUserConfigs(callback);
-    }
+    })
  }
 
  function moveTabToRegularWindow(tab, shouldFocusTab = true){
