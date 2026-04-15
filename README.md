@@ -12,7 +12,7 @@ This tiny and lightweight browser extension provides ability to quickly preview 
 
 This extension is intended to be used as an analogue of <i>Safari Link Preview</i>, <i>Arc Peek</i> or <i>Zen Glance</i>. It's a great way to preview links, which works everywhere and is not affected by the CORS problem like other extensions which are using `iframe` element for the link preview.
 
-<a href="https://addons.mozilla.org/firefox/addon/open-in-popup-window/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get for Firefox"></a> &nbsp; <a href="https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie"><img src="https://developer.chrome.com/static/docs/webstore/branding/image/iNEddTyWiMfLSwFD6qGq.png" alt="Get for Chrome" height=65 ></a>
+ <a href="https://chrome.google.com/webstore/detail/open-in-popup-window/gmnkpkmmkhbgnljljcchnakehlkihhie"><img src="https://developer.chrome.com/static/docs/webstore/branding/image/iNEddTyWiMfLSwFD6qGq.png" alt="Get for Chrome" height=65 ></a> &nbsp; <a href="https://addons.mozilla.org/firefox/addon/open-in-popup-window/"><img src="https://user-images.githubusercontent.com/585534/107280546-7b9b2a00-6a26-11eb-8f9f-f95932f4bfec.png" alt="Get for Firefox"></a>
 
 <h4>Features</h4>
 
@@ -31,7 +31,7 @@ This extension is intended to be used as an analogue of <i>Safari Link Preview</
 - [x] Dim page when popup window is opened
 - [x] Remember popup window size on manual resize (_only Chrome_ ~ [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
 - [x] Open popup page in the main window on maximize (_only Chrome_ ~ [Firefox bug report](https://bugzilla.mozilla.org/show_bug.cgi?id=1762975))
-- [x] Automatically reopen new single tab windows, and tabs opened by page, as popup windows (like [Little Arc](https://resources.arc.net/hc/en-us/articles/19235387524503-Little-Arc-Quick-Lookups-Instant-Triaging)) ([more info here](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows))
+- [x] Automatically reopen new single tab windows, and tabs opened by page, as popup windows (like [Little Arc](https://resources.arc.net/hc/en-us/articles/19235387524503-Little-Arc-Quick-Lookups-Instant-Triaging)) — [more info here](https://github.com/emvaized/open-in-popup-window-extension?tab=readme-ov-file#how-to-use-the-new-feature-reopen-new-single-tab-windows-as-popup-windows)
 
 
 ## Screenshots
@@ -50,11 +50,11 @@ If you really enjoy this project, please consider supporting its further develop
 
 <a href="https://ko-fi.com/emvaized"><img src="https://storage.ko-fi.com/cdn/kofi5.png?v=6" alt="Support on Ko-fi" height="40"></a> &nbsp; <a href="https://www.patreon.com/emvaized/membership"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/assets/patreon-donate-button.png?raw=true" alt="Patreon" height="40" /></a> &nbsp; <a href="https://liberapay.com/emvaized/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"></a> &nbsp; <a href="https://emvaized.github.io/donate/bitcoin/"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/bitcoin/assets/bitcoin-donate-button.png?raw=true" alt="Donate Bitcoin" height="40" /></a>
 
-## Troubleshooting
-⚠️ If "Open by drag" and "Mod+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
-
-## FAQ (Frequently Asked Questions)
+## FAQ (Frequently Asked Questions) ⚠️
 See answers to some common questions on [Wiki page](https://github.com/emvaized/open-in-popup-window-extension/wiki/FAQ-(Frequently-Asked-Questions))
+
+## Troubleshooting
+If "Open by drag" and "Mod+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
 
 ## Building
 - `npm install` to install all dependencies
