@@ -32,3 +32,8 @@
 }
 @keyframes fadeIn {100% {opacity: 1;}}
 @keyframes fadeOut {100% {opacity: 0;}}
+
+/* For preventing click event on element */
+.oip-prevent-click{
+    pointer-events: none !important;
+}

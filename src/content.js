@@ -92,7 +92,7 @@ function longClickMouseDownListener(e) {
             removeHoldIndicator();
             e.preventDefault();
             e.stopPropagation();
-            preventClick(); /// Prevent triggering click event after mouseup
+            preventClick(e.target); /// Prevent triggering click event after mouseup
             onTrigger(e, 'modClick');
         }, configs.holdClickDelay);
     }, 100); /// Short delay to prevent trigger when user is clicking normally
@@ -105,14 +105,9 @@ function longClickMouseUpListener(e) {
 function removeHoldIndicator(){
     if (holdIndicator) holdIndicator.remove();
 }
-function preventClick(duration=100){
-    function tempMouseUpListener(e){
-        e.preventDefault();
-        e.stopPropagation();
-        document.removeEventListener('mouseup', tempMouseUpListener);
-    }
-    document.addEventListener('mouseup', tempMouseUpListener);
-    setTimeout(() => document.removeEventListener('mouseup', tempMouseUpListener), duration);
+function preventClick(element, duration = 500) {
+    element.classList.add('oip-prevent-click');
+    setTimeout(() => element.classList.remove('oip-prevent-click'), duration);
 }
 
 /* Change drag cursor and trigger popup on drag end */
