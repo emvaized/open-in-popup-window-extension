@@ -43,10 +43,10 @@ function setMouseListeners(){
     /* Double modifier key press to open in popup */
     if (configs.openByModClick && configs.doubleModifierKeyPressTrigger){
         document.addEventListener('keyup', doubleModKeyUpListener);
-        document.addEventListener('mouseover', mouseOverListener);
+        document.addEventListener('mouseover', mouseOverListener, { passive: true });
     } else {
         document.removeEventListener('keyup', doubleModKeyUpListener);
-        document.removeEventListener('mouseover', mouseOverListener);
+        document.removeEventListener('mouseover', mouseOverListener, { passive: true });
     }
 
     /* Hold click */
@@ -163,21 +163,24 @@ function EscKeyUpListener(e){
 
 /* Double modifier key press to open in popup */
 let doublePressDelay = 300, lastKeypressTime = 0;
-let lastHoveredElement;
 
 function doubleModKeyUpListener(e){
-    if (e.key.toLowerCase() === configs.modifierKey && lastHoveredElement) {
+    if (e.key.toLowerCase() === configs.modifierKey && lastMouseOverData.target) {
         const currentTime = Date.now();
         if (currentTime - lastKeypressTime < doublePressDelay) {
-            if (!elementIsValid(lastHoveredElement)) return;
+            if (!elementIsValid(lastMouseOverData.target)) return;
             onTrigger(undefined, 'modClick');
             return;
         }
         lastKeypressTime = currentTime;
     }
 }
+
+const lastMouseOverData = {target: null, x: 0, y: 0 }
 function mouseOverListener(e){
-    lastHoveredElement = e.target;
+    lastMouseOverData.target = e.target;
+    lastMouseOverData.x = e.screenX;
+    lastMouseOverData.y = e.screenY;
 }
 
 /* Mod+Click to open in popup */
@@ -197,14 +200,11 @@ function onClickListener(e){
 
 /* Common trigger callback */
 function onTrigger(e, type){
-    const t = e ? e.target : lastHoveredElement;
-
+    const t = e ? e.target : lastMouseOverData.target;
     const selectedText = getSelectedText();
-    let lastHoveredElementRect;
-    if (!e) lastHoveredElementRect = lastHoveredElement.getBoundingClientRect();
 
     const message = {
-        mouseX: e ? e.screenX : lastHoveredElementRect.left, mouseY: e ? e.screenY : lastHoveredElementRect.top,
+        mouseX: e ? e.screenX : lastMouseOverData.x, mouseY: e ? e.screenY : lastMouseOverData.y,
         elementHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,
