@@ -1,3 +1,20 @@
+### 0.6.0
+#### New options
+- Customizable mouse button for long click trigger
+- Option to change amount of page dim on popup open
+
+#### Features
+- Various code optimisations for snappier popup opening
+- Added image viewer button to toggle background dark mode
+- Reordered some options on options page for better clarity
+- Updated project dependencies
+
+#### Fixes
+- Fixed click event after long click sometimes not being prevented
+- Fixed issue when double modifier press chooses mouse coordinates incorrectly
+- Fixed reopening tabs as popup windows sometimes not respecting preferred position
+- Fixed GIF playback controls showing for single frame GIFs
+
 ### 0.5.1
 - New options:
   - Dim page when popup window is open
