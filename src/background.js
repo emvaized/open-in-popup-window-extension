@@ -232,11 +232,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             availWidth = window.screen.width;
             availHeight = window.screen.height;
         } catch(e){}
-        if (configs.debugMode) console.log('Initial availLeft: ', availLeft)
         if (!availLeft) availLeft = configs.availLeft ?? 0;
         if (!availWidth) availWidth = configs.screenWidth;
         if (!availHeight) availHeight = configs.screenHeight;
-        if (configs.debugMode) console.log('availWidth: ', availWidth, 'availHeight: ', availHeight);
 
         function setFallbackPopupLocation(){
             setPopupLocation(configs.fallbackPopupWindowLocation ?? 'center');
@@ -480,8 +478,8 @@ chrome.windows.onFocusChanged.addListener((wId) => {
                         if (popupWindows.has(wId)) return; 
 
                         if (configs.debugMode){
-                            console.log('focused window: ', wId);
-                            console.log('opened popup windows for closing: ', popupWindows);
+                            console.log('Focused normal window with ID: ', wId);
+                            console.log(`Opened popup windows for closing: (${popupWindows.size})`, popupWindows);
                         }
 
                         for (const [popupId, popupData] of popupWindows) {
