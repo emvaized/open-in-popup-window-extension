@@ -7,8 +7,7 @@ function init(){
         for (let i = 0, l = keys.length; i < l; i++) {
             const key = keys[i];
 
-            if (userConfigs.debugMode)
-                console.log('Setting up option: ', key, userConfigs[key]);
+            if (key === 'loaded') continue;
 
             /// set corresponing input value
             let input = document.getElementById(key.toString());

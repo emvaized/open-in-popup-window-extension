@@ -64,6 +64,7 @@ function applyUserConfigs(cfg, keys, callback){
         const key = keys[i];
         const value = cfg[key];
         if (value === undefined) continue;
+        if (key === 'loaded') continue;
         configs[key] = value['newValue'] ?? value;
     }
     if (callback) callback(configs);
