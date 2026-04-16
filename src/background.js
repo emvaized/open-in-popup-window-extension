@@ -381,30 +381,29 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 /// close popup on focus normal window
                 if (configs.closeWhenFocusedInitialWindow && (!isCurrentPage || !configs.keepOpenPageInPopupWindowOpen)){
                     function windowFocusListener(wId) {
-                        if (wId > -1) 
-                            chrome.windows.get(wId,{}, (w) => {
-                                    if (w && w.type == 'normal') {
-                                            chrome.windows.get(popupWindowId,{}, (pW) => {
-                                                if (pW){
-                                                    if (pW.state == 'minimized') return; /// don't close minimized popup window
-                                                    if (pW.alwaysOnTop) return; /// don't close always-on-top window
-                                                    chrome.windows.remove(popupWindowId);
-                                                    chrome.windows.onFocusChanged.removeListener(windowFocusListener);
-                                                } else {
-                                                    chrome.windows.onFocusChanged.removeListener(windowFocusListener);
-                                                }
-                                            });
-                                        // if (originalWindowIsFullscreen) 
-                                        //     chrome.windows.update(parentWindow.id, {
-                                        //         'state': 'fullscreen'
-                                        //     });
+                        if (wId < 0 || wId === popupWindowId) return; /// ignore focus lost (-1) or focus moving to the popup
+
+                        chrome.windows.get(wId,{}, (focusedWindow) => {
+                            if (chrome.runtime.lastError || !focusedWindow) return;
+                            if (focusedWindow.type !== 'normal') return;
+
+                            chrome.windows.get(popupWindowId,{}, (pW) => {
+                                chrome.windows.onFocusChanged.removeListener(windowFocusListener);
+
+                                if (chrome.runtime.lastError || !pW) return; /// popup already gone
+                                if (pW.state == 'minimized') return;
+                                if (pW.alwaysOnTop) return;
+
+                                chrome.windows.remove(popupWindowId, () => {
+                                    if (chrome.runtime.lastError && configs.debugMode) {
+                                        console.warn('Popup already closed:', chrome.runtime.lastError.message);
                                     }
                                 });
+                            });
+                        });
                     }
         
-                    // setTimeout(function () {
-                        chrome.windows.onFocusChanged.addListener(windowFocusListener);
-                    // }, 300);
+                    chrome.windows.onFocusChanged.addListener(windowFocusListener);
                 }
 
                 /* remember dimensions on window resize 
