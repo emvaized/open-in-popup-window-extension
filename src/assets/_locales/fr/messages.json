@@ -1,0 +1,209 @@
+{
+  "activationSettings": {
+    "message": "Méthodes d’activation supplémentaires"
+  },
+  "addOptionOpenPageInPopupWindow": {
+    "message": "Ajouter une option pour ouvrir la page dans une fenêtre popup"
+  },
+  "bottomLeft": {
+    "message": "En bas à gauche"
+  },
+  "bottomRight": {
+    "message": "En bas à droite"
+  },
+  "center": {
+    "message": "Centre"
+  },
+  "changeDragCursor": {
+    "message": "Modifier le curseur de la souris pendant le glissement"
+  },
+  "closeWhenFocusedInitialWindow": {
+    "message": "Fermer la popup lorsque la fenêtre principale est active"
+  },
+  "closeWhenFocusedInitialWindowHint": {
+    "message": "La fenêtre popup ne sera pas fermée si elle est minimisée ou définie comme toujours au premier plan"
+  },
+  "copyTabInsteadOfMoving": {
+    "message": "Copier l’onglet au lieu de le déplacer vers une fenêtre popup"
+  },
+  "debugMode": {
+    "message": "Mode debug"
+  },
+  "dimPageOnPopupOpen": {
+    "message": "Assombrir la page lors de l’ouverture de la popup"
+  },
+  "donateButton": {
+    "message": "Soutenir le projet"
+  },
+  "doubleModifierKeyPressTrigger": {
+    "message": "Utiliser une double pression de touche pour ouvrir l’élément survolé dans une popup"
+  },
+  "dragAndDropSettings": {
+    "message": "Paramètres du glisser-déposer"
+  },
+  "escKeyClosesPopup": {
+    "message": "Fermer la popup avec la touche Échap"
+  },
+  "escKeyClosesPopupHint": {
+    "message": "Alt + Entrée ouvrira également la page dans la fenêtre principale"
+  },
+  "extensionDescription": {
+    "message": "Ouvrir n’importe quel lien ou image dans une fenêtre popup"
+  },
+  "fallbackPopupWindowLocation": {
+    "message": "Position de secours de la fenêtre popup"
+  },
+  "fallbackPopupWindowLocationHint": {
+    "message": "Utilisé lorsque la position du curseur à l’écran n’est pas disponible"
+  },
+  "generalSettings": {
+    "message": "Paramètres généraux"
+  },
+  "githubButton": {
+    "message": "Code source"
+  },
+  "hideBrowserControls": {
+    "message": "Masquer les contrôles du navigateur (barre d’adresse, onglets, etc.)"
+  },
+  "imageViewer": {
+    "message": "Visionneuse d’images"
+  },
+  "imageWithLinkPreferLink": {
+    "message": "Si l’image est entourée d’un lien, privilégier le lien"
+  },
+  "keepOpenPageInPopupWindowOpen": {
+    "message": "Ne pas fermer la popup de la page lors de la perte de focus"
+  },
+  "holdClickDelay": {
+    "message": "Durée du clic long (ms)"
+  },
+  "lookUpHighResImages": {
+    "message": "Rechercher des images en haute résolution"
+  },
+  "minimalDragDistance": {
+    "message": "Distance minimale de glissement (px)"
+  },
+  "mousePosition": {
+    "message": "Position du curseur"
+  },
+  "moveToMainWindowOnMaximize": {
+    "message": "Ouvrir la popup dans la fenêtre principale lorsqu’elle est maximisée"
+  },
+  "nearMousePosition": {
+    "message": "Près du curseur"
+  },
+  "openByDragAndDrop": {
+    "message": "Utiliser le glisser-déposer sur un espace vide"
+  },
+  "openByModClick": {
+    "message": "Utiliser Modificateur + clic pour ouvrir dans une popup"
+  },
+  "openByLongClick": {
+    "message": "Utiliser un clic long pour ouvrir dans une popup"
+  },
+  "modifierKey": {
+    "message": "Touche de modification"
+  },
+  "openDragAndDropUnderMouse": {
+    "message": "Toujours ouvrir par glisser-déposer sous le curseur"
+  },
+  "openInPopupWindow": {
+    "message": "Ouvrir le lien dans une fenêtre popup"
+  },
+  "openPageInMainWindow": {
+    "message": "Ouvrir la page dans la fenêtre principale"
+  },
+  "openPageInMainWindowHotkeyDescription": {
+    "message": "Ouvrir la popup dans la fenêtre principale"
+  },
+  "openPageInPopupWindow": {
+    "message": "Ouvrir la page dans une fenêtre popup"
+  },
+  "openPageInPopupWindowHotkeyDescription": {
+    "message": "Ouvrir la page actuelle dans une fenêtre popup"
+  },
+  "openSearchPopupWindowHotkeyDescription": {
+    "message": "Rechercher le texte sélectionné dans une fenêtre popup. Ouvre une page de recherche vide si aucun texte n’est sélectionné"
+  },
+  "popupHeight": {
+    "message": "Hauteur (px)"
+  },
+  "popupSearchUrl": {
+    "message": "URL de recherche (%s sera remplacé par la requête)"
+  },
+  "popupWidth": {
+    "message": "Largeur (px)"
+  },
+  "popupWindowLocation": {
+    "message": "Position de la fenêtre popup"
+  },
+  "popupWindowSize": {
+    "message": "Taille de la fenêtre popup"
+  },
+  "rememberWindowResize": {
+    "message": "Mémoriser la taille de la popup après redimensionnement manuel"
+  },
+  "reopenAutoCreatedTabAsPopup": {
+    "message": "Rouvrir les onglets ouverts par la page en fenêtres popup"
+  },
+  "reopenAutoCreatedTabsOnlyPinned": {
+    "message": "Rouvrir uniquement les onglets créés par des onglets épinglés"
+  },
+  "reopenSettings": {
+    "message": "Paramètres de réouverture"
+  },
+  "reopenSingleTabWindowAsPopup": {
+    "message": "Rouvrir les nouvelles fenêtres à un seul onglet comme popup"
+  },
+  "reopenSingleTabWindowAsPopupHint": {
+    "message": "Avec cette option activée, toute nouvelle fenêtre du navigateur avec un seul onglet sera automatiquement rouverte comme une popup. Cela permet à l’extension de créer des popups pour des liens auxquels elle n’a normalement pas accès (par exemple, la barre de favoris). Mais cela peut entraîner des comportements indésirables si vous ouvrez souvent de nombreuses fenêtres, donc utilisez avec prudence !"
+  },
+  "searchInPopupEnabled": {
+    "message": "Activer l’option de recherche dans une popup"
+  },
+  "searchInPopupWindow": {
+    "message": "Rechercher le texte dans une fenêtre popup"
+  },
+  "settingsTitle": {
+    "message": "Paramètres"
+  },
+  "showAddressbarIcon": {
+    "message": "Afficher un bouton dans la barre d’adresse pour ouvrir la page dans une popup"
+  },
+  "showExtensionSettings": {
+    "message": "Afficher les paramètres de l’extension"
+  },
+  "textSelectionHeader": {
+    "message": "Sélection de texte"
+  },
+  "toolbarIconClickAction": {
+    "message": "Lors du clic sur l’icône de la barre d’outils"
+  },
+  "topCenter": {
+    "message": "En haut au centre"
+  },
+  "topLeft": {
+    "message": "En haut à gauche"
+  },
+  "topRight": {
+    "message": "En haut à droite"
+  },
+  "tryFitWindowSizeToImage": {
+    "message": "Essayer d’adapter la largeur de la popup au ratio de l’image"
+  },
+  "useBuiltInImageViewer": {
+    "message": "Utiliser la visionneuse d’images intégrée du navigateur"
+  },
+  "viewInPopupEnabled": {
+    "message": "Activer l’option d’affichage des images dans une popup"
+  },
+  "viewInPopupWindow": {
+    "message": "Afficher l’image dans une fenêtre popup"
+  },
+  "whatsNew": {
+    "message": "Nouveautés"
+  },
+  "writeAReviewButton": {
+    "message": "Écrire un avis"
+  }
+}
