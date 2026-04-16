@@ -378,34 +378,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
                 }
 
-                /// close popup on focus normal window
-                if (configs.closeWhenFocusedInitialWindow && (!isCurrentPage || !configs.keepOpenPageInPopupWindowOpen)){
-                    function windowFocusListener(wId) {
-                        if (wId < 0 || wId === popupWindowId) return; /// ignore focus lost (-1) or focus moving to the popup
-
-                        chrome.windows.get(wId,{}, (focusedWindow) => {
-                            if (chrome.runtime.lastError || !focusedWindow) return;
-                            if (focusedWindow.type !== 'normal') return;
-
-                            chrome.windows.get(popupWindowId,{}, (pW) => {
-                                chrome.windows.onFocusChanged.removeListener(windowFocusListener);
-
-                                if (chrome.runtime.lastError || !pW) return; /// popup already gone
-                                if (pW.state == 'minimized') return;
-                                if (pW.alwaysOnTop) return;
-
-                                chrome.windows.remove(popupWindowId, () => {
-                                    if (chrome.runtime.lastError && configs.debugMode) {
-                                        console.warn('Popup already closed:', chrome.runtime.lastError.message);
-                                    }
-                                });
-                            });
-                        });
-                    }
-        
-                    chrome.windows.onFocusChanged.addListener(windowFocusListener);
-                }
-
                 /* remember dimensions on window resize 
                 [onBoundsChanged is not supported in Firefox]
                 {@link https://bugzilla.mozilla.org/show_bug.cgi?id=1762975}
@@ -470,55 +442,77 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 mouseX = undefined; mouseY = undefined;
                 textSelection = undefined;
                 lastPopupId = popupWindow.id;
+                addPopupWindow(popupWindow.id, { isCurrentPage: isCurrentPage })
                 preventNewTabListeners = false;
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
     })
  }
 
- function moveTabToRegularWindow(tab, shouldFocusTab = true){
-    // chrome.tabs.remove(tab.id);
-    // chrome.tabs.create({ url: clickData.pageUrl, active: true });
 
-    /// getLastFocused only works in Chrome
-    // chrome.windows.getLastFocused(
-    //     { populate: false, windowTypes: ['normal'] }).then(function (windowInfo) {
-    //     if (windowInfo && windowInfo.id) {
-    //         chrome.tabs.move(tab.id, { 
-    //             index: -1, 
-    //             windowId: windowInfo.id
-    //         }, function(t){
-    //             chrome.tabs.update(tab.id, { 'active': true });
-    //         });
-    //     }
-    // });
+/// Popups persistence
+let openedPopupWindows;  /// cached Map<id, {type, ...}>
 
-    chrome.windows.getAll(
-        { windowTypes: ['normal'] },
-        function(windows){
-
-            /// Find last used normal window
-            let lastUsedWindowId;
-            for (let i = 0, l = windows.length; i < l; i++) {
-                const w = windows[i];
-                if (w.id && w.id == lastNormalWindowId) {
-                    lastUsedWindowId = w.id;
-                    break;
-                }
-            }
-
-            const targetWindowId = lastUsedWindowId ?? windows[0].id;
-            chrome.tabs.move(tab.id, { 
-                    index: -1, 
-                    windowId: targetWindowId
-            }, function(t){
-                // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
-                chrome.tabs.update(tab.id, { 'active': shouldFocusTab });
-                // chrome.windows.update(targetWindowId, {focused: true});
-            });
-        }
-    );
+function getPopupWindows(callback) {
+    if (openedPopupWindows) {
+        callback(openedPopupWindows);
+    } else {
+        chrome.storage.session.get('popupWindows', (result) => {
+            openedPopupWindows = new Map(result.openedPopupWindows ?? []);
+            callback(openedPopupWindows);
+        });
+    }
 }
+const addPopupWindow = (id, data) => getPopupWindows((popups) => { popups.set(id, data ?? {}); savePopupIds(popups); });
+const removePopupId = (id, popups) => { popups.delete(id); savePopupIds(popups); }
+const savePopupIds = (set) => chrome.storage.session.set({ popupWindows: [...set] });
+
+chrome.windows.onFocusChanged.addListener((wId) => {
+    if (wId < 0) return; /// ignore focus loss event
+
+    loadUserConfigs((c) => {
+        if (configs.closeWhenFocusedInitialWindow)
+                chrome.windows.get(wId, {}, (focusedWindow) => {
+                    if (chrome.runtime.lastError || !focusedWindow) return;
+                    if (focusedWindow.type !== 'normal') return; /// filter out popup windows
+
+                    getPopupWindows((popupWindows) => {
+                        if (popupWindows.has(wId)) return; 
+
+                        if (configs.debugMode){
+                            console.log('focused window: ', wId);
+                            console.log('opened popup windows for closing: ', popupWindows);
+                        }
+
+                        for (const [popupId, popupData] of popupWindows) {
+                            if (popupData.isCurrentPage && configs.keepOpenPageInPopupWindowOpen) return;
+
+                            chrome.windows.get(popupId, {}, (pW) => {
+                                if (chrome.runtime.lastError || !pW) {
+                                    removePopupId(popupId, popupWindows);
+                                    return;
+                                }
+
+                                if (pW.state === 'minimized' || pW.alwaysOnTop) return;
+
+                                chrome.windows.remove(popupId, () => {
+                                    if (chrome.runtime.lastError) {
+                                        console.warn('Popup already closed:', chrome.runtime.lastError.message);
+                                    }
+                                    removePopupId(popupId, popupWindows);
+                                });
+                            });
+                        }
+                    });
+
+                });
+    }, 'closeWhenFocusedInitialWindow', 'keepOpenPageInPopupWindowOpen');
+});
+
+chrome.windows.onRemoved.addListener((wId) => {
+    getPopupWindows((popups) => removePopupId(wId, popups));
+});
+
 
 /// Reopen new single tab windows as popups
 chrome.windows.onCreated.addListener(
@@ -594,6 +588,50 @@ function openSearchPopup(senderTab){
             openPopupWindowForLink(link, false, false, undefined, undefined, c, undefined, senderTab);
         });
     }
+}
+
+function moveTabToRegularWindow(tab, shouldFocusTab = true){
+    // chrome.tabs.remove(tab.id);
+    // chrome.tabs.create({ url: clickData.pageUrl, active: true });
+
+    /// getLastFocused only works in Chrome
+    // chrome.windows.getLastFocused(
+    //     { populate: false, windowTypes: ['normal'] }).then(function (windowInfo) {
+    //     if (windowInfo && windowInfo.id) {
+    //         chrome.tabs.move(tab.id, { 
+    //             index: -1, 
+    //             windowId: windowInfo.id
+    //         }, function(t){
+    //             chrome.tabs.update(tab.id, { 'active': true });
+    //         });
+    //     }
+    // });
+
+    chrome.windows.getAll(
+        { windowTypes: ['normal'] },
+        function(windows){
+
+            /// Find last used normal window
+            let lastUsedWindowId;
+            for (let i = 0, l = windows.length; i < l; i++) {
+                const w = windows[i];
+                if (w.id && w.id == lastNormalWindowId) {
+                    lastUsedWindowId = w.id;
+                    break;
+                }
+            }
+
+            const targetWindowId = lastUsedWindowId ?? windows[0].id;
+            chrome.tabs.move(tab.id, { 
+                    index: -1, 
+                    windowId: targetWindowId
+            }, function(t){
+                // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
+                chrome.tabs.update(tab.id, { 'active': shouldFocusTab });
+                // chrome.windows.update(targetWindowId, {focused: true});
+            });
+        }
+    );
 }
 
 /// Set toolbar icon click action
