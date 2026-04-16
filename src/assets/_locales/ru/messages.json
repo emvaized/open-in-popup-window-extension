@@ -117,7 +117,7 @@
     "message": "Открыть всплывающее окно в основном окне"
   },
   "openPageInPopupWindow": {
-    "message": "Открыть страницу во всплывающем окне"
+    "message": "Открыть страницу во всплыв. окне"
   },
   "openPageInPopupWindowHotkeyDescription": {
     "message": "Открыть текущую страницу во всплывающем окне"
