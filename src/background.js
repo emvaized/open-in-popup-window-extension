@@ -483,7 +483,7 @@ chrome.windows.onFocusChanged.addListener((wId) => {
                         }
 
                         for (const [popupId, popupData] of popupWindows) {
-                            if (popupData.isCurrentPage && configs.keepOpenPageInPopupWindowOpen) return;
+                            if (popupData.isCurrentPage && configs.keepOpenPageInPopupWindowOpen) continue;
 
                             chrome.windows.get(popupId, {}, (pW) => {
                                 if (chrome.runtime.lastError || !pW) {
