@@ -32,7 +32,7 @@ const configs = {
     'changeDragCursor': true,
     'copyTabInsteadOfMoving': false,
     'dimPageOnPopupOpen': true,
-    'dimPageAmount': 0.4,
+    'dimPageAmount': 0.3,
     'openByLongClick': false,
     'longClickButton': '0', /// possible: 0 for left, 1 for middle click
     'holdClickDelay': 600,
