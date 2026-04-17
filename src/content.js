@@ -105,7 +105,7 @@ function longClickMouseUpListener(e) {
 function removeHoldIndicator(){
     if (holdIndicator) holdIndicator.remove();
 }
-function preventClick(element, duration = 500) {
+function preventClick(element, duration = 600) {
     element.classList.add('oip-prevent-click');
     setTimeout(() => element.classList.remove('oip-prevent-click'), duration);
 }

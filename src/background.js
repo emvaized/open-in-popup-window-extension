@@ -363,7 +363,11 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
 
             preventNewTabListeners = true;
             chrome.windows.create(createParams, function (popupWindow) {
-                if (!popupWindow) return;
+                if (chrome.runtime.lastError || !popupWindow) {
+                    if (configs.debugMode) console.warn('Failed to create popup window:', chrome.runtime.lastError.message);
+                    return;
+                }
+
                 let popupWindowId = popupWindow.id;
 
                 if (configs.debugMode){
@@ -426,7 +430,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 }
 
                 /// TODO:
-                /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent opening multiple popups on top of each other
+                /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent covering previous one
+                /// Can use the new popups persistence logic
                 // if (lastPopupId)
                 //     chrome.windows.get(lastPopupId,{}, (w) => {
                 //         if (!w) return;
@@ -442,13 +447,15 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 //         }
                 //     });
 
-                /// clear variables
+                /// Clear variables
                 elementHeight = undefined; elementWidth = undefined;
                 mouseX = undefined; mouseY = undefined;
                 textSelection = undefined;
+                preventNewTabListeners = false;
+
+                /// Store new popup
                 lastPopupId = popupWindow.id;
                 addPopupWindow(popupWindow.id, { isCurrentPage: isCurrentPage })
-                preventNewTabListeners = false;
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
     })
