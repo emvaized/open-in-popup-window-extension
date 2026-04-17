@@ -384,6 +384,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     function resizeListener(w){
                         if (configs.debugMode) console.log('Popup window resized: ', w);
                         if (preventWindowResizeListener) return;
+                        if (w.type !== 'popup') return;
 
                         if (w.state == 'maximized'){
                             /// Move to main window on popup maximize
@@ -465,6 +466,10 @@ const addPopupWindow = (id, data) => getPopupWindows((popups) => { popups.set(id
 const removePopupId = (id, popups) => { popups.delete(id); savePopupIds(popups); }
 const savePopupIds = (set) => chrome.storage.session.set({ popupWindows: [...set] });
 
+chrome.windows.onRemoved.addListener((wId) => {
+    getPopupWindows((popups) => removePopupId(wId, popups));
+});
+
 chrome.windows.onFocusChanged.addListener((wId) => {
     if (wId < 0) return; /// ignore focus loss event
 
@@ -505,10 +510,6 @@ chrome.windows.onFocusChanged.addListener((wId) => {
 
                 });
     }, 'closeWhenFocusedInitialWindow', 'keepOpenPageInPopupWindowOpen');
-});
-
-chrome.windows.onRemoved.addListener((wId) => {
-    getPopupWindows((popups) => removePopupId(wId, popups));
 });
 
 
