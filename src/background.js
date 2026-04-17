@@ -382,7 +382,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 */
                 if (chrome.windows.onBoundsChanged && (configs.rememberWindowResize || configs.moveToMainWindowOnMaximize)) {
                     function resizeListener(w){
-                        if (configs.debugMode) console.log('Popup window resized: ', w);
+                        if (configs.debugMode) console.log('Popup window moved/resized: ', w);
                         if (preventWindowResizeListener) return;
                         if (w.type !== 'popup') return;
 
@@ -399,12 +399,12 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                         } else {
                             /// Save new popup window size
                             if (configs.rememberWindowResize){
-                                if (configs.popupHeight == w.height && configs.popupWidth == w.width) return;
                                 if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
+                                if (Math.abs(w.height - configs.popupHeight) <= 2 && Math.abs(w.width - configs.popupWidth) <= 2) return;
                                 configs.popupHeight = w.height;
                                 configs.popupWidth = w.width;
                                 chrome.storage.sync.set(configs);
-                                if (configs.debugMode) console.log('Popup window size saved: ', w.height, 'x', w.width);
+                                if (configs.debugMode) console.log('New popup window size saved: ', w.height, 'x', w.width);
                             }
                         }
 
