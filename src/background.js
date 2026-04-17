@@ -320,7 +320,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             console.log('availLeft: ', availLeft);
             console.log('Selected popup window placement: ', popupLocation);
             console.log('Calculated popup window dx: ', dx);
-            console.log('Checking for dx overflow...');
+            console.log('Calculated popup window dy: ', dy);
+            console.log('Checking for screen overflow...');
         }
     
         /// check for screen overflow
@@ -334,7 +335,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         if (configs.debugMode){
             console.log('Calucated dx after checking: ', dx);
             console.log('Calucated dy after checking: ', dy);
-            console.log('End logging ~~~');
         }
         
         /// create popup window
@@ -364,12 +364,18 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             preventNewTabListeners = true;
             chrome.windows.create(createParams, function (popupWindow) {
                 if (!popupWindow) return;
+                let popupWindowId = popupWindow.id;
+
+                if (configs.debugMode){
+                    console.log('Created popup window:', popupWindow);
+                    console.log('End logging ~~~');
+                }
 
                 /// set coordinates again (workaround for old firefox bug)
-                let popupWindowId = popupWindow.id;
-                chrome.windows.update(popupWindowId, {
-                    'top': dy, 'left': dx, 'width': width, 'height': height
-                });
+                if (popupWindow.left !== dx)
+                    chrome.windows.update(popupWindowId, {
+                        'top': dy, 'left': dx, 'width': width, 'height': height
+                    });
 
                 /// Dim page for main window
                 if (configs.dimPageOnPopupOpen && senderTab) {
