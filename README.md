@@ -51,11 +51,11 @@ If you really enjoy this project, please consider supporting its further develop
 
 <a href="https://ko-fi.com/emvaized"><img src="https://storage.ko-fi.com/cdn/kofi5.png?v=6" alt="Support on Ko-fi" height="40"></a> &nbsp; <a href="https://www.patreon.com/emvaized/membership"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/assets/patreon-donate-button.png?raw=true" alt="Patreon" height="40" /></a> &nbsp; <a href="https://liberapay.com/emvaized/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg" height="40"></a> &nbsp; <a href="https://emvaized.github.io/donate/bitcoin/"><img src="https://github.com/emvaized/emvaized.github.io/blob/main/donate/bitcoin/assets/bitcoin-donate-button.png?raw=true" alt="Donate Bitcoin" height="40" /></a>
 
-## FAQ (Frequently Asked Questions) ⚠️
-See answers to some common questions on [Wiki page](https://github.com/emvaized/open-in-popup-window-extension/wiki/FAQ-(Frequently-Asked-Questions))
-
 ## Troubleshooting
 If "Open by drag" and "Mod+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
+
+## FAQ (Frequently Asked Questions) ⚠️
+See answers to some common questions on the [Wiki page](https://github.com/emvaized/open-in-popup-window-extension/wiki/FAQ-(Frequently-Asked-Questions))
 
 ## Building
 - `npm install` to install all dependencies
@@ -69,7 +69,7 @@ If "Open by drag" and "Mod+click to open" options not working, or the popup wind
 - [ ] Option to translate selected text in popup window, with dedicated keyboard hotkey
 
 ## Privacy
-This extension doesn't collect any private data. It only requires access to currently open page in order to fetch information about the object under cursor when drag and drop event occured or context menu was opened.
+This extension doesn't collect any private data. It requires access to currently open page in order to fetch information about the object under cursor and the screen coordinates, as well as inject scripts for custom triggers (drag and drop, shift+click etc). Without such access, only opening popups from context menu will work, but the popup positioning might be incorrect.
 
 ## Some of my other projects
 * <img src="https://github.com/emvaized/selecton-extension/raw/master/src/assets/icons/logo-new.png" width="20"> [SelectON](https://github.com/emvaized/selecton-extension) – smart popup with actions on text selection 
