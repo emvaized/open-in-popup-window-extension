@@ -89,7 +89,8 @@ function setTranslatedLabels(){
     document.getElementById('popupWindowSize').innerText = chrome.i18n.getMessage('popupWindowSize');
     document.getElementById('generalSettings').innerText = chrome.i18n.getMessage('generalSettings');
     document.getElementById('activationSettings').innerText = chrome.i18n.getMessage('activationSettings');
-    document.getElementById('reopenSettings').innerText = chrome.i18n.getMessage('reopenSettings');
+    // document.getElementById('reopenSettings').innerText = chrome.i18n.getMessage('reopenSettings');
+    document.getElementById('automationSettings').innerText = chrome.i18n.getMessage('automationSettings');
     document.getElementById('openPageInPopupWindowHeader').innerText = chrome.i18n.getMessage('openPageInPopupWindow');
     // document.getElementById('dragAndDropSettings').innerText = chrome.i18n.getMessage('dragAndDropSettings');
 }

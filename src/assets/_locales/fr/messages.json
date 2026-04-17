@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Ajouter une option pour ouvrir la page dans une fenêtre popup"
   },
+  "automationSettings": {
+    "message": "Paramètres d’automatisation"
+  },
   "bottomLeft": {
     "message": "En bas à gauche"
   },

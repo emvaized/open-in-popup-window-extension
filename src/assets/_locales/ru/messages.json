@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Включить опцию открытия текущей страницы во вспл. окне"
   },
+  "automationSettings": {
+    "message": "Настройки автоматизации"
+  },
   "bottomLeft": {
     "message": "Слева внизу"
   },

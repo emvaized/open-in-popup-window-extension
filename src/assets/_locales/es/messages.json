@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Agregar opción para abrir la página en una ventana emergente"
   },
+  "automationSettings": {
+    "message": "Configuración de automatización"
+  },
   "bottomLeft": {
     "message": "Abajo a la izquierda"
   },
