@@ -1,3 +1,10 @@
+### 0.6.1
+- Disabled Shift+Click and long click triggers for selected text
+- Improved code for automatic closing of popup windows on focusing regular window
+- Renamed "reopening settings" category to "automation settings" for better clarity
+- Fixes for "Open in popup window" action on toolbar icon click
+- Added French translation
+
 ### 0.6.0
 #### New options
 - Customizable mouse button for long click trigger
