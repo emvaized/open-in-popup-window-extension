@@ -382,7 +382,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                     });
 
                 /// Dim page for main window
-                if (configs.dimPageOnPopupOpen && senderTab) {
+                if (configs.dimPageOnPopupOpen && senderTab && senderTab.id && !isCurrentPage) {
                     chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
                 }
 
@@ -672,7 +672,7 @@ chrome.action.onClicked.addListener(function (senderTab) {
     loadUserConfigs((c) => {
         switch(configs.toolbarIconClickAction){
             case 'openPageInPopupWindow': {
-                openPopupWindowForLink(senderTab.url, false, false, undefined, true, c);
+                openPopupWindowForLink(senderTab.url, false, false, configs.copyTabInsteadOfMoving ? undefined : senderTab.id, true, c, undefined, senderTab);
             } break;
             case 'searchInPopupWindow': {
                 openSearchPopup(senderTab);
