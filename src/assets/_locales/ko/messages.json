@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "팝업 창에서 페이지 열기 옵션 추가"
   },
+  "automationSettings": {
+    "message": "자동화 설정"
+  },
   "bottomLeft": {
     "message": "좌하단"
   },

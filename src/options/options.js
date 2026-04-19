@@ -7,8 +7,7 @@ function init(){
         for (let i = 0, l = keys.length; i < l; i++) {
             const key = keys[i];
 
-            if (userConfigs.debugMode)
-                console.log('Setting up option: ', key, userConfigs[key]);
+            if (key === 'loaded') continue;
 
             /// set corresponing input value
             let input = document.getElementById(key.toString());
@@ -90,7 +89,8 @@ function setTranslatedLabels(){
     document.getElementById('popupWindowSize').innerText = chrome.i18n.getMessage('popupWindowSize');
     document.getElementById('generalSettings').innerText = chrome.i18n.getMessage('generalSettings');
     document.getElementById('activationSettings').innerText = chrome.i18n.getMessage('activationSettings');
-    document.getElementById('reopenSettings').innerText = chrome.i18n.getMessage('reopenSettings');
+    // document.getElementById('reopenSettings').innerText = chrome.i18n.getMessage('reopenSettings');
+    document.getElementById('automationSettings').innerText = chrome.i18n.getMessage('automationSettings');
     document.getElementById('openPageInPopupWindowHeader').innerText = chrome.i18n.getMessage('openPageInPopupWindow');
     // document.getElementById('dragAndDropSettings').innerText = chrome.i18n.getMessage('dragAndDropSettings');
 }

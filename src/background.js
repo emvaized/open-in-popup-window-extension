@@ -232,11 +232,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             availWidth = window.screen.width;
             availHeight = window.screen.height;
         } catch(e){}
-        if (configs.debugMode) console.log('Initial availLeft: ', availLeft)
         if (!availLeft) availLeft = configs.availLeft ?? 0;
         if (!availWidth) availWidth = configs.screenWidth;
         if (!availHeight) availHeight = configs.screenHeight;
-        if (configs.debugMode) console.log('availWidth: ', availWidth, 'availHeight: ', availHeight);
 
         function setFallbackPopupLocation(){
             setPopupLocation(configs.fallbackPopupWindowLocation ?? 'center');
@@ -322,7 +320,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             console.log('availLeft: ', availLeft);
             console.log('Selected popup window placement: ', popupLocation);
             console.log('Calculated popup window dx: ', dx);
-            console.log('Checking for dx overflow...');
+            console.log('Calculated popup window dy: ', dy);
+            console.log('Checking for screen overflow...');
         }
     
         /// check for screen overflow
@@ -336,7 +335,6 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
         if (configs.debugMode){
             console.log('Calucated dx after checking: ', dx);
             console.log('Calucated dy after checking: ', dy);
-            console.log('End logging ~~~');
         }
         
         /// create popup window
@@ -365,46 +363,27 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
 
             preventNewTabListeners = true;
             chrome.windows.create(createParams, function (popupWindow) {
-                if (!popupWindow) return;
-
-                /// set coordinates again (workaround for old firefox bug)
-                let popupWindowId = popupWindow.id;
-                chrome.windows.update(popupWindowId, {
-                    'top': dy, 'left': dx, 'width': width, 'height': height
-                });
-
-                /// Dim page for main window
-                if (configs.dimPageOnPopupOpen && senderTab) {
-                    chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
+                if (chrome.runtime.lastError || !popupWindow) {
+                    if (configs.debugMode) console.warn('Failed to create popup window:', chrome.runtime.lastError.message);
+                    return;
                 }
 
-                /// close popup on focus normal window
-                if (configs.closeWhenFocusedInitialWindow && (!isCurrentPage || !configs.keepOpenPageInPopupWindowOpen)){
-                    function windowFocusListener(wId) {
-                        if (wId > -1) 
-                            chrome.windows.get(wId,{}, (w) => {
-                                    if (w && w.type == 'normal') {
-                                            chrome.windows.get(popupWindowId,{}, (pW) => {
-                                                if (pW){
-                                                    if (pW.state == 'minimized') return; /// don't close minimized popup window
-                                                    if (pW.alwaysOnTop) return; /// don't close always-on-top window
-                                                    chrome.windows.remove(popupWindowId);
-                                                    chrome.windows.onFocusChanged.removeListener(windowFocusListener);
-                                                } else {
-                                                    chrome.windows.onFocusChanged.removeListener(windowFocusListener);
-                                                }
-                                            });
-                                        // if (originalWindowIsFullscreen) 
-                                        //     chrome.windows.update(parentWindow.id, {
-                                        //         'state': 'fullscreen'
-                                        //     });
-                                    }
-                                });
-                    }
-        
-                    // setTimeout(function () {
-                        chrome.windows.onFocusChanged.addListener(windowFocusListener);
-                    // }, 300);
+                let popupWindowId = popupWindow.id;
+
+                if (configs.debugMode){
+                    console.log('Created popup window:', popupWindow);
+                    console.log('End logging ~~~');
+                }
+
+                /// set coordinates again (workaround for old firefox bug)
+                if (popupWindow.left !== dx)
+                    chrome.windows.update(popupWindowId, {
+                        'top': dy, 'left': dx, 'width': width, 'height': height
+                    });
+
+                /// Dim page for main window
+                if (configs.dimPageOnPopupOpen && senderTab && senderTab.id && !isCurrentPage) {
+                    chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
                 }
 
                 /* remember dimensions on window resize 
@@ -413,8 +392,9 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 */
                 if (chrome.windows.onBoundsChanged && (configs.rememberWindowResize || configs.moveToMainWindowOnMaximize)) {
                     function resizeListener(w){
-                        if (configs.debugMode) console.log('Popup window resized: ', w);
+                        if (configs.debugMode) console.log('Popup window moved/resized: ', w);
                         if (preventWindowResizeListener) return;
+                        if (w.type !== 'popup') return;
 
                         if (w.state == 'maximized'){
                             /// Move to main window on popup maximize
@@ -429,12 +409,12 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                         } else {
                             /// Save new popup window size
                             if (configs.rememberWindowResize){
-                                if (configs.popupHeight == w.height && configs.popupWidth == w.width) return;
                                 if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
+                                if (Math.abs(w.height - configs.popupHeight) <= 2 && Math.abs(w.width - configs.popupWidth) <= 2) return;
                                 configs.popupHeight = w.height;
                                 configs.popupWidth = w.width;
                                 chrome.storage.sync.set(configs);
-                                if (configs.debugMode) console.log('Popup window size saved: ', w.height, 'x', w.width);
+                                if (configs.debugMode) console.log('New popup window size saved: ', w.height, 'x', w.width);
                             }
                         }
 
@@ -450,7 +430,8 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 }
 
                 /// TODO:
-                /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent opening multiple popups on top of each other
+                /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent covering previous one
+                /// Can use the new popups persistence logic
                 // if (lastPopupId)
                 //     chrome.windows.get(lastPopupId,{}, (w) => {
                 //         if (!w) return;
@@ -466,60 +447,84 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
                 //         }
                 //     });
 
-                /// clear variables
+                /// Clear variables
                 elementHeight = undefined; elementWidth = undefined;
                 mouseX = undefined; mouseY = undefined;
                 textSelection = undefined;
-                lastPopupId = popupWindow.id;
                 preventNewTabListeners = false;
+
+                /// Store new popup
+                lastPopupId = popupWindow.id;
+                addPopupWindow(popupWindow.id, { isCurrentPage: isCurrentPage })
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
     })
  }
 
- function moveTabToRegularWindow(tab, shouldFocusTab = true){
-    // chrome.tabs.remove(tab.id);
-    // chrome.tabs.create({ url: clickData.pageUrl, active: true });
 
-    /// getLastFocused only works in Chrome
-    // chrome.windows.getLastFocused(
-    //     { populate: false, windowTypes: ['normal'] }).then(function (windowInfo) {
-    //     if (windowInfo && windowInfo.id) {
-    //         chrome.tabs.move(tab.id, { 
-    //             index: -1, 
-    //             windowId: windowInfo.id
-    //         }, function(t){
-    //             chrome.tabs.update(tab.id, { 'active': true });
-    //         });
-    //     }
-    // });
+/// Popups persistence
+let openedPopupWindows;  /// cached Map<id, {type, ...}>
 
-    chrome.windows.getAll(
-        { windowTypes: ['normal'] },
-        function(windows){
-
-            /// Find last used normal window
-            let lastUsedWindowId;
-            for (let i = 0, l = windows.length; i < l; i++) {
-                const w = windows[i];
-                if (w.id && w.id == lastNormalWindowId) {
-                    lastUsedWindowId = w.id;
-                    break;
-                }
-            }
-
-            const targetWindowId = lastUsedWindowId ?? windows[0].id;
-            chrome.tabs.move(tab.id, { 
-                    index: -1, 
-                    windowId: targetWindowId
-            }, function(t){
-                // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
-                chrome.tabs.update(tab.id, { 'active': shouldFocusTab });
-                // chrome.windows.update(targetWindowId, {focused: true});
-            });
-        }
-    );
+function getPopupWindows(callback) {
+    if (openedPopupWindows) {
+        callback(openedPopupWindows);
+    } else {
+        chrome.storage.session.get('popupWindows', (result) => {
+            openedPopupWindows = new Map(result.openedPopupWindows ?? []);
+            callback(openedPopupWindows);
+        });
+    }
 }
+const addPopupWindow = (id, data) => getPopupWindows((popups) => { popups.set(id, data ?? {}); savePopupIds(popups); });
+const removePopupId = (id, popups) => { popups.delete(id); savePopupIds(popups); }
+const savePopupIds = (set) => chrome.storage.session.set({ popupWindows: [...set] });
+
+chrome.windows.onRemoved.addListener((wId) => {
+    getPopupWindows((popups) => removePopupId(wId, popups));
+});
+
+chrome.windows.onFocusChanged.addListener((wId) => {
+    if (wId < 0) return; /// ignore focus loss event
+
+    loadUserConfigs((c) => {
+        if (configs.closeWhenFocusedInitialWindow)
+                chrome.windows.get(wId, {}, (focusedWindow) => {
+                    if (chrome.runtime.lastError || !focusedWindow) return;
+                    if (focusedWindow.type !== 'normal') return; /// filter out popup windows
+
+                    getPopupWindows((popupWindows) => {
+                        if (popupWindows.has(wId)) return; 
+
+                        if (configs.debugMode){
+                            console.log('Focused normal window with ID: ', wId);
+                            console.log(`Opened popup windows for closing: (${popupWindows.size})`, popupWindows);
+                        }
+
+                        for (const [popupId, popupData] of popupWindows) {
+                            if (popupData.isCurrentPage && configs.keepOpenPageInPopupWindowOpen) continue;
+
+                            chrome.windows.get(popupId, {}, (pW) => {
+                                if (chrome.runtime.lastError || !pW) {
+                                    removePopupId(popupId, popupWindows);
+                                    return;
+                                }
+
+                                if (pW.state === 'minimized' || pW.alwaysOnTop) return;
+
+                                chrome.windows.remove(popupId, () => {
+                                    if (chrome.runtime.lastError) {
+                                        console.warn('Popup already closed:', chrome.runtime.lastError.message);
+                                    }
+                                    removePopupId(popupId, popupWindows);
+                                });
+                            });
+                        }
+                    });
+
+                });
+    }, 'closeWhenFocusedInitialWindow', 'keepOpenPageInPopupWindowOpen');
+});
+
 
 /// Reopen new single tab windows as popups
 chrome.windows.onCreated.addListener(
@@ -597,6 +602,50 @@ function openSearchPopup(senderTab){
     }
 }
 
+function moveTabToRegularWindow(tab, shouldFocusTab = true){
+    // chrome.tabs.remove(tab.id);
+    // chrome.tabs.create({ url: clickData.pageUrl, active: true });
+
+    /// getLastFocused only works in Chrome
+    // chrome.windows.getLastFocused(
+    //     { populate: false, windowTypes: ['normal'] }).then(function (windowInfo) {
+    //     if (windowInfo && windowInfo.id) {
+    //         chrome.tabs.move(tab.id, { 
+    //             index: -1, 
+    //             windowId: windowInfo.id
+    //         }, function(t){
+    //             chrome.tabs.update(tab.id, { 'active': true });
+    //         });
+    //     }
+    // });
+
+    chrome.windows.getAll(
+        { windowTypes: ['normal'] },
+        function(windows){
+
+            /// Find last used normal window
+            let lastUsedWindowId;
+            for (let i = 0, l = windows.length; i < l; i++) {
+                const w = windows[i];
+                if (w.id && w.id == lastNormalWindowId) {
+                    lastUsedWindowId = w.id;
+                    break;
+                }
+            }
+
+            const targetWindowId = lastUsedWindowId ?? windows[0].id;
+            chrome.tabs.move(tab.id, { 
+                    index: -1, 
+                    windowId: targetWindowId
+            }, function(t){
+                // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
+                chrome.tabs.update(tab.id, { 'active': shouldFocusTab });
+                // chrome.windows.update(targetWindowId, {focused: true});
+            });
+        }
+    );
+}
+
 /// Set toolbar icon click action
 loadUserConfigs(() => {
     setToolbarIconClickAction();
@@ -623,7 +672,7 @@ chrome.action.onClicked.addListener(function (senderTab) {
     loadUserConfigs((c) => {
         switch(configs.toolbarIconClickAction){
             case 'openPageInPopupWindow': {
-                openPopupWindowForLink(senderTab.url, false, false, undefined, true, c);
+                openPopupWindowForLink(senderTab.url, false, false, configs.copyTabInsteadOfMoving ? undefined : senderTab.id, true, c, undefined, senderTab);
             } break;
             case 'searchInPopupWindow': {
                 openSearchPopup(senderTab);

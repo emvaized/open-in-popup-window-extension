@@ -105,7 +105,7 @@ function longClickMouseUpListener(e) {
 function removeHoldIndicator(){
     if (holdIndicator) holdIndicator.remove();
 }
-function preventClick(element, duration = 500) {
+function preventClick(element, duration = 600) {
     element.classList.add('oip-prevent-click');
     setTimeout(() => element.classList.remove('oip-prevent-click'), duration);
 }
@@ -114,7 +114,7 @@ function preventClick(element, duration = 500) {
 let dragStartDx, dragStartDy;
 
 function dragStartListener(e){
-    if (!elementIsValid(e.target)) return;
+    if (!elementIsValid(e.target, true)) return;
     dragStartDx = e.clientX; dragStartDy = e.clientY;
     document.addEventListener('dragover', dragOverListener, true);
     document.addEventListener('dragenter', dragOverListener, true);
@@ -163,7 +163,7 @@ function doubleModKeyUpListener(e){
     if (e.key.toLowerCase() === configs.modifierKey && lastMouseOverData.target) {
         const currentTime = Date.now();
         if (currentTime - lastKeypressTime < doublePressDelay) {
-            if (!elementIsValid(lastMouseOverData.target)) return;
+            if (!elementIsValid(lastMouseOverData.target, true)) return;
             onTrigger(undefined, 'modClick');
             return;
         }
@@ -209,8 +209,8 @@ function onTrigger(e, type){
 
     let link, isViewer = false;
     if (type == 'drag' || type == 'modClick') {
-        const imgElement = t.closest("img");
-        const linkElement = t.closest("a");
+        const imgElement = t.closest && t.closest("img");
+        const linkElement = t.closest && t.closest("a");
 
         if (imgElement && linkElement) {
             /// Image wrapped in link
@@ -248,8 +248,8 @@ function onTrigger(e, type){
 }
 
 /* Check if element under cursor is an image or a link */
-const elementIsValid = (el) => { 
-    return (el.closest && el.closest('a, img')) || elementWithinSelection(el);
+const elementIsValid = (el, shouldCheckSelection = false) => { 
+    return (el.closest && el.closest('a, img')) || (shouldCheckSelection && elementWithinSelection(el));
 };
 
 const elementWithinSelection = (el) => {

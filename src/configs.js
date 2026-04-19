@@ -32,7 +32,7 @@ const configs = {
     'changeDragCursor': true,
     'copyTabInsteadOfMoving': false,
     'dimPageOnPopupOpen': true,
-    'dimPageAmount': 0.4,
+    'dimPageAmount': 0.3,
     'openByLongClick': false,
     'longClickButton': '0', /// possible: 0 for left, 1 for middle click
     'holdClickDelay': 600,
@@ -64,6 +64,7 @@ function applyUserConfigs(cfg, keys, callback){
         const key = keys[i];
         const value = cfg[key];
         if (value === undefined) continue;
+        if (key === 'loaded') continue;
         configs[key] = value['newValue'] ?? value;
     }
     if (callback) callback(configs);
