@@ -187,7 +187,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow', undefined, undefined, undefined, undefined, false, tab ? tab : undefined);
  });
 
- function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTab) {
+function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTab) {
     loadUserConfigs(function(){
         /* 
             This logic was created in order to counter MacOS behavior,
@@ -459,7 +459,7 @@ chrome.contextMenus.onClicked.addListener(function(clickData, tab) {
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
     })
- }
+}
 
 
 /// Popups persistence
@@ -479,6 +479,7 @@ const addPopupWindow = (id, data) => getPopupWindows((popups) => { popups.set(id
 const removePopupId = (id, popups) => { popups.delete(id); savePopupIds(popups); }
 const savePopupIds = (set) => chrome.storage.session.set({ popupWindows: [...set] });
 
+/// Close popup on focus regular window
 chrome.windows.onRemoved.addListener((wId) => {
     getPopupWindows((popups) => removePopupId(wId, popups));
 });
@@ -524,7 +525,6 @@ chrome.windows.onFocusChanged.addListener((wId) => {
                 });
     }, 'closeWhenFocusedInitialWindow', 'keepOpenPageInPopupWindowOpen');
 });
-
 
 /// Reopen new single tab windows as popups
 chrome.windows.onCreated.addListener(
