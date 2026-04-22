@@ -488,9 +488,14 @@ chrome.windows.onFocusChanged.addListener((wId) => {
     if (wId < 0) return; /// ignore focus loss event
 
     loadUserConfigs((c) => {
+        if (configs.debugMode) console.log('Focused window', wId);
+
         if (configs.closeWhenFocusedInitialWindow)
                 chrome.windows.get(wId, {}, (focusedWindow) => {
-                    if (chrome.runtime.lastError || !focusedWindow) return;
+                    if (chrome.runtime.lastError || !focusedWindow) {
+                        if (configs.debugMode) console.log('Error fetching focused window:', chrome.runtime.lastError.message);
+                        return;
+                    }
                     if (focusedWindow.type !== 'normal') return; /// filter out popup windows
 
                     getPopupWindows((popupWindows) => {
