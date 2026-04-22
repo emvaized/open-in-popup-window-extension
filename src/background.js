@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(
                             chrome.windows.remove(w.id);
                     });
                 }
-            });
+            }, ['escKeyClosesPopup']);
             return;
         }
 
@@ -149,17 +149,69 @@ chrome.contextMenus.create(viewImageContextMenuItem);
 //     chrome.contextMenus.create(openTabInPopupWindow);
 // }
 
-/// Update context menu availability
 chrome.windows.onFocusChanged.addListener(function(wId){
         if (wId == undefined || wId < 0) return; /// don't process when window lost focus
         chrome.windows.get(wId, {},
-            (w) => { if (w) {
-                chrome.contextMenus.update("openInMainWindow", {"visible": w.type == 'popup', "contexts": w.type == 'popup' ? ["page"] : ["page_action"] });
+            (w) => { 
+                // if (chrome.runtime.lastError || !w) {
+                //     if (configs.debugMode) console.log('Error fetching focused window:', chrome.runtime.lastError.message);
+                //     return;
+                // }
+                if (!w) return;
+                if (configs.debugMode) console.log('Focused window', wId);
+
+                /// Update context menu availability
+                chrome.contextMenus.update(
+                    "openInMainWindow", 
+                    {
+                        "visible": w.type == 'popup', 
+                        "contexts": w.type == 'popup' ? ["page"] : ["page_action"] 
+                    });
+
                 loadUserConfigs((c) => {
-                    chrome.contextMenus.update("openPageInPopupWindow", {"visible": w.type !== 'popup' && configs.addOptionOpenPageInPopupWindow, "contexts": w.type == 'popup' ? ["page_action"] : ["page"]});
-                });
-                if (w.type == 'normal') lastNormalWindowId = wId;
-            } },
+                    chrome.contextMenus.update(
+                        "openPageInPopupWindow", 
+                        {
+                            "visible": w.type !== 'popup' && configs.addOptionOpenPageInPopupWindow, 
+                            "contexts": w.type == 'popup' ? ["page_action"] : ["page"]
+                        });
+
+                    if (w.type == 'normal') lastNormalWindowId = wId;
+                        else return;  /// filter out popup windows
+
+                    /// Close popup on focus regular window
+                    if (configs.closeWhenFocusedInitialWindow)
+                        getPopupWindows((popupWindows) => {
+                            if (popupWindows.has(wId)) return; 
+
+                            if (configs.debugMode){
+                                console.log('Focused normal window with ID: ', wId);
+                                console.log(`Opened popup windows for closing: (${popupWindows.size})`, popupWindows);
+                            }
+
+                            for (const [popupId, popupData] of popupWindows) {
+                                if (popupData.isCurrentPage && configs.keepOpenPageInPopupWindowOpen) continue;
+
+                                chrome.windows.get(popupId, {}, (pW) => {
+                                    if (chrome.runtime.lastError || !pW) {
+                                        removePopupId(popupId, popupWindows);
+                                        return;
+                                    }
+
+                                    if (pW.state === 'minimized' || pW.alwaysOnTop) return;
+
+                                    chrome.windows.remove(popupId, () => {
+                                        if (chrome.runtime.lastError) {
+                                            console.warn('Popup already closed:', chrome.runtime.lastError.message);
+                                        }
+                                        removePopupId(popupId, popupWindows);
+                                    });
+                                });
+                            }
+                        });
+                }, ['addOptionOpenPageInPopupWindow', 'closeWhenFocusedInitialWindow', 'keepOpenPageInPopupWindowOpen']);
+                
+            },
         );
     }
 ); 
@@ -479,56 +531,8 @@ const addPopupWindow = (id, data) => getPopupWindows((popups) => { popups.set(id
 const removePopupId = (id, popups) => { popups.delete(id); savePopupIds(popups); }
 const savePopupIds = (set) => chrome.storage.session.set({ popupWindows: [...set] });
 
-/// Close popup on focus regular window
 chrome.windows.onRemoved.addListener((wId) => {
     getPopupWindows((popups) => removePopupId(wId, popups));
-});
-
-chrome.windows.onFocusChanged.addListener((wId) => {
-    if (wId < 0) return; /// ignore focus loss event
-
-    loadUserConfigs((c) => {
-        if (configs.debugMode) console.log('Focused window', wId);
-
-        if (configs.closeWhenFocusedInitialWindow)
-                chrome.windows.get(wId, {}, (focusedWindow) => {
-                    if (chrome.runtime.lastError || !focusedWindow) {
-                        if (configs.debugMode) console.log('Error fetching focused window:', chrome.runtime.lastError.message);
-                        return;
-                    }
-                    if (focusedWindow.type !== 'normal') return; /// filter out popup windows
-
-                    getPopupWindows((popupWindows) => {
-                        if (popupWindows.has(wId)) return; 
-
-                        if (configs.debugMode){
-                            console.log('Focused normal window with ID: ', wId);
-                            console.log(`Opened popup windows for closing: (${popupWindows.size})`, popupWindows);
-                        }
-
-                        for (const [popupId, popupData] of popupWindows) {
-                            if (popupData.isCurrentPage && configs.keepOpenPageInPopupWindowOpen) continue;
-
-                            chrome.windows.get(popupId, {}, (pW) => {
-                                if (chrome.runtime.lastError || !pW) {
-                                    removePopupId(popupId, popupWindows);
-                                    return;
-                                }
-
-                                if (pW.state === 'minimized' || pW.alwaysOnTop) return;
-
-                                chrome.windows.remove(popupId, () => {
-                                    if (chrome.runtime.lastError) {
-                                        console.warn('Popup already closed:', chrome.runtime.lastError.message);
-                                    }
-                                    removePopupId(popupId, popupWindows);
-                                });
-                            });
-                        }
-                    });
-
-                });
-    }, 'closeWhenFocusedInitialWindow', 'keepOpenPageInPopupWindowOpen');
 });
 
 /// Reopen new single tab windows as popups
