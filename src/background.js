@@ -521,7 +521,7 @@ function getPopupWindows(callback) {
     if (openedPopupWindows) {
         callback(openedPopupWindows);
     } else {
-        chrome.storage.session.get('popupWindows', (result) => {
+        chrome.storage.session.get('openedPopupWindows', (result) => {
             openedPopupWindows = new Map(result.openedPopupWindows ?? []);
             callback(openedPopupWindows);
         });
@@ -529,7 +529,7 @@ function getPopupWindows(callback) {
 }
 const addPopupWindow = (id, data) => getPopupWindows((popups) => { popups.set(id, data ?? {}); savePopupIds(popups); });
 const removePopupId = (id, popups) => { popups.delete(id); savePopupIds(popups); }
-const savePopupIds = (set) => chrome.storage.session.set({ popupWindows: [...set] });
+const savePopupIds = (popups) => chrome.storage.session.set({ 'openedPopupWindows': [...popups.entries()] });
 
 chrome.windows.onRemoved.addListener((wId) => {
     getPopupWindows((popups) => removePopupId(wId, popups));
