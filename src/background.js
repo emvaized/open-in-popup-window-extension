@@ -65,11 +65,11 @@ chrome.runtime.onMessage.addListener(
         }
 
         /// Check if boundsChanged event is available for the options page
-        if (request.action == 'checkOnBoundsChangedAvailability') {
-            sendResponse(typeof chrome.windows.onBoundsChanged);
-            console.log(typeof chrome.windows.onBoundsChanged)
-            return;
-        }
+        // if (request.action == 'checkOnBoundsChangedAvailability') {
+        //     sendResponse(typeof chrome.windows.onBoundsChanged);
+        //     console.log(typeof chrome.windows.onBoundsChanged)
+        //     return;
+        // }
 
         mouseX = request.mouseX;
         mouseY = request.mouseY;
