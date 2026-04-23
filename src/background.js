@@ -6,14 +6,12 @@ let preventNewTabListeners = false;
 chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         if (request.action == 'requestEscPopupWindowClose') {
-            loadUserConfigs((c) => {
-                if (configs.escKeyClosesPopup){
-                    chrome.windows.getCurrent((w)=>{
-                        if (w.type == 'popup')
-                            chrome.windows.remove(w.id);
-                    });
-                }
-            }, ['escKeyClosesPopup']);
+            if (configs.escKeyClosesPopup){
+                chrome.windows.getCurrent((w)=>{
+                    if (w.type == 'popup')
+                        chrome.windows.remove(w.id);
+                });
+            }
             return;
         }
 
@@ -81,14 +79,11 @@ chrome.runtime.onMessage.addListener(
         availLeft = request.availLeft;
 
         if (request.type == 'drag' || request.type == 'modClick') {
-            loadUserConfigs((cfg) => {
-                // if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
-                // if (request.type == 'modClick' && configs.openByModClick == false) return;
+            // if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
+            // if (request.type == 'modClick' && configs.openByModClick == false) return;
 
-                const isViewer = request.isViewer ?? false;
-                if (isViewer && !cfg.viewInPopupEnabled) return;
-                openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, cfg, false, sender.tab ? sender.tab : undefined); 
-            });
+            const isViewer = request.isViewer ?? false;
+            openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, undefined, false, sender.tab ? sender.tab : undefined); 
         }
     }
 );
@@ -260,7 +255,10 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy
         //         }
         // });
 
-        /// calculate popup size
+        /// Don't open popup if it's for image viewer and the option is disabled
+        if (isViewer && !configs.viewInPopupEnabled) return;
+
+        /// Calculate popup size
         let height, width;
     
         height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
@@ -274,12 +272,12 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy
         }
         height = parseInt(height); width = parseInt(width);
 
-        /// calculate popup position
+        /// Calculate popup position
         let dx, dy;
         let popupLocation = configs.popupWindowLocation;
         if (isDragEvent && configs.openDragAndDropUnderMouse) popupLocation = 'mousePosition';
 
-        /// try to get current screen size (not supported in Manifest v3)
+        /// Try to get current screen size (not supported in Manifest v3)
         try {
             availWidth = window.screen.width;
             availHeight = window.screen.height;
@@ -583,32 +581,42 @@ chrome.tabs.onCreated.addListener(newTab => {
 const isNewTabUrl = (url) => url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' 
     || url == 'chrome://newtab/' || url == 'edge://newtab/' || url.startsWith('chrome://vivaldi-webui/startpage?');
 
-chrome.commands.onCommand.addListener((command, senderTab) => {
-    if (command === "open-popup-in-main-window") {
-        moveTabToRegularWindow(senderTab)
-    } else if (command === "open-in-popup-window") {
-        openPopupWindowForLink(senderTab.url, false, false, undefined, true);
-    } else if (command === "open-search-in-popup-window") {
-        openSearchPopup(senderTab);
-    }
-});
-
 function openSearchPopup(senderTab){
+    if (!senderTab || !senderTab.id) {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            const currentTab = tabs[0];
+            if (currentTab && currentTab.id) {
+                fetchSelectedText(currentTab, (selectedText) => searchSelectedText(selectedText ?? '', currentTab));
+            } else {
+                searchSelectedText('', undefined);
+            }
+        });
+    } else {
+        fetchSelectedText(senderTab, (selectedText) => searchSelectedText(selectedText ?? '', senderTab));
+    }
+}
+
+function fetchSelectedText(senderTab, callback) {
+    if (!senderTab || !senderTab.id) {
+        if (callback) callback('');
+        return;
+    }
+
     chrome.tabs.sendMessage(senderTab.id, { command: "get_selected_text" }, response => {
         if (response) {
             const selectedText = decodeURIComponent(response);
-            searchSelectedText(selectedText);
+            if (callback) callback(selectedText);
         } else {
-            searchSelectedText('');
+            if (callback) callback('');
         }
     });
+}
 
-    function searchSelectedText(selectedText) {
-        loadUserConfigs((c) => {
-            const link = configs.popupSearchUrl.replace('%s', selectedText);
-            openPopupWindowForLink(link, false, false, undefined, undefined, c, undefined, senderTab);
-        });
-    }
+function searchSelectedText(selectedText, senderTab) {
+    loadUserConfigs((c) => {
+        const link = configs.popupSearchUrl.replace('%s', selectedText);
+        openPopupWindowForLink(link, false, false, undefined, undefined, undefined, undefined, senderTab);
+    }, ['popupSearchUrl']);
 }
 
 function moveTabToRegularWindow(tab, shouldFocusTab = true){
@@ -654,6 +662,17 @@ function moveTabToRegularWindow(tab, shouldFocusTab = true){
         }
     );
 }
+
+/// Keyboard shortcuts
+chrome.commands.onCommand.addListener((command, senderTab) => {
+    if (command === "open-popup-in-main-window") {
+        moveTabToRegularWindow(senderTab)
+    } else if (command === "open-in-popup-window") {
+        openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+    } else if (command === "open-search-in-popup-window") {
+        openSearchPopup(senderTab);
+    }
+});
 
 /// Set toolbar icon click action
 loadUserConfigs(() => {
