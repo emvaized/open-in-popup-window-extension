@@ -82,8 +82,8 @@ chrome.runtime.onMessage.addListener(
 
         if (request.type == 'drag' || request.type == 'modClick') {
             loadUserConfigs((cfg) => {
-                if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
-                if (request.type == 'modClick' && configs.openByModClick == false) return;
+                // if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
+                // if (request.type == 'modClick' && configs.openByModClick == false) return;
 
                 const isViewer = request.isViewer ?? false;
                 if (isViewer && !cfg.viewInPopupEnabled) return;
