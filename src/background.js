@@ -61,14 +61,13 @@ try {
     // }
 } catch(e){}
 
-chrome.runtime.onInstalled.addListener((details) => {
-    if (details.reason == 'update') {
-        loadUserConfigs(() => {
-            updateContextMenuVisibility();
-            setToolbarIconClickAction();
-        });
-    }
-});
+
+// chrome.runtime.onInstalled.addListener((details) => {
+    loadUserConfigs(() => {
+        updateContextMenuVisibility();
+        setToolbarIconClickAction();
+    });
+// });
 
 /*** Listeners */
 

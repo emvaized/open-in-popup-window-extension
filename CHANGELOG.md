@@ -1,4 +1,4 @@
-### 0.6.2
+### 0.6.21
 - Improved code for automatic closing of popup windows on focusing regular window
 - Fixed "Search in popup window" shortcut not grabbing selected text from page
 - Fixed issue when "long click" and "double shift" triggers did not work if "shift + click" is disabled
