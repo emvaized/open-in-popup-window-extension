@@ -1,3 +1,11 @@
+### 0.6.2
+- Improved code for automatic closing of popup windows on focusing regular window
+- Fixed "Search in popup window" shortcut not grabbing selected text from page
+- Fixed issue when "long click" and "double shift" triggers did not work if "shift + click" is disabled
+- Fixed issue when disabled context menu items get reenabled after extension update
+- Optimised code for better performance
+- Slightly updated extension icon
+
 ### 0.6.1
 - Disabled Shift+Click and long click triggers for selected text
 - Improved code for automatic closing of popup windows on focusing regular window
