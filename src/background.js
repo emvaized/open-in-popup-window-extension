@@ -43,7 +43,7 @@ const viewImageContextMenuItem = {
     "contexts": ["image"]
 }
 
-chrome.runtime.onInstalled.addListener(() => {
+try {
     chrome.contextMenus.create(openLinkContextMenuItem);
     chrome.contextMenus.create(openPageContextMenuItem);
     chrome.contextMenus.create(openInMainWindowContextMenuItem);
@@ -59,43 +59,29 @@ chrome.runtime.onInstalled.addListener(() => {
     //     } 
     //     chrome.contextMenus.create(openTabInPopupWindow);
     // }
-});
+} catch(e){}
 
-/// Set toolbar icon click action
-loadUserConfigs(() => {
-    setToolbarIconClickAction();
-}, ['toolbarIconClickAction']);
-
-function setToolbarIconClickAction(){
-    switch(configs.toolbarIconClickAction){
-        case 'openPageInPopupWindow': {
-            chrome.action.setPopup({ popup: "" });
-            chrome.action.setTitle({ title: chrome.i18n.getMessage('openPageInPopupWindow') });
-        } break;
-        case 'searchInPopupWindow': {
-            chrome.action.setPopup({ popup: "" });
-            chrome.action.setTitle({ title: chrome.i18n.getMessage('searchInPopupWindow') });
-        } break;
-        default: {chrome.i18n.getMessage('searchInPopupWindow')
-            chrome.action.setPopup({ popup: "options/options.html" });
-            chrome.action.setTitle({ title: chrome.i18n.getMessage('showExtensionSettings') + ' (Open in Popup Window)' });
-        }
+chrome.runtime.onInstalled.addListener((details) => {
+    if (details.reason == 'update') {
+        loadUserConfigs(() => {
+            updateContextMenuVisibility();
+            setToolbarIconClickAction();
+        });
     }
-}
+});
 
 /*** Listeners */
 
 /// Update configs
 function onStorageChanged(changes) {
-    if (changes.searchInPopupEnabled)
-        chrome.contextMenus.update("searchInPopupWindow", {"visible": changes.searchInPopupEnabled.newValue });
-    if (changes.viewInPopupEnabled)
-        chrome.contextMenus.update("viewInPopupWindow", {"visible": changes.viewInPopupEnabled.newValue });
-    if (changes.addOptionOpenPageInPopupWindow)
-        chrome.contextMenus.update("openPageInPopupWindow", {"visible": changes.addOptionOpenPageInPopupWindow.newValue });
-    applyUserConfigs(changes);
-
-    setToolbarIconClickAction();
+    applyUserConfigs(changes, undefined, () => {
+        if (changes.toolbarIconClickAction){
+             setToolbarIconClickAction();
+        }
+        if (changes.searchInPopupEnabled || changes.viewInPopupEnabled || changes.addOptionOpenPageInPopupWindow){
+            updateContextMenuVisibility();
+        }
+    });
 }
 
 /// Handle messages from content scripts
@@ -720,4 +706,27 @@ function onToolbarIconClicked(senderTab) {
             default: return;
         }
     });
+}
+
+function setToolbarIconClickAction(){
+    switch(configs.toolbarIconClickAction){
+        case 'openPageInPopupWindow': {
+            chrome.action.setPopup({ popup: "" });
+            chrome.action.setTitle({ title: chrome.i18n.getMessage('openPageInPopupWindow') });
+        } break;
+        case 'searchInPopupWindow': {
+            chrome.action.setPopup({ popup: "" });
+            chrome.action.setTitle({ title: chrome.i18n.getMessage('searchInPopupWindow') });
+        } break;
+        default: {chrome.i18n.getMessage('searchInPopupWindow')
+            chrome.action.setPopup({ popup: "options/options.html" });
+            chrome.action.setTitle({ title: chrome.i18n.getMessage('showExtensionSettings') + ' (Open in Popup Window)' });
+        }
+    }
+}
+
+function updateContextMenuVisibility() {
+    chrome.contextMenus.update("searchInPopupWindow", {"visible": configs.searchInPopupEnabled });
+    chrome.contextMenus.update("viewInPopupWindow", {"visible": configs.viewInPopupEnabled });
+    chrome.contextMenus.update("openPageInPopupWindow", {"visible": configs.addOptionOpenPageInPopupWindow });
 }

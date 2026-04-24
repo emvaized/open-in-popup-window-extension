@@ -59,10 +59,8 @@ function loadUserConfigs(callback, specificKeys) {
 
 function applyUserConfigs(cfg, keys, callback){
     if (!keys) keys = Object.keys(cfg);
-    const l = keys.length;
-    for (let i = 0; i < l; i++) {
-        const key = keys[i];
-        const value = cfg[key];
+    for (let i = 0, l = keys.length; i < l; i++) {
+        const key = keys[i], value = cfg[key];
         if (value === undefined) continue;
         if (key === 'loaded') continue;
         configs[key] = value['newValue'] ?? value;
