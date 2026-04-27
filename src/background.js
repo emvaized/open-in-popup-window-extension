@@ -205,8 +205,8 @@ const savePopupIds = (popups) => chrome.storage.session.set({ 'openedPopupWindow
 const addPopupWindow = (id, data) => getPopupWindows((popups) => { popups.set(id, data ?? {}); savePopupIds(popups); });
 const removePopupId = (id, popups) => { popups.delete(id); savePopupIds(popups); }
 
-const isNewTabUrl = (url) => url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' 
-    || url == 'chrome://newtab/' || url == 'edge://newtab/' || url.startsWith('chrome://vivaldi-webui/startpage?');
+const isNewTabUrl = (url) => url && (url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' 
+    || url == 'chrome://newtab/' || url == 'edge://newtab/' || url.startsWith('chrome://vivaldi-webui/startpage?'));
 
 
 function onWindowFocusChanged(wId){
