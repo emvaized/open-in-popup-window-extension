@@ -24,7 +24,7 @@
     "message": "일반 창에 포커스하면 팝업 창 닫기"
   },
   "closeWhenFocusedInitialWindowHint": {
-    "message": "팝업 창을 최소화했거나 항상 위로 고정한 경우 닫히지 않습니다"
+    "message": "팝업 창이 최소화되어 있거나, 오디오를 재생 중이거나, 항상 위에 설정된 경우에는 팝업 창이 닫히지 않습니다"
   },
   "copyTabInsteadOfMoving": {
     "message": "탭을 팝업 창으로 이동하는 대신 복사"

@@ -24,7 +24,7 @@
     "message": "Fermer la popup lorsque la fenêtre principale est active"
   },
   "closeWhenFocusedInitialWindowHint": {
-    "message": "La fenêtre popup ne sera pas fermée si elle est minimisée ou définie comme toujours au premier plan"
+    "message": "La popup ne sera pas fermée si elle est minimisée, en cours de lecture audio ou définie comme toujours au premier plan"
   },
   "copyTabInsteadOfMoving": {
     "message": "Copier l’onglet au lieu de le déplacer vers une fenêtre popup"

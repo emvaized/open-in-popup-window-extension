@@ -24,7 +24,7 @@
     "message": "Cerrar la ventana emergente cuando la ventana normal obtiene el foco"
   },
   "closeWhenFocusedInitialWindowHint": {
-    "message": "La ventana emergente no se cerrará si se ha minimizado o se ha configurado para que siempre esté visible"
+    "message": "La ventana emergente no se cerrará si está minimizada, reproduciendo audio o configurada como siempre en la parte superior"
   },
   "copyTabInsteadOfMoving": {
     "message": "Copiar pestaña en lugar de moverla a una ventana emergente"

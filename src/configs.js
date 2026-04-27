@@ -37,6 +37,7 @@ const configs = {
     'longClickButton': '0', /// possible: 0 for left, 1 for middle click
     'holdClickDelay': 600,
     'lookUpHighResImages': true,
+    'dontClosePlayingPopup': true,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 

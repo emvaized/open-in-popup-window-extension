@@ -251,13 +251,19 @@ function onWindowFocusChanged(wId){
                         for (const [popupId, popupData] of popupWindows) {
                             if (popupData.isCurrentPage && configs.keepOpenPageInPopupWindowOpen) continue;
 
-                            chrome.windows.get(popupId, {}, (pW) => {
+                            chrome.windows.get(popupId, { populate: true }, (pW) => {
                                 if (chrome.runtime.lastError || !pW) {
                                     removePopupId(popupId, popupWindows);
                                     return;
                                 }
 
                                 if (pW.state === 'minimized' || pW.alwaysOnTop) return;
+
+                                /// Check if popup window is audible, and if so, don't close it (can be enabled in options)
+                                if (configs.dontClosePlayingPopup) {
+                                    const tabs = pW.tabs || [];
+                                    if (tabs.some(t => t.audible)) return;
+                                }
 
                                 chrome.windows.remove(popupId, () => {
                                     if (chrome.runtime.lastError) {
