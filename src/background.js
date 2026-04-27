@@ -274,7 +274,7 @@ function onWindowFocusChanged(wId){
                             });
                         }
                     });
-            }, ['addOptionOpenPageInPopupWindow', 'closeWhenFocusedInitialWindow', 'keepOpenPageInPopupWindowOpen']);
+            }, ['addOptionOpenPageInPopupWindow', 'closeWhenFocusedInitialWindow', 'keepOpenPageInPopupWindowOpen', 'dontClosePlayingPopup']);
         },
     );
 }
