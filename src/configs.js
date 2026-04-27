@@ -38,6 +38,7 @@ const configs = {
     'holdClickDelay': 600,
     'lookUpHighResImages': true,
     'dontClosePlayingPopup': true,
+    'autoCloseOnlyOverlapping': true,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 

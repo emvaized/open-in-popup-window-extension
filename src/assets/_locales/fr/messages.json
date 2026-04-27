@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Ajouter une option pour ouvrir la page dans une fenêtre popup"
   },
+  "autoCloseOnlyOverlapping": {
+    "message": "Fermer uniquement les fenêtres qui recouvrent la fenêtre principale"
+  },
   "automationSettings": {
     "message": "Paramètres d’automatisation"
   },

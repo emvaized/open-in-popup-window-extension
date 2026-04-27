@@ -2,6 +2,9 @@
   "activationSettings": {
     "message": "Additional activation methods"
   },
+  "autoCloseOnlyOverlapping": {
+    "message": "Close only popups which cover the main window"
+  },
   "addOptionOpenPageInPopupWindow": {
     "message": "Add option to open page in popup window"
   },

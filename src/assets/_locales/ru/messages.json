@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Включить опцию открытия текущей страницы во вспл. окне"
   },
+  "autoCloseOnlyOverlapping": {
+    "message": "Закрывать только окна, перекрывающие основное окно"
+  },
   "automationSettings": {
     "message": "Настройки автоматизации"
   },

@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Agregar opción para abrir la página en una ventana emergente"
   },
+  "autoCloseOnlyOverlapping": {
+    "message": "Cerrar solo las ventanas que se superponen a la ventana principal"
+  },
   "automationSettings": {
     "message": "Configuración de automatización"
   },

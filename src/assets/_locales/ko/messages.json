@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "팝업 창에서 페이지 열기 옵션 추가"
   },
+  "autoCloseOnlyOverlapping": {
+    "message": "메인 창을 가리는 창만 닫기"
+  },
   "automationSettings": {
     "message": "자동화 설정"
   },

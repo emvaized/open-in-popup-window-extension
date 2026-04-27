@@ -265,6 +265,8 @@ function onWindowFocusChanged(wId){
                                     if (tabs.some(t => t.audible)) return;
                                 }
 
+                                if (configs.autoCloseOnlyOverlapping && !windowsOverlap(w, pW)) return;
+
                                 chrome.windows.remove(popupId, () => {
                                     if (chrome.runtime.lastError) {
                                         console.warn('Popup already closed:', chrome.runtime.lastError.message);
@@ -572,7 +574,6 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy
                                 if (configs.debugMode) console.log('New popup window size saved: ', w.height, 'x', w.width);
                             }
                         }
-
                     }
                     function removedListener(wId){
                         if (wId && wId > -1 && wId == popupWindow.id) {
@@ -610,7 +611,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy
 
                 /// Store new popup
                 lastPopupId = popupWindow.id;
-                addPopupWindow(popupWindow.id, { isCurrentPage: isCurrentPage })
+                addPopupWindow(popupWindow.id, {isCurrentPage: isCurrentPage});
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
     })
@@ -696,6 +697,15 @@ function moveTabToRegularWindow(tab, shouldFocusTab = true){
             });
         }
     );
+}
+
+function windowsOverlap(a, b, tolerance = 15) {
+  return (
+    a.left + tolerance < b.left + b.width &&
+    a.left + a.width - tolerance > b.left &&
+    a.top + tolerance < b.top + b.height &&
+    a.top + a.height - tolerance > b.top
+  );
 }
 
 /// Toolbar icon click action
