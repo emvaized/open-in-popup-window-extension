@@ -179,7 +179,7 @@ function onContextMenuClicked(clickData, tab) {
     if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow') {
         if (tab)
             loadUserConfigs((c) => {
-                openPopupWindowForLink(clickData.pageUrl, false, false, configs.copyTabInsteadOfMoving ? undefined : tab.id, true, c);
+                openPopupWindowForLink(clickData.pageUrl, false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
             });
         return;
     }
