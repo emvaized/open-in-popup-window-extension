@@ -744,7 +744,7 @@ function moveTabToRegularWindow(tab, shouldFocusTab = true){
     );
 }
 
-function windowsOverlap(a, b, tolerance = 15) {
+function windowsOverlap(a, b, tolerance = 45) {
   return (
     a.left + tolerance < b.left + b.width &&
     a.left + a.width - tolerance > b.left &&
