@@ -382,30 +382,30 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
 
                 const popupW = await chrome.windows.get(popupId, { populate: true });
                 if (!chrome.runtime.lastError && popupW) {
-                        const firstTab = popupW && popupW.tabs && popupW.tabs[0];
+                    const firstTab = popupW && popupW.tabs && popupW.tabs[0];
 
-                        if (tabToCopy){
-                            let url = tabToCopy.url || tabToCopy.pendingUrl;
-                            if (url && !isNewTabUrl(url) && url != 'about:blank') {
-                                chrome.tabs.update(firstTab.id, { url: tabToCopy.url || tabToCopy.pendingUrl }, function(){
-                                        chrome.tabs.remove(tabToCopy.id);
-                                        chrome.windows.update(popupId, { focused: true });
-                                    }
-                                );
-                                return;
-                            }
-                        } else {
-                            chrome.tabs.update(firstTab.id, { 
-                            url: isViewer ?
-                                (configs.useBuiltInImageViewer ? link :
-                                    chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
-                                : link ?? (textSelection ?
-                                    (configs.popupSearchUrl.replace('%s', textSelection))
-                                    : 'about:blank'),
-                            });
-                            chrome.windows.update(popupId, { focused: true });
+                    if (tabToCopy) {
+                        let url = tabToCopy.url || tabToCopy.pendingUrl;
+                        if (url && !isNewTabUrl(url) && url != 'about:blank') {
+                            chrome.tabs.update(firstTab.id, { url: tabToCopy.url || tabToCopy.pendingUrl }, function(){
+                                    chrome.tabs.remove(tabToCopy.id);
+                                    chrome.windows.update(popupId, { focused: true });
+                                }
+                            );
                             return;
                         }
+                    } else {
+                        chrome.tabs.update(firstTab.id, { 
+                        url: isViewer ?
+                            (configs.useBuiltInImageViewer ? link :
+                                chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
+                            : link ?? (textSelection ?
+                                (configs.popupSearchUrl.replace('%s', textSelection))
+                                : 'about:blank'),
+                        });
+                        chrome.windows.update(popupId, { focused: true });
+                        return;
+                    }
                 }
             }
         }
