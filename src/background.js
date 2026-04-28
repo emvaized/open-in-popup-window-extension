@@ -192,13 +192,21 @@ function onContextMenuClicked(clickData, tab) {
 
 /// Popups persistence
 function getPopupWindows(callback) {
-    if (openedPopupWindows) {
-        callback(openedPopupWindows);
+    const promise = new Promise((resolve) => {
+        if (openedPopupWindows) {
+            resolve(openedPopupWindows);
+        } else {
+            chrome.storage.session.get('openedPopupWindows', (result) => {
+                openedPopupWindows = new Map(result.openedPopupWindows ?? []);
+                resolve(openedPopupWindows);
+            });
+        }
+    });
+
+    if (callback) {
+        promise.then(callback);
     } else {
-        chrome.storage.session.get('openedPopupWindows', (result) => {
-            openedPopupWindows = new Map(result.openedPopupWindows ?? []);
-            callback(openedPopupWindows);
-        });
+        return promise;
     }
 }
 const savePopupIds = (popups) => chrome.storage.session.set({ 'openedPopupWindows': [...popups.entries()] });
@@ -295,7 +303,7 @@ function onWindowCreated(w){
                     if (tabs.length == 1){
                         const tab = tabs[0];
                         if (isNewTabUrl(tab.url) || isNewTabUrl(tab.pendingUrl)) return;
-                        openPopupWindowForLink(undefined, false, false, tab.id, false, c, true);  
+                        openPopupWindowForLink(undefined, false, false, tab, false, c, true);  
                     } 
                 })
     })   
@@ -321,7 +329,7 @@ function onTabCreated(newTab){
                         const newTabUrl = newTab.url || newTab.pendingUrl;
                         if (isNewTabUrl(newTabUrl)) return;
 
-                        openPopupWindowForLink(newTab.url, false, false, newTab.id, false, undefined, true, openerTab);
+                        openPopupWindowForLink(newTab.url, false, false, newTab, false, undefined, true, openerTab);
                     } 
                 }).catch((e) => {});
         }, ['reopenAutoCreatedTabAsPopup', 'reopenAutoCreatedTabsOnlyPinned']) 
@@ -341,8 +349,8 @@ function handleKeyboardShortcuts(command, senderTab) {
 
 /*** Service functions */
 
-function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTab) {
-    loadUserConfigs(function(){
+function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTab) {
+    loadUserConfigs(async function(){
         /* 
             This logic was created in order to counter MacOS behavior,
             where popup windows could not be opened above the fullscreen window.
@@ -364,6 +372,43 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy
 
         /// Don't open popup if it's for image viewer and the option is disabled
         if (isViewer && !configs.viewInPopupEnabled) return;
+
+        /// Reuse existing popup window if the option is enabled and there's already one open
+        if (configs.reuseExistingPopup) {
+            let popupWindows = await getPopupWindows();
+            if (popupWindows.size > 0) {
+                const firstPopup = popupWindows.entries().next().value;
+                const popupId = firstPopup[0];
+
+                const popupW = await chrome.windows.get(popupId, { populate: true });
+                if (!chrome.runtime.lastError && popupW) {
+                        const firstTab = popupW && popupW.tabs && popupW.tabs[0];
+
+                        if (tabToCopy){
+                            let url = tabToCopy.url || tabToCopy.pendingUrl;
+                            if (url && !isNewTabUrl(url) && url != 'about:blank') {
+                                chrome.tabs.update(firstTab.id, { url: tabToCopy.url || tabToCopy.pendingUrl }, function(){
+                                        chrome.tabs.remove(tabToCopy.id);
+                                        chrome.windows.update(popupId, { focused: true });
+                                    }
+                                );
+                                return;
+                            }
+                        } else {
+                            chrome.tabs.update(firstTab.id, { 
+                            url: isViewer ?
+                                (configs.useBuiltInImageViewer ? link :
+                                    chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
+                                : link ?? (textSelection ?
+                                    (configs.popupSearchUrl.replace('%s', textSelection))
+                                    : 'about:blank'),
+                            });
+                            chrome.windows.update(popupId, { focused: true });
+                            return;
+                        }
+                }
+            }
+        }
 
         /// Calculate popup size
         let height, width;
@@ -502,8 +547,8 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy
                 'top': dy, 'left': dx
             };
 
-            if (tabIdToCopy) {
-                createParams.tabId = tabIdToCopy;
+            if (tabToCopy) {
+                createParams.tabId = tabToCopy.id;
             } else {
                 createParams['url'] = isViewer ? 
                     (configs.useBuiltInImageViewer ? link :

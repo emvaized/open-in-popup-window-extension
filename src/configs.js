@@ -39,6 +39,7 @@ const configs = {
     'lookUpHighResImages': true,
     'dontClosePlayingPopup': true,
     'autoCloseOnlyOverlapping': true,
+    'reuseExistingPopup': false,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 

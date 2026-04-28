@@ -164,6 +164,9 @@
   "reopenSingleTabWindowAsPopupHint": {
     "message": "Avec cette option activée, toute nouvelle fenêtre du navigateur avec un seul onglet sera automatiquement rouverte comme une popup. Cela permet à l’extension de créer des popups pour des liens auxquels elle n’a normalement pas accès (par exemple, la barre de favoris). Mais cela peut entraîner des comportements indésirables si vous ouvrez souvent de nombreuses fenêtres, donc utilisez avec prudence !"
   },
+  "reuseExistingPopup": {
+    "message": "Réutiliser la fenêtre popup existante au lieu d’en ouvrir une nouvelle"
+  },
   "searchInPopupEnabled": {
     "message": "Activer l’option de recherche dans une popup"
   },
