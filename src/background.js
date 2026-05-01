@@ -373,6 +373,14 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         /// Don't open popup if it's for image viewer and the option is disabled
         if (isViewer && !configs.viewInPopupEnabled) return;
 
+        /// Determine URL to open in popup
+        const popupUrl = isViewer ? 
+                    (configs.useBuiltInImageViewer ? link :
+                        chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
+                    : link ?? (textSelection ? 
+                        (configs.popupSearchUrl.replace('%s', textSelection))
+                        : 'about:blank');
+
         /// Reuse existing popup window if the option is enabled and there's already one open
         if (configs.reuseExistingPopup) {
             let popupWindows = await getPopupWindows();
@@ -396,12 +404,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                         }
                     } else {
                         chrome.tabs.update(firstTab.id, { 
-                        url: isViewer ?
-                            (configs.useBuiltInImageViewer ? link :
-                                chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
-                            : link ?? (textSelection ?
-                                (configs.popupSearchUrl.replace('%s', textSelection))
-                                : 'about:blank'),
+                            url: popupUrl,
                         });
                         chrome.windows.update(popupId, { focused: true });
                         return;
@@ -550,12 +553,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
             if (tabToCopy) {
                 createParams.tabId = tabToCopy.id;
             } else {
-                createParams['url'] = isViewer ? 
-                    (configs.useBuiltInImageViewer ? link :
-                        chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
-                    : link ?? (textSelection ? 
-                        (configs.popupSearchUrl.replace('%s', textSelection))
-                        : 'about:blank');
+                createParams['url'] = popupUrl;
             }
 
             /// Preserve Firefox container
