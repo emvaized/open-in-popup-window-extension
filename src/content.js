@@ -164,7 +164,7 @@ function doubleModKeyUpListener(e){
         const currentTime = Date.now();
         if (currentTime - lastKeypressTime < doublePressDelay) {
             if (!elementIsValid(lastMouseOverData.target, true)) return;
-            lastMouseOverData.target.focus(); /// shows the focus ring to indicate which element will be opened
+            // lastMouseOverData.target.focus(); /// shows the focus ring to indicate which element will be opened
             onTrigger(undefined, 'modClick');
             return;
         }
