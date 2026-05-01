@@ -167,6 +167,9 @@
   "reuseExistingPopup": {
     "message": "Réutiliser la fenêtre popup existante au lieu d’en ouvrir une nouvelle"
   },
+  "reusePopupOnlyIfNoOverlap": {
+    "message": "À condition qu'il ne recouvre pas la fenêtre ouverte"
+  },
   "searchInPopupEnabled": {
     "message": "Activer l’option de recherche dans une popup"
   },

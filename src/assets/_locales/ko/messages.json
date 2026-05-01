@@ -167,6 +167,9 @@
   "reuseExistingPopup": {
     "message": "새 창을 여는 대신 기존 팝업 창 재사용"
   },
+  "reusePopupOnlyIfNoOverlap": {
+    "message": "일반 창과 겹치지 않는 경우에만 기존 팝업 창 재사용"
+  },
   "searchInPopupEnabled": {
     "message": "팝업 창에서 선택 항목 검색 옵션 켜기"
   },

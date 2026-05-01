@@ -167,6 +167,9 @@
   "reuseExistingPopup": {
     "message": "Reutilizar la ventana emergente existente en lugar de abrir una nueva"
   },
+  "reusePopupOnlyIfNoOverlap": {
+    "message": "Solo si no se superpone a la ventana normal"
+  },
   "searchInPopupEnabled": {
     "message": "Opción para buscar selección en ventana emergente habilitada"
   },

@@ -391,23 +391,38 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                 const popupW = await chrome.windows.get(popupId, { populate: true });
                 if (!chrome.runtime.lastError && popupW) {
                     const firstTab = popupW && popupW.tabs && popupW.tabs[0];
+                    let shouldReuse = true;
 
-                    if (tabToCopy) {
-                        let url = tabToCopy.url || tabToCopy.pendingUrl;
-                        if (url && !isNewTabUrl(url) && url != 'about:blank') {
-                            chrome.tabs.update(firstTab.id, { url: url }, () => {
-                                    chrome.tabs.remove(tabToCopy.id);
-                                    chrome.windows.update(popupId, { focused: true });
-                                }
-                            );
+                    if (configs.reusePopupOnlyIfNoOverlap){
+                        const normalWindows = await chrome.windows.getAll({ windowTypes: ['normal'] });
+                        let popupOverlapsNormalWindow = false;
+                        for (const w of normalWindows) {
+                            if (windowsOverlap(w, popupW)) {
+                                popupOverlapsNormalWindow = true;
+                                break;
+                            }
+                        }
+                        if (popupOverlapsNormalWindow) shouldReuse = false;
+                    }
+
+                    if (shouldReuse){
+                        if (tabToCopy) {
+                            let url = tabToCopy.url || tabToCopy.pendingUrl;
+                            if (url && !isNewTabUrl(url) && url != 'about:blank') {
+                                chrome.tabs.update(firstTab.id, { url: url }, () => {
+                                        chrome.tabs.remove(tabToCopy.id);
+                                        chrome.windows.update(popupId, { focused: true });
+                                    }
+                                );
+                                return;
+                            }
+                        } else {
+                            chrome.tabs.update(firstTab.id, { 
+                                url: popupUrl,
+                            });
+                            chrome.windows.update(popupId, { focused: true });
                             return;
                         }
-                    } else {
-                        chrome.tabs.update(firstTab.id, { 
-                            url: popupUrl,
-                        });
-                        chrome.windows.update(popupId, { focused: true });
-                        return;
                     }
                 }
             }

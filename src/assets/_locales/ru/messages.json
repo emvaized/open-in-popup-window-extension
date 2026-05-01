@@ -167,6 +167,9 @@
   "reuseExistingPopup": {
     "message": "Использовать существующее всплыв. окно вместо открытия нового"
   },
+  "reusePopupOnlyIfNoOverlap": {
+    "message": "Только если оно не перекрывает обычное окно"
+  },
   "searchInPopupEnabled": {
     "message": "Включить опцию поиска выделения во всплывающем окне"
   },

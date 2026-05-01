@@ -40,6 +40,7 @@ const configs = {
     'dontClosePlayingPopup': true,
     'autoCloseOnlyOverlapping': true,
     'reuseExistingPopup': false,
+    'reusePopupOnlyIfNoOverlap': false,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 
