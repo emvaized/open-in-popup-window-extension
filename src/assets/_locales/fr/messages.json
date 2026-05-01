@@ -71,6 +71,9 @@
   "hideBrowserControls": {
     "message": "Masquer les contrôles du navigateur (barre d’adresse, onglets, etc.)"
   },
+  "holdClickDelay": {
+    "message": "Durée du clic long (ms)"
+  },
   "imageViewer": {
     "message": "Visionneuse d’images"
   },
@@ -80,14 +83,14 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "Ne pas fermer la popup de la page lors de la perte de focus"
   },
-  "holdClickDelay": {
-    "message": "Durée du clic long (ms)"
-  },
   "lookUpHighResImages": {
     "message": "Rechercher des images en haute résolution"
   },
   "minimalDragDistance": {
     "message": "Distance minimale de glissement (px)"
+  },
+  "modifierKey": {
+    "message": "Touche de modification"
   },
   "mousePosition": {
     "message": "Position du curseur"
@@ -101,14 +104,11 @@
   "openByDragAndDrop": {
     "message": "Utiliser le glisser-déposer sur un espace vide"
   },
-  "openByModClick": {
-    "message": "Utiliser Modificateur + clic pour ouvrir dans une popup"
-  },
   "openByLongClick": {
     "message": "Utiliser un clic long pour ouvrir dans une popup"
   },
-  "modifierKey": {
-    "message": "Touche de modification"
+  "openByModClick": {
+    "message": "Utiliser Modificateur + clic pour ouvrir dans une popup"
   },
   "openDragAndDropUnderMouse": {
     "message": "Toujours ouvrir par glisser-déposer sous le curseur"
@@ -199,6 +199,15 @@
   },
   "topRight": {
     "message": "En haut à droite"
+  },
+  "translateInPopupEnabled": {
+    "message": "Activer l’option de traduction du texte sélectionné dans une popup"
+  },
+  "translateInPopupWindow": {
+    "message": "Traduire dans une fenêtre popup"
+  },
+  "translateInPopupWindowHotkeyDescription": {
+    "message": "Traduire le texte sélectionné dans une fenêtre popup. Ouvre une page de traduction vide si aucun texte n’est sélectionné"
   },
   "tryFitWindowSizeToImage": {
     "message": "Essayer d’adapter la largeur de la popup au ratio de l’image"

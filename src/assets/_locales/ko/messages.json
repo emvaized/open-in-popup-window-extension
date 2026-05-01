@@ -89,6 +89,9 @@
   "minimalDragDistance": {
     "message": "최소 드래그 거리 (px)"
   },
+  "modifierKey": {
+    "message": "클릭에 사용할 조합 키"
+  },
   "mousePosition": {
     "message": "마우스 커서 위치"
   },
@@ -101,14 +104,11 @@
   "openByDragAndDrop": {
     "message": "빈 곳으로 드래그해 팝업 창에서 열기"
   },
-  "openByModClick": {
-    "message": "조합 키 + 클릭으로 팝업 창에서 열기"
-  },
   "openByLongClick": {
     "message": "롱 클릭으로 팝업 창에서 열기"
   },
-  "modifierKey": {
-    "message": "클릭에 사용할 조합 키"
+  "openByModClick": {
+    "message": "조합 키 + 클릭으로 팝업 창에서 열기"
   },
   "openDragAndDropUnderMouse": {
     "message": "드래그 시 항상 마우스 커서 위치에서 열기"
@@ -199,6 +199,15 @@
   },
   "topRight": {
     "message": "우상단"
+  },
+  "translateInPopupEnabled": {
+    "message": "팝업 창에서 선택한 텍스트 번역 옵션 활성화"
+  },
+  "translateInPopupWindow": {
+    "message": "팝업 창에서 번역"
+  },
+  "translateInPopupWindowHotkeyDescription": {
+    "message": "팝업 창에서 선택한 텍스트 번역. 선택한 텍스트가 없으면 빈 번역 페이지를 엽니다"
   },
   "tryFitWindowSizeToImage": {
     "message": "팝업 너비를 사진 종횡비에 맞추려 시도"

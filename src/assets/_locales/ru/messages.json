@@ -36,12 +36,12 @@
     "message": "Отладка"
   },
   "dimPageOnPopupOpen": {
-      "message": "Затемнять страницу при открытии всплыв. окна"
+    "message": "Затемнять страницу при открытии всплыв. окна"
   },
   "donateButton": {
     "message": "Поддержать проект"
   },
-   "doubleModifierKeyPressTrigger": {
+  "doubleModifierKeyPressTrigger": {
     "message": "Использовать двойное нажатие для открытия элемента под курсором"
   },
   "dragAndDropSettings": {
@@ -89,6 +89,9 @@
   "minimalDragDistance": {
     "message": "Минимальное расстояние перетаскивания (px)"
   },
+  "modifierKey": {
+    "message": "Клавиша-модификатор"
+  },
   "mousePosition": {
     "message": "Под курсором мыши"
   },
@@ -101,14 +104,11 @@
   "openByDragAndDrop": {
     "message": "Использовать перетаскивание на пустое место"
   },
-  "openByModClick": {
-    "message": "Использовать Модификатор + клик для открытия во вспл. окне"
-  },
   "openByLongClick": {
     "message": "Использовать долгий клик для открытия во вспл. окне"
   },
-  "modifierKey": {
-    "message": "Клавиша-модификатор"
+  "openByModClick": {
+    "message": "Использовать Модификатор + клик для открытия во вспл. окне"
   },
   "openDragAndDropUnderMouse": {
     "message": "Всегда открывать перетаскиванием под курсором мыши"
@@ -199,6 +199,15 @@
   },
   "topRight": {
     "message": "Справа вверху"
+  },
+  "translateInPopupEnabled": {
+    "message": "Включить опцию перевода выделенного текста во всплывающем окне"
+  },
+  "translateInPopupWindow": {
+    "message": "Перевести во всплывающем окне"
+  },
+  "translateInPopupWindowHotkeyDescription": {
+    "message": "Перевести выделенный текст во всплывающем окне. Открывает пустую страницу перевода, если нет выделенного текста"
   },
   "tryFitWindowSizeToImage": {
     "message": "Попробовать подогнать ширину окна под размер изображения"

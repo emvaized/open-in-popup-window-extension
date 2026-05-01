@@ -131,6 +131,9 @@
   "openSearchPopupWindowHotkeyDescription": {
     "message": "Search the selected text in a popup window. Opens empty search page if no text is selected"
   },
+  "openTranslatePopupWindowHotkeyDescription": {
+    "message": "Translate the selected text in a popup window. Opens empty translation page if no text is selected"
+  },
   "popupHeight": {
     "message": "Height (px)"
   },
@@ -199,6 +202,12 @@
   },
   "topRight": {
     "message": "Top right"
+  },
+  "translateInPopupWindow": {
+    "message": "Translate in Popup Window"
+  },
+  "translateInPopupEnabled": {
+    "message": "Option to translate selection in popup enabled"
   },
   "tryFitWindowSizeToImage": {
     "message": "Try to fit popup width to image aspect ratio"

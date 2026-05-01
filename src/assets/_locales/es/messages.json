@@ -89,6 +89,9 @@
   "minimalDragDistance": {
     "message": "Distancia mínima de arrastre (px)"
   },
+  "modifierKey": {
+    "message": "Tecla modificadora"
+  },
   "mousePosition": {
     "message": "Posición del cursor del ratón"
   },
@@ -101,14 +104,11 @@
   "openByDragAndDrop": {
     "message": "Arrastra y suelta en un espacio vacío"
   },
-  "openByModClick": {
-    "message": "Utilice Modificador + Clic para abrir en ventana emergente"
-  },
   "openByLongClick": {
     "message": "Utilice un clic largo para abrir en ventana emergente"
   },
-  "modifierKey": {
-    "message": "Tecla modificadora"
+  "openByModClick": {
+    "message": "Utilice Modificador + Clic para abrir en ventana emergente"
   },
   "openDragAndDropUnderMouse": {
     "message": "Abrir siempre arrastrando y soltando bajo el cursor del ratón"
@@ -199,6 +199,15 @@
   },
   "topRight": {
     "message": "Arriba a la derecha"
+  },
+  "translateInPopupEnabled": {
+    "message": "Habilitar opción de traducción de texto seleccionado en ventana emergente"
+  },
+  "translateInPopupWindow": {
+    "message": "Traducir en ventana emergente"
+  },
+  "translateInPopupWindowHotkeyDescription": {
+    "message": "Traducir el texto seleccionado en una ventana emergente. Abre una página de traducción vacía si no hay texto seleccionado"
   },
   "tryFitWindowSizeToImage": {
     "message": "Intente ajustar el ancho de la ventana emergente a la relación de aspecto de la imagen"

@@ -37,6 +37,11 @@ const searchInPopupWindowContextMenuItem = {
     "title": chrome.i18n.getMessage('searchInPopupWindow'),
     "contexts": ["selection"]
 }
+const translateInPopupWindowContextMenuItem = {
+    "id": "translateInPopupWindow",
+    "title": chrome.i18n.getMessage('translateInPopupWindow'),
+    "contexts": ["selection"]
+}
 const viewImageContextMenuItem = {
     "id": "viewInPopupWindow",
     "title": chrome.i18n.getMessage('viewInPopupWindow'),
@@ -48,6 +53,7 @@ try {
     chrome.contextMenus.create(openPageContextMenuItem);
     chrome.contextMenus.create(openInMainWindowContextMenuItem);
     chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
+    chrome.contextMenus.create(translateInPopupWindowContextMenuItem);
     chrome.contextMenus.create(viewImageContextMenuItem);
 
     /// Draft for "Open tab in popup window" in Firefox
@@ -186,7 +192,9 @@ function onContextMenuClicked(clickData, tab) {
 
     const link = clickData.menuItemId == 'searchInPopupWindow' ? 
         configs.popupSearchUrl.replace('%s', clickData.selectionText) 
-        : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
+        : clickData.menuItemId == 'translateInPopupWindow' ? 
+            configs.popupTranslateUrl.replace('%s', clickData.selectionText) 
+            : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow', undefined, undefined, undefined, undefined, false, tab ? tab : undefined);
 }
 
@@ -344,6 +352,8 @@ function handleKeyboardShortcuts(command, senderTab) {
         openPopupWindowForLink(senderTab.url, false, false, undefined, true);
     } else if (command === "open-search-in-popup-window") {
         openSearchPopup(senderTab);
+    }else if (command === "translate-in-popup-window") {
+        openTranslatePopup(senderTab);
     }
 }
 
@@ -675,6 +685,28 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
     })
 }
 
+function openTranslatePopup(senderTab){
+    if (!senderTab || !senderTab.id) {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            const currentTab = tabs[0];
+            if (currentTab && currentTab.id) {
+                fetchSelectedText(currentTab, (selectedText) => translateSelectedText(selectedText ?? "", currentTab));
+            } else {
+                translateSelectedText('', undefined);
+            }
+        });
+    } else {
+        fetchSelectedText(senderTab, (selectedText) => translateSelectedText(selectedText ?? "", senderTab));
+    }
+}
+
+function translateSelectedText(selectedText, senderTab) {
+    loadUserConfigs((c) => {
+        const link = configs.popupTranslateUrl.replace('%s', selectedText);
+        openPopupWindowForLink(link, false, false, undefined, undefined, undefined, undefined, senderTab);
+    });
+}
+
 function openSearchPopup(senderTab){
     if (!senderTab || !senderTab.id) {
         chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
@@ -710,7 +742,7 @@ function searchSelectedText(selectedText, senderTab) {
     loadUserConfigs((c) => {
         const link = configs.popupSearchUrl.replace('%s', selectedText);
         openPopupWindowForLink(link, false, false, undefined, undefined, undefined, undefined, senderTab);
-    }, ['popupSearchUrl']);
+    });
 }
 
 function moveTabToRegularWindow(tab, shouldFocusTab = true){
@@ -776,6 +808,9 @@ function onToolbarIconClicked(senderTab) {
             case 'searchInPopupWindow': {
                 openSearchPopup(senderTab);
             } break;
+            case 'translateInPopupWindow': {
+                openTranslatePopup(senderTab);
+            } break;
             default: return;
         }
     });
@@ -791,6 +826,10 @@ function setToolbarIconClickAction(){
             chrome.action.setPopup({ popup: "" });
             chrome.action.setTitle({ title: chrome.i18n.getMessage('searchInPopupWindow') });
         } break;
+        case 'translateInPopupWindow': {
+            chrome.action.setPopup({ popup: "" });
+            chrome.action.setTitle({ title: chrome.i18n.getMessage('translateInPopupWindow') });
+        } break;
         default: {chrome.i18n.getMessage('searchInPopupWindow')
             chrome.action.setPopup({ popup: "options/options.html" });
             chrome.action.setTitle({ title: chrome.i18n.getMessage('showExtensionSettings') + ' (Open in Popup Window)' });
@@ -800,6 +839,7 @@ function setToolbarIconClickAction(){
 
 function updateContextMenuVisibility() {
     chrome.contextMenus.update("searchInPopupWindow", {"visible": configs.searchInPopupEnabled });
+    chrome.contextMenus.update("translateInPopupWindow", {"visible": configs.translateInPopupEnabled });
     chrome.contextMenus.update("viewInPopupWindow", {"visible": configs.viewInPopupEnabled });
     chrome.contextMenus.update("openPageInPopupWindow", {"visible": configs.addOptionOpenPageInPopupWindow });
 }
