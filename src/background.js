@@ -395,7 +395,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                     if (tabToCopy) {
                         let url = tabToCopy.url || tabToCopy.pendingUrl;
                         if (url && !isNewTabUrl(url) && url != 'about:blank') {
-                            chrome.tabs.update(firstTab.id, { url: tabToCopy.url || tabToCopy.pendingUrl }, function(){
+                            chrome.tabs.update(firstTab.id, { url: url }, function(){
                                     chrome.tabs.remove(tabToCopy.id);
                                     chrome.windows.update(popupId, { focused: true });
                                 }
