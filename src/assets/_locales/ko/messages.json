@@ -134,9 +134,6 @@
   "popupHeight": {
     "message": "높이 (px)"
   },
-  "popupSearchUrl": {
-    "message": "검색 URL (%s 부분이 검색어로 치환됨)"
-  },
   "popupWidth": {
     "message": "너비 (px)"
   },
@@ -211,6 +208,9 @@
   },
   "tryFitWindowSizeToImage": {
     "message": "팝업 너비를 사진 종횡비에 맞추려 시도"
+  },
+  "urlHint": {
+    "message": "%s 부분이 검색어로 치환됨"
   },
   "useBuiltInImageViewer": {
     "message": "브라우저 내장 사진 뷰어 사용"

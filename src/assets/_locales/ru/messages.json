@@ -134,9 +134,6 @@
   "popupHeight": {
     "message": "Высота (px)"
   },
-  "popupSearchUrl": {
-    "message": "URL поиска (%s будет заменено поисковым запросом)"
-  },
   "popupWidth": {
     "message": "Ширина (px)"
   },
@@ -211,6 +208,9 @@
   },
   "tryFitWindowSizeToImage": {
     "message": "Попробовать подогнать ширину окна под размер изображения"
+  },
+  "urlHint": {
+    "message": "%s будет заменено выделенным текстом"
   },
   "useBuiltInImageViewer": {
     "message": "Использовать встроенный в браузер просмотрщик изображений"

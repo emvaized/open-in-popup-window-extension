@@ -2,11 +2,11 @@
   "activationSettings": {
     "message": "Additional activation methods"
   },
-  "autoCloseOnlyOverlapping": {
-    "message": "Close only popups which cover the main window"
-  },
   "addOptionOpenPageInPopupWindow": {
     "message": "Add option to open page in popup window"
+  },
+  "autoCloseOnlyOverlapping": {
+    "message": "Close only popups which cover the main window"
   },
   "automationSettings": {
     "message": "Automation settings"
@@ -71,6 +71,9 @@
   "hideBrowserControls": {
     "message": "Hide browser controls (addressbar, tabbar, etc)"
   },
+  "holdClickDelay": {
+    "message": "Duration for long click (ms)"
+  },
   "imageViewer": {
     "message": "Image viewer"
   },
@@ -80,14 +83,14 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "Don't close page popup window on focus lost"
   },
-  "holdClickDelay": {
-    "message": "Duration for long click (ms)"
-  },
   "lookUpHighResImages": {
     "message": "Look up high-resolution image sources"
   },
   "minimalDragDistance": {
     "message": "Minimal drag distance (px)"
+  },
+  "modifierKey": {
+    "message": "Modifier key"
   },
   "mousePosition": {
     "message": "Mouse cursor position"
@@ -101,14 +104,11 @@
   "openByDragAndDrop": {
     "message": "Use drag and drop on empty place"
   },
-  "openByModClick": {
-    "message": "Use Modifier + Click to open in popup"
-  },
   "openByLongClick": {
     "message": "Use long click to open in popup"
   },
-  "modifierKey": {
-    "message": "Modifier key"
+  "openByModClick": {
+    "message": "Use Modifier + Click to open in popup"
   },
   "openDragAndDropUnderMouse": {
     "message": "Always open by drag and drop under mouse cursor"
@@ -136,9 +136,6 @@
   },
   "popupHeight": {
     "message": "Height (px)"
-  },
-  "popupSearchUrl": {
-    "message": "Search url (%s will be replaced with the search query)"
   },
   "popupWidth": {
     "message": "Width (px)"
@@ -203,14 +200,17 @@
   "topRight": {
     "message": "Top right"
   },
-  "translateInPopupWindow": {
-    "message": "Translate in Popup Window"
-  },
   "translateInPopupEnabled": {
     "message": "Option to translate selection in popup enabled"
   },
+  "translateInPopupWindow": {
+    "message": "Translate in Popup Window"
+  },
   "tryFitWindowSizeToImage": {
     "message": "Try to fit popup width to image aspect ratio"
+  },
+  "urlHint": {
+    "message": "%s will be replaced with the selected text"
   },
   "useBuiltInImageViewer": {
     "message": "Use browser's built-in image viewer"

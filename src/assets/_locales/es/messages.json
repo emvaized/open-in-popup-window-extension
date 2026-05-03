@@ -137,9 +137,6 @@
   "popupHeight": {
     "message": "Altura (px)"
   },
-  "popupSearchUrl": {
-    "message": "URL de búsqueda (%s se reemplazará con la consulta de búsqueda)"
-  },
   "popupWidth": {
     "message": "Anchura (px)"
   },
@@ -211,6 +208,9 @@
   },
   "tryFitWindowSizeToImage": {
     "message": "Intente ajustar el ancho de la ventana emergente a la relación de aspecto de la imagen"
+  },
+  "urlHint": {
+    "message": "%s se reemplazará con la consulta de búsqueda"
   },
   "useBuiltInImageViewer": {
     "message": "Utilice el visor de imágenes integrado del navegador"

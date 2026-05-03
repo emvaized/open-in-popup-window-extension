@@ -93,6 +93,8 @@ function setTranslatedLabels(){
     document.getElementById('automationSettings').innerText = chrome.i18n.getMessage('automationSettings');
     document.getElementById('openPageInPopupWindowHeader').innerText = chrome.i18n.getMessage('openPageInPopupWindow');
     // document.getElementById('dragAndDropSettings').innerText = chrome.i18n.getMessage('dragAndDropSettings');
+    document.getElementById("popupSearchUrl").title = chrome.i18n.getMessage('urlHint');
+    document.getElementById("popupTranslateUrl").title = chrome.i18n.getMessage('urlHint');
 }
 
 function updateDisabledOptions() {

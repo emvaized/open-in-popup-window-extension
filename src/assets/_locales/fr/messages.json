@@ -134,9 +134,6 @@
   "popupHeight": {
     "message": "Hauteur (px)"
   },
-  "popupSearchUrl": {
-    "message": "URL de recherche (%s sera remplacé par la requête)"
-  },
   "popupWidth": {
     "message": "Largeur (px)"
   },
@@ -211,6 +208,9 @@
   },
   "tryFitWindowSizeToImage": {
     "message": "Essayer d’adapter la largeur de la popup au ratio de l’image"
+  },
+  "urlHint": {
+    "message": "%s sera remplacé par la requête"
   },
   "useBuiltInImageViewer": {
     "message": "Utiliser la visionneuse d’images intégrée du navigateur"
