@@ -37,6 +37,11 @@ const searchInPopupWindowContextMenuItem = {
     "title": chrome.i18n.getMessage('searchInPopupWindow'),
     "contexts": ["selection"]
 }
+const translateInPopupWindowContextMenuItem = {
+    "id": "translateInPopupWindow",
+    "title": chrome.i18n.getMessage('translateInPopupWindow'),
+    "contexts": ["selection"]
+}
 const viewImageContextMenuItem = {
     "id": "viewInPopupWindow",
     "title": chrome.i18n.getMessage('viewInPopupWindow'),
@@ -48,6 +53,7 @@ try {
     chrome.contextMenus.create(openPageContextMenuItem);
     chrome.contextMenus.create(openInMainWindowContextMenuItem);
     chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
+    chrome.contextMenus.create(translateInPopupWindowContextMenuItem);
     chrome.contextMenus.create(viewImageContextMenuItem);
 
     /// Draft for "Open tab in popup window" in Firefox
@@ -179,34 +185,44 @@ function onContextMenuClicked(clickData, tab) {
     if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow') {
         if (tab)
             loadUserConfigs((c) => {
-                openPopupWindowForLink(clickData.pageUrl, false, false, configs.copyTabInsteadOfMoving ? undefined : tab.id, true, c);
+                openPopupWindowForLink(clickData.pageUrl, false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
             });
         return;
     }
 
     const link = clickData.menuItemId == 'searchInPopupWindow' ? 
         configs.popupSearchUrl.replace('%s', clickData.selectionText) 
-        : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
+        : clickData.menuItemId == 'translateInPopupWindow' ? 
+            configs.popupTranslateUrl.replace('%s', clickData.selectionText) 
+            : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow', undefined, undefined, undefined, undefined, false, tab ? tab : undefined);
 }
 
 /// Popups persistence
 function getPopupWindows(callback) {
-    if (openedPopupWindows) {
-        callback(openedPopupWindows);
+    const promise = new Promise((resolve) => {
+        if (openedPopupWindows) {
+            resolve(openedPopupWindows);
+        } else {
+            chrome.storage.session.get('openedPopupWindows', (result) => {
+                openedPopupWindows = new Map(result.openedPopupWindows ?? []);
+                resolve(openedPopupWindows);
+            });
+        }
+    });
+
+    if (callback) {
+        promise.then(callback);
     } else {
-        chrome.storage.session.get('openedPopupWindows', (result) => {
-            openedPopupWindows = new Map(result.openedPopupWindows ?? []);
-            callback(openedPopupWindows);
-        });
+        return promise;
     }
 }
 const savePopupIds = (popups) => chrome.storage.session.set({ 'openedPopupWindows': [...popups.entries()] });
 const addPopupWindow = (id, data) => getPopupWindows((popups) => { popups.set(id, data ?? {}); savePopupIds(popups); });
 const removePopupId = (id, popups) => { popups.delete(id); savePopupIds(popups); }
 
-const isNewTabUrl = (url) => url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' 
-    || url == 'chrome://newtab/' || url == 'edge://newtab/' || url.startsWith('chrome://vivaldi-webui/startpage?');
+const isNewTabUrl = (url) => url && (url == 'about:newtab' || url == 'about:home' || url == 'about:privatebrowsing' 
+    || url == 'chrome://newtab/' || url == 'edge://newtab/' || url.startsWith('chrome://vivaldi-webui/startpage?'));
 
 
 function onWindowFocusChanged(wId){
@@ -251,13 +267,21 @@ function onWindowFocusChanged(wId){
                         for (const [popupId, popupData] of popupWindows) {
                             if (popupData.isCurrentPage && configs.keepOpenPageInPopupWindowOpen) continue;
 
-                            chrome.windows.get(popupId, {}, (pW) => {
+                            chrome.windows.get(popupId, { populate: true }, (pW) => {
                                 if (chrome.runtime.lastError || !pW) {
                                     removePopupId(popupId, popupWindows);
                                     return;
                                 }
 
                                 if (pW.state === 'minimized' || pW.alwaysOnTop) return;
+
+                                /// Check if popup window is audible, and if so, don't close it (can be enabled in options)
+                                if (configs.dontClosePlayingPopup) {
+                                    const tabs = pW.tabs || [];
+                                    if (tabs.some(t => t.audible)) return;
+                                }
+
+                                if (configs.autoCloseOnlyOverlapping && !windowsOverlap(w, pW)) return;
 
                                 chrome.windows.remove(popupId, () => {
                                     if (chrome.runtime.lastError) {
@@ -268,7 +292,7 @@ function onWindowFocusChanged(wId){
                             });
                         }
                     });
-            }, ['addOptionOpenPageInPopupWindow', 'closeWhenFocusedInitialWindow', 'keepOpenPageInPopupWindowOpen']);
+            }, ['addOptionOpenPageInPopupWindow', 'closeWhenFocusedInitialWindow', 'keepOpenPageInPopupWindowOpen', 'dontClosePlayingPopup']);
         },
     );
 }
@@ -287,7 +311,7 @@ function onWindowCreated(w){
                     if (tabs.length == 1){
                         const tab = tabs[0];
                         if (isNewTabUrl(tab.url) || isNewTabUrl(tab.pendingUrl)) return;
-                        openPopupWindowForLink(undefined, false, false, tab.id, false, c, true);  
+                        openPopupWindowForLink(undefined, false, false, tab, false, c, true);  
                     } 
                 })
     })   
@@ -313,7 +337,7 @@ function onTabCreated(newTab){
                         const newTabUrl = newTab.url || newTab.pendingUrl;
                         if (isNewTabUrl(newTabUrl)) return;
 
-                        openPopupWindowForLink(newTab.url, false, false, newTab.id, false, undefined, true, openerTab);
+                        openPopupWindowForLink(newTab.url, false, false, newTab, false, undefined, true, openerTab);
                     } 
                 }).catch((e) => {});
         }, ['reopenAutoCreatedTabAsPopup', 'reopenAutoCreatedTabsOnlyPinned']) 
@@ -328,13 +352,15 @@ function handleKeyboardShortcuts(command, senderTab) {
         openPopupWindowForLink(senderTab.url, false, false, undefined, true);
     } else if (command === "open-search-in-popup-window") {
         openSearchPopup(senderTab);
+    }else if (command === "translate-in-popup-window") {
+        openTranslatePopup(senderTab);
     }
 }
 
 /*** Service functions */
 
-function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTab) {
-    loadUserConfigs(function(){
+function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, isCurrentPage = false, cfg, forceFallbackLocation = false, senderTab) {
+    loadUserConfigs(async function(){
         /* 
             This logic was created in order to counter MacOS behavior,
             where popup windows could not be opened above the fullscreen window.
@@ -356,6 +382,61 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy
 
         /// Don't open popup if it's for image viewer and the option is disabled
         if (isViewer && !configs.viewInPopupEnabled) return;
+
+        /// Determine URL to open in popup
+        const popupUrl = isViewer ? 
+                    (configs.useBuiltInImageViewer ? link :
+                        chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
+                    : link ?? (textSelection ? 
+                        (configs.popupSearchUrl.replace('%s', textSelection))
+                        : 'about:blank');
+
+        /// Reuse existing popup window if the option is enabled and there's already one open
+        if (configs.reuseExistingPopup) {
+            let popupWindows = await getPopupWindows();
+            if (popupWindows.size > 0) {
+                const firstPopup = popupWindows.entries().next().value;
+                const popupId = firstPopup[0];
+
+                const popupW = await chrome.windows.get(popupId, { populate: true });
+                if (!chrome.runtime.lastError && popupW) {
+                    const firstTab = popupW && popupW.tabs && popupW.tabs[0];
+                    let shouldReuse = true;
+
+                    if (configs.reusePopupOnlyIfNoOverlap){
+                        const normalWindows = await chrome.windows.getAll({ windowTypes: ['normal'] });
+                        let popupOverlapsNormalWindow = false;
+                        for (const w of normalWindows) {
+                            if (windowsOverlap(w, popupW)) {
+                                popupOverlapsNormalWindow = true;
+                                break;
+                            }
+                        }
+                        if (popupOverlapsNormalWindow) shouldReuse = false;
+                    }
+
+                    if (shouldReuse){
+                        if (tabToCopy) {
+                            let url = tabToCopy.url || tabToCopy.pendingUrl;
+                            if (url && !isNewTabUrl(url) && url != 'about:blank') {
+                                chrome.tabs.update(firstTab.id, { url: url }, () => {
+                                        chrome.tabs.remove(tabToCopy.id);
+                                        chrome.windows.update(popupId, { focused: true });
+                                    }
+                                );
+                                return;
+                            }
+                        } else {
+                            chrome.tabs.update(firstTab.id, { 
+                                url: popupUrl,
+                            });
+                            chrome.windows.update(popupId, { focused: true });
+                            return;
+                        }
+                    }
+                }
+            }
+        }
 
         /// Calculate popup size
         let height, width;
@@ -494,15 +575,10 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy
                 'top': dy, 'left': dx
             };
 
-            if (tabIdToCopy) {
-                createParams.tabId = tabIdToCopy;
+            if (tabToCopy) {
+                createParams.tabId = tabToCopy.id;
             } else {
-                createParams['url'] = isViewer ? 
-                    (configs.useBuiltInImageViewer ? link :
-                        chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
-                    : link ?? (textSelection ? 
-                        (configs.popupSearchUrl.replace('%s', textSelection))
-                        : 'about:blank');
+                createParams['url'] = popupUrl;
             }
 
             /// Preserve Firefox container
@@ -566,7 +642,6 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy
                                 if (configs.debugMode) console.log('New popup window size saved: ', w.height, 'x', w.width);
                             }
                         }
-
                     }
                     function removedListener(wId){
                         if (wId && wId > -1 && wId == popupWindow.id) {
@@ -604,10 +679,32 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabIdToCopy
 
                 /// Store new popup
                 lastPopupId = popupWindow.id;
-                addPopupWindow(popupWindow.id, { isCurrentPage: isCurrentPage })
+                addPopupWindow(popupWindow.id, {isCurrentPage: isCurrentPage});
             });
         // }, originalWindowIsFullscreen ? 600 : 0)
     })
+}
+
+function openTranslatePopup(senderTab){
+    if (!senderTab || !senderTab.id) {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            const currentTab = tabs[0];
+            if (currentTab && currentTab.id) {
+                fetchSelectedText(currentTab, (selectedText) => translateSelectedText(selectedText ?? "", currentTab));
+            } else {
+                translateSelectedText('', undefined);
+            }
+        });
+    } else {
+        fetchSelectedText(senderTab, (selectedText) => translateSelectedText(selectedText ?? "", senderTab));
+    }
+}
+
+function translateSelectedText(selectedText, senderTab) {
+    loadUserConfigs((c) => {
+        const link = configs.popupTranslateUrl.replace('%s', selectedText);
+        openPopupWindowForLink(link, false, false, undefined, undefined, undefined, undefined, senderTab);
+    });
 }
 
 function openSearchPopup(senderTab){
@@ -645,7 +742,7 @@ function searchSelectedText(selectedText, senderTab) {
     loadUserConfigs((c) => {
         const link = configs.popupSearchUrl.replace('%s', selectedText);
         openPopupWindowForLink(link, false, false, undefined, undefined, undefined, undefined, senderTab);
-    }, ['popupSearchUrl']);
+    });
 }
 
 function moveTabToRegularWindow(tab, shouldFocusTab = true){
@@ -692,6 +789,15 @@ function moveTabToRegularWindow(tab, shouldFocusTab = true){
     );
 }
 
+function windowsOverlap(a, b, tolerance = 45) {
+  return (
+    a.left + tolerance < b.left + b.width &&
+    a.left + a.width - tolerance > b.left &&
+    a.top + tolerance < b.top + b.height &&
+    a.top + a.height - tolerance > b.top
+  );
+}
+
 /// Toolbar icon click action
 function onToolbarIconClicked(senderTab) {
     loadUserConfigs((c) => {
@@ -701,6 +807,9 @@ function onToolbarIconClicked(senderTab) {
             } break;
             case 'searchInPopupWindow': {
                 openSearchPopup(senderTab);
+            } break;
+            case 'translateInPopupWindow': {
+                openTranslatePopup(senderTab);
             } break;
             default: return;
         }
@@ -717,6 +826,10 @@ function setToolbarIconClickAction(){
             chrome.action.setPopup({ popup: "" });
             chrome.action.setTitle({ title: chrome.i18n.getMessage('searchInPopupWindow') });
         } break;
+        case 'translateInPopupWindow': {
+            chrome.action.setPopup({ popup: "" });
+            chrome.action.setTitle({ title: chrome.i18n.getMessage('translateInPopupWindow') });
+        } break;
         default: {chrome.i18n.getMessage('searchInPopupWindow')
             chrome.action.setPopup({ popup: "options/options.html" });
             chrome.action.setTitle({ title: chrome.i18n.getMessage('showExtensionSettings') + ' (Open in Popup Window)' });
@@ -726,6 +839,7 @@ function setToolbarIconClickAction(){
 
 function updateContextMenuVisibility() {
     chrome.contextMenus.update("searchInPopupWindow", {"visible": configs.searchInPopupEnabled });
+    chrome.contextMenus.update("translateInPopupWindow", {"visible": configs.translateInPopupEnabled });
     chrome.contextMenus.update("viewInPopupWindow", {"visible": configs.viewInPopupEnabled });
     chrome.contextMenus.update("openPageInPopupWindow", {"visible": configs.addOptionOpenPageInPopupWindow });
 }

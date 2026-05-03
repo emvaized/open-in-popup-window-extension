@@ -3,9 +3,11 @@ const configs = {
     'hideBrowserControls': true,
     'popupHeight': 800,
     'popupWidth': 600,
-    'searchInPopupEnabled': true,
     'viewInPopupEnabled': true,
+    'searchInPopupEnabled': true,
+    'translateInPopupEnabled': false,
     'popupSearchUrl': 'https://www.google.com/search?q=%s',
+    'popupTranslateUrl': 'https://translate.google.com/?sl=auto&text=%s&op=translate',
     'openByDragAndDrop': false,
     'minimalDragDistance': 50,
     'tryFitWindowSizeToImage': true,
@@ -37,6 +39,10 @@ const configs = {
     'longClickButton': '0', /// possible: 0 for left, 1 for middle click
     'holdClickDelay': 600,
     'lookUpHighResImages': true,
+    'dontClosePlayingPopup': true,
+    'autoCloseOnlyOverlapping': false,
+    'reuseExistingPopup': false,
+    'reusePopupOnlyIfNoOverlap': false,
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 

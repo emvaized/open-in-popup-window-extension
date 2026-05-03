@@ -69,6 +69,12 @@
         "default": "Alt+S"
       },
       "description": "__MSG_openSearchPopupWindowHotkeyDescription__"
+    },
+    "translate-in-popup-window": {
+      "suggested_key": {
+        "default": "Alt+T"
+      },
+      "description": "__MSG_openTranslatePopupWindowHotkeyDescription__"
     }
   }
 }

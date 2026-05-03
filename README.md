@@ -16,7 +16,7 @@ This extension is intended to be used as an analogue of <i>Safari Link Preview</
 
 <h4>Features</h4>
 
-- [x] Open links, images and search selected text in a popup window
+- [x] Open links, images, search and translate selected text in a popup window
 - [x] Configurable popup height, width and default position on the screen
 - [x] Several ways to open in popup window: 
     - [x] Context menu

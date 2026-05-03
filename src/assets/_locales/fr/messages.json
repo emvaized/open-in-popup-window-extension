@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Ajouter une option pour ouvrir la page dans une fenêtre popup"
   },
+  "autoCloseOnlyOverlapping": {
+    "message": "Fermer uniquement les fenêtres qui recouvrent la fenêtre principale"
+  },
   "automationSettings": {
     "message": "Paramètres d’automatisation"
   },
@@ -24,7 +27,7 @@
     "message": "Fermer la popup lorsque la fenêtre principale est active"
   },
   "closeWhenFocusedInitialWindowHint": {
-    "message": "La fenêtre popup ne sera pas fermée si elle est minimisée ou définie comme toujours au premier plan"
+    "message": "La popup ne sera pas fermée si elle est minimisée, en cours de lecture audio ou définie comme toujours au premier plan"
   },
   "copyTabInsteadOfMoving": {
     "message": "Copier l’onglet au lieu de le déplacer vers une fenêtre popup"
@@ -68,6 +71,9 @@
   "hideBrowserControls": {
     "message": "Masquer les contrôles du navigateur (barre d’adresse, onglets, etc.)"
   },
+  "holdClickDelay": {
+    "message": "Durée du clic long (ms)"
+  },
   "imageViewer": {
     "message": "Visionneuse d’images"
   },
@@ -77,14 +83,14 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "Ne pas fermer la popup de la page lors de la perte de focus"
   },
-  "holdClickDelay": {
-    "message": "Durée du clic long (ms)"
-  },
   "lookUpHighResImages": {
     "message": "Rechercher des images en haute résolution"
   },
   "minimalDragDistance": {
     "message": "Distance minimale de glissement (px)"
+  },
+  "modifierKey": {
+    "message": "Touche de modification"
   },
   "mousePosition": {
     "message": "Position du curseur"
@@ -98,14 +104,11 @@
   "openByDragAndDrop": {
     "message": "Utiliser le glisser-déposer sur un espace vide"
   },
-  "openByModClick": {
-    "message": "Utiliser Modificateur + clic pour ouvrir dans une popup"
-  },
   "openByLongClick": {
     "message": "Utiliser un clic long pour ouvrir dans une popup"
   },
-  "modifierKey": {
-    "message": "Touche de modification"
+  "openByModClick": {
+    "message": "Utiliser Modificateur + clic pour ouvrir dans une popup"
   },
   "openDragAndDropUnderMouse": {
     "message": "Toujours ouvrir par glisser-déposer sous le curseur"
@@ -130,9 +133,6 @@
   },
   "popupHeight": {
     "message": "Hauteur (px)"
-  },
-  "popupSearchUrl": {
-    "message": "URL de recherche (%s sera remplacé par la requête)"
   },
   "popupWidth": {
     "message": "Largeur (px)"
@@ -160,6 +160,12 @@
   },
   "reopenSingleTabWindowAsPopupHint": {
     "message": "Avec cette option activée, toute nouvelle fenêtre du navigateur avec un seul onglet sera automatiquement rouverte comme une popup. Cela permet à l’extension de créer des popups pour des liens auxquels elle n’a normalement pas accès (par exemple, la barre de favoris). Mais cela peut entraîner des comportements indésirables si vous ouvrez souvent de nombreuses fenêtres, donc utilisez avec prudence !"
+  },
+  "reuseExistingPopup": {
+    "message": "Réutiliser la fenêtre popup existante au lieu d’en ouvrir une nouvelle"
+  },
+  "reusePopupOnlyIfNoOverlap": {
+    "message": "À condition qu'il ne recouvre pas la fenêtre ouverte"
   },
   "searchInPopupEnabled": {
     "message": "Activer l’option de recherche dans une popup"
@@ -191,8 +197,20 @@
   "topRight": {
     "message": "En haut à droite"
   },
+  "translateInPopupEnabled": {
+    "message": "Activer l’option de traduction du texte sélectionné dans une popup"
+  },
+  "translateInPopupWindow": {
+    "message": "Traduire dans une fenêtre popup"
+  },
+  "translateInPopupWindowHotkeyDescription": {
+    "message": "Traduire le texte sélectionné dans une fenêtre popup. Ouvre une page de traduction vide si aucun texte n’est sélectionné"
+  },
   "tryFitWindowSizeToImage": {
     "message": "Essayer d’adapter la largeur de la popup au ratio de l’image"
+  },
+  "urlHint": {
+    "message": "%s sera remplacé par la requête"
   },
   "useBuiltInImageViewer": {
     "message": "Utiliser la visionneuse d’images intégrée du navigateur"

@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "팝업 창에서 페이지 열기 옵션 추가"
   },
+  "autoCloseOnlyOverlapping": {
+    "message": "메인 창을 가리는 창만 닫기"
+  },
   "automationSettings": {
     "message": "자동화 설정"
   },
@@ -24,7 +27,7 @@
     "message": "일반 창에 포커스하면 팝업 창 닫기"
   },
   "closeWhenFocusedInitialWindowHint": {
-    "message": "팝업 창을 최소화했거나 항상 위로 고정한 경우 닫히지 않습니다"
+    "message": "팝업 창이 최소화되어 있거나, 오디오를 재생 중이거나, 항상 위에 설정된 경우에는 팝업 창이 닫히지 않습니다"
   },
   "copyTabInsteadOfMoving": {
     "message": "탭을 팝업 창으로 이동하는 대신 복사"
@@ -86,6 +89,9 @@
   "minimalDragDistance": {
     "message": "최소 드래그 거리 (px)"
   },
+  "modifierKey": {
+    "message": "클릭에 사용할 조합 키"
+  },
   "mousePosition": {
     "message": "마우스 커서 위치"
   },
@@ -98,14 +104,11 @@
   "openByDragAndDrop": {
     "message": "빈 곳으로 드래그해 팝업 창에서 열기"
   },
-  "openByModClick": {
-    "message": "조합 키 + 클릭으로 팝업 창에서 열기"
-  },
   "openByLongClick": {
     "message": "롱 클릭으로 팝업 창에서 열기"
   },
-  "modifierKey": {
-    "message": "클릭에 사용할 조합 키"
+  "openByModClick": {
+    "message": "조합 키 + 클릭으로 팝업 창에서 열기"
   },
   "openDragAndDropUnderMouse": {
     "message": "드래그 시 항상 마우스 커서 위치에서 열기"
@@ -130,9 +133,6 @@
   },
   "popupHeight": {
     "message": "높이 (px)"
-  },
-  "popupSearchUrl": {
-    "message": "검색 URL (%s 부분이 검색어로 치환됨)"
   },
   "popupWidth": {
     "message": "너비 (px)"
@@ -160,6 +160,12 @@
   },
   "reopenSingleTabWindowAsPopupHint": {
     "message": "설정을 켠 경우, 탭이 하나만 열린 새 브라우저 창은 모두 자동으로 팝업 창으로 다시 열립니다. 이는 확장이 접근할 수 없는 (북마크 바 등의) 링크를 팝업으로 열 수 있도록 합니다. 하지만 브라우저 창을 많이 열어 두신 경우 원치 않는 현상이 발생할 수 있으니, 주의해 사용하시기 바랍니다!"
+  },
+  "reuseExistingPopup": {
+    "message": "새 창을 여는 대신 기존 팝업 창 재사용"
+  },
+  "reusePopupOnlyIfNoOverlap": {
+    "message": "일반 창과 겹치지 않는 경우에만 기존 팝업 창 재사용"
   },
   "searchInPopupEnabled": {
     "message": "팝업 창에서 선택 항목 검색 옵션 켜기"
@@ -191,8 +197,20 @@
   "topRight": {
     "message": "우상단"
   },
+  "translateInPopupEnabled": {
+    "message": "팝업 창에서 선택한 텍스트 번역 옵션 활성화"
+  },
+  "translateInPopupWindow": {
+    "message": "팝업 창에서 번역"
+  },
+  "translateInPopupWindowHotkeyDescription": {
+    "message": "팝업 창에서 선택한 텍스트 번역. 선택한 텍스트가 없으면 빈 번역 페이지를 엽니다"
+  },
   "tryFitWindowSizeToImage": {
     "message": "팝업 너비를 사진 종횡비에 맞추려 시도"
+  },
+  "urlHint": {
+    "message": "%s 부분이 검색어로 치환됨"
   },
   "useBuiltInImageViewer": {
     "message": "브라우저 내장 사진 뷰어 사용"

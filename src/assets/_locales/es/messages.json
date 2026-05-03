@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Agregar opción para abrir la página en una ventana emergente"
   },
+  "autoCloseOnlyOverlapping": {
+    "message": "Cerrar solo las ventanas que se superponen a la ventana principal"
+  },
   "automationSettings": {
     "message": "Configuración de automatización"
   },
@@ -24,7 +27,7 @@
     "message": "Cerrar la ventana emergente cuando la ventana normal obtiene el foco"
   },
   "closeWhenFocusedInitialWindowHint": {
-    "message": "La ventana emergente no se cerrará si se ha minimizado o se ha configurado para que siempre esté visible"
+    "message": "La ventana emergente no se cerrará si está minimizada, reproduciendo audio o configurada como siempre en la parte superior"
   },
   "copyTabInsteadOfMoving": {
     "message": "Copiar pestaña en lugar de moverla a una ventana emergente"
@@ -86,6 +89,9 @@
   "minimalDragDistance": {
     "message": "Distancia mínima de arrastre (px)"
   },
+  "modifierKey": {
+    "message": "Tecla modificadora"
+  },
   "mousePosition": {
     "message": "Posición del cursor del ratón"
   },
@@ -98,14 +104,11 @@
   "openByDragAndDrop": {
     "message": "Arrastra y suelta en un espacio vacío"
   },
-  "openByModClick": {
-    "message": "Utilice Modificador + Clic para abrir en ventana emergente"
-  },
   "openByLongClick": {
     "message": "Utilice un clic largo para abrir en ventana emergente"
   },
-  "modifierKey": {
-    "message": "Tecla modificadora"
+  "openByModClick": {
+    "message": "Utilice Modificador + Clic para abrir en ventana emergente"
   },
   "openDragAndDropUnderMouse": {
     "message": "Abrir siempre arrastrando y soltando bajo el cursor del ratón"
@@ -134,9 +137,6 @@
   "popupHeight": {
     "message": "Altura (px)"
   },
-  "popupSearchUrl": {
-    "message": "URL de búsqueda (%s se reemplazará con la consulta de búsqueda)"
-  },
   "popupWidth": {
     "message": "Anchura (px)"
   },
@@ -160,6 +160,12 @@
   },
   "reopenSingleTabWindowAsPopupHint": {
     "message": "Con esta opción activada, cualquier ventana nueva del navegador con una sola pestaña se reabrirá automáticamente como ventana emergente. Permite a la extensión crear ventanas emergentes para enlaces a los que normalmente no puede acceder (por ejemplo, la barra de marcadores). Pero puede conducir a un comportamiento no deseado si sueles abrir muchas ventanas del navegador, ¡así que úsalo con precaución!"
+  },
+  "reuseExistingPopup": {
+    "message": "Reutilizar la ventana emergente existente en lugar de abrir una nueva"
+  },
+  "reusePopupOnlyIfNoOverlap": {
+    "message": "Solo si no se superpone a la ventana normal"
   },
   "searchInPopupEnabled": {
     "message": "Opción para buscar selección en ventana emergente habilitada"
@@ -191,8 +197,20 @@
   "topRight": {
     "message": "Arriba a la derecha"
   },
+  "translateInPopupEnabled": {
+    "message": "Habilitar opción de traducción de texto seleccionado en ventana emergente"
+  },
+  "translateInPopupWindow": {
+    "message": "Traducir en ventana emergente"
+  },
+  "translateInPopupWindowHotkeyDescription": {
+    "message": "Traducir el texto seleccionado en una ventana emergente. Abre una página de traducción vacía si no hay texto seleccionado"
+  },
   "tryFitWindowSizeToImage": {
     "message": "Intente ajustar el ancho de la ventana emergente a la relación de aspecto de la imagen"
+  },
+  "urlHint": {
+    "message": "%s se reemplazará con la consulta de búsqueda"
   },
   "useBuiltInImageViewer": {
     "message": "Utilice el visor de imágenes integrado del navegador"

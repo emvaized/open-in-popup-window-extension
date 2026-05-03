@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Add option to open page in popup window"
   },
+  "autoCloseOnlyOverlapping": {
+    "message": "Close only popups which cover the main window"
+  },
   "automationSettings": {
     "message": "Automation settings"
   },
@@ -24,7 +27,7 @@
     "message": "Close popup when normal window is focused"
   },
   "closeWhenFocusedInitialWindowHint": {
-    "message": "Popup window will not be closed if it was minimized or set as always on top"
+    "message": "Popup window will not be closed if it is minimized, playing audio or set as always on top"
   },
   "copyTabInsteadOfMoving": {
     "message": "Copy tab instead of moving it to a popup window"
@@ -68,6 +71,9 @@
   "hideBrowserControls": {
     "message": "Hide browser controls (addressbar, tabbar, etc)"
   },
+  "holdClickDelay": {
+    "message": "Duration for long click (ms)"
+  },
   "imageViewer": {
     "message": "Image viewer"
   },
@@ -77,14 +83,14 @@
   "keepOpenPageInPopupWindowOpen": {
     "message": "Don't close page popup window on focus lost"
   },
-  "holdClickDelay": {
-    "message": "Duration for long click (ms)"
-  },
   "lookUpHighResImages": {
     "message": "Look up high-resolution image sources"
   },
   "minimalDragDistance": {
     "message": "Minimal drag distance (px)"
+  },
+  "modifierKey": {
+    "message": "Modifier key"
   },
   "mousePosition": {
     "message": "Mouse cursor position"
@@ -98,14 +104,11 @@
   "openByDragAndDrop": {
     "message": "Use drag and drop on empty place"
   },
-  "openByModClick": {
-    "message": "Use Modifier + Click to open in popup"
-  },
   "openByLongClick": {
     "message": "Use long click to open in popup"
   },
-  "modifierKey": {
-    "message": "Modifier key"
+  "openByModClick": {
+    "message": "Use Modifier + Click to open in popup"
   },
   "openDragAndDropUnderMouse": {
     "message": "Always open by drag and drop under mouse cursor"
@@ -128,11 +131,11 @@
   "openSearchPopupWindowHotkeyDescription": {
     "message": "Search the selected text in a popup window. Opens empty search page if no text is selected"
   },
+  "openTranslatePopupWindowHotkeyDescription": {
+    "message": "Translate the selected text in a popup window. Opens empty translation page if no text is selected"
+  },
   "popupHeight": {
     "message": "Height (px)"
-  },
-  "popupSearchUrl": {
-    "message": "Search url (%s will be replaced with the search query)"
   },
   "popupWidth": {
     "message": "Width (px)"
@@ -160,6 +163,12 @@
   },
   "reopenSingleTabWindowAsPopupHint": {
     "message": "With this option enabled, any new browser window with only one tab will be automatically reopened as a popup window. It allows extension to create popup for links which it usually can't access (for example, bookmarks bar). But it can lead to unwanted behavior if you usually open many browser windows, so use with caution!"
+  },
+  "reuseExistingPopup": {
+    "message": "Reuse existing popup instead of opening a new one"
+  },
+  "reusePopupOnlyIfNoOverlap": {
+    "message": "Reuse existing popup only if it doesn't overlap normal window"
   },
   "searchInPopupEnabled": {
     "message": "Option to search selection in popup enabled"
@@ -191,8 +200,17 @@
   "topRight": {
     "message": "Top right"
   },
+  "translateInPopupEnabled": {
+    "message": "Option to translate selection in popup enabled"
+  },
+  "translateInPopupWindow": {
+    "message": "Translate in Popup Window"
+  },
   "tryFitWindowSizeToImage": {
     "message": "Try to fit popup width to image aspect ratio"
+  },
+  "urlHint": {
+    "message": "%s will be replaced with the selected text"
   },
   "useBuiltInImageViewer": {
     "message": "Use browser's built-in image viewer"
