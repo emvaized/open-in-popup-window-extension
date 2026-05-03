@@ -120,7 +120,7 @@ function dragStartListener(e){
     document.addEventListener('dragenter', dragOverListener, true);
 }
 function dragEndListener(e){
-    if (e.dataTransfer.dropEffect == 'none' || e.dataTransfer.dropEffect == 'link') {
+    if ((e.dataTransfer.dropEffect == 'none' || e.dataTransfer.dropEffect == 'link') && e.clientX <= document.documentElement.clientWidth) {
         if (e.dataTransfer.mozUserCancelled) return; /// use Esc key to cancel drag on Firefox
         if (
             Math.abs(e.clientX - dragStartDx) > configs.minimalDragDistance ||
