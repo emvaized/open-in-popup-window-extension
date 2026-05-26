@@ -168,7 +168,7 @@ function onMessageReceived(request, sender, sendResponse) {
         // if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
         // if (request.type == 'modClick' && configs.openByModClick == false) return;
 
-        const isViewer = request.isViewer ?? false;
+        const isViewer = request.isViewer || (isImageUrl(request.link) && configs.viewInPopupEnabled);
         openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, undefined, false, sender.tab ? sender.tab : undefined); 
     }
 }
@@ -796,6 +796,10 @@ function windowsOverlap(a, b, tolerance = 45) {
     a.top + tolerance < b.top + b.height &&
     a.top + a.height - tolerance > b.top
   );
+}
+
+function isImageUrl(url) {
+    return(url.match(/\.(jpeg|jpg|gif|png|bmp|webp|svg)(\?.*)?$/i) != null);
 }
 
 /// Toolbar icon click action
