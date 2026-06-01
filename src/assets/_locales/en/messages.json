@@ -185,6 +185,9 @@
   "showExtensionSettings": {
     "message": "Show extension settings"
   },
+  "textDragAction": {
+    "message": "Action for the selected text"
+  },
   "textSelectionHeader": {
     "message": "Text selection"
   },

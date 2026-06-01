@@ -388,7 +388,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                     (configs.useBuiltInImageViewer ? link :
                         chrome.runtime.getURL('viewer/viewer.html') + '?src=' + link) 
                     : link ?? (textSelection ? 
-                        (configs.popupSearchUrl.replace('%s', textSelection))
+                        (configs.textDragAction === 'searchInPopupWindow' ? configs.popupSearchUrl : configs.popupTranslateUrl).replace('%s', textSelection)
                         : 'about:blank');
 
         /// Reuse existing popup window if the option is enabled and there's already one open

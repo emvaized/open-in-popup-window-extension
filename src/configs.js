@@ -43,6 +43,7 @@ const configs = {
     'autoCloseOnlyOverlapping': false,
     'reuseExistingPopup': false,
     'reusePopupOnlyIfNoOverlap': false,
+    'textDragAction': 'searchInPopupWindow', /// possible values: searchInPopupWindow,translateInPopupWindow
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }
 

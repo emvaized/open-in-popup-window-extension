@@ -197,6 +197,9 @@
   "topRight": {
     "message": "우상단"
   },
+  "textDragAction": {
+    "message": "선택한 텍스트에 대한 동작"
+  },
   "translateInPopupEnabled": {
     "message": "팝업 창에서 선택한 텍스트 번역 옵션 활성화"
   },

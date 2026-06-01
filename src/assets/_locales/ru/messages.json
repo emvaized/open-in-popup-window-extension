@@ -185,6 +185,9 @@
   "textSelectionHeader": {
     "message": "Выделение текста"
   },
+  "textDragAction": {
+    "message": "Действие для выделенного текста"
+  },
   "toolbarIconClickAction": {
     "message": "При клике на иконку расширения"
   },

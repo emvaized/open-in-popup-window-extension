@@ -197,6 +197,9 @@
   "topRight": {
     "message": "En haut à droite"
   },
+  "textDragAction": {
+    "message": "Action pour le texte sélectionné"
+  },
   "translateInPopupEnabled": {
     "message": "Activer l’option de traduction du texte sélectionné dans une popup"
   },

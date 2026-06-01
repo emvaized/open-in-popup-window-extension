@@ -182,6 +182,9 @@
   "showExtensionSettings": {
     "message": "Mostrar configuración"
   },
+  "textDragAction": {
+    "message": "Acción para el texto seleccionado"
+  },
   "textSelectionHeader": {
     "message": "Selección de texto"
   },
