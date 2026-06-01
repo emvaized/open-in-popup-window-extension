@@ -168,7 +168,7 @@ function onMessageReceived(request, sender, sendResponse) {
         // if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
         // if (request.type == 'modClick' && configs.openByModClick == false) return;
 
-        const isViewer = request.isViewer || (isImageUrl(request.link) && configs.viewInPopupEnabled);
+        const isViewer = request.isViewer || (request.link && isImageUrl(request.link) && configs.viewInPopupEnabled);
         openPopupWindowForLink(request.link, isViewer, request.type == 'drag', false, false, undefined, false, sender.tab ? sender.tab : undefined); 
     }
 }
