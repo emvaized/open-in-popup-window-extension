@@ -47,6 +47,9 @@
   "dragAndDropSettings": {
     "message": "Paramètres du glisser-déposer"
   },
+  "enableOpenTabInPopupWindow": {
+    "message": "Activer l’option pour ouvrir les onglets dans des fenêtres popup"
+  },
   "escKeyClosesPopup": {
     "message": "Fermer la popup avec la touche Échap"
   },

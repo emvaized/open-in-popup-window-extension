@@ -47,6 +47,9 @@
   "dragAndDropSettings": {
     "message": "Настройки перетаскивания"
   },
+  "enableOpenTabInPopupWindow": {
+    "message": "Включить опцию открытия вкладок во всплыв. окне"
+  },
   "escKeyClosesPopup": {
     "message": "Закрывать всплывающее окно клавишей Escape"
   },

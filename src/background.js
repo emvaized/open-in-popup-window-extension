@@ -57,14 +57,14 @@ try {
     chrome.contextMenus.create(viewImageContextMenuItem);
 
     /// Draft for "Open tab in popup window" in Firefox
-    // if (navigator.userAgent.indexOf("Firefox") > -1){
-    //     const openTabInPopupWindow = {
-    //         "id": "openTabInPopupWindow",
-    //         "title": chrome.i18n.getMessage('openPageInPopupWindow'),
-    //         "contexts": ["tab"]
-    //     } 
-    //     chrome.contextMenus.create(openTabInPopupWindow);
-    // }
+    if (navigator.userAgent.indexOf("Firefox") > -1){
+        const openTabInPopupWindow = {
+            "id": "openTabInPopupWindow",
+            "title": chrome.i18n.getMessage('openPageInPopupWindow'),
+            "contexts": ["tab"]
+        } 
+        chrome.contextMenus.create(openTabInPopupWindow);
+    }
 } catch(e){}
 
 
@@ -846,4 +846,5 @@ function updateContextMenuVisibility() {
     chrome.contextMenus.update("translateInPopupWindow", {"visible": configs.translateInPopupEnabled });
     chrome.contextMenus.update("viewInPopupWindow", {"visible": configs.viewInPopupEnabled });
     chrome.contextMenus.update("openPageInPopupWindow", {"visible": configs.addOptionOpenPageInPopupWindow });
+    chrome.contextMenus.update("openTabInPopupWindow", {"visible": configs.enableOpenTabInPopupWindow && navigator.userAgent.indexOf("Firefox") > -1 });
 }

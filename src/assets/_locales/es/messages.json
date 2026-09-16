@@ -47,6 +47,9 @@
   "dragAndDropSettings": {
     "message": "Configuración de arrastrar y soltar"
   },
+  "enableOpenTabInPopupWindow": {
+    "message": "Habilitar opción para abrir pestañas en ventanas emergentes"
+  },
   "escKeyClosesPopup": {
     "message": "Cerrar ventana emergente con la tecla Escape"
   },

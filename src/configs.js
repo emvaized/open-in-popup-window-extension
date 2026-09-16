@@ -25,6 +25,7 @@ const configs = {
     'debugMode': false,
     'openDragAndDropUnderMouse': true,
     'addOptionOpenPageInPopupWindow': true,
+    'enableOpenTabInPopupWindow': true,
     'keepOpenPageInPopupWindowOpen': true,
     'screenWidth': 1920,
     'screenHeight': 1080,

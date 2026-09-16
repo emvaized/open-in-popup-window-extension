@@ -47,6 +47,9 @@
   "dragAndDropSettings": {
     "message": "드래그 및 드롭 설정"
   },
+  "enableOpenTabInPopupWindow": {
+    "message": "팝업 창에서 탭 열기 옵션 활성화"
+  },
   "escKeyClosesPopup": {
     "message": "Esc 키로 팝업 창 닫기"
   },

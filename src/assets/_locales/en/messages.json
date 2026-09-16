@@ -47,6 +47,9 @@
   "dragAndDropSettings": {
     "message": "Drag and drop settings"
   },
+  "enableOpenTabInPopupWindow": {
+    "message": "Enable option to open tabs in popup windows"
+  },
   "escKeyClosesPopup": {
     "message": "Close popup window with an Escape key"
   },

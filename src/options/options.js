@@ -132,6 +132,7 @@ function updateDisabledOptions() {
         } else {
             /// Remove options that are not available in Chromium-based browsers
             // document.getElementById("showAddressbarIcon").parentNode.parentNode.remove();
+            document.getElementById("enableOpenTabInPopupWindow").parentNode.parentNode.remove();
         }
     } catch(e){}
 }
