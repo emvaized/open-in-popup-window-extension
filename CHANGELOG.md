@@ -1,3 +1,19 @@
+### 0.6.30
+#### New options
+- Added option to reuse existing popup instead of opening new one
+  - New option to prevent popups not overlapping main window from being automatically closed
+- Added option to Translate selected text in popup + hotkey (default: <kbd>Alt</kbd>+<kbd>T</kbd>)
+  - New option to change action for drag&drop of selected text (select/translate)  
+- Added option to open tabs in popup windows (_Firefox only_)
+
+#### Features
+- Prevent popups playing audio from autoclosing when focused main window
+- Open image urls in image viewer on drag or mod-click trigger, instead of as links
+
+#### Fixes
+- Fixed reopening single tab windows as popups not working in Firefox
+- Fixed drag&dropping links in MS Edge to open them in a split view triggering Open in Popup Window
+
 ### 0.6.21
 - Improved code for automatic closing of popup windows on focusing regular window
 - Fixed "Search in popup window" shortcut not grabbing selected text from page
