@@ -35,17 +35,38 @@ const openInMainWindowContextMenuItem = {
 const searchInPopupContextMenuItem = {
     "id": "searchInPopupWindow",
     "title": chrome.i18n.getMessage('searchInPopupWindow'),
-    "contexts": ["selection", "action"]
+    "contexts": ["selection"]
 }
 const translateInPopupContextMenuItem = {
     "id": "translateInPopupWindow",
     "title": chrome.i18n.getMessage('translateInPopupWindow'),
-    "contexts": ["selection", "action"]
+    "contexts": ["selection"]
 }
 const viewImageContextMenuItem = {
     "id": "viewInPopupWindow",
     "title": chrome.i18n.getMessage('viewInPopupWindow'),
     "contexts": ["image"]
+}
+/// Icon context menu items
+const iconContextSearch = {
+    "id": "iconContextSearch",
+    "title": chrome.i18n.getMessage('searchInPopupWindow'),
+    "contexts": ["action"]
+}
+const iconContextTranslate = {
+    "id": "iconContextTranslate",
+    "title": chrome.i18n.getMessage('translateInPopupWindow'),
+    "contexts": ["action"]
+}
+const iconContextOpenPage = {
+    "id": "iconContextOpenPage",
+    "title": chrome.i18n.getMessage('openPageInPopupWindow'),
+    "contexts": ["action"]
+}
+const iconContextSettings = {
+    "id": "iconContextSettings",
+    "title": chrome.i18n.getMessage('showExtensionSettings'),
+    "contexts": ["action"]
 }
 
 try {
@@ -55,6 +76,11 @@ try {
     chrome.contextMenus.create(searchInPopupContextMenuItem);
     chrome.contextMenus.create(translateInPopupContextMenuItem);
     chrome.contextMenus.create(viewImageContextMenuItem);
+
+    chrome.contextMenus.create(iconContextSearch);
+    chrome.contextMenus.create(iconContextTranslate);
+    chrome.contextMenus.create(iconContextOpenPage);
+    chrome.contextMenus.create(iconContextSettings);
 
     /// Draft for "Open tab in popup window" in Firefox
     if (navigator.userAgent.indexOf("Firefox") > -1){
@@ -182,11 +208,23 @@ function onContextMenuClicked(clickData, tab) {
         return;
     }
     
-    if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow') {
+    if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow' || clickData.menuItemId == 'iconContextOpenPage') {
         if (tab)
             loadUserConfigs((c) => {
-                openPopupWindowForLink(clickData.pageUrl, false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
+                openPopupWindowForLink(clickData.pageUrl ?? 'about:blank', false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
             });
+        return;
+    }
+
+    /// Navbar icon context menu, grabs selection from page
+    if (clickData.menuItemId == 'iconContextSearch') {
+        openSearchPopup(tab);
+        return;
+    } else if (clickData.menuItemId == 'iconContextTranslate') {
+        openTranslatePopup(tab);
+        return;
+    } else if (clickData.menuItemId == 'iconContextSettings') {
+        openExtensionPopupManually();
         return;
     }
 
@@ -743,6 +781,15 @@ function searchSelectedText(selectedText, senderTab) {
         const link = configs.popupSearchUrl.replace('%s', selectedText);
         openPopupWindowForLink(link, false, false, undefined, undefined, undefined, undefined, senderTab);
     });
+}
+
+async function openExtensionPopupManually(){
+    try {
+        await chrome.action.openPopup();
+    } catch(e) {
+        console.warn('Failed to open extension popup:', e.message);
+        chrome.runtime.openOptionsPage();
+    }
 }
 
 function moveTabToRegularWindow(tab, shouldFocusTab = true){
