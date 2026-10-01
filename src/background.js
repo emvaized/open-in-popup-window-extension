@@ -30,14 +30,14 @@ const openInMainWindowContextMenuItem = {
     "id": "openInMainWindow",
     "title": chrome.i18n.getMessage('openPageInMainWindow'),
     "visible": false,
-    "contexts": ["page_action"] /// change to "page" when should be available
+    "contexts": ["page_action"] /// change to "page" when item should be available
 }
-const searchInPopupWindowContextMenuItem = {
+const searchInPopupContextMenuItem = {
     "id": "searchInPopupWindow",
     "title": chrome.i18n.getMessage('searchInPopupWindow'),
     "contexts": ["selection", "action"]
 }
-const translateInPopupWindowContextMenuItem = {
+const translateInPopupContextMenuItem = {
     "id": "translateInPopupWindow",
     "title": chrome.i18n.getMessage('translateInPopupWindow'),
     "contexts": ["selection", "action"]
@@ -52,8 +52,8 @@ try {
     chrome.contextMenus.create(openLinkContextMenuItem);
     chrome.contextMenus.create(openPageContextMenuItem);
     chrome.contextMenus.create(openInMainWindowContextMenuItem);
-    chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
-    chrome.contextMenus.create(translateInPopupWindowContextMenuItem);
+    chrome.contextMenus.create(searchInPopupContextMenuItem);
+    chrome.contextMenus.create(translateInPopupContextMenuItem);
     chrome.contextMenus.create(viewImageContextMenuItem);
 
     /// Draft for "Open tab in popup window" in Firefox
