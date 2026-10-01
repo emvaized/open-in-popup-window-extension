@@ -134,6 +134,9 @@
   "openSearchPopupWindowHotkeyDescription": {
     "message": "Искать выделенный текст во всплывающем окне. Открывает пустую страницу поиска, если нет выделенного текста"
   },
+  "openTabInPopupWindow": {
+    "message": "Открыть вкладку во всплыв. окне"
+  },
   "popupHeight": {
     "message": "Высота (px)"
   },

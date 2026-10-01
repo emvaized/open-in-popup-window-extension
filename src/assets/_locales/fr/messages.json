@@ -134,6 +134,9 @@
   "openSearchPopupWindowHotkeyDescription": {
     "message": "Rechercher le texte sélectionné dans une fenêtre popup. Ouvre une page de recherche vide si aucun texte n’est sélectionné"
   },
+  "openTabInPopupWindow": {
+    "message": "Ouvrir l’onglet dans une fenêtre popup"
+  },
   "popupHeight": {
     "message": "Hauteur (px)"
   },

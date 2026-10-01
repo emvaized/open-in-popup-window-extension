@@ -134,6 +134,9 @@
   "openSearchPopupWindowHotkeyDescription": {
     "message": "Search the selected text in a popup window. Opens empty search page if no text is selected"
   },
+  "openTabInPopupWindow": {
+    "message": "Open Tab in Popup Window"
+  },
   "popupHeight": {
     "message": "Height (px)"
   },

@@ -137,6 +137,9 @@
   "openSearchPopupWindowHotkeyDescription": {
     "message": "Busca el texto seleccionado en una ventana emergente. Abre una página de búsqueda vacía si no hay ningún texto seleccionado."
   },
+  "openTabInPopupWindow": {
+    "message": "Abrir pestaña en ventana emergente"
+  },
   "popupHeight": {
     "message": "Altura (px)"
   },

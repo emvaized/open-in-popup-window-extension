@@ -86,7 +86,7 @@ try {
     if (navigator.userAgent.indexOf("Firefox") > -1){
         const openTabInPopupWindow = {
             "id": "openTabInPopupWindow",
-            "title": chrome.i18n.getMessage('openPageInPopupWindow'),
+            "title": chrome.i18n.getMessage('openTabInPopupWindow'),
             "contexts": ["tab"]
         } 
         chrome.contextMenus.create(openTabInPopupWindow);
