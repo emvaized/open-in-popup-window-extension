@@ -341,18 +341,18 @@ function onWindowRemoved(wId){
 
 /// Reopen new single tab windows as popups
 function onWindowCreated(w){
-    if (preventNewTabListeners) return;
+    if (preventNewTabListeners || w.type !== 'normal') return;
     
     loadUserConfigs((c) => {
-        if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
+        if (configs.reopenSingleTabWindowAsPopup)
                 chrome.tabs.query({windowId: w.id}, (tabs) => {
                     if (tabs.length == 1){
                         const tab = tabs[0];
                         if (isNewTabUrl(tab.url) || isNewTabUrl(tab.pendingUrl)) return;
-                        openPopupWindowForLink(undefined, false, false, tab, false, c, true);  
+                        openPopupWindowForLink(undefined, false, false, tab, false, undefined, true);  
                     } 
                 })
-    })   
+    }, ['reopenSingleTabWindowAsPopup'])   
 }
 
 /// Reopen tabs that were opened by other tabs
