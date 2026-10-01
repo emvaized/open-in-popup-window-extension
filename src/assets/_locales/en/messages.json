@@ -156,7 +156,7 @@
     "message": "Reopen tabs opened by page as popup windows"
   },
   "reopenAutoCreatedTabsOnlyPinned": {
-    "message": "Reopen only tabs created by pinned tabs"
+    "message": "Only tabs created by pinned tabs"
   },
   "reopenSettings": {
     "message": "Reopening settings"

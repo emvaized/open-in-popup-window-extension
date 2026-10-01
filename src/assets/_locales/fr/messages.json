@@ -156,7 +156,7 @@
     "message": "Rouvrir les onglets ouverts par la page en fenêtres popup"
   },
   "reopenAutoCreatedTabsOnlyPinned": {
-    "message": "Rouvrir uniquement les onglets créés par des onglets épinglés"
+    "message": "Seulement les onglets créés par des onglets épinglés"
   },
   "reopenSettings": {
     "message": "Paramètres de réouverture"
