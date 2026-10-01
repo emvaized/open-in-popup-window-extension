@@ -35,12 +35,12 @@ const openInMainWindowContextMenuItem = {
 const searchInPopupWindowContextMenuItem = {
     "id": "searchInPopupWindow",
     "title": chrome.i18n.getMessage('searchInPopupWindow'),
-    "contexts": ["selection"]
+    "contexts": ["selection", "action"]
 }
 const translateInPopupWindowContextMenuItem = {
     "id": "translateInPopupWindow",
     "title": chrome.i18n.getMessage('translateInPopupWindow'),
-    "contexts": ["selection"]
+    "contexts": ["selection", "action"]
 }
 const viewImageContextMenuItem = {
     "id": "viewInPopupWindow",
@@ -191,9 +191,9 @@ function onContextMenuClicked(clickData, tab) {
     }
 
     const link = clickData.menuItemId == 'searchInPopupWindow' ? 
-        configs.popupSearchUrl.replace('%s', clickData.selectionText) 
+        configs.popupSearchUrl.replace('%s', clickData.selectionText ?? '') 
         : clickData.menuItemId == 'translateInPopupWindow' ? 
-            configs.popupTranslateUrl.replace('%s', clickData.selectionText) 
+            configs.popupTranslateUrl.replace('%s', clickData.selectionText ?? '') 
             : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow', undefined, undefined, undefined, undefined, false, tab ? tab : undefined);
 }
