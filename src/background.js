@@ -211,7 +211,7 @@ function onContextMenuClicked(clickData, tab) {
     if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow' || clickData.menuItemId == 'iconContextOpenPage') {
         if (tab)
             loadUserConfigs((c) => {
-                openPopupWindowForLink(clickData.pageUrl ?? 'about:blank', false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
+                openPopupWindowForLink(clickData.pageUrl ?? tab.url ?? 'about:blank', false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
             });
         return;
     }
@@ -893,5 +893,7 @@ function updateContextMenuVisibility() {
     chrome.contextMenus.update("translateInPopupWindow", {"visible": configs.translateInPopupEnabled });
     chrome.contextMenus.update("viewInPopupWindow", {"visible": configs.viewInPopupEnabled });
     chrome.contextMenus.update("openPageInPopupWindow", {"visible": configs.addOptionOpenPageInPopupWindow });
-    chrome.contextMenus.update("openTabInPopupWindow", {"visible": configs.enableOpenTabInPopupWindow && navigator.userAgent.indexOf("Firefox") > -1 });
+    if (navigator.userAgent.indexOf("Firefox") > -1) {
+        chrome.contextMenus.update("openTabInPopupWindow", {"visible": configs.enableOpenTabInPopupWindow });
+    }
 }

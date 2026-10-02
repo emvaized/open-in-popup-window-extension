@@ -1,3 +1,14 @@
+### 0.6.31
+- Added static context menu items to the extension icon in the navigation bar. It will allow users to use them even if they disabled such actions in the page context menu. Also, it allows to open settings popup if main click action is set to something else. List of actions: 
+  - Search in popup window
+  - Translate in popup window
+  - Open page in popup window
+  - Show extension settings
+- Fixed Translate hotkey description not being translated (pun intended)
+- Small optimisations for "Reopen single tab windows as popups" feature
+- Small improvements for the options page
+- Updated translations
+
 ### 0.6.30
 #### New options
 - Added option to reuse existing popup instead of opening new one
