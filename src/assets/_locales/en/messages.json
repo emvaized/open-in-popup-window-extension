@@ -134,8 +134,8 @@
   "openSearchPopupWindowHotkeyDescription": {
     "message": "Search the selected text in a popup window. Opens empty search page if no text is selected"
   },
-  "openTranslatePopupWindowHotkeyDescription": {
-    "message": "Translate the selected text in a popup window. Opens empty translation page if no text is selected"
+  "openTabInPopupWindow": {
+    "message": "Open Tab in Popup Window"
   },
   "popupHeight": {
     "message": "Height (px)"
@@ -156,7 +156,7 @@
     "message": "Reopen tabs opened by page as popup windows"
   },
   "reopenAutoCreatedTabsOnlyPinned": {
-    "message": "Reopen only tabs created by pinned tabs"
+    "message": "Only tabs created by pinned tabs"
   },
   "reopenSettings": {
     "message": "Reopening settings"
@@ -177,7 +177,7 @@
     "message": "Option to search selection in popup enabled"
   },
   "searchInPopupWindow": {
-    "message": "Search Text in Popup Window"
+    "message": "Search in Popup Window"
   },
   "settingsTitle": {
     "message": "Settings"
@@ -211,6 +211,9 @@
   },
   "translateInPopupWindow": {
     "message": "Translate in Popup Window"
+  },
+  "translateInPopupWindowHotkeyDescription": {
+    "message": "Translate the selected text in a popup window. Opens empty translation page if no text is selected"
   },
   "tryFitWindowSizeToImage": {
     "message": "Try to fit popup width to image aspect ratio"

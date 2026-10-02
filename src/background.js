@@ -30,14 +30,14 @@ const openInMainWindowContextMenuItem = {
     "id": "openInMainWindow",
     "title": chrome.i18n.getMessage('openPageInMainWindow'),
     "visible": false,
-    "contexts": ["page_action"] /// change to "page" when should be available
+    "contexts": ["page_action"] /// change to "page" when item should be available
 }
-const searchInPopupWindowContextMenuItem = {
+const searchInPopupContextMenuItem = {
     "id": "searchInPopupWindow",
     "title": chrome.i18n.getMessage('searchInPopupWindow'),
     "contexts": ["selection"]
 }
-const translateInPopupWindowContextMenuItem = {
+const translateInPopupContextMenuItem = {
     "id": "translateInPopupWindow",
     "title": chrome.i18n.getMessage('translateInPopupWindow'),
     "contexts": ["selection"]
@@ -47,20 +47,46 @@ const viewImageContextMenuItem = {
     "title": chrome.i18n.getMessage('viewInPopupWindow'),
     "contexts": ["image"]
 }
+/// Icon context menu items
+const iconContextSearch = {
+    "id": "iconContextSearch",
+    "title": chrome.i18n.getMessage('searchInPopupWindow'),
+    "contexts": ["action"]
+}
+const iconContextTranslate = {
+    "id": "iconContextTranslate",
+    "title": chrome.i18n.getMessage('translateInPopupWindow'),
+    "contexts": ["action"]
+}
+const iconContextOpenPage = {
+    "id": "iconContextOpenPage",
+    "title": chrome.i18n.getMessage('openPageInPopupWindow'),
+    "contexts": ["action"]
+}
+const iconContextSettings = {
+    "id": "iconContextSettings",
+    "title": chrome.i18n.getMessage('showExtensionSettings'),
+    "contexts": ["action"]
+}
 
 try {
     chrome.contextMenus.create(openLinkContextMenuItem);
     chrome.contextMenus.create(openPageContextMenuItem);
     chrome.contextMenus.create(openInMainWindowContextMenuItem);
-    chrome.contextMenus.create(searchInPopupWindowContextMenuItem);
-    chrome.contextMenus.create(translateInPopupWindowContextMenuItem);
+    chrome.contextMenus.create(searchInPopupContextMenuItem);
+    chrome.contextMenus.create(translateInPopupContextMenuItem);
     chrome.contextMenus.create(viewImageContextMenuItem);
+
+    chrome.contextMenus.create(iconContextSearch);
+    chrome.contextMenus.create(iconContextTranslate);
+    chrome.contextMenus.create(iconContextOpenPage);
+    chrome.contextMenus.create(iconContextSettings);
 
     /// Draft for "Open tab in popup window" in Firefox
     if (navigator.userAgent.indexOf("Firefox") > -1){
         const openTabInPopupWindow = {
             "id": "openTabInPopupWindow",
-            "title": chrome.i18n.getMessage('openPageInPopupWindow'),
+            "title": chrome.i18n.getMessage('openTabInPopupWindow'),
             "contexts": ["tab"]
         } 
         chrome.contextMenus.create(openTabInPopupWindow);
@@ -182,18 +208,30 @@ function onContextMenuClicked(clickData, tab) {
         return;
     }
     
-    if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow') {
+    if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow' || clickData.menuItemId == 'iconContextOpenPage') {
         if (tab)
             loadUserConfigs((c) => {
-                openPopupWindowForLink(clickData.pageUrl, false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
+                openPopupWindowForLink(clickData.pageUrl ?? 'about:blank', false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
             });
         return;
     }
 
+    /// Navbar icon context menu, grabs selection from page
+    if (clickData.menuItemId == 'iconContextSearch') {
+        openSearchPopup(tab);
+        return;
+    } else if (clickData.menuItemId == 'iconContextTranslate') {
+        openTranslatePopup(tab);
+        return;
+    } else if (clickData.menuItemId == 'iconContextSettings') {
+        openExtensionPopupManually();
+        return;
+    }
+
     const link = clickData.menuItemId == 'searchInPopupWindow' ? 
-        configs.popupSearchUrl.replace('%s', clickData.selectionText) 
+        configs.popupSearchUrl.replace('%s', clickData.selectionText ?? '') 
         : clickData.menuItemId == 'translateInPopupWindow' ? 
-            configs.popupTranslateUrl.replace('%s', clickData.selectionText) 
+            configs.popupTranslateUrl.replace('%s', clickData.selectionText ?? '') 
             : clickData.menuItemId == 'viewInPopupWindow' ? clickData.srcUrl : clickData.linkUrl;
     openPopupWindowForLink(link, clickData.menuItemId == 'viewInPopupWindow', undefined, undefined, undefined, undefined, false, tab ? tab : undefined);
 }
@@ -303,18 +341,18 @@ function onWindowRemoved(wId){
 
 /// Reopen new single tab windows as popups
 function onWindowCreated(w){
-    if (preventNewTabListeners) return;
+    if (preventNewTabListeners || w.type !== 'normal') return;
     
     loadUserConfigs((c) => {
-        if (configs.reopenSingleTabWindowAsPopup && w.type == 'normal')
+        if (configs.reopenSingleTabWindowAsPopup)
                 chrome.tabs.query({windowId: w.id}, (tabs) => {
                     if (tabs.length == 1){
                         const tab = tabs[0];
                         if (isNewTabUrl(tab.url) || isNewTabUrl(tab.pendingUrl)) return;
-                        openPopupWindowForLink(undefined, false, false, tab, false, c, true);  
+                        openPopupWindowForLink(undefined, false, false, tab, false, undefined, true);  
                     } 
                 })
-    })   
+    }, ['reopenSingleTabWindowAsPopup'])   
 }
 
 /// Reopen tabs that were opened by other tabs
@@ -743,6 +781,15 @@ function searchSelectedText(selectedText, senderTab) {
         const link = configs.popupSearchUrl.replace('%s', selectedText);
         openPopupWindowForLink(link, false, false, undefined, undefined, undefined, undefined, senderTab);
     });
+}
+
+async function openExtensionPopupManually(){
+    try {
+        await chrome.action.openPopup();
+    } catch(e) {
+        console.warn('Failed to open extension popup:', e.message);
+        chrome.runtime.openOptionsPage();
+    }
 }
 
 function moveTabToRegularWindow(tab, shouldFocusTab = true){

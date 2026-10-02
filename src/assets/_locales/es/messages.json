@@ -137,6 +137,9 @@
   "openSearchPopupWindowHotkeyDescription": {
     "message": "Busca el texto seleccionado en una ventana emergente. Abre una página de búsqueda vacía si no hay ningún texto seleccionado."
   },
+  "openTabInPopupWindow": {
+    "message": "Abrir pestaña en ventana emergente"
+  },
   "popupHeight": {
     "message": "Altura (px)"
   },
@@ -156,7 +159,7 @@
     "message": "Reabrir las pestañas abiertas por página como ventanas emergentes"
   },
   "reopenAutoCreatedTabsOnlyPinned": {
-    "message": "Reabrir solo las pestañas creadas por pestañas ancladas"
+    "message": "Solo pestañas creadas por pestañas ancladas"
   },
   "reopenSingleTabWindowAsPopup": {
     "message": "Reabrir nuevas ventanas de una sola pestaña como ventanas emergentes"
@@ -174,7 +177,7 @@
     "message": "Opción para buscar selección en ventana emergente habilitada"
   },
   "searchInPopupWindow": {
-    "message": "Buscar texto en la ventana emergente"
+    "message": "Buscar en la ventana emergente"
   },
   "settingsTitle": {
     "message": "Configuración"

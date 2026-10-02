@@ -134,6 +134,9 @@
   "openSearchPopupWindowHotkeyDescription": {
     "message": "선택한 텍스트를 팝업 창에서 검색합니다. 선택한 텍스트가 없다면 빈 검색 페이지를 엽니다"
   },
+  "openTabInPopupWindow": {
+    "message": "팝업 창에서 탭 열기"
+  },
   "popupHeight": {
     "message": "높이 (px)"
   },
@@ -174,7 +177,7 @@
     "message": "팝업 창에서 선택 항목 검색 옵션 켜기"
   },
   "searchInPopupWindow": {
-    "message": "팝업 창에서 텍스트 검색"
+    "message": "팝업 창에서 검색"
   },
   "settingsTitle": {
     "message": "설정"

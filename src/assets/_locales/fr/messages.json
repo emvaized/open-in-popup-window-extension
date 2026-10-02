@@ -134,6 +134,9 @@
   "openSearchPopupWindowHotkeyDescription": {
     "message": "Rechercher le texte sélectionné dans une fenêtre popup. Ouvre une page de recherche vide si aucun texte n’est sélectionné"
   },
+  "openTabInPopupWindow": {
+    "message": "Ouvrir l’onglet dans une fenêtre popup"
+  },
   "popupHeight": {
     "message": "Hauteur (px)"
   },
@@ -153,7 +156,7 @@
     "message": "Rouvrir les onglets ouverts par la page en fenêtres popup"
   },
   "reopenAutoCreatedTabsOnlyPinned": {
-    "message": "Rouvrir uniquement les onglets créés par des onglets épinglés"
+    "message": "Seulement les onglets créés par des onglets épinglés"
   },
   "reopenSettings": {
     "message": "Paramètres de réouverture"
@@ -174,7 +177,7 @@
     "message": "Activer l’option de recherche dans une popup"
   },
   "searchInPopupWindow": {
-    "message": "Rechercher le texte dans une fenêtre popup"
+    "message": "Rechercher dans une fenêtre popup"
   },
   "settingsTitle": {
     "message": "Paramètres"
