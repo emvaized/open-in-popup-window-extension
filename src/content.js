@@ -1,6 +1,5 @@
 document.addEventListener("contextmenu",(e=>onTrigger(e,'context')));
 chrome.storage.onChanged.addListener((c) => {
-    // loadUserConfigs((c) => setMouseListeners())
     applyUserConfigs(c, undefined, () => setMouseListeners());
 });
 
@@ -8,15 +7,16 @@ loadUserConfigs(function(c) {
     setMouseListeners();
 
     /// Cache screen size for the background script
-    if (configs.screenWidth !== window.screen.width || configs.availLeft !== window.screen.availLeft) {
-        configs.screenWidth = window.screen.width;
-        configs.screenHeight = window.screen.height;
-        configs.availLeft = window.screen.availLeft;
-        
+    const { width: screenWidth, height: screenHeight, availLeft } = window.screen;
+
+    if (configs.screenWidth !== screenWidth || configs.availLeft !== availLeft) {
+        configs.screenWidth = screenWidth;
+        configs.screenHeight = screenHeight;
+        configs.availLeft = availLeft;
         chrome.storage.sync.set({
-            screenWidth: configs.screenWidth,
-            screenHeight: configs.screenHeight,
-            availLeft: configs.availLeft,
+            screenWidth: screenWidth,
+            screenHeight: screenHeight,
+            availLeft: availLeft,
         });
     }
 })
@@ -204,13 +204,14 @@ function onTrigger(e, type){
     const t = e ? e.target : lastMouseOverData.target;
     const selectedText = getSelectedText();
 
+    const { availLeft, availHeight, availWidth } = window.screen;
     const message = {
         mouseX: e ? e.screenX : lastMouseOverData.x, mouseY: e ? e.screenY : lastMouseOverData.y,
         elementHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
-        availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,
+        availHeight: availHeight, availWidth: availWidth,
         selectedText: selectedText,
-        availLeft: window.screen.availLeft, type: type
+        availLeft: availLeft, type: type
     }
 
     let link, isViewer = false;
