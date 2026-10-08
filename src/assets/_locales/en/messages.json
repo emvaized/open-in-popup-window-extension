@@ -104,6 +104,9 @@
   "nearMousePosition": {
     "message": "Near mouse cursor"
   },
+  "noPosition": {
+    "message": "None (system)"
+  },
   "openByDragAndDrop": {
     "message": "Use drag and drop on empty place"
   },

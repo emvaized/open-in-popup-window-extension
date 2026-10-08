@@ -104,6 +104,9 @@
   "nearMousePosition": {
     "message": "마우스 근처"
   },
+  "noPosition": {
+    "message": "없음 (시스템)"
+  },
   "openByDragAndDrop": {
     "message": "빈 곳으로 드래그해 팝업 창에서 열기"
   },

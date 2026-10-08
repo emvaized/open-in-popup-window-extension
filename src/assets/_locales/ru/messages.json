@@ -104,6 +104,9 @@
   "nearMousePosition": {
     "message": "Возле курсора мыши"
   },
+  "noPosition": {
+    "message": "Нет (системное)"
+  },
   "openByDragAndDrop": {
     "message": "Использовать перетаскивание на пустое место"
   },

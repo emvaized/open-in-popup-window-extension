@@ -104,6 +104,9 @@
   "nearMousePosition": {
     "message": "Près du curseur"
   },
+  "noPosition": {
+    "message": "Aucune (système)"
+  },
   "openByDragAndDrop": {
     "message": "Utiliser le glisser-déposer sur un espace vide"
   },
