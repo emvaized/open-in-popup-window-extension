@@ -613,6 +613,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                 'width': width, 'height': height
             };
 
+            /// prevent setting dimensions if user opts out
             if (configs.popupWindowLocation !== 'noPosition'){
                 createParams.top = dy;
                 createParams.left = dx;
@@ -644,7 +645,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                 }
 
                 /// set coordinates again (workaround for old firefox bug)
-                if (popupWindow.left !== dx)
+                if (popupWindow.left !== dx && configs.popupWindowLocation !== 'noPosition')
                     chrome.windows.update(popupWindowId, {
                         'top': dy, 'left': dx, 'width': width, 'height': height
                     });
