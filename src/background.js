@@ -607,125 +607,123 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         }
         
         /// create popup window
-        // setTimeout(function () {
-            const createParams = {
-                'type': 'popup', 
-                'width': width, 'height': height
-            };
+        const createParams = {
+            'type': 'popup', 
+            'width': width, 'height': height
+        };
 
-            /// prevent setting dimensions if user opts out
-            if (configs.popupWindowLocation !== 'noPosition'){
-                createParams.top = dy;
-                createParams.left = dx;
+        /// prevent setting dimensions if user opts out
+        if (configs.popupWindowLocation !== 'noPosition'){
+            createParams.top = dy;
+            createParams.left = dx;
+        }
+
+        if (tabToCopy) {
+            createParams.tabId = tabToCopy.id;
+        } else {
+            createParams['url'] = popupUrl;
+        }
+
+        /// Preserve Firefox container
+        if (senderTab && senderTab.cookieStoreId) {
+            createParams['cookieStoreId'] = senderTab.cookieStoreId;
+        }
+
+        preventNewTabListeners = true;
+        chrome.windows.create(createParams, function (popupWindow) {
+            if (chrome.runtime.lastError || !popupWindow) {
+                if (configs.debugMode) console.warn('Failed to create popup window:', chrome.runtime.lastError.message);
+                return;
             }
 
-            if (tabToCopy) {
-                createParams.tabId = tabToCopy.id;
-            } else {
-                createParams['url'] = popupUrl;
+            let popupWindowId = popupWindow.id;
+
+            if (configs.debugMode){
+                console.log('Created popup window:', popupWindow);
+                console.log('End logging ~~~');
             }
 
-            /// Preserve Firefox container
-            if (senderTab && senderTab.cookieStoreId) {
-                createParams['cookieStoreId'] = senderTab.cookieStoreId;
+            /// set coordinates again (workaround for old firefox bug)
+            if (popupWindow.left !== dx && configs.popupWindowLocation !== 'noPosition')
+                chrome.windows.update(popupWindowId, {
+                    'top': dy, 'left': dx, 'width': width, 'height': height
+                });
+
+            /// Dim page for main window
+            if (configs.dimPageOnPopupOpen && senderTab && senderTab.id && !isCurrentPage) {
+                chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
             }
 
-            preventNewTabListeners = true;
-            chrome.windows.create(createParams, function (popupWindow) {
-                if (chrome.runtime.lastError || !popupWindow) {
-                    if (configs.debugMode) console.warn('Failed to create popup window:', chrome.runtime.lastError.message);
-                    return;
-                }
+            /* remember dimensions on window resize 
+            [onBoundsChanged is not supported in Firefox]
+            {@link https://bugzilla.mozilla.org/show_bug.cgi?id=1762975}
+            */
+            if (chrome.windows.onBoundsChanged && (configs.rememberWindowResize || configs.moveToMainWindowOnMaximize)) {
+                function resizeListener(w){
+                    if (configs.debugMode) console.log('Popup window moved/resized: ', w);
+                    if (preventWindowResizeListener) return;
+                    if (w.type !== 'popup') return;
 
-                let popupWindowId = popupWindow.id;
-
-                if (configs.debugMode){
-                    console.log('Created popup window:', popupWindow);
-                    console.log('End logging ~~~');
-                }
-
-                /// set coordinates again (workaround for old firefox bug)
-                if (popupWindow.left !== dx && configs.popupWindowLocation !== 'noPosition')
-                    chrome.windows.update(popupWindowId, {
-                        'top': dy, 'left': dx, 'width': width, 'height': height
-                    });
-
-                /// Dim page for main window
-                if (configs.dimPageOnPopupOpen && senderTab && senderTab.id && !isCurrentPage) {
-                    chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
-                }
-
-                /* remember dimensions on window resize 
-                [onBoundsChanged is not supported in Firefox]
-                {@link https://bugzilla.mozilla.org/show_bug.cgi?id=1762975}
-                */
-                if (chrome.windows.onBoundsChanged && (configs.rememberWindowResize || configs.moveToMainWindowOnMaximize)) {
-                    function resizeListener(w){
-                        if (configs.debugMode) console.log('Popup window moved/resized: ', w);
-                        if (preventWindowResizeListener) return;
-                        if (w.type !== 'popup') return;
-
-                        if (w.state == 'maximized'){
-                            /// Move to main window on popup maximize
-                            if (configs.moveToMainWindowOnMaximize) 
-                                chrome.tabs.query({windowId: w.id}, (tabs) => {
-                                    if (tabs && tabs.length > 0) {
-                                        const tab = tabs[0];
-                                        if (tab.id && tab.id > -1) 
-                                            moveTabToRegularWindow(tab);
-                                    }
-                                });
-                        } else {
-                            /// Save new popup window size
-                            if (configs.rememberWindowResize){
-                                if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
-                                if (Math.abs(w.height - configs.popupHeight) <= 2 && Math.abs(w.width - configs.popupWidth) <= 2) return;
-                                configs.popupHeight = w.height;
-                                configs.popupWidth = w.width;
-                                chrome.storage.sync.set(configs);
-                                if (configs.debugMode) console.log('New popup window size saved: ', w.height, 'x', w.width);
-                            }
+                    if (w.state == 'maximized'){
+                        /// Move to main window on popup maximize
+                        if (configs.moveToMainWindowOnMaximize) 
+                            chrome.tabs.query({windowId: w.id}, (tabs) => {
+                                if (tabs && tabs.length > 0) {
+                                    const tab = tabs[0];
+                                    if (tab.id && tab.id > -1) 
+                                        moveTabToRegularWindow(tab);
+                                }
+                            });
+                    } else {
+                        /// Save new popup window size
+                        if (configs.rememberWindowResize){
+                            if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
+                            if (Math.abs(w.height - configs.popupHeight) <= 2 && Math.abs(w.width - configs.popupWidth) <= 2) return;
+                            configs.popupHeight = w.height;
+                            configs.popupWidth = w.width;
+                            chrome.storage.sync.set(configs);
+                            if (configs.debugMode) console.log('New popup window size saved: ', w.height, 'x', w.width);
                         }
                     }
-                    function removedListener(wId){
-                        if (wId && wId > -1 && wId == popupWindow.id) {
-                            chrome.windows.onBoundsChanged.removeListener(resizeListener);
-                            chrome.windows.onRemoved.removeListener(removedListener);
-                        }
-                    }
-                    chrome.windows.onBoundsChanged.addListener(resizeListener);
-                    chrome.windows.onRemoved.addListener(removedListener);
                 }
+                function removedListener(wId){
+                    if (wId && wId > -1 && wId == popupWindow.id) {
+                        chrome.windows.onBoundsChanged.removeListener(resizeListener);
+                        chrome.windows.onRemoved.removeListener(removedListener);
+                    }
+                }
+                chrome.windows.onBoundsChanged.addListener(resizeListener);
+                chrome.windows.onRemoved.addListener(removedListener);
+            }
 
-                /// TODO:
-                /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent covering previous one
-                /// Can use the new popups persistence logic
-                // if (lastPopupId)
-                //     chrome.windows.get(lastPopupId,{}, (w) => {
-                //         if (!w) return;
-                //         let lastPopupDx = w.left, lastPopupDy = w.top, lastPopupWidth = w.width, lastPopupHeight = w.height;
-                //         if (lastPopupDx && lastPopupDy && lastPopupWidth && lastPopupHeight &&
-                //         Math.abs(dx - lastPopupDx) < 5 && Math.abs(dy - lastPopupDy) < 5 &&
-                //         Math.abs(width - lastPopupWidth) < 5 && Math.abs(height - lastPopupHeight) < 5) {
-                //             dy = lastPopupDy + (configs.titleBarHeight ?? 30);
-                //             height = lastPopupHeight - (configs.titleBarHeight ?? 30);
+            /// TODO:
+            /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent covering previous one
+            /// Can use the new popups persistence logic
+            // if (lastPopupId)
+            //     chrome.windows.get(lastPopupId,{}, (w) => {
+            //         if (!w) return;
+            //         let lastPopupDx = w.left, lastPopupDy = w.top, lastPopupWidth = w.width, lastPopupHeight = w.height;
+            //         if (lastPopupDx && lastPopupDy && lastPopupWidth && lastPopupHeight &&
+            //         Math.abs(dx - lastPopupDx) < 5 && Math.abs(dy - lastPopupDy) < 5 &&
+            //         Math.abs(width - lastPopupWidth) < 5 && Math.abs(height - lastPopupHeight) < 5) {
+            //             dy = lastPopupDy + (configs.titleBarHeight ?? 30);
+            //             height = lastPopupHeight - (configs.titleBarHeight ?? 30);
 
-                //             preventWindowResizeListener = true;
-                //             chrome.windows.update(popupWindow.id, { top: dy, height: height }, ()=> preventWindowResizeListener = false);
-                //         }
-                //     });
+            //             preventWindowResizeListener = true;
+            //             chrome.windows.update(popupWindow.id, { top: dy, height: height }, ()=> preventWindowResizeListener = false);
+            //         }
+            //     });
 
-                /// Clear variables
-                elementHeight = undefined; elementWidth = undefined;
-                mouseX = undefined; mouseY = undefined;
-                textSelection = undefined;
-                preventNewTabListeners = false;
+            /// Clear variables
+            elementHeight = undefined; elementWidth = undefined;
+            mouseX = undefined; mouseY = undefined;
+            textSelection = undefined;
+            preventNewTabListeners = false;
 
-                /// Store new popup
-                lastPopupId = popupWindow.id;
-                addPopupWindow(popupWindow.id, {isCurrentPage: isCurrentPage});
-            });
-        // }, originalWindowIsFullscreen ? 600 : 0)
+            /// Store new popup
+            lastPopupId = popupWindow.id;
+            addPopupWindow(popupWindow.id, {isCurrentPage: isCurrentPage});
+        });
     })
 }
 
