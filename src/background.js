@@ -496,10 +496,11 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         if (isDragEvent && configs.openDragAndDropUnderMouse) popupLocation = 'mousePosition';
 
         /// Try to get current screen size (not supported in Manifest v3)
-        try {
-            availWidth = window.screen.width;
-            availHeight = window.screen.height;
-        } catch(e){}
+        // try {
+        //     availWidth = window.screen.width;
+        //     availHeight = window.screen.height;
+        // } catch(e){}
+        
         if (!availLeft) availLeft = configs.availLeft ?? 0;
         if (!availWidth) availWidth = configs.screenWidth;
         if (!availHeight) availHeight = configs.screenHeight;
