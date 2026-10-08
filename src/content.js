@@ -12,7 +12,12 @@ loadUserConfigs(function(c) {
         configs.screenWidth = window.screen.width;
         configs.screenHeight = window.screen.height;
         configs.availLeft = window.screen.availLeft;
-        chrome.storage.sync.set(configs);
+        
+        chrome.storage.sync.set({
+            screenWidth: configs.screenWidth,
+            screenHeight: configs.screenHeight,
+            availLeft: configs.availLeft,
+        });
     }
 })
 
