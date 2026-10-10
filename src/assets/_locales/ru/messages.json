@@ -203,6 +203,9 @@
   "showOpenInTabButton": {
     "message": "Показывать кнопку «Открыть во вкладке» во всплыв. окне"
   },
+  "splitViewButton": {
+    "message": "Рядом"
+  },
   "textSelectionHeader": {
     "message": "Выделение текста"
   },

@@ -313,7 +313,7 @@ function undimPage(){
     window.removeEventListener('focus', undimPage)
 }
 
-/* "Open in tab" button for popup windows and "Back to popup" button for tabs that came from popup:
+/* "Split view" and "Open in tab" buttons for popup windows and "Back to popup" button for tabs that came from popup:
 appear when mouse is near the top edge of the window */
 let openInTabButtonHost, openInTabButtonListeners;
 
@@ -324,6 +324,7 @@ function removeOpenInTabButton(){
 }
 
 const popupButtonIcons = {
+    splitPopupWithOriginTab: '<rect x="1" y="2" width="10" height="8" rx="1.5"/><path d="M6 2v8"/>',
     openPopupInMainWindow: '<path d="M4.5 1.5h6v6M10.5 1.5 4 8M8.5 7v3.5h-7v-7H5"/>',
     returnTabToPopup: '<path d="M7.5 10.5h-6v-6M1.5 10.5 8 4M3.5 5V1.5h7v7H7"/>'
 };
@@ -336,6 +337,7 @@ function setupOpenInTabButton(){
         if (!response) return;
 
         const buttons = [];
+        if (response.isPopup && response.canSplit) buttons.push(['splitPopupWithOriginTab', chrome.i18n.getMessage('splitViewButton') || 'Split view']);
         if (response.isPopup) buttons.push(['openPopupInMainWindow', chrome.i18n.getMessage('openInTabButton') || 'Open in tab']);
         else if (response.cameFromPopup) buttons.push(['returnTabToPopup', chrome.i18n.getMessage('returnToPopupButton') || 'Back to popup']);
         if (!buttons.length) return;

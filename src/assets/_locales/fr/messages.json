@@ -203,6 +203,9 @@
   "showOpenInTabButton": {
     "message": "Afficher le bouton « Ouvrir dans un onglet » dans la popup"
   },
+  "splitViewButton": {
+    "message": "Vue partagée"
+  },
   "textSelectionHeader": {
     "message": "Sélection de texte"
   },

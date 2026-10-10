@@ -203,6 +203,9 @@
   "showOpenInTabButton": {
     "message": "팝업 창에 '탭에서 열기' 버튼 표시"
   },
+  "splitViewButton": {
+    "message": "분할 보기"
+  },
   "textSelectionHeader": {
     "message": "텍스트 선택 항목"
   },

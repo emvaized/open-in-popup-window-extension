@@ -203,6 +203,9 @@
   "showOpenInTabButton": {
     "message": "Show \"Open in tab\" button in popup window"
   },
+  "splitViewButton": {
+    "message": "Split view"
+  },
   "textDragAction": {
     "message": "Action for the selected text"
   },

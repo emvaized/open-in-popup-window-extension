@@ -203,6 +203,9 @@
   "showOpenInTabButton": {
     "message": "Mostrar el botón «Abrir en pestaña» en la ventana emergente"
   },
+  "splitViewButton": {
+    "message": "Vista dividida"
+  },
   "textDragAction": {
     "message": "Acción para el texto seleccionado"
   },
