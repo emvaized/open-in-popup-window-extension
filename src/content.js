@@ -312,7 +312,8 @@ function undimPage(){
     window.removeEventListener('focus', undimPage)
 }
 
-/* "Split view" and "Open in tab" buttons for popup windows: appear when mouse is near the top edge of the window */
+/* "Split view" and "Open in tab" buttons for popup windows and "Back to popup" button for tabs that came from popup:
+appear when mouse is near the top edge of the window */
 let openInTabButtonHost, openInTabButtonListeners;
 
 function removeOpenInTabButton(){
@@ -321,15 +322,24 @@ function removeOpenInTabButton(){
     openInTabButtonHost = openInTabButtonListeners = null;
 }
 
-/// Shows the buttons if the page is in a popup window, removes them otherwise (tab can be moved between windows)
+const popupButtonIcons = {
+    splitPopupWithOriginTab: '<rect x="1" y="2" width="10" height="8" rx="1.5"/><path d="M6 2v8"/>',
+    openPopupInMainWindow: '<path d="M4.5 1.5h6v6M10.5 1.5 4 8M8.5 7v3.5h-7v-7H5"/>',
+    returnTabToPopup: '<path d="M7.5 10.5h-6v-6M1.5 10.5 8 4M3.5 5V1.5h7v7H7"/>'
+};
+
+/// Shows the buttons that fit where the page is now, removes them otherwise (tab can be moved between windows)
 function setupOpenInTabButton(){
     if (window.top !== window) return;
     chrome.runtime.sendMessage({ action: 'isPopupWindow' }).then((response) => {
-        if (!response || !response.isPopup) {
-            removeOpenInTabButton();
-            return;
-        }
-        if (openInTabButtonHost) return;
+        removeOpenInTabButton();
+        if (!response) return;
+
+        const buttons = [];
+        if (response.isPopup && response.canSplit) buttons.push(['splitPopupWithOriginTab', chrome.i18n.getMessage('splitViewButton') || 'Split view']);
+        if (response.isPopup) buttons.push(['openPopupInMainWindow', chrome.i18n.getMessage('openInTabButton') || 'Open in tab']);
+        else if (response.cameFromPopup) buttons.push(['returnTabToPopup', chrome.i18n.getMessage('returnToPopupButton') || 'Back to popup']);
+        if (!buttons.length) return;
 
         const host = openInTabButtonHost = document.createElement('div');
         host.id = 'oip-open-in-tab';
@@ -357,24 +367,20 @@ function setupOpenInTabButton(){
                 button:hover { background: rgba(28, 28, 30, 0.95); }
                 svg { width: 12px; height: 12px; }
             </style>
-            <div class="bar">
-                ${response.canSplit ? `<button type="button" data-action="splitPopupWithOriginTab">
-                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="2" width="10" height="8" rx="1.5"/><path d="M6 2v8"/></svg>
-                    <span>${chrome.i18n.getMessage('splitViewButton') || 'Split view'}</span>
-                </button>` : ''}
-                <button type="button" data-action="openPopupInMainWindow">
-                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 1.5h6v6M10.5 1.5 4 8M8.5 7v3.5h-7v-7H5"/></svg>
-                    <span>${chrome.i18n.getMessage('openInTabButton') || 'Open in tab'}</span>
-                </button>
-            </div>`;
+            <div class="bar"></div>`;
         const bar = shadow.querySelector('.bar');
-        /// Act on press: in Firefox "click" is lost if the pointer moves slightly between press and release
-        for (const button of shadow.querySelectorAll('button')) {
+        for (const [action, label] of buttons) {
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.innerHTML = `<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">${popupButtonIcons[action] ?? ''}</svg><span></span>`;
+            button.querySelector('span').textContent = label;
+            /// Act on press: in Firefox "click" is lost if the pointer moves slightly between press and release
             button.addEventListener('pointerdown', (e) => {
                 if (e.button !== 0) return;
                 e.preventDefault(); e.stopPropagation();
-                chrome.runtime.sendMessage({ action: button.dataset.action });
+                chrome.runtime.sendMessage({ action: action });
             });
+            bar.appendChild(button);
         }
         document.documentElement.appendChild(host);
         openInTabButtonListeners = new AbortController();
@@ -384,7 +390,7 @@ function setupOpenInTabButton(){
         let hideTimeout;
         const setVisible = (visible) => bar.classList.toggle('visible', visible && !document.fullscreenElement);
 
-        /// Show briefly on load, so the user knows the button exists
+        /// Show briefly, so the user knows the buttons exist
         setVisible(true);
         hideTimeout = setTimeout(() => setVisible(false), 1500);
 
@@ -393,7 +399,7 @@ function setupOpenInTabButton(){
             setVisible(e.clientY < topZone);
         }, { passive: true, signal });
         /// The title bar is outside of the page, so it can't be hovered directly:
-        /// if mouse leaves the page through the top edge, it went to the title bar — keep the button visible
+        /// if mouse leaves the page through the top edge, it went to the title bar — keep the buttons visible
         document.documentElement.addEventListener('mouseleave', (e) => {
             clearTimeout(hideTimeout);
             setVisible(e.clientY < 5);
