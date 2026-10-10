@@ -139,6 +139,21 @@ function onMessageReceived(request, sender, sendResponse) {
         return;
     }
 
+    /// Content script asks whether its page is opened in a popup window (to show "Open in tab" button)
+    if (request.action == 'isPopupWindow') {
+        if (!sender.tab) return;
+        chrome.windows.get(sender.tab.windowId, (w) => {
+            sendResponse(!chrome.runtime.lastError && w && w.type === 'popup');
+        });
+        return true;
+    }
+
+    /// "Open in tab" button clicked in popup window
+    if (request.action == 'openPopupInMainWindow') {
+        if (sender.tab) moveTabToRegularWindow(sender.tab);
+        return;
+    }
+
     if (request.action == 'updateAspectRatio') {
         if (request.aspectRatio && configs.tryFitWindowSizeToImage) {
             chrome.windows.get(lastPopupId, function(w){
@@ -650,6 +665,9 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
 
             let popupWindowId = popupWindow.id;
 
+            /// Existing tab was moved into the popup: let its page show "Open in tab" button
+            if (tabToCopy) chrome.tabs.sendMessage(tabToCopy.id, { action: 'windowTypeChanged' }).catch(() => {});
+
             if (configs.debugMode){
                 console.log('Created popup window:', popupWindow);
                 console.log('End logging ~~~');
@@ -846,6 +864,8 @@ function moveTabToRegularWindow(tab, shouldFocusTab = true){
             }, function(t){
                 // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
                 chrome.tabs.update(tab.id, { 'active': shouldFocusTab });
+                /// Page is not in a popup anymore, so "Open in tab" button should be removed
+                chrome.tabs.sendMessage(tab.id, { action: 'windowTypeChanged' }).catch(() => {});
                 // chrome.windows.update(targetWindowId, {focused: true});
             });
         }

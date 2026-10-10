@@ -122,6 +122,9 @@
   "openInPopupWindow": {
     "message": "Abrir enlace en ventana emergente"
   },
+  "openInTabButton": {
+    "message": "Abrir en pestaña"
+  },
   "openLinkInMainWindow": {
     "message": "Abrir página en la ventana principal"
   },
@@ -190,6 +193,9 @@
   },
   "showExtensionSettings": {
     "message": "Mostrar configuración"
+  },
+  "showOpenInTabButton": {
+    "message": "Mostrar el botón «Abrir en pestaña» en la ventana emergente"
   },
   "textDragAction": {
     "message": "Acción para el texto seleccionado"

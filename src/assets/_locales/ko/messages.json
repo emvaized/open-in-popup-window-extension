@@ -122,6 +122,9 @@
   "openInPopupWindow": {
     "message": "팝업 창에서 링크 열기"
   },
+  "openInTabButton": {
+    "message": "탭에서 열기"
+  },
   "openPageInMainWindow": {
     "message": "메인 창에서 페이지 열기"
   },
@@ -190,6 +193,9 @@
   },
   "showExtensionSettings": {
     "message": "확장 설정 표시"
+  },
+  "showOpenInTabButton": {
+    "message": "팝업 창에 '탭에서 열기' 버튼 표시"
   },
   "textSelectionHeader": {
     "message": "텍스트 선택 항목"

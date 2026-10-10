@@ -122,6 +122,9 @@
   "openInPopupWindow": {
     "message": "Ouvrir le lien dans une fenêtre popup"
   },
+  "openInTabButton": {
+    "message": "Ouvrir dans un onglet"
+  },
   "openPageInMainWindow": {
     "message": "Ouvrir la page dans la fenêtre principale"
   },
@@ -190,6 +193,9 @@
   },
   "showExtensionSettings": {
     "message": "Afficher les paramètres de l’extension"
+  },
+  "showOpenInTabButton": {
+    "message": "Afficher le bouton « Ouvrir dans un onglet » dans la popup"
   },
   "textSelectionHeader": {
     "message": "Sélection de texte"

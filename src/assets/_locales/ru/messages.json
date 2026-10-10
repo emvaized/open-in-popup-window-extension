@@ -122,6 +122,9 @@
   "openInPopupWindow": {
     "message": "Открыть ссылку во всплывающем окне"
   },
+  "openInTabButton": {
+    "message": "Открыть во вкладке"
+  },
   "openPageInMainWindow": {
     "message": "Открыть страницу в основном окне"
   },
@@ -190,6 +193,9 @@
   },
   "showExtensionSettings": {
     "message": "Показать настройки расширения"
+  },
+  "showOpenInTabButton": {
+    "message": "Показывать кнопку «Открыть во вкладке» во всплыв. окне"
   },
   "textSelectionHeader": {
     "message": "Выделение текста"

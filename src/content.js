@@ -5,6 +5,7 @@ chrome.storage.onChanged.addListener((c) => {
 
 loadUserConfigs(function(c) {
     setMouseListeners();
+    if (configs.showOpenInTabButton) setupOpenInTabButton();
 
     /// Cache screen size for the background script
     const { width: screenWidth, height: screenHeight, availLeft } = window.screen;
@@ -311,6 +312,84 @@ function undimPage(){
     window.removeEventListener('focus', undimPage)
 }
 
+/* "Open in tab" button for popup windows: appears when mouse is near the top edge of the window */
+let openInTabButtonHost, openInTabButtonListeners;
+
+function removeOpenInTabButton(){
+    if (openInTabButtonListeners) openInTabButtonListeners.abort();
+    if (openInTabButtonHost) openInTabButtonHost.remove();
+    openInTabButtonHost = openInTabButtonListeners = null;
+}
+
+/// Shows the button if the page is in a popup window, removes it otherwise (tab can be moved between windows)
+function setupOpenInTabButton(){
+    if (window.top !== window) return;
+    chrome.runtime.sendMessage({ action: 'isPopupWindow' }).then((isPopup) => {
+        if (!isPopup) {
+            removeOpenInTabButton();
+            return;
+        }
+        if (openInTabButtonHost) return;
+
+        const host = openInTabButtonHost = document.createElement('div');
+        host.id = 'oip-open-in-tab';
+        const shadow = host.attachShadow({ mode: 'closed' });
+        shadow.innerHTML = `
+            <style>
+                button {
+                    position: fixed; top: 10px; right: 12px; z-index: 2147483647;
+                    display: flex; align-items: center; gap: 6px;
+                    padding: 6px 12px; border: 0; border-radius: 999px;
+                    font: 500 13px/1.2 system-ui, -apple-system, sans-serif;
+                    color: #fff; background: rgba(28, 28, 30, 0.82);
+                    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+                    cursor: pointer; opacity: 0; pointer-events: none; user-select: none;
+                    transform: translateY(-4px); transition: opacity .15s ease, transform .15s ease;
+                }
+                button.visible { opacity: 1; pointer-events: auto; transform: none; }
+                /* larger invisible hit area, so clicks near the rounded edges are not lost */
+                button::before { content: ''; position: absolute; inset: -8px; border-radius: 999px; }
+                button:hover { background: rgba(28, 28, 30, 0.95); }
+                svg { width: 12px; height: 12px; }
+            </style>
+            <button type="button">
+                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 1.5h6v6M10.5 1.5 4 8M8.5 7v3.5h-7v-7H5"/></svg>
+                <span></span>
+            </button>`;
+        const button = shadow.querySelector('button');
+        shadow.querySelector('span').textContent = chrome.i18n.getMessage('openInTabButton') || 'Open in tab';
+        /// Act on press: in Firefox "click" is lost if the pointer moves slightly between press and release
+        button.addEventListener('pointerdown', (e) => {
+            if (e.button !== 0) return;
+            e.preventDefault(); e.stopPropagation();
+            chrome.runtime.sendMessage({ action: 'openPopupInMainWindow' });
+        });
+        document.documentElement.appendChild(host);
+        openInTabButtonListeners = new AbortController();
+        const signal = openInTabButtonListeners.signal;
+
+        const topZone = 60;
+        let hideTimeout;
+        const setVisible = (visible) => button.classList.toggle('visible', visible && !document.fullscreenElement);
+
+        /// Show briefly on load, so the user knows the button exists
+        setVisible(true);
+        hideTimeout = setTimeout(() => setVisible(false), 1500);
+
+        document.addEventListener('mousemove', (e) => {
+            clearTimeout(hideTimeout);
+            setVisible(e.clientY < topZone);
+        }, { passive: true, signal });
+        /// The title bar is outside of the page, so it can't be hovered directly:
+        /// if mouse leaves the page through the top edge, it went to the title bar — keep the button visible
+        document.documentElement.addEventListener('mouseleave', (e) => {
+            clearTimeout(hideTimeout);
+            setVisible(e.clientY < 5);
+        }, { signal });
+    }).catch(() => {});
+}
+
 /* Looks for hight-res image source in srcset or data attributes */
 const getHiResImg = (img) => {
   const parseSrcset = (str) => {
@@ -351,6 +430,10 @@ const getSelectedText = () => {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     /// Dim page on popup open
+    if (message.action == 'windowTypeChanged') {
+        if (configs.showOpenInTabButton) setupOpenInTabButton();
+        return;
+    }
     if (message.action == 'dimPage') {
         dimPage();
         return;

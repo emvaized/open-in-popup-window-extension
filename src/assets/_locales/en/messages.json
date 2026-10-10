@@ -122,6 +122,9 @@
   "openInPopupWindow": {
     "message": "Open Link in Popup Window"
   },
+  "openInTabButton": {
+    "message": "Open in tab"
+  },
   "openPageInMainWindow": {
     "message": "Open Page in Main Window"
   },
@@ -190,6 +193,9 @@
   },
   "showExtensionSettings": {
     "message": "Show extension settings"
+  },
+  "showOpenInTabButton": {
+    "message": "Show \"Open in tab\" button in popup window"
   },
   "textDragAction": {
     "message": "Action for the selected text"
