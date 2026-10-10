@@ -36,6 +36,8 @@ const configs = {
     'copyTabInsteadOfMoving': true,
     'dimPageOnPopupOpen': true,
     'dimPageAmount': 0.3,
+    'blurPageOnPopupOpen': false,
+    'blurPageAmount': 4, /// px
     'openByLongClick': false,
     'longClickButton': '0', /// possible: 0 for left, 1 for middle click
     'holdClickDelay': 600,

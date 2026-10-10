@@ -27,6 +27,8 @@
     width: 100%;
     height: 100%;
     background: var(--oip-dim-overlay-bg, rgba(0, 0, 0, 0.4));
+    backdrop-filter: blur(var(--oip-blur-overlay-amount, 0px));
+    -webkit-backdrop-filter: blur(var(--oip-blur-overlay-amount, 0px));
     z-index: 999998;
     opacity:0;
 }

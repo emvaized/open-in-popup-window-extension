@@ -650,7 +650,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                 });
 
             /// Dim page for main window
-            if (configs.dimPageOnPopupOpen && senderTab && senderTab.id && !isCurrentPage) {
+            if ((configs.dimPageOnPopupOpen || configs.blurPageOnPopupOpen) && senderTab && senderTab.id && !isCurrentPage) {
                 chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
             }
 

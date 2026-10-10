@@ -68,10 +68,11 @@ function setMouseListeners(){
         document.removeEventListener('dragstart', longClickMouseUpListener);
     }
 
-    /* Dim page overlay */
-    if (configs.dimPageOnPopupOpen){
-        document.documentElement.style.setProperty('--oip-dim-overlay-bg', `rgba(0, 0, 0, ${configs.dimPageAmount ?? 0.4})`);
-    }
+    /* Dim and blur page overlay */
+    document.documentElement.style.setProperty('--oip-dim-overlay-bg',
+        configs.dimPageOnPopupOpen ? `rgba(0, 0, 0, ${configs.dimPageAmount ?? 0.4})` : 'transparent');
+    document.documentElement.style.setProperty('--oip-blur-overlay-amount',
+        configs.blurPageOnPopupOpen ? `${configs.blurPageAmount ?? 4}px` : '0px');
 }
 
 /* Hold click */
@@ -267,12 +268,12 @@ const elementWithinSelection = (el) => {
     return isSelectedText;
 }
 
-/* Apply dim effect to page on popup open */
+/* Apply dim and/or blur effect to page on popup open */
 let dimOverlay;
 const dimAnimDuration = 200;
 
 function dimPage(){
-    if (!configs.dimPageOnPopupOpen) return;
+    if (!configs.dimPageOnPopupOpen && !configs.blurPageOnPopupOpen) return;
 
     if (dimOverlay) dimOverlay.remove();
     dimOverlay = document.createElement('div');

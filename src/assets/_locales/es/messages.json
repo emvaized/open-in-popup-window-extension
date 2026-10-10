@@ -11,6 +11,9 @@
   "automationSettings": {
     "message": "Configuración de automatización"
   },
+  "blurPageOnPopupOpen": {
+    "message": "Desenfocar la página cuando se abre la ventana emergente"
+  },
   "bottomLeft": {
     "message": "Abajo a la izquierda"
   },

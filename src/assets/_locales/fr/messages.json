@@ -11,6 +11,9 @@
   "automationSettings": {
     "message": "Paramètres d’automatisation"
   },
+  "blurPageOnPopupOpen": {
+    "message": "Flouter la page lors de l’ouverture de la popup"
+  },
   "bottomLeft": {
     "message": "En bas à gauche"
   },
