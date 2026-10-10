@@ -211,7 +211,10 @@ function onTrigger(e, type){
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: availHeight, availWidth: availWidth,
         selectedText: selectedText,
-        availLeft: availLeft, type: type
+        availLeft: availLeft, type: type,
+        /// to find where the page area is on the screen (without tab strip, sidebars and toolbars)
+        clientX: e ? e.clientX : undefined, clientY: e ? e.clientY : undefined,
+        viewportWidth: window.innerWidth, viewportHeight: window.innerHeight
     }
 
     let link, isViewer = false;
