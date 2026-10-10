@@ -127,6 +127,18 @@ function onMessageReceived(request, sender, sendResponse) {
         return;
     }
 
+    /// Popup was maximized in Firefox (sent from content script, as windows.onBoundsChanged is not supported there)
+    if (request.action == 'windowMaximized') {
+        if (chrome.windows.onBoundsChanged || !configs.moveToMainWindowOnMaximize || !sender.tab) return;
+        chrome.windows.get(sender.tab.windowId, (w) => {
+            /// Ignore fullscreen (macOS green button, fullscreen video): closing a window during
+            /// the fullscreen transition leaves a "ghost" window on macOS
+            if (chrome.runtime.lastError || !w || w.type !== 'popup' || w.state === 'fullscreen') return;
+            moveTabToRegularWindow(sender.tab);
+        });
+        return;
+    }
+
     if (request.action == 'updateAspectRatio') {
         if (request.aspectRatio && configs.tryFitWindowSizeToImage) {
             chrome.windows.get(lastPopupId, function(w){

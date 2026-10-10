@@ -45,6 +45,13 @@ function setMouseListeners(){
         document.removeEventListener('keyup', EscKeyUpListener)
     }
 
+    /* Detect popup maximize in Firefox, where windows.onBoundsChanged is not available */
+    if (configs.moveToMainWindowOnMaximize && navigator.userAgent.indexOf("Firefox") > -1){
+        window.addEventListener('resize', windowResizeListener, { passive: true });
+    } else {
+        window.removeEventListener('resize', windowResizeListener, { passive: true });
+    }
+
     /* Double modifier key press to open in popup */
     if (configs.openByModClick && configs.doubleModifierKeyPressTrigger){
         document.addEventListener('keyup', doubleModKeyUpListener);
@@ -159,6 +166,19 @@ function EscKeyUpListener(e){
     if (e.key == 'Escape'){
          chrome.runtime.sendMessage({action: 'requestEscPopupWindowClose'})
     }
+}
+
+/* Detect popup maximize in Firefox */
+let resizeTimeout;
+function windowResizeListener(){
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        /// window fills the whole screen (maximized, zoomed or fullscreen) — background checks if it's a popup
+        const s = window.screen, tolerance = 10;
+        if (document.fullscreenElement) return;
+        if (window.outerWidth >= s.availWidth - tolerance && window.outerHeight >= s.availHeight - tolerance)
+            chrome.runtime.sendMessage({ action: 'windowMaximized' });
+    }, 200);
 }
 
 /* Double modifier key press to open in popup */
