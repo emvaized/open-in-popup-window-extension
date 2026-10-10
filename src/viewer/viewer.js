@@ -95,14 +95,14 @@ function onViewerLoaded(width, height) {
     const aspectRatio = width / height;
     const toolbarHeight = window.outerHeight - window.innerHeight;
     const toolbarWidth = window.outerWidth - window.innerWidth;
-    const availHeight = window.screen.availHeight;
-    const availWidth = window.screen.availWidth;
+    const { availLeft, availTop, availWidth, availHeight } = getScreenArea();
     const titleBarHeight = window.outerHeight - window.innerHeight;
 
     chrome.runtime.sendMessage({
         action: 'updateAspectRatio', aspectRatio: aspectRatio,
         toolbarHeight: toolbarHeight, toolbarWidth: toolbarWidth,
         availHeight: availHeight, availWidth: availWidth,
+        availLeft: availLeft, availTop: availTop,
         titleBarHeight: titleBarHeight
     });
 }
