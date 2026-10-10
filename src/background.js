@@ -886,6 +886,7 @@ async function returnTabToPopup(tab) {
     if (!bounds) return false;
     /// leave the split view first, the other tab takes the whole window again
     if (chrome.tabs.unsplit && (tab.splitViewId ?? -1) !== -1) await chrome.tabs.unsplit(tab.splitViewId).catch(() => {});
+    if (bounds.pinnedForSplit) await chrome.tabs.update(tab.id, { pinned: false }).catch(() => {});
     const popup = await chrome.windows.create({ type: 'popup', tabId: tab.id, left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height });
     if (bounds.originTabId && popup) await chrome.storage.session.set({ ['popupOriginTab_' + popup.id]: bounds.originTabId });
     if (bounds.previousActiveTabId) chrome.tabs.update(bounds.previousActiveTabId, { active: true }).catch(() => {});
@@ -951,11 +952,20 @@ async function splitPopupWithOriginTab(popupTab) {
         const originTabId = (await chrome.storage.session.get(key))[key];
         const origin = await chrome.tabs.get(originTabId);
         /// both tabs must be adjacent, in the same window, with the same pinned and group state
-        if (origin.pinned) throw new Error('Origin tab is pinned');
         if ((origin.splitViewId ?? -1) !== -1) throw new Error('Origin tab is already in a split view');
 
         await rememberTabLeavingPopup(popupTab);
         await chrome.tabs.move(popupTab.id, { windowId: origin.windowId, index: origin.index + 1 });
+        if (origin.pinned) {
+            /// pinning moves the tab to the end of pinned tabs, so put it next to the origin tab again;
+            /// it is unpinned when it goes back to popup
+            await chrome.tabs.update(popupTab.id, { pinned: true });
+            await chrome.tabs.move(popupTab.id, { index: (await chrome.tabs.get(origin.id)).index + 1 });
+        }
+        /// when the tab goes back to popup, the origin tab should stay active in the main window
+        const fromPopupKey = 'tabFromPopup_' + popupTab.id;
+        const fromPopup = (await chrome.storage.session.get(fromPopupKey))[fromPopupKey];
+        if (fromPopup) await chrome.storage.session.set({ [fromPopupKey]: { ...fromPopup, previousActiveTabId: origin.id, pinnedForSplit: origin.pinned } });
         if (origin.groupId !== undefined && origin.groupId !== -1)
             await chrome.tabs.group({ groupId: origin.groupId, tabIds: [popupTab.id] });
         await chrome.tabs.createSplit([origin.id, popupTab.id]);
