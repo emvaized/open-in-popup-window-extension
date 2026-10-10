@@ -142,10 +142,19 @@ function onMessageReceived(request, sender, sendResponse) {
     /// Content script asks whether its page is opened in a popup window (to show "Open in tab" button)
     if (request.action == 'isPopupWindow') {
         if (!sender.tab) return;
+        const key = 'popupOriginTab_' + sender.tab.windowId;
         chrome.windows.get(sender.tab.windowId, (w) => {
-            sendResponse(!chrome.runtime.lastError && w && w.type === 'popup');
+            const isPopup = !chrome.runtime.lastError && w && w.type === 'popup';
+            if (!isPopup || !chrome.tabs.createSplit) return sendResponse({ isPopup: isPopup, canSplit: false });
+            chrome.storage.session.get(key, (data) => sendResponse({ isPopup: true, canSplit: !!(data && data[key]) }));
         });
         return true;
+    }
+
+    /// "Split view" button clicked in popup window
+    if (request.action == 'splitPopupWithOriginTab') {
+        if (sender.tab) splitPopupWithOriginTab(sender.tab);
+        return;
     }
 
     /// "Open in tab" button clicked in popup window
@@ -665,6 +674,10 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
 
             let popupWindowId = popupWindow.id;
 
+            /// Remember the tab the popup was opened from, to show it in split view with the popup later
+            if (senderTab && senderTab.id && !isCurrentPage && chrome.tabs.createSplit)
+                chrome.storage.session.set({ ['popupOriginTab_' + popupWindowId]: senderTab.id });
+
             /// Existing tab was moved into the popup: let its page show "Open in tab" button
             if (tabToCopy) chrome.tabs.sendMessage(tabToCopy.id, { action: 'windowTypeChanged' }).catch(() => {});
 
@@ -871,6 +884,35 @@ function moveTabToRegularWindow(tab, shouldFocusTab = true){
         }
     );
 }
+
+/// Puts the popup tab next to the tab it was opened from, in a native split view (Chrome 155+, like Split in Zen's Glance).
+/// Falls back to just moving the tab to the main window when split view can't be created
+async function splitPopupWithOriginTab(popupTab) {
+    const key = 'popupOriginTab_' + popupTab.windowId;
+    try {
+        const originTabId = (await chrome.storage.session.get(key))[key];
+        const origin = await chrome.tabs.get(originTabId);
+        /// both tabs must be adjacent, in the same window, with the same pinned and group state
+        if (origin.pinned) throw new Error('Origin tab is pinned');
+        if ((origin.splitViewId ?? -1) !== -1) throw new Error('Origin tab is already in a split view');
+
+        await chrome.tabs.move(popupTab.id, { windowId: origin.windowId, index: origin.index + 1 });
+        if (origin.groupId !== undefined && origin.groupId !== -1)
+            await chrome.tabs.group({ groupId: origin.groupId, tabIds: [popupTab.id] });
+        await chrome.tabs.createSplit([origin.id, popupTab.id]);
+        await chrome.tabs.update(popupTab.id, { active: true });
+        await chrome.windows.update(origin.windowId, { focused: true });
+        chrome.tabs.sendMessage(popupTab.id, { action: 'windowTypeChanged' }).catch(() => {});
+    } catch (e) {
+        if (configs.debugMode) console.warn('Could not create split view, moving tab to main window instead:', e);
+        const tab = await chrome.tabs.get(popupTab.id).catch(() => null);
+        if (tab) moveTabToRegularWindow(tab);
+    }
+}
+
+chrome.windows.onRemoved.addListener((windowId) => {
+    if (chrome.tabs.createSplit) chrome.storage.session.remove('popupOriginTab_' + windowId);
+});
 
 function windowsOverlap(a, b, tolerance = 45) {
   return (

@@ -312,7 +312,7 @@ function undimPage(){
     window.removeEventListener('focus', undimPage)
 }
 
-/* "Open in tab" button for popup windows: appears when mouse is near the top edge of the window */
+/* "Split view" and "Open in tab" buttons for popup windows: appear when mouse is near the top edge of the window */
 let openInTabButtonHost, openInTabButtonListeners;
 
 function removeOpenInTabButton(){
@@ -321,11 +321,11 @@ function removeOpenInTabButton(){
     openInTabButtonHost = openInTabButtonListeners = null;
 }
 
-/// Shows the button if the page is in a popup window, removes it otherwise (tab can be moved between windows)
+/// Shows the buttons if the page is in a popup window, removes them otherwise (tab can be moved between windows)
 function setupOpenInTabButton(){
     if (window.top !== window) return;
-    chrome.runtime.sendMessage({ action: 'isPopupWindow' }).then((isPopup) => {
-        if (!isPopup) {
+    chrome.runtime.sendMessage({ action: 'isPopupWindow' }).then((response) => {
+        if (!response || !response.isPopup) {
             removeOpenInTabButton();
             return;
         }
@@ -336,42 +336,53 @@ function setupOpenInTabButton(){
         const shadow = host.attachShadow({ mode: 'closed' });
         shadow.innerHTML = `
             <style>
-                button {
+                .bar {
                     position: fixed; top: 10px; right: 12px; z-index: 2147483647;
-                    display: flex; align-items: center; gap: 6px;
+                    display: flex; gap: 6px; pointer-events: none;
+                    opacity: 0; transform: translateY(-4px); transition: opacity .15s ease, transform .15s ease;
+                }
+                .bar.visible { opacity: 1; transform: none; }
+                .bar.visible button { pointer-events: auto; }
+                button {
+                    position: relative; display: flex; align-items: center; gap: 6px;
                     padding: 6px 12px; border: 0; border-radius: 999px;
                     font: 500 13px/1.2 system-ui, -apple-system, sans-serif;
                     color: #fff; background: rgba(28, 28, 30, 0.82);
                     -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
                     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
-                    cursor: pointer; opacity: 0; pointer-events: none; user-select: none;
-                    transform: translateY(-4px); transition: opacity .15s ease, transform .15s ease;
+                    cursor: pointer; pointer-events: none; user-select: none;
                 }
-                button.visible { opacity: 1; pointer-events: auto; transform: none; }
                 /* larger invisible hit area, so clicks near the rounded edges are not lost */
-                button::before { content: ''; position: absolute; inset: -8px; border-radius: 999px; }
+                button::before { content: ''; position: absolute; inset: -8px -3px; border-radius: 999px; }
                 button:hover { background: rgba(28, 28, 30, 0.95); }
                 svg { width: 12px; height: 12px; }
             </style>
-            <button type="button">
-                <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 1.5h6v6M10.5 1.5 4 8M8.5 7v3.5h-7v-7H5"/></svg>
-                <span></span>
-            </button>`;
-        const button = shadow.querySelector('button');
-        shadow.querySelector('span').textContent = chrome.i18n.getMessage('openInTabButton') || 'Open in tab';
+            <div class="bar">
+                ${response.canSplit ? `<button type="button" data-action="splitPopupWithOriginTab">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="1" y="2" width="10" height="8" rx="1.5"/><path d="M6 2v8"/></svg>
+                    <span>${chrome.i18n.getMessage('splitViewButton') || 'Split view'}</span>
+                </button>` : ''}
+                <button type="button" data-action="openPopupInMainWindow">
+                    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4.5 1.5h6v6M10.5 1.5 4 8M8.5 7v3.5h-7v-7H5"/></svg>
+                    <span>${chrome.i18n.getMessage('openInTabButton') || 'Open in tab'}</span>
+                </button>
+            </div>`;
+        const bar = shadow.querySelector('.bar');
         /// Act on press: in Firefox "click" is lost if the pointer moves slightly between press and release
-        button.addEventListener('pointerdown', (e) => {
-            if (e.button !== 0) return;
-            e.preventDefault(); e.stopPropagation();
-            chrome.runtime.sendMessage({ action: 'openPopupInMainWindow' });
-        });
+        for (const button of shadow.querySelectorAll('button')) {
+            button.addEventListener('pointerdown', (e) => {
+                if (e.button !== 0) return;
+                e.preventDefault(); e.stopPropagation();
+                chrome.runtime.sendMessage({ action: button.dataset.action });
+            });
+        }
         document.documentElement.appendChild(host);
         openInTabButtonListeners = new AbortController();
         const signal = openInTabButtonListeners.signal;
 
         const topZone = 60;
         let hideTimeout;
-        const setVisible = (visible) => button.classList.toggle('visible', visible && !document.fullscreenElement);
+        const setVisible = (visible) => bar.classList.toggle('visible', visible && !document.fullscreenElement);
 
         /// Show briefly on load, so the user knows the button exists
         setVisible(true);
