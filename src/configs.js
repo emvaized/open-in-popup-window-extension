@@ -32,6 +32,7 @@ const configs = {
     'availLeft': 0,
     'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
+    'showOpenInTabButton': true,
     'changeDragCursor': true,
     'copyTabInsteadOfMoving': true,
     'dimPageOnPopupOpen': true,

@@ -130,7 +130,6 @@ function updateDisabledOptions() {
         if (isFirefox){
             /// Remove options that are not available in Firefox
             document.getElementById("rememberWindowResize").parentNode.parentNode.remove();
-            document.getElementById("moveToMainWindowOnMaximize").parentNode.parentNode.remove();
         } else {
             /// Remove options that are not available in Chromium-based browsers
             // document.getElementById("showAddressbarIcon").parentNode.parentNode.remove();

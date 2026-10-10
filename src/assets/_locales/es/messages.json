@@ -125,6 +125,9 @@
   "openInPopupWindow": {
     "message": "Abrir enlace en ventana emergente"
   },
+  "openInTabButton": {
+    "message": "Abrir en pestaña"
+  },
   "openLinkInMainWindow": {
     "message": "Abrir página en la ventana principal"
   },
@@ -173,6 +176,9 @@
   "reopenSingleTabWindowAsPopupHint": {
     "message": "Con esta opción activada, cualquier ventana nueva del navegador con una sola pestaña se reabrirá automáticamente como ventana emergente. Permite a la extensión crear ventanas emergentes para enlaces a los que normalmente no puede acceder (por ejemplo, la barra de marcadores). Pero puede conducir a un comportamiento no deseado si sueles abrir muchas ventanas del navegador, ¡así que úsalo con precaución!"
   },
+  "returnToPopupButton": {
+    "message": "Volver a la ventana emergente"
+  },
   "reuseExistingPopup": {
     "message": "Reutilizar la ventana emergente existente en lugar de abrir una nueva"
   },
@@ -193,6 +199,9 @@
   },
   "showExtensionSettings": {
     "message": "Mostrar configuración"
+  },
+  "showOpenInTabButton": {
+    "message": "Mostrar el botón «Abrir en pestaña» en la ventana emergente"
   },
   "textDragAction": {
     "message": "Acción para el texto seleccionado"
