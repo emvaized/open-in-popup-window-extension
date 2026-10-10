@@ -143,6 +143,9 @@
   "popupHeight": {
     "message": "Height (px)"
   },
+  "popupHeightPercent": {
+    "message": "Height (%)"
+  },
   "popupSizeFixed": {
     "message": "Fixed (px)"
   },
@@ -154,6 +157,9 @@
   },
   "popupWidth": {
     "message": "Width (px)"
+  },
+  "popupWidthPercent": {
+    "message": "Width (%)"
   },
   "popupWindowLocation": {
     "message": "Popup window location"

@@ -143,6 +143,9 @@
   "popupHeight": {
     "message": "Высота (px)"
   },
+  "popupHeightPercent": {
+    "message": "Высота (%)"
+  },
   "popupSizeFixed": {
     "message": "Фиксированный (px)"
   },
@@ -154,6 +157,9 @@
   },
   "popupWidth": {
     "message": "Ширина (px)"
+  },
+  "popupWidthPercent": {
+    "message": "Ширина (%)"
   },
   "popupWindowLocation": {
     "message": "Расположение всплывающего окна"

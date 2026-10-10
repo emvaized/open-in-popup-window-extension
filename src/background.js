@@ -500,8 +500,9 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         let height, width;
     
         if (originWindow) {
-            const share = Math.min(Math.max(parseFloat(configs.popupSizePercent) || 75, 20), 100) / 100;
-            height = originWindow.height * share, width = originWindow.width * share;
+            const share = (value, fallback) => Math.min(Math.max(parseFloat(value) || fallback, 20), 100) / 100;
+            height = originWindow.height * share(configs.popupHeightPercent, 85);
+            width = originWindow.width * share(configs.popupWidthPercent, 80);
         } else {
             height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
         }

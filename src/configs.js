@@ -4,7 +4,8 @@ const configs = {
     'popupHeight': 800,
     'popupWidth': 600,
     'popupSizeMode': 'popupSizeRelative', /// possible values: popupSizeRelative,popupSizeFixed
-    'popupSizePercent': 75,
+    'popupHeightPercent': 85,
+    'popupWidthPercent': 80,
     'viewInPopupEnabled': true,
     'searchInPopupEnabled': true,
     'translateInPopupEnabled': false,
