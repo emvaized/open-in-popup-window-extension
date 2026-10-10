@@ -139,13 +139,22 @@ function onMessageReceived(request, sender, sendResponse) {
         return;
     }
 
-    /// Content script asks whether its page is opened in a popup window (to show "Open in tab" button)
+    /// Content script asks whether its page is in a popup window or came from one (to show "Open in tab" / "Back to popup")
     if (request.action == 'isPopupWindow') {
         if (!sender.tab) return;
+        const key = 'tabFromPopup_' + sender.tab.id;
         chrome.windows.get(sender.tab.windowId, (w) => {
-            sendResponse(!chrome.runtime.lastError && w && w.type === 'popup');
+            const isPopup = !chrome.runtime.lastError && w && w.type === 'popup';
+            if (isPopup) return sendResponse({ isPopup: true });
+            chrome.storage.session.get(key, (data) => sendResponse({ isPopup: false, cameFromPopup: !!(data && data[key]) }));
         });
         return true;
+    }
+
+    /// "Back to popup" button clicked in a tab that came from popup
+    if (request.action == 'returnTabToPopup') {
+        if (sender.tab) returnTabToPopup(sender.tab);
+        return;
     }
 
     /// "Open in tab" button clicked in popup window
@@ -237,8 +246,12 @@ function onContextMenuClicked(clickData, tab) {
     
     if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow' || clickData.menuItemId == 'iconContextOpenPage') {
         if (tab)
-            loadUserConfigs((c) => {
-                openPopupWindowForLink(clickData.pageUrl ?? tab.url ?? 'about:blank', false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
+            /// a tab that came from popup is moved back there instead of being reopened
+            returnTabToPopup(tab).then((returned) => {
+                if (returned) return;
+                loadUserConfigs((c) => {
+                    openPopupWindowForLink(clickData.pageUrl ?? tab.url ?? 'about:blank', false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
+                });
             });
         return;
     }
@@ -414,7 +427,10 @@ function handleKeyboardShortcuts(command, senderTab) {
     if (command === "open-popup-in-main-window") {
         moveTabToRegularWindow(senderTab)
     } else if (command === "open-in-popup-window") {
-        openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+        /// a tab that came from popup is moved back there instead of being reopened
+        returnTabToPopup(senderTab).then((returned) => {
+            if (!returned) openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+        });
     } else if (command === "open-search-in-popup-window") {
         openSearchPopup(senderTab);
     }else if (command === "translate-in-popup-window") {
@@ -827,6 +843,31 @@ async function openExtensionPopupManually(){
 }
 
 function moveTabToRegularWindow(tab, shouldFocusTab = true){
+    rememberTabLeavingPopup(tab).finally(() => moveTabToRegularWindowNow(tab, shouldFocusTab));
+}
+
+/// Remembers popup bounds of a tab that leaves the popup, so it can be returned there later
+async function rememberTabLeavingPopup(tab) {
+    const w = await chrome.windows.get(tab.windowId).catch(() => null);
+    if (!w || w.type !== 'popup') return;
+    await chrome.storage.session.set({ ['tabFromPopup_' + tab.id]: { left: w.left, top: w.top, width: w.width, height: w.height } });
+}
+
+/// Moves a tab that came from a popup back into a popup window with the same bounds, without reloading.
+/// Returns false if the tab didn't come from a popup
+async function returnTabToPopup(tab) {
+    const key = 'tabFromPopup_' + tab.id;
+    const bounds = (await chrome.storage.session.get(key))[key];
+    if (!bounds) return false;
+    await chrome.windows.create({ type: 'popup', tabId: tab.id, left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height });
+    await chrome.storage.session.remove(key);
+    chrome.tabs.sendMessage(tab.id, { action: 'windowTypeChanged' }).catch(() => {});
+    return true;
+}
+
+chrome.tabs.onRemoved.addListener((tabId) => chrome.storage.session.remove('tabFromPopup_' + tabId));
+
+function moveTabToRegularWindowNow(tab, shouldFocusTab = true){
     // chrome.tabs.remove(tab.id);
     // chrome.tabs.create({ url: clickData.pageUrl, active: true });
 
