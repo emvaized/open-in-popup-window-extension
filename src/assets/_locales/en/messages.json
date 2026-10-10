@@ -143,6 +143,15 @@
   "popupHeight": {
     "message": "Height (px)"
   },
+  "popupSizeFixed": {
+    "message": "Fixed (px)"
+  },
+  "popupSizeMode": {
+    "message": "Mode"
+  },
+  "popupSizeRelative": {
+    "message": "% of browser window (centered over it)"
+  },
   "popupWidth": {
     "message": "Width (px)"
   },

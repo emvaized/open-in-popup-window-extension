@@ -476,10 +476,25 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
             }
         }
 
+        /// Relative size: popup takes a share of the origin browser window and is centered over it (like Glance in Zen)
+        let originWindow;
+        if (configs.popupSizeMode == 'popupSizeRelative') {
+            const originWindowId = senderTab && senderTab.windowId ? senderTab.windowId : lastNormalWindowId;
+            if (originWindowId) originWindow = await chrome.windows.get(originWindowId).catch(() => null);
+            /// popup opened from another popup, or origin is unknown — use the last focused regular window instead
+            if (!originWindow || originWindow.type !== 'normal')
+                originWindow = await chrome.windows.getLastFocused({ windowTypes: ['normal'] }).catch(() => null);
+        }
+
         /// Calculate popup size
         let height, width;
     
-        height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
+        if (originWindow) {
+            const share = Math.min(Math.max(parseFloat(configs.popupSizePercent) || 75, 20), 100) / 100;
+            height = originWindow.height * share, width = originWindow.width * share;
+        } else {
+            height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
+        }
         if (isViewer && configs.tryFitWindowSizeToImage && elementHeight && elementWidth) {
             const aspectRatio = elementWidth / elementHeight;
             width = height * aspectRatio;
@@ -575,7 +590,10 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
             }
         }
 
-        if (forceFallbackLocation && (configs.popupWindowLocation == 'mousePosition' || configs.popupWindowLocation == 'nearMousePosition')) {
+        if (originWindow) {
+            dx = originWindow.left + (originWindow.width - width) / 2;
+            dy = originWindow.top + (originWindow.height - height) / 2;
+        } else if (forceFallbackLocation && (configs.popupWindowLocation == 'mousePosition' || configs.popupWindowLocation == 'nearMousePosition')) {
             setFallbackPopupLocation();
         } else {
             setPopupLocation(popupLocation);
@@ -676,7 +694,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                             });
                     } else {
                         /// Save new popup window size
-                        if (configs.rememberWindowResize){
+                        if (configs.rememberWindowResize && configs.popupSizeMode !== 'popupSizeRelative'){
                             if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
                             if (Math.abs(w.height - configs.popupHeight) <= 2 && Math.abs(w.width - configs.popupWidth) <= 2) return;
                             configs.popupHeight = w.height;

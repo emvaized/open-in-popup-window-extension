@@ -143,6 +143,15 @@
   "popupHeight": {
     "message": "높이 (px)"
   },
+  "popupSizeFixed": {
+    "message": "고정 (px)"
+  },
+  "popupSizeMode": {
+    "message": "모드"
+  },
+  "popupSizeRelative": {
+    "message": "브라우저 창의 % (창 중앙)"
+  },
   "popupWidth": {
     "message": "너비 (px)"
   },

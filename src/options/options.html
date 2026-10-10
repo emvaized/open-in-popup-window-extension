@@ -76,7 +76,15 @@
 
     <div><h5 id="popupWindowSize">Popup window size</h5> <hr /></div>
 
-    <div style="margin: 8px 0;">
+    <div class='option'>
+        <label><select id="popupSizeMode">
+            <option value="popupSizeRelative">% of browser window</option>
+            <option value="popupSizeFixed">Fixed (px)</option>
+        </select></label>
+        <input title="%" style="margin-left: 4px; max-width:45px" type="number" max="100" min="20" step="5" id="popupSizePercent"></input>
+    </div>
+
+    <div style="margin: 8px 0;" id="popupFixedSize">
         <span class='option'>
             <label><input type="number" max="10000" min="100" step="50" id="popupHeight"></input></label>
         </span>  

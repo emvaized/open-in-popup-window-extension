@@ -143,6 +143,15 @@
   "popupHeight": {
     "message": "Высота (px)"
   },
+  "popupSizeFixed": {
+    "message": "Фиксированный (px)"
+  },
+  "popupSizeMode": {
+    "message": "Режим"
+  },
+  "popupSizeRelative": {
+    "message": "% от окна браузера (по центру окна)"
+  },
   "popupWidth": {
     "message": "Ширина (px)"
   },
