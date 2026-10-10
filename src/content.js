@@ -7,16 +7,19 @@ loadUserConfigs(function(c) {
     setMouseListeners();
 
     /// Cache screen size for the background script
-    const { width: screenWidth, height: screenHeight, availLeft } = window.screen;
+    const { width: screenWidth, height: screenHeight } = window.screen;
+    const { availLeft, availTop } = getScreenArea();
 
-    if (configs.screenWidth !== screenWidth || configs.availLeft !== availLeft) {
+    if (configs.screenWidth !== screenWidth || configs.availLeft !== availLeft || configs.availTop !== availTop) {
         configs.screenWidth = screenWidth;
         configs.screenHeight = screenHeight;
         configs.availLeft = availLeft;
+        configs.availTop = availTop;
         chrome.storage.sync.set({
             screenWidth: screenWidth,
             screenHeight: screenHeight,
             availLeft: availLeft,
+            availTop: availTop,
         });
     }
 })
@@ -204,14 +207,14 @@ function onTrigger(e, type){
     const t = e ? e.target : lastMouseOverData.target;
     const selectedText = getSelectedText();
 
-    const { availLeft, availHeight, availWidth } = window.screen;
+    const { availLeft, availTop, availHeight, availWidth } = getScreenArea();
     const message = {
         mouseX: e ? e.screenX : lastMouseOverData.x, mouseY: e ? e.screenY : lastMouseOverData.y,
         elementHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: availHeight, availWidth: availWidth,
         selectedText: selectedText,
-        availLeft: availLeft, type: type
+        availLeft: availLeft, availTop: availTop, type: type
     }
 
     let link, isViewer = false;
@@ -252,6 +255,20 @@ function onTrigger(e, type){
     }
 
     chrome.runtime.sendMessage(message)
+}
+
+/* Available area of the screen the browser window is on, in global desktop coordinates.
+Firefox may report availLeft/availTop relative to the current screen instead (e.g. for a screen placed above the primary one),
+so if the window appears to be outside of the reported area, use the browser window bounds, which are always global */
+function getScreenArea(){
+    const { availLeft, availTop, availWidth, availHeight } = window.screen;
+    const tolerance = 50; /// maximized windows may slightly exceed screen bounds
+    const windowIsOnScreen =
+        window.screenX >= availLeft - tolerance && window.screenX < availLeft + availWidth &&
+        window.screenY >= availTop - tolerance && window.screenY < availTop + availHeight;
+
+    if (windowIsOnScreen) return { availLeft, availTop, availWidth, availHeight };
+    return { availLeft: window.screenX, availTop: window.screenY, availWidth: window.outerWidth, availHeight: window.outerHeight };
 }
 
 /* Check if element under cursor is an image or a link */
