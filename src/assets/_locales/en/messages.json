@@ -11,6 +11,9 @@
   "automationSettings": {
     "message": "Automation settings"
   },
+  "blurPageOnPopupOpen": {
+    "message": "Blur page when popup is opened"
+  },
   "bottomLeft": {
     "message": "Bottom left"
   },

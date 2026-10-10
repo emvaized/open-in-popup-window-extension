@@ -11,6 +11,9 @@
   "automationSettings": {
     "message": "Настройки автоматизации"
   },
+  "blurPageOnPopupOpen": {
+    "message": "Размывать страницу при открытии всплыв. окна"
+  },
   "bottomLeft": {
     "message": "Слева внизу"
   },

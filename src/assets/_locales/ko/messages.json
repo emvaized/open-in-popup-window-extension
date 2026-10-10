@@ -11,6 +11,9 @@
   "automationSettings": {
     "message": "자동화 설정"
   },
+  "blurPageOnPopupOpen": {
+    "message": "팝업 창이 열릴 때 페이지 흐리게 하기"
+  },
   "bottomLeft": {
     "message": "좌하단"
   },
