@@ -863,7 +863,10 @@ function moveTabToRegularWindow(tab, shouldFocusTab = true){
 async function rememberTabLeavingPopup(tab) {
     const w = await chrome.windows.get(tab.windowId).catch(() => null);
     if (!w || w.type !== 'popup') return;
-    await chrome.storage.session.set({ ['tabFromPopup_' + tab.id]: { left: w.left, top: w.top, width: w.width, height: w.height } });
+    /// also keep the tab the popup was opened from, so "Split view" is available again after returning
+    const originKey = 'popupOriginTab_' + w.id;
+    const originTabId = (await chrome.storage.session.get(originKey))[originKey];
+    await chrome.storage.session.set({ ['tabFromPopup_' + tab.id]: { left: w.left, top: w.top, width: w.width, height: w.height, originTabId: originTabId } });
 }
 
 /// Moves a tab that came from a popup back into a popup window with the same bounds, without reloading.
@@ -872,7 +875,10 @@ async function returnTabToPopup(tab) {
     const key = 'tabFromPopup_' + tab.id;
     const bounds = (await chrome.storage.session.get(key))[key];
     if (!bounds) return false;
-    await chrome.windows.create({ type: 'popup', tabId: tab.id, left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height });
+    /// leave the split view first, the other tab takes the whole window again
+    if (chrome.tabs.unsplit && (tab.splitViewId ?? -1) !== -1) await chrome.tabs.unsplit(tab.splitViewId).catch(() => {});
+    const popup = await chrome.windows.create({ type: 'popup', tabId: tab.id, left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height });
+    if (bounds.originTabId && popup) await chrome.storage.session.set({ ['popupOriginTab_' + popup.id]: bounds.originTabId });
     await chrome.storage.session.remove(key);
     chrome.tabs.sendMessage(tab.id, { action: 'windowTypeChanged' }).catch(() => {});
     return true;
@@ -937,6 +943,7 @@ async function splitPopupWithOriginTab(popupTab) {
         if (origin.pinned) throw new Error('Origin tab is pinned');
         if ((origin.splitViewId ?? -1) !== -1) throw new Error('Origin tab is already in a split view');
 
+        await rememberTabLeavingPopup(popupTab);
         await chrome.tabs.move(popupTab.id, { windowId: origin.windowId, index: origin.index + 1 });
         if (origin.groupId !== undefined && origin.groupId !== -1)
             await chrome.tabs.group({ groupId: origin.groupId, tabIds: [popupTab.id] });
