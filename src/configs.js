@@ -3,6 +3,9 @@ const configs = {
     'hideBrowserControls': true,
     'popupHeight': 800,
     'popupWidth': 600,
+    'popupSizeMode': 'popupSizeRelative', /// possible values: popupSizeRelative,popupSizeFixed
+    'popupHeightPercent': 85,
+    'popupWidthPercent': 80,
     'viewInPopupEnabled': true,
     'searchInPopupEnabled': true,
     'translateInPopupEnabled': false,
@@ -32,10 +35,13 @@ const configs = {
     'availLeft': 0,
     'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
+    'showOpenInTabButton': true,
     'changeDragCursor': true,
     'copyTabInsteadOfMoving': true,
     'dimPageOnPopupOpen': true,
     'dimPageAmount': 0.3,
+    'blurPageOnPopupOpen': false,
+    'blurPageAmount': 4, /// px
     'openByLongClick': false,
     'longClickButton': '0', /// possible: 0 for left, 1 for middle click
     'holdClickDelay': 600,

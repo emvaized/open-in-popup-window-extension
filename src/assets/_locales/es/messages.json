@@ -11,6 +11,9 @@
   "automationSettings": {
     "message": "Configuración de automatización"
   },
+  "blurPageOnPopupOpen": {
+    "message": "Desenfocar la página cuando se abre la ventana emergente"
+  },
   "bottomLeft": {
     "message": "Abajo a la izquierda"
   },
@@ -122,6 +125,9 @@
   "openInPopupWindow": {
     "message": "Abrir enlace en ventana emergente"
   },
+  "openInTabButton": {
+    "message": "Abrir en pestaña"
+  },
   "openLinkInMainWindow": {
     "message": "Abrir página en la ventana principal"
   },
@@ -146,8 +152,23 @@
   "popupHeight": {
     "message": "Altura (px)"
   },
+  "popupHeightPercent": {
+    "message": "Altura (%)"
+  },
+  "popupSizeFixed": {
+    "message": "Fijo (px)"
+  },
+  "popupSizeMode": {
+    "message": "Modo"
+  },
+  "popupSizeRelative": {
+    "message": "% de la ventana del navegador (centrada)"
+  },
   "popupWidth": {
     "message": "Anchura (px)"
+  },
+  "popupWidthPercent": {
+    "message": "Ancho (%)"
   },
   "popupWindowLocation": {
     "message": "Ubicación de la ventana emergente"
@@ -170,6 +191,9 @@
   "reopenSingleTabWindowAsPopupHint": {
     "message": "Con esta opción activada, cualquier ventana nueva del navegador con una sola pestaña se reabrirá automáticamente como ventana emergente. Permite a la extensión crear ventanas emergentes para enlaces a los que normalmente no puede acceder (por ejemplo, la barra de marcadores). Pero puede conducir a un comportamiento no deseado si sueles abrir muchas ventanas del navegador, ¡así que úsalo con precaución!"
   },
+  "returnToPopupButton": {
+    "message": "Volver a la ventana emergente"
+  },
   "reuseExistingPopup": {
     "message": "Reutilizar la ventana emergente existente en lugar de abrir una nueva"
   },
@@ -190,6 +214,12 @@
   },
   "showExtensionSettings": {
     "message": "Mostrar configuración"
+  },
+  "showOpenInTabButton": {
+    "message": "Mostrar el botón «Abrir en pestaña» en la ventana emergente"
+  },
+  "splitViewButton": {
+    "message": "Vista dividida"
   },
   "textDragAction": {
     "message": "Acción para el texto seleccionado"

@@ -11,6 +11,9 @@
   "automationSettings": {
     "message": "자동화 설정"
   },
+  "blurPageOnPopupOpen": {
+    "message": "팝업 창이 열릴 때 페이지 흐리게 하기"
+  },
   "bottomLeft": {
     "message": "좌하단"
   },
@@ -122,6 +125,9 @@
   "openInPopupWindow": {
     "message": "팝업 창에서 링크 열기"
   },
+  "openInTabButton": {
+    "message": "탭에서 열기"
+  },
   "openPageInMainWindow": {
     "message": "메인 창에서 페이지 열기"
   },
@@ -143,8 +149,23 @@
   "popupHeight": {
     "message": "높이 (px)"
   },
+  "popupHeightPercent": {
+    "message": "높이 (%)"
+  },
+  "popupSizeFixed": {
+    "message": "고정 (px)"
+  },
+  "popupSizeMode": {
+    "message": "모드"
+  },
+  "popupSizeRelative": {
+    "message": "브라우저 창의 % (창 중앙)"
+  },
   "popupWidth": {
     "message": "너비 (px)"
+  },
+  "popupWidthPercent": {
+    "message": "너비 (%)"
   },
   "popupWindowLocation": {
     "message": "팝업 창 위치"
@@ -170,6 +191,9 @@
   "reopenSingleTabWindowAsPopupHint": {
     "message": "설정을 켠 경우, 탭이 하나만 열린 새 브라우저 창은 모두 자동으로 팝업 창으로 다시 열립니다. 이는 확장이 접근할 수 없는 (북마크 바 등의) 링크를 팝업으로 열 수 있도록 합니다. 하지만 브라우저 창을 많이 열어 두신 경우 원치 않는 현상이 발생할 수 있으니, 주의해 사용하시기 바랍니다!"
   },
+  "returnToPopupButton": {
+    "message": "팝업으로 돌아가기"
+  },
   "reuseExistingPopup": {
     "message": "새 창을 여는 대신 기존 팝업 창 재사용"
   },
@@ -190,6 +214,12 @@
   },
   "showExtensionSettings": {
     "message": "확장 설정 표시"
+  },
+  "showOpenInTabButton": {
+    "message": "팝업 창에 '탭에서 열기' 버튼 표시"
+  },
+  "splitViewButton": {
+    "message": "분할 보기"
   },
   "textSelectionHeader": {
     "message": "텍스트 선택 항목"

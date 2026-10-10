@@ -11,6 +11,9 @@
   "automationSettings": {
     "message": "Paramètres d’automatisation"
   },
+  "blurPageOnPopupOpen": {
+    "message": "Flouter la page lors de l’ouverture de la popup"
+  },
   "bottomLeft": {
     "message": "En bas à gauche"
   },
@@ -122,6 +125,9 @@
   "openInPopupWindow": {
     "message": "Ouvrir le lien dans une fenêtre popup"
   },
+  "openInTabButton": {
+    "message": "Ouvrir dans un onglet"
+  },
   "openPageInMainWindow": {
     "message": "Ouvrir la page dans la fenêtre principale"
   },
@@ -143,8 +149,23 @@
   "popupHeight": {
     "message": "Hauteur (px)"
   },
+  "popupHeightPercent": {
+    "message": "Hauteur (%)"
+  },
+  "popupSizeFixed": {
+    "message": "Fixe (px)"
+  },
+  "popupSizeMode": {
+    "message": "Mode"
+  },
+  "popupSizeRelative": {
+    "message": "% de la fenêtre du navigateur (centrée)"
+  },
   "popupWidth": {
     "message": "Largeur (px)"
+  },
+  "popupWidthPercent": {
+    "message": "Largeur (%)"
   },
   "popupWindowLocation": {
     "message": "Position de la fenêtre popup"
@@ -170,6 +191,9 @@
   "reopenSingleTabWindowAsPopupHint": {
     "message": "Avec cette option activée, toute nouvelle fenêtre du navigateur avec un seul onglet sera automatiquement rouverte comme une popup. Cela permet à l’extension de créer des popups pour des liens auxquels elle n’a normalement pas accès (par exemple, la barre de favoris). Mais cela peut entraîner des comportements indésirables si vous ouvrez souvent de nombreuses fenêtres, donc utilisez avec prudence !"
   },
+  "returnToPopupButton": {
+    "message": "Revenir à la popup"
+  },
   "reuseExistingPopup": {
     "message": "Réutiliser la fenêtre popup existante au lieu d’en ouvrir une nouvelle"
   },
@@ -190,6 +214,12 @@
   },
   "showExtensionSettings": {
     "message": "Afficher les paramètres de l’extension"
+  },
+  "showOpenInTabButton": {
+    "message": "Afficher le bouton « Ouvrir dans un onglet » dans la popup"
+  },
+  "splitViewButton": {
+    "message": "Vue partagée"
   },
   "textSelectionHeader": {
     "message": "Sélection de texte"

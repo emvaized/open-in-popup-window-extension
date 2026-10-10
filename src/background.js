@@ -1,5 +1,6 @@
 let mouseX, mouseY, elementHeight, elementWidth, lastPopupId, lastNormalWindowId;
 let textSelection, availWidth, availHeight, availLeft;
+let lastTriggerViewport; /// page area of the tab where popup was triggered, in screen coordinates
 let preventWindowResizeListener = false;
 let preventNewTabListeners = false;
 let openedPopupWindows;  /// cached Map<id, {type, ...}>
@@ -127,6 +128,51 @@ function onMessageReceived(request, sender, sendResponse) {
         return;
     }
 
+    /// Popup was maximized in Firefox (sent from content script, as windows.onBoundsChanged is not supported there)
+    if (request.action == 'windowMaximized') {
+        if (chrome.windows.onBoundsChanged || !configs.moveToMainWindowOnMaximize || !sender.tab) return;
+        chrome.windows.get(sender.tab.windowId, (w) => {
+            /// Ignore fullscreen (macOS green button, fullscreen video): closing a window during
+            /// the fullscreen transition leaves a "ghost" window on macOS
+            if (chrome.runtime.lastError || !w || w.type !== 'popup' || w.state === 'fullscreen') return;
+            moveTabToRegularWindow(sender.tab);
+        });
+        return;
+    }
+
+    /// Content script asks whether its page is in a popup window or came from one (to show "Open in tab" / "Back to popup")
+    if (request.action == 'isPopupWindow') {
+        if (!sender.tab) return;
+        chrome.windows.get(sender.tab.windowId, (w) => {
+            const isPopup = !chrome.runtime.lastError && w && w.type === 'popup';
+            const originKey = 'popupOriginTab_' + sender.tab.windowId, fromPopupKey = 'tabFromPopup_' + sender.tab.id;
+            chrome.storage.session.get([originKey, fromPopupKey], (data) => sendResponse({
+                isPopup: isPopup,
+                canSplit: isPopup && !!chrome.tabs.createSplit && !!(data && data[originKey]),
+                cameFromPopup: !isPopup && !!(data && data[fromPopupKey])
+            }));
+        });
+        return true;
+    }
+
+    /// "Split view" button clicked in popup window
+    if (request.action == 'splitPopupWithOriginTab') {
+        if (sender.tab) splitPopupWithOriginTab(sender.tab);
+        return;
+    }
+
+    /// "Back to popup" button clicked in a tab that came from popup
+    if (request.action == 'returnTabToPopup') {
+        if (sender.tab) returnTabToPopup(sender.tab);
+        return;
+    }
+
+    /// "Open in tab" button clicked in popup window
+    if (request.action == 'openPopupInMainWindow') {
+        if (sender.tab) moveTabToRegularWindow(sender.tab);
+        return;
+    }
+
     if (request.action == 'updateAspectRatio') {
         if (request.aspectRatio && configs.tryFitWindowSizeToImage) {
             chrome.windows.get(lastPopupId, function(w){
@@ -183,6 +229,10 @@ function onMessageReceived(request, sender, sendResponse) {
 
     mouseX = request.mouseX;
     mouseY = request.mouseY;
+    lastTriggerViewport = sender.tab && request.clientX !== undefined ? {
+        tabId: sender.tab.id, screenX: request.mouseX, screenY: request.mouseY,
+        clientX: request.clientX, clientY: request.clientY, width: request.viewportWidth, height: request.viewportHeight
+    } : undefined;
     elementHeight = request.elementHeight;
     elementWidth = request.elementWidth;
     textSelection = request.selectedText ?? '';
@@ -210,8 +260,12 @@ function onContextMenuClicked(clickData, tab) {
     
     if (clickData.menuItemId == 'openPageInPopupWindow' || clickData.menuItemId == 'openTabInPopupWindow' || clickData.menuItemId == 'iconContextOpenPage') {
         if (tab)
-            loadUserConfigs((c) => {
-                openPopupWindowForLink(clickData.pageUrl ?? tab.url ?? 'about:blank', false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
+            /// a tab that came from popup is moved back there instead of being reopened
+            returnTabToPopup(tab).then((returned) => {
+                if (returned) return;
+                loadUserConfigs((c) => {
+                    openPopupWindowForLink(clickData.pageUrl ?? tab.url ?? 'about:blank', false, false, configs.copyTabInsteadOfMoving ? undefined : tab, true, c);
+                });
             });
         return;
     }
@@ -387,7 +441,10 @@ function handleKeyboardShortcuts(command, senderTab) {
     if (command === "open-popup-in-main-window") {
         moveTabToRegularWindow(senderTab)
     } else if (command === "open-in-popup-window") {
-        openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+        /// a tab that came from popup is moved back there instead of being reopened
+        returnTabToPopup(senderTab).then((returned) => {
+            if (!returned) openPopupWindowForLink(senderTab.url, false, false, undefined, true);
+        });
     } else if (command === "open-search-in-popup-window") {
         openSearchPopup(senderTab);
     }else if (command === "translate-in-popup-window") {
@@ -476,10 +533,31 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
             }
         }
 
+        /// Relative size: popup takes a share of the origin browser window and is centered over it (like Glance in Zen)
+        let originWindow;
+        if (configs.popupSizeMode == 'popupSizeRelative') {
+            const originWindowId = senderTab && senderTab.windowId ? senderTab.windowId : lastNormalWindowId;
+            if (originWindowId) originWindow = await chrome.windows.get(originWindowId).catch(() => null);
+            /// popup opened from another popup, or origin is unknown — use the last focused regular window instead
+            if (!originWindow || originWindow.type !== 'normal')
+                originWindow = await chrome.windows.getLastFocused({ windowTypes: ['normal'] }).catch(() => null);
+
+            /// Prefer the page area of the origin tab over the whole window, so tab strip, sidebars
+            /// and toolbars don't shift the popup off the page center
+            const pageArea = senderTab && originWindow && originWindow.id === senderTab.windowId ? await getTabPageArea(senderTab.id) : null;
+            if (pageArea) originWindow = pageArea;
+        }
+
         /// Calculate popup size
         let height, width;
     
-        height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
+        if (originWindow) {
+            const share = (value, fallback) => Math.min(Math.max(parseFloat(value) || fallback, 20), 100) / 100;
+            height = originWindow.height * share(configs.popupHeightPercent, 85);
+            width = originWindow.width * share(configs.popupWidthPercent, 80);
+        } else {
+            height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
+        }
         if (isViewer && configs.tryFitWindowSizeToImage && elementHeight && elementWidth) {
             const aspectRatio = elementWidth / elementHeight;
             width = height * aspectRatio;
@@ -575,7 +653,10 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
             }
         }
 
-        if (forceFallbackLocation && (configs.popupWindowLocation == 'mousePosition' || configs.popupWindowLocation == 'nearMousePosition')) {
+        if (originWindow) {
+            dx = originWindow.left + (originWindow.width - width) / 2;
+            dy = originWindow.top + (originWindow.height - height) / 2;
+        } else if (forceFallbackLocation && (configs.popupWindowLocation == 'mousePosition' || configs.popupWindowLocation == 'nearMousePosition')) {
             setFallbackPopupLocation();
         } else {
             setPopupLocation(popupLocation);
@@ -638,6 +719,13 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
 
             let popupWindowId = popupWindow.id;
 
+            /// Remember the tab the popup was opened from, to show it in split view with the popup later
+            if (senderTab && senderTab.id && !isCurrentPage && chrome.tabs.createSplit)
+                chrome.storage.session.set({ ['popupOriginTab_' + popupWindowId]: senderTab.id });
+
+            /// Existing tab was moved into the popup: let its page show "Open in tab" button
+            if (tabToCopy) chrome.tabs.sendMessage(tabToCopy.id, { action: 'windowTypeChanged' }).catch(() => {});
+
             if (configs.debugMode){
                 console.log('Created popup window:', popupWindow);
                 console.log('End logging ~~~');
@@ -650,7 +738,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                 });
 
             /// Dim page for main window
-            if (configs.dimPageOnPopupOpen && senderTab && senderTab.id && !isCurrentPage) {
+            if ((configs.dimPageOnPopupOpen || configs.blurPageOnPopupOpen) && senderTab && senderTab.id && !isCurrentPage) {
                 chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
             }
 
@@ -676,7 +764,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                             });
                     } else {
                         /// Save new popup window size
-                        if (configs.rememberWindowResize){
+                        if (configs.rememberWindowResize && configs.popupSizeMode !== 'popupSizeRelative'){
                             if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
                             if (Math.abs(w.height - configs.popupHeight) <= 2 && Math.abs(w.width - configs.popupWidth) <= 2) return;
                             configs.popupHeight = w.height;
@@ -797,6 +885,55 @@ async function openExtensionPopupManually(){
 }
 
 function moveTabToRegularWindow(tab, shouldFocusTab = true){
+    rememberTabLeavingPopup(tab).finally(() => moveTabToRegularWindowNow(tab, shouldFocusTab));
+}
+
+/// Remembers popup bounds of a tab that leaves the popup, so it can be returned there later
+async function rememberTabLeavingPopup(tab) {
+    const w = await chrome.windows.get(tab.windowId).catch(() => null);
+    if (!w || w.type !== 'popup') return;
+    /// also keep the tab the popup was opened from, so "Split view" is available again after returning
+    const originKey = 'popupOriginTab_' + w.id;
+    const originTabId = (await chrome.storage.session.get(originKey))[originKey];
+    await chrome.storage.session.set({ ['tabFromPopup_' + tab.id]: { left: w.left, top: w.top, width: w.width, height: w.height, originTabId: originTabId } });
+}
+
+/// The tab that was active in the main window before a popup tab moved there:
+/// it is activated again when the tab goes back to popup, instead of whatever tab is next to it
+async function rememberActiveTabBeforeMove(tabId, windowId) {
+    const key = 'tabFromPopup_' + tabId;
+    const [active] = await chrome.tabs.query({ active: true, windowId: windowId }).catch(() => []);
+    const data = (await chrome.storage.session.get(key))[key];
+    if (data && active) await chrome.storage.session.set({ [key]: { ...data, previousActiveTabId: active.id } });
+    /// the popup is gone, so remove the dim overlay from the page behind it
+    /// (it may not get a focus event, e.g. when it ends up in a split view)
+    if (active) chrome.tabs.sendMessage(active.id, { action: 'undimPage' }).catch(() => {});
+}
+
+/// Moves a tab that came from a popup back into a popup window with the same bounds, without reloading.
+/// Returns false if the tab didn't come from a popup
+async function returnTabToPopup(tab) {
+    const key = 'tabFromPopup_' + tab.id;
+    const bounds = (await chrome.storage.session.get(key))[key];
+    if (!bounds) return false;
+    const mainWindowId = tab.windowId;
+    /// leave the split view first, the other tab takes the whole window again
+    if (chrome.tabs.unsplit && (tab.splitViewId ?? -1) !== -1) await chrome.tabs.unsplit(tab.splitViewId).catch(() => {});
+    if (bounds.pinnedForSplit) await chrome.tabs.update(tab.id, { pinned: false }).catch(() => {});
+    const popup = await chrome.windows.create({ type: 'popup', tabId: tab.id, left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height });
+    if (bounds.originTabId && popup) await chrome.storage.session.set({ ['popupOriginTab_' + popup.id]: bounds.originTabId });
+    if (bounds.previousActiveTabId) await chrome.tabs.update(bounds.previousActiveTabId, { active: true }).catch(() => {});
+    /// dim the page behind the popup, as when popup is opened (the page checks its dim settings itself)
+    const [behind] = await chrome.tabs.query({ active: true, windowId: mainWindowId }).catch(() => []);
+    if (behind) chrome.tabs.sendMessage(behind.id, { action: 'dimPage' }).catch(() => {});
+    await chrome.storage.session.remove(key);
+    chrome.tabs.sendMessage(tab.id, { action: 'windowTypeChanged' }).catch(() => {});
+    return true;
+}
+
+chrome.tabs.onRemoved.addListener((tabId) => chrome.storage.session.remove('tabFromPopup_' + tabId));
+
+function moveTabToRegularWindowNow(tab, shouldFocusTab = true){
     // chrome.tabs.remove(tab.id);
     // chrome.tabs.create({ url: clickData.pageUrl, active: true });
 
@@ -828,16 +965,72 @@ function moveTabToRegularWindow(tab, shouldFocusTab = true){
             }
 
             const targetWindowId = lastUsedWindowId ?? windows[0].id;
+            rememberActiveTabBeforeMove(tab.id, targetWindowId);
             chrome.tabs.move(tab.id, { 
                     index: -1, 
                     windowId: targetWindowId
             }, function(t){
                 // if (t && t[0]) chrome.tabs.update(t[0].id, { 'active': true });
                 chrome.tabs.update(tab.id, { 'active': shouldFocusTab });
+                /// Page is not in a popup anymore, so "Open in tab" button should be removed
+                chrome.tabs.sendMessage(tab.id, { action: 'windowTypeChanged' }).catch(() => {});
                 // chrome.windows.update(targetWindowId, {focused: true});
             });
         }
     );
+}
+
+/// Puts the popup tab next to the tab it was opened from, in a native split view (Chrome 155+, like Split in Zen's Glance).
+/// Falls back to just moving the tab to the main window when split view can't be created
+async function splitPopupWithOriginTab(popupTab) {
+    const key = 'popupOriginTab_' + popupTab.windowId;
+    try {
+        const originTabId = (await chrome.storage.session.get(key))[key];
+        const origin = await chrome.tabs.get(originTabId);
+        /// both tabs must be adjacent, in the same window, with the same pinned and group state
+        if ((origin.splitViewId ?? -1) !== -1) throw new Error('Origin tab is already in a split view');
+
+        await rememberTabLeavingPopup(popupTab);
+        await chrome.tabs.move(popupTab.id, { windowId: origin.windowId, index: origin.index + 1 });
+        if (origin.pinned) {
+            /// pinning moves the tab to the end of pinned tabs, so put it next to the origin tab again;
+            /// it is unpinned when it goes back to popup
+            await chrome.tabs.update(popupTab.id, { pinned: true });
+            await chrome.tabs.move(popupTab.id, { index: (await chrome.tabs.get(origin.id)).index + 1 });
+        }
+        /// when the tab goes back to popup, the origin tab should stay active in the main window
+        const fromPopupKey = 'tabFromPopup_' + popupTab.id;
+        const fromPopup = (await chrome.storage.session.get(fromPopupKey))[fromPopupKey];
+        if (fromPopup) await chrome.storage.session.set({ [fromPopupKey]: { ...fromPopup, previousActiveTabId: origin.id, pinnedForSplit: origin.pinned } });
+        if (origin.groupId !== undefined && origin.groupId !== -1)
+            await chrome.tabs.group({ groupId: origin.groupId, tabIds: [popupTab.id] });
+        await chrome.tabs.createSplit([origin.id, popupTab.id]);
+        /// the origin page doesn't get a focus event in split view, so remove its dim overlay explicitly
+        chrome.tabs.sendMessage(origin.id, { action: 'undimPage' }).catch(() => {});
+        await chrome.tabs.update(popupTab.id, { active: true });
+        await chrome.windows.update(origin.windowId, { focused: true });
+        chrome.tabs.sendMessage(popupTab.id, { action: 'windowTypeChanged' }).catch(() => {});
+    } catch (e) {
+        if (configs.debugMode) console.warn('Could not create split view, moving tab to main window instead:', e);
+        const tab = await chrome.tabs.get(popupTab.id).catch(() => null);
+        if (tab) moveTabToRegularWindow(tab);
+    }
+}
+
+chrome.windows.onRemoved.addListener((windowId) => {
+    if (chrome.tabs.createSplit) chrome.storage.session.remove('popupOriginTab_' + windowId);
+});
+
+/// Page area of the tab on the screen, calculated from the last trigger event:
+/// screen position of the cursor minus its position inside the page, scaled by the tab zoom
+async function getTabPageArea(tabId) {
+    const v = lastTriggerViewport;
+    if (!v || v.tabId !== tabId || !v.width || !v.height) return null;
+    const zoom = await chrome.tabs.getZoom(tabId).catch(() => 1) || 1;
+    return {
+        left: Math.round(v.screenX - v.clientX * zoom), top: Math.round(v.screenY - v.clientY * zoom),
+        width: Math.round(v.width * zoom), height: Math.round(v.height * zoom)
+    };
 }
 
 function windowsOverlap(a, b, tolerance = 45) {

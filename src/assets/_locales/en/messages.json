@@ -11,6 +11,9 @@
   "automationSettings": {
     "message": "Automation settings"
   },
+  "blurPageOnPopupOpen": {
+    "message": "Blur page when popup is opened"
+  },
   "bottomLeft": {
     "message": "Bottom left"
   },
@@ -122,6 +125,9 @@
   "openInPopupWindow": {
     "message": "Open Link in Popup Window"
   },
+  "openInTabButton": {
+    "message": "Open in tab"
+  },
   "openPageInMainWindow": {
     "message": "Open Page in Main Window"
   },
@@ -143,8 +149,23 @@
   "popupHeight": {
     "message": "Height (px)"
   },
+  "popupHeightPercent": {
+    "message": "Height (%)"
+  },
+  "popupSizeFixed": {
+    "message": "Fixed (px)"
+  },
+  "popupSizeMode": {
+    "message": "Mode"
+  },
+  "popupSizeRelative": {
+    "message": "% of browser window (centered over it)"
+  },
   "popupWidth": {
     "message": "Width (px)"
+  },
+  "popupWidthPercent": {
+    "message": "Width (%)"
   },
   "popupWindowLocation": {
     "message": "Popup window location"
@@ -170,6 +191,9 @@
   "reopenSingleTabWindowAsPopupHint": {
     "message": "With this option enabled, any new browser window with only one tab will be automatically reopened as a popup window. It allows extension to create popup for links which it usually can't access (for example, bookmarks bar). But it can lead to unwanted behavior if you usually open many browser windows, so use with caution!"
   },
+  "returnToPopupButton": {
+    "message": "Back to popup"
+  },
   "reuseExistingPopup": {
     "message": "Reuse existing popup instead of opening a new one"
   },
@@ -190,6 +214,12 @@
   },
   "showExtensionSettings": {
     "message": "Show extension settings"
+  },
+  "showOpenInTabButton": {
+    "message": "Show \"Open in tab\" button in popup window"
+  },
+  "splitViewButton": {
+    "message": "Split view"
   },
   "textDragAction": {
     "message": "Action for the selected text"

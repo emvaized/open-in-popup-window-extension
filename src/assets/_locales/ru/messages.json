@@ -11,6 +11,9 @@
   "automationSettings": {
     "message": "Настройки автоматизации"
   },
+  "blurPageOnPopupOpen": {
+    "message": "Размывать страницу при открытии всплыв. окна"
+  },
   "bottomLeft": {
     "message": "Слева внизу"
   },
@@ -122,6 +125,9 @@
   "openInPopupWindow": {
     "message": "Открыть ссылку во всплывающем окне"
   },
+  "openInTabButton": {
+    "message": "Открыть во вкладке"
+  },
   "openPageInMainWindow": {
     "message": "Открыть страницу в основном окне"
   },
@@ -143,8 +149,23 @@
   "popupHeight": {
     "message": "Высота (px)"
   },
+  "popupHeightPercent": {
+    "message": "Высота (%)"
+  },
+  "popupSizeFixed": {
+    "message": "Фиксированный (px)"
+  },
+  "popupSizeMode": {
+    "message": "Режим"
+  },
+  "popupSizeRelative": {
+    "message": "% от окна браузера (по центру окна)"
+  },
   "popupWidth": {
     "message": "Ширина (px)"
+  },
+  "popupWidthPercent": {
+    "message": "Ширина (%)"
   },
   "popupWindowLocation": {
     "message": "Расположение всплывающего окна"
@@ -170,6 +191,9 @@
   "reopenSingleTabWindowAsPopupHint": {
     "message": "При включении этой опции любое новое окно браузера с одной вкладкой будет автоматически переоткрыто как всплывающее окно. Это позволит расширению создавать всплывающие окна для ссылок, к которым оно обычно не имеет доступа (например, панель закладок). Но это также может привести к нежелательному поведению, если вы обычно открываете вручную несколько окон браузера, поэтому используйте эту опцию с осторожностью!"
   },
+  "returnToPopupButton": {
+    "message": "Вернуть в окно"
+  },
   "reuseExistingPopup": {
     "message": "Использовать существующее всплыв. окно вместо открытия нового"
   },
@@ -190,6 +214,12 @@
   },
   "showExtensionSettings": {
     "message": "Показать настройки расширения"
+  },
+  "showOpenInTabButton": {
+    "message": "Показывать кнопку «Открыть во вкладке» во всплыв. окне"
+  },
+  "splitViewButton": {
+    "message": "Рядом"
   },
   "textSelectionHeader": {
     "message": "Выделение текста"

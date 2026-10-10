@@ -54,6 +54,8 @@ If you really enjoy this project, please consider supporting its further develop
 ## Troubleshooting
 If "Open by drag" and "Mod+click to open" options not working, or the popup window always gets positioned in the top left corner no matter the placement settings, please make sure you gave extension all permissions to run on every page you visit!
 
+**Firefox: long click conflicts with the built-in link preview.** Firefox's own "Link previews" (Firefox Labs) also opens on a long press on a link, so both previews may appear, and the first click in the popup only closes Firefox's preview panel. Use mod+click instead of long click, or disable "Link previews" in Settings → Firefox Labs (`browser.ml.linkPreview.enabled` in `about:config`). This is not handled by the extension yet.
+
 ## FAQ (Frequently Asked Questions) ⚠️
 See answers to some common questions on the [Wiki page](https://github.com/emvaized/open-in-popup-window-extension/wiki/FAQ-(Frequently-Asked-Questions))
 
