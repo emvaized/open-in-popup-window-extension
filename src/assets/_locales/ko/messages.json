@@ -149,8 +149,23 @@
   "popupHeight": {
     "message": "높이 (px)"
   },
+  "popupHeightPercent": {
+    "message": "높이 (%)"
+  },
+  "popupSizeFixed": {
+    "message": "고정 (px)"
+  },
+  "popupSizeMode": {
+    "message": "모드"
+  },
+  "popupSizeRelative": {
+    "message": "브라우저 창의 % (창 중앙)"
+  },
   "popupWidth": {
     "message": "너비 (px)"
+  },
+  "popupWidthPercent": {
+    "message": "너비 (%)"
   },
   "popupWindowLocation": {
     "message": "팝업 창 위치"

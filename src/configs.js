@@ -3,6 +3,9 @@ const configs = {
     'hideBrowserControls': true,
     'popupHeight': 800,
     'popupWidth': 600,
+    'popupSizeMode': 'popupSizeRelative', /// possible values: popupSizeRelative,popupSizeFixed
+    'popupHeightPercent': 85,
+    'popupWidthPercent': 80,
     'viewInPopupEnabled': true,
     'searchInPopupEnabled': true,
     'translateInPopupEnabled': false,

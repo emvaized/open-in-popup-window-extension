@@ -1,5 +1,6 @@
 let mouseX, mouseY, elementHeight, elementWidth, lastPopupId, lastNormalWindowId;
 let textSelection, availWidth, availHeight, availLeft;
+let lastTriggerViewport; /// page area of the tab where popup was triggered, in screen coordinates
 let preventWindowResizeListener = false;
 let preventNewTabListeners = false;
 let openedPopupWindows;  /// cached Map<id, {type, ...}>
@@ -228,6 +229,10 @@ function onMessageReceived(request, sender, sendResponse) {
 
     mouseX = request.mouseX;
     mouseY = request.mouseY;
+    lastTriggerViewport = sender.tab && request.clientX !== undefined ? {
+        tabId: sender.tab.id, screenX: request.mouseX, screenY: request.mouseY,
+        clientX: request.clientX, clientY: request.clientY, width: request.viewportWidth, height: request.viewportHeight
+    } : undefined;
     elementHeight = request.elementHeight;
     elementWidth = request.elementWidth;
     textSelection = request.selectedText ?? '';
@@ -528,10 +533,31 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
             }
         }
 
+        /// Relative size: popup takes a share of the origin browser window and is centered over it (like Glance in Zen)
+        let originWindow;
+        if (configs.popupSizeMode == 'popupSizeRelative') {
+            const originWindowId = senderTab && senderTab.windowId ? senderTab.windowId : lastNormalWindowId;
+            if (originWindowId) originWindow = await chrome.windows.get(originWindowId).catch(() => null);
+            /// popup opened from another popup, or origin is unknown — use the last focused regular window instead
+            if (!originWindow || originWindow.type !== 'normal')
+                originWindow = await chrome.windows.getLastFocused({ windowTypes: ['normal'] }).catch(() => null);
+
+            /// Prefer the page area of the origin tab over the whole window, so tab strip, sidebars
+            /// and toolbars don't shift the popup off the page center
+            const pageArea = senderTab && originWindow && originWindow.id === senderTab.windowId ? await getTabPageArea(senderTab.id) : null;
+            if (pageArea) originWindow = pageArea;
+        }
+
         /// Calculate popup size
         let height, width;
     
-        height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
+        if (originWindow) {
+            const share = (value, fallback) => Math.min(Math.max(parseFloat(value) || fallback, 20), 100) / 100;
+            height = originWindow.height * share(configs.popupHeightPercent, 85);
+            width = originWindow.width * share(configs.popupWidthPercent, 80);
+        } else {
+            height = configs.popupHeight ?? 800, width = configs.popupWidth ?? 600;
+        }
         if (isViewer && configs.tryFitWindowSizeToImage && elementHeight && elementWidth) {
             const aspectRatio = elementWidth / elementHeight;
             width = height * aspectRatio;
@@ -627,7 +653,10 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
             }
         }
 
-        if (forceFallbackLocation && (configs.popupWindowLocation == 'mousePosition' || configs.popupWindowLocation == 'nearMousePosition')) {
+        if (originWindow) {
+            dx = originWindow.left + (originWindow.width - width) / 2;
+            dy = originWindow.top + (originWindow.height - height) / 2;
+        } else if (forceFallbackLocation && (configs.popupWindowLocation == 'mousePosition' || configs.popupWindowLocation == 'nearMousePosition')) {
             setFallbackPopupLocation();
         } else {
             setPopupLocation(popupLocation);
@@ -735,7 +764,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                             });
                     } else {
                         /// Save new popup window size
-                        if (configs.rememberWindowResize){
+                        if (configs.rememberWindowResize && configs.popupSizeMode !== 'popupSizeRelative'){
                             if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
                             if (Math.abs(w.height - configs.popupHeight) <= 2 && Math.abs(w.width - configs.popupWidth) <= 2) return;
                             configs.popupHeight = w.height;
@@ -991,6 +1020,18 @@ async function splitPopupWithOriginTab(popupTab) {
 chrome.windows.onRemoved.addListener((windowId) => {
     if (chrome.tabs.createSplit) chrome.storage.session.remove('popupOriginTab_' + windowId);
 });
+
+/// Page area of the tab on the screen, calculated from the last trigger event:
+/// screen position of the cursor minus its position inside the page, scaled by the tab zoom
+async function getTabPageArea(tabId) {
+    const v = lastTriggerViewport;
+    if (!v || v.tabId !== tabId || !v.width || !v.height) return null;
+    const zoom = await chrome.tabs.getZoom(tabId).catch(() => 1) || 1;
+    return {
+        left: Math.round(v.screenX - v.clientX * zoom), top: Math.round(v.screenY - v.clientY * zoom),
+        width: Math.round(v.width * zoom), height: Math.round(v.height * zoom)
+    };
+}
 
 function windowsOverlap(a, b, tolerance = 45) {
   return (

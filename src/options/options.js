@@ -120,7 +120,13 @@ function updateDisabledOptions() {
     document.getElementById("longClickButton").className = document.getElementById("openByLongClick").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("dimPageAmount").className = document.getElementById("dimPageOnPopupOpen").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("blurPageAmount").className = document.getElementById("blurPageOnPopupOpen").checked ? 'enabled-option' : 'disabled-option';
-    document.getElementById("fallbackPopupWindowLocation").parentNode.className = 
+    const relativeSize = document.getElementById("popupSizeMode").value == "popupSizeRelative";
+    document.getElementById("popupRelativeSize").className = relativeSize ? 'enabled-option' : 'disabled-option';
+    document.getElementById("popupFixedSize").className = relativeSize ? 'disabled-option' : 'enabled-option';
+    document.getElementById("rememberWindowResize")?.parentNode && (document.getElementById("rememberWindowResize").parentNode.className = relativeSize ? 'disabled-option' : 'enabled-option');
+    /// relative size always centers popup over the browser window
+    document.getElementById("popupWindowLocation").parentNode.className = relativeSize ? 'disabled-option' : 'enabled-option';
+    document.getElementById("fallbackPopupWindowLocation").parentNode.className = relativeSize ? 'disabled-option' : 
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 
             ? 'enabled-option' : 'disabled-option';

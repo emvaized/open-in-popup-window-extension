@@ -152,8 +152,23 @@
   "popupHeight": {
     "message": "Altura (px)"
   },
+  "popupHeightPercent": {
+    "message": "Altura (%)"
+  },
+  "popupSizeFixed": {
+    "message": "Fijo (px)"
+  },
+  "popupSizeMode": {
+    "message": "Modo"
+  },
+  "popupSizeRelative": {
+    "message": "% de la ventana del navegador (centrada)"
+  },
   "popupWidth": {
     "message": "Anchura (px)"
+  },
+  "popupWidthPercent": {
+    "message": "Ancho (%)"
   },
   "popupWindowLocation": {
     "message": "Ubicación de la ventana emergente"

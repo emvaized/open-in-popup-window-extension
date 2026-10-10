@@ -149,8 +149,23 @@
   "popupHeight": {
     "message": "Hauteur (px)"
   },
+  "popupHeightPercent": {
+    "message": "Hauteur (%)"
+  },
+  "popupSizeFixed": {
+    "message": "Fixe (px)"
+  },
+  "popupSizeMode": {
+    "message": "Mode"
+  },
+  "popupSizeRelative": {
+    "message": "% de la fenêtre du navigateur (centrée)"
+  },
   "popupWidth": {
     "message": "Largeur (px)"
+  },
+  "popupWidthPercent": {
+    "message": "Largeur (%)"
   },
   "popupWindowLocation": {
     "message": "Position de la fenêtre popup"
