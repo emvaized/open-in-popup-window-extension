@@ -869,6 +869,15 @@ async function rememberTabLeavingPopup(tab) {
     await chrome.storage.session.set({ ['tabFromPopup_' + tab.id]: { left: w.left, top: w.top, width: w.width, height: w.height, originTabId: originTabId } });
 }
 
+/// The tab that was active in the main window before a popup tab moved there:
+/// it is activated again when the tab goes back to popup, instead of whatever tab is next to it
+async function rememberActiveTabBeforeMove(tabId, windowId) {
+    const key = 'tabFromPopup_' + tabId;
+    const [active] = await chrome.tabs.query({ active: true, windowId: windowId }).catch(() => []);
+    const data = (await chrome.storage.session.get(key))[key];
+    if (data && active) await chrome.storage.session.set({ [key]: { ...data, previousActiveTabId: active.id } });
+}
+
 /// Moves a tab that came from a popup back into a popup window with the same bounds, without reloading.
 /// Returns false if the tab didn't come from a popup
 async function returnTabToPopup(tab) {
@@ -879,6 +888,7 @@ async function returnTabToPopup(tab) {
     if (chrome.tabs.unsplit && (tab.splitViewId ?? -1) !== -1) await chrome.tabs.unsplit(tab.splitViewId).catch(() => {});
     const popup = await chrome.windows.create({ type: 'popup', tabId: tab.id, left: bounds.left, top: bounds.top, width: bounds.width, height: bounds.height });
     if (bounds.originTabId && popup) await chrome.storage.session.set({ ['popupOriginTab_' + popup.id]: bounds.originTabId });
+    if (bounds.previousActiveTabId) chrome.tabs.update(bounds.previousActiveTabId, { active: true }).catch(() => {});
     await chrome.storage.session.remove(key);
     chrome.tabs.sendMessage(tab.id, { action: 'windowTypeChanged' }).catch(() => {});
     return true;
@@ -918,6 +928,7 @@ function moveTabToRegularWindowNow(tab, shouldFocusTab = true){
             }
 
             const targetWindowId = lastUsedWindowId ?? windows[0].id;
+            rememberActiveTabBeforeMove(tab.id, targetWindowId);
             chrome.tabs.move(tab.id, { 
                     index: -1, 
                     windowId: targetWindowId
