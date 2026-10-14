@@ -30,6 +30,7 @@ const configs = {
     'screenWidth': 1920,
     'screenHeight': 1080,
     'availLeft': 0,
+    'availTop': 0,
     'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
     'changeDragCursor': true,

@@ -1,5 +1,5 @@
 let mouseX, mouseY, elementHeight, elementWidth, lastPopupId, lastNormalWindowId;
-let textSelection, availWidth, availHeight, availLeft;
+let textSelection, availWidth, availHeight, availLeft, availTop;
 let preventWindowResizeListener = false;
 let preventNewTabListeners = false;
 let openedPopupWindows;  /// cached Map<id, {type, ...}>
@@ -136,6 +136,10 @@ function onMessageReceived(request, sender, sendResponse) {
                     availWidth = request.availWidth;
                     availHeight = request.availHeight;
                 }
+                if (request.availLeft !== undefined) {
+                    availLeft = request.availLeft;
+                    availTop = request.availTop;
+                }
 
                 const titleBarHeight = request.titleBarHeight ?? 32;
                 const toolbarWidth = request.toolbarWidth ?? 0;
@@ -155,12 +159,7 @@ function onMessageReceived(request, sender, sendResponse) {
                 dx -= Math.round((newWidth - w.width) / 2);
                 dy -= Math.round((newHeight - w.height) / 2);
 
-                if (dx + newWidth > availWidth)
-                    dx -= (dx + newWidth - availWidth);
-                if (dx < 0) dx = 0;
-                if (dy + newHeight > availHeight) 
-                    dy -= (dy + newHeight - availHeight);
-                if (dy < 0) dy = 0;
+                [dx, dy] = fitIntoScreen(dx, dy, newWidth, newHeight);
 
                 preventWindowResizeListener = true;
                 chrome.windows.update(lastPopupId, {
@@ -189,6 +188,7 @@ function onMessageReceived(request, sender, sendResponse) {
     availWidth = request.availWidth;
     availHeight = request.availHeight;
     availLeft = request.availLeft;
+    availTop = request.availTop;
 
     if (request.type == 'drag' || request.type == 'modClick') {
         // if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
@@ -501,7 +501,9 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         //     availHeight = window.screen.height;
         // } catch(e){}
         
-        if (!availLeft) availLeft = configs.availLeft ?? 0;
+        /// 0 is a valid offset for the primary screen, so only fall back when the value is missing
+        if (availLeft === undefined) availLeft = configs.availLeft ?? 0;
+        if (availTop === undefined) availTop = configs.availTop ?? 0;
         if (!availWidth) availWidth = configs.screenWidth;
         if (!availHeight) availHeight = configs.screenHeight;
 
@@ -531,13 +533,13 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                         const horizontalPadding = 15;
                         dx = mouseX - (width / 2), dy = mouseY - height - verticalPadding;
     
-                        if (dy < 0) dy = mouseY + verticalPadding;
-                        if (dy + height > availHeight) {
+                        if (dy < availTop) dy = mouseY + verticalPadding;
+                        if (dy + height > availTop + availHeight) {
                             dy = mouseY - (height / 2);
                             dx = mouseX - width - horizontalPadding;
     
-                            if (dx < 0) dx = mouseX + horizontalPadding;
-                            if (dx + width > availWidth){
+                            if (dx < availLeft) dx = mouseX + horizontalPadding;
+                            if (dx + width > availLeft + availWidth){
                                 /// if nothing works, open centered in mouse position
                                 setFallbackPopupLocation();
                             }
@@ -546,29 +548,29 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                 } break;
                 case 'topRight': {
                     dx = availLeft + availWidth - width, 
-                    dy = 0;
+                    dy = availTop;
                 } break;
                 case 'topLeft': {
                     dx = availLeft, 
-                    dy = 0;
+                    dy = availTop;
                 } break;
                 case 'topCenter': {
                     dx = availWidth ? (availLeft + availWidth / 2) : availLeft;
                     dx -= width / 2;
-                    dy = 0;
+                    dy = availTop;
                 } break;
                 case 'bottomRight': {
                     dx = availLeft + availWidth - width, 
-                    dy = availHeight - height;
+                    dy = availTop + availHeight - height;
                 } break;
                 case 'bottomLeft': {
                     dx = availLeft, 
-                    dy = availHeight - height;
+                    dy = availTop + availHeight - height;
                 } break;
                 default: {
                     /// open at center of screen
                     dx = availWidth ? availLeft + availWidth / 2 : availLeft;
-                    dy = availHeight ? availHeight / 2 : 0;
+                    dy = availHeight ? availTop + availHeight / 2 : availTop;
                     dx -= width / 2;
                     dy -= height / 2;
                 } break;
@@ -587,6 +589,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
             console.log('availWidth: ', availWidth);
             console.log('availHeight: ', availHeight);
             console.log('availLeft: ', availLeft);
+            console.log('availTop: ', availTop);
             console.log('Selected popup window placement: ', popupLocation);
             console.log('Calculated popup window dx: ', dx);
             console.log('Calculated popup window dy: ', dy);
@@ -594,12 +597,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         }
     
         /// check for screen overflow
-        if (!dx) dx = 0;
-        if (availLeft >= 0 && dx < 0) dx = 0;
-        if (!dy || dy < 0) dy = 0;
-        if (dy + height > availHeight) dy = dy - (dy + height - availHeight);
-        dx = parseInt(dx); dy = parseInt(dy);
-        if (dx + width > availWidth) dx = dx - (dx + width - availWidth);
+        [dx, dy] = fitIntoScreen(dx ?? availLeft, dy ?? availTop, width, height);
 
         if (configs.debugMode){
             console.log('Calucated dx after checking: ', dx);
@@ -838,6 +836,17 @@ function moveTabToRegularWindow(tab, shouldFocusTab = true){
             });
         }
     );
+}
+
+/// Keeps the popup inside the screen of the origin window.
+/// Secondary screens have non-zero (possibly negative) availLeft/availTop, so bounds are relative to them, not to 0
+function fitIntoScreen(dx, dy, width, height) {
+    const left = availLeft ?? 0, top = availTop ?? 0;
+    if (availWidth && dx + width > left + availWidth) dx = left + availWidth - width;
+    if (availHeight && dy + height > top + availHeight) dy = top + availHeight - height;
+    if (dx < left) dx = left;
+    if (dy < top) dy = top;
+    return [parseInt(dx), parseInt(dy)];
 }
 
 function windowsOverlap(a, b, tolerance = 45) {
