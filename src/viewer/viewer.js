@@ -57,18 +57,22 @@ function init(){
 }
 
 function initImageViewer(url) {
+    const loadingIndicator = document.getElementById('loadingIndicator');
     image.crossOrigin = 'anonymous';
-    image.src = url;
     displayElement = image;
     image.onload = function(){
+        loadingIndicator.hidden = true;
         onViewerLoaded(image.naturalWidth || image.clientWidth, image.naturalHeight || image.clientHeight);
         backgroundPattern?.classList.remove('hidden');
         imageControls?.classList.remove('hidden');
     }
     image.onerror = function(){
+        loadingIndicator.hidden = true;
         // onViewerLoaded(image.clientWidth, image.clientHeight);
         window.open(image.src,"_self");
     }
+    loadingIndicator.hidden = false;
+    image.src = url;
 }
 
 function initImageControls(){
