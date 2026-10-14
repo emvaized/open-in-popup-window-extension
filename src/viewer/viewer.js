@@ -8,7 +8,7 @@ let mirroredX = false, mirroredY = false;
 
 let listenersAdded = false;
 
-let zoomSlider, rotateButton, zoomPercent, resetZoomButton, darkModeButton;
+let zoomSlider, rotateButton, zoomPercent, resetZoomButton, darkModeButton, backgroundPattern, imageControls;
 
 function init(){
     const imageUrl = new URLSearchParams(window.location.search).get('src');
@@ -28,6 +28,7 @@ function init(){
     zoomPercent = document.getElementById('zoomPercent');
     resetZoomButton = document.getElementById('resetZoomButton');
     darkModeButton = document.getElementById('darkModeButton');
+    backgroundPattern = document.getElementsByClassName('backgroundPattern')[0];
 
     if (zoomSlider) {
         zoomSlider.value = scale;
@@ -61,15 +62,18 @@ function initImageViewer(url) {
     displayElement = image;
     image.onload = function(){
         onViewerLoaded(image.naturalWidth || image.clientWidth, image.naturalHeight || image.clientHeight);
+        backgroundPattern?.classList.remove('hidden');
+        imageControls?.classList.remove('hidden');
     }
     image.onerror = function(){
-        onViewerLoaded(image.clientWidth, image.clientHeight);
+        // onViewerLoaded(image.clientWidth, image.clientHeight);
+        window.open(image.src,"_self");
     }
 }
 
 function initImageControls(){
     /// Show image controls panel
-    const imageControls = document.getElementById('imageControls');
+    imageControls = document.getElementById('imageControls');
     imageControls.style.display = 'flex';
     imageControls.addEventListener('mousedown', function(e){ e.stopPropagation(); });
     imageControls.addEventListener('wheel', function(e){ e.stopPropagation(); });
@@ -95,7 +99,7 @@ function onViewerLoaded(width, height) {
     const aspectRatio = width / height;
     const toolbarHeight = window.outerHeight - window.innerHeight;
     const toolbarWidth = window.outerWidth - window.innerWidth;
-    const { availLeft, availTop, availWidth, availHeight } = getScreenArea();
+    const { availLeft, availTop, availWidth, availHeight } = getScreenArea() ?? window.screen;
     const titleBarHeight = window.outerHeight - window.innerHeight;
 
     chrome.runtime.sendMessage({
