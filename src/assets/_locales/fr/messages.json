@@ -176,6 +176,9 @@
   "reusePopupOnlyIfNoOverlap": {
     "message": "À condition qu'il ne recouvre pas la fenêtre ouverte"
   },
+  "showLoadingSpinnerLinks": {
+    "message": "Afficher l'indicateur de chargement à l'ouverture des pop-ups"
+  },
   "searchInPopupEnabled": {
     "message": "Activer l’option de recherche dans une popup"
   },

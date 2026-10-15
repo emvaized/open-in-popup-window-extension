@@ -1,0 +1,27 @@
+#loadingIndicator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 28px;
+    height: 28px;
+    margin: -14px 0 0 -14px;
+    border: 3px solid rgba(128, 128, 128, 0.25);
+    border-top-color: rgba(128, 128, 128, 0.9);
+    border-radius: 50%;
+    animation: loadingSpin 700ms linear infinite;
+    pointer-events: none;
+}
+
+#loadingIndicator[hidden] {
+    display: none;
+}
+
+@keyframes loadingSpin {
+    to { transform: rotate(360deg); }
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: black;
+    }
+}

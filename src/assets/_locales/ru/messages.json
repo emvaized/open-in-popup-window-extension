@@ -176,6 +176,9 @@
   "reusePopupOnlyIfNoOverlap": {
     "message": "Только если оно не перекрывает обычное окно"
   },
+  "showLoadingSpinnerLinks": {
+    "message": "Показать индикатор загрузки при открытии вспл. окна"
+  },
   "searchInPopupEnabled": {
     "message": "Включить опцию поиска выделения во всплывающем окне"
   },

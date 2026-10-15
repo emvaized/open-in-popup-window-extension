@@ -191,6 +191,9 @@
   "showExtensionSettings": {
     "message": "Mostrar configuración"
   },
+  "showLoadingSpinnerLinks": {
+    "message": "Mostrar indicador de carga al abrir ventanas emergentes"
+  },
   "textDragAction": {
     "message": "Acción para el texto seleccionado"
   },

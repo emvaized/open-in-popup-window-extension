@@ -191,6 +191,9 @@
   "showExtensionSettings": {
     "message": "Show extension settings"
   },
+  "showLoadingSpinnerLinks": {
+    "message": "Show loading indicator on popup open"
+  },
   "textDragAction": {
     "message": "Action for the selected text"
   },

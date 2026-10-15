@@ -188,6 +188,9 @@
   "showAddressbarIcon": {
     "message": "주소창에 팝업 창에서 페이지 열기 버튼 표시"
   },
+  "showLoadingSpinnerLinks": {
+    "message": "팝업창을 열 때 로딩 표시기 표시"
+  },
   "showExtensionSettings": {
     "message": "확장 설정 표시"
   },

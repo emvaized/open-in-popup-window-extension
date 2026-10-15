@@ -429,6 +429,10 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                         (configs.textDragAction === 'searchInPopupWindow' ? configs.popupSearchUrl : configs.popupTranslateUrl).replace('%s', textSelection)
                         : 'about:blank');
 
+        const popupUrlToOpen = !isViewer && popupUrl !== 'about:blank' && configs.showLoadingSpinnerLinks
+            ? chrome.runtime.getURL('viewer/loading/loading.html') + '?url=' + encodeURIComponent(popupUrl)
+            : popupUrl;
+
         /// Reuse existing popup window if the option is enabled and there's already one open
         if (configs.reuseExistingPopup) {
             let popupWindows = await getPopupWindows();
@@ -619,7 +623,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         if (tabToCopy) {
             createParams.tabId = tabToCopy.id;
         } else {
-            createParams['url'] = popupUrl;
+            createParams['url'] = popupUrlToOpen;
         }
 
         /// Preserve Firefox container
