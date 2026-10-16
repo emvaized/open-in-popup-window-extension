@@ -68,6 +68,13 @@ div:has(h5):not(:first-child){
     margin-top: 12px;
 }
 
+/* icon styles */
+div:has(h5) > img {
+    height: 16px;
+    opacity: 0.5;
+    margin-left: 2px;
+}
+
 .hint {
     border-radius: 50%;
     line-height: 1;
@@ -109,6 +116,10 @@ div:has(h5):not(:first-child){
 
     .subgroup{
         border-left: 1px solid grey;
+    }
+
+    div:has(h5) > img {
+        filter: invert(100%);
     }
 }
 
