@@ -214,7 +214,8 @@ function onTrigger(e, type){
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
         availHeight: availHeight, availWidth: availWidth,
         selectedText: selectedText,
-        availLeft: availLeft, availTop: availTop, type: type
+        availLeft: availLeft, availTop: availTop, 
+        type: type
     }
 
     let link, isViewer = false;
@@ -224,13 +225,18 @@ function onTrigger(e, type){
 
         if (imgElement && linkElement) {
             /// Image wrapped in link
-            if (configs.imageWithLinkPreferLink){
+            const linkUrl = linkElement.href,
+                imageUrl = imgElement.currentSrc || imgElement.src;
+
+            if (linkUrl == imageUrl){
+                /// the same url, prefer image
+                nodeName = imgElement.nodeName;
+                link = imageUrl;
+                isViewer = true;
+            } else {
+                /// different url, prefer link
                 nodeName = linkElement.nodeName;
                 link = linkElement.href;
-            } else {
-                nodeName = imgElement.nodeName;
-                link = imgElement.currentSrc || imgElement.src;
-                isViewer = true;
             }
         } else if (imgElement){
             /// Image
