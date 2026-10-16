@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Ajouter une option pour ouvrir la page dans une fenêtre popup"
   },
+  "addPageDimSpotlight":{
+    "message": "Afficher un effet de mise en avant sur l'élément sélectionné"
+  },
   "autoCloseOnlyOverlapping": {
     "message": "Fermer uniquement les fenêtres qui recouvrent la fenêtre principale"
   },

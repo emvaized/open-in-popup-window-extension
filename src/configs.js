@@ -46,6 +46,7 @@ const configs = {
     'reuseExistingPopup': false,
     'reusePopupOnlyIfNoOverlap': false,
     'showLoadingSpinnerLinks': true,
+    'addPageDimSpotlight': true,
     'textDragAction': 'searchInPopupWindow', /// possible values: searchInPopupWindow,translateInPopupWindow
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }

@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Включить опцию открытия текущей страницы во вспл. окне"
   },
+  "addPageDimSpotlight":{
+    "message": "Подсветить последний открытый элемент на странице"
+  },
   "autoCloseOnlyOverlapping": {
     "message": "Закрывать только окна, перекрывающие основное окно"
   },

@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "팝업 창에서 페이지 열기 옵션 추가"
   },
+  "addPageDimSpotlight":{
+    "message": "선택한 요소에 스포트라이트 표시"
+  },
   "autoCloseOnlyOverlapping": {
     "message": "메인 창을 가리는 창만 닫기"
   },

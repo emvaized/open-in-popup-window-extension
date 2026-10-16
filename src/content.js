@@ -203,8 +203,11 @@ function onClickListener(e){
 }
 
 /* Common trigger callback */
+let lastUsedTarget;
+
 function onTrigger(e, type){
     const t = e ? e.target : lastMouseOverData.target;
+    lastUsedTarget = t;
     const selectedText = getSelectedText();
 
     const { availLeft, availTop, availHeight, availWidth } = getScreenArea();
@@ -285,8 +288,8 @@ const elementIsValid = (el, shouldCheckSelection = false) => {
 const elementWithinSelection = (el) => {
     const selection = window.getSelection();
     const isSelectedText = selection && 
-    selection.toString().trim() !== '' && 
-    selection.containsNode(el, true);  /// true = allow partial containment
+        selection.toString().trim() !== '' && 
+        selection.containsNode(el, true);  /// true = allow partial containment
     return isSelectedText;
 }
 
@@ -300,6 +303,15 @@ function dimPage(){
     if (dimOverlay) dimOverlay.remove();
     dimOverlay = document.createElement('div');
     dimOverlay.id = 'oip-dim-overlay';
+
+    const rect = configs.addPageDimSpotlight && lastUsedTarget && lastUsedTarget.getBoundingClientRect ? 
+        lastUsedTarget.getBoundingClientRect() : undefined;
+
+    dimOverlay.style.left = `${rect?.left ?? 0}px`;
+    dimOverlay.style.top = `${rect?.top ?? 0}px`;
+    dimOverlay.style.width = `${rect?.width ?? 0}px`;
+    dimOverlay.style.height = `${rect?.height ?? 0}px`;
+    
     dimOverlay.style.animation = `fadeIn ${dimAnimDuration}ms ease-in forwards`;
     document.body.appendChild(dimOverlay);
 
@@ -311,6 +323,7 @@ function undimPage(){
         dimOverlay.style.animation = `fadeOut ${dimAnimDuration}ms ease-out forwards`;
         setTimeout(() => dimOverlay.remove(), dimAnimDuration);
     }
+    lastUsedTarget = undefined;
     window.removeEventListener('focus', undimPage)
 }
 

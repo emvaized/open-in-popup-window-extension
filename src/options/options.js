@@ -119,6 +119,7 @@ function updateDisabledOptions() {
     document.getElementById("holdClickDelay").parentNode.className = document.getElementById("openByLongClick").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("longClickButton").className = document.getElementById("openByLongClick").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("dimPageAmount").className = document.getElementById("dimPageOnPopupOpen").checked ? 'enabled-option' : 'disabled-option';
+    document.getElementById("addPageDimSpotlight").parentNode.className = document.getElementById("dimPageOnPopupOpen").checked ? 'enabled-option' : 'disabled-option';
     document.getElementById("fallbackPopupWindowLocation").parentNode.className = 
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 
