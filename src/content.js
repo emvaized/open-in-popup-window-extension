@@ -11,16 +11,9 @@ loadUserConfigs(function(c) {
     const { availLeft, availTop } = getScreenArea();
 
     if (configs.screenWidth !== screenWidth || configs.availLeft !== availLeft || configs.availTop !== availTop) {
-        configs.screenWidth = screenWidth;
-        configs.screenHeight = screenHeight;
-        configs.availLeft = availLeft;
-        configs.availTop = availTop;
-        chrome.storage.sync.set({
-            screenWidth: screenWidth,
-            screenHeight: screenHeight,
-            availLeft: availLeft,
-            availTop: availTop,
-        });
+        const newValues = { screenWidth, screenHeight, availLeft, availTop };
+        Object.assign(configs, newValues);
+        chrome.storage.sync.set(newValues);
     }
 })
 
