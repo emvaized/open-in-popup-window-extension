@@ -70,7 +70,7 @@ div:has(h5):not(:first-child){
 
 /* icon styles */
 div:has(h5) > img {
-    height: 16px;
+    height: 15px;
     opacity: 0.5;
     margin-left: 2px;
 }
