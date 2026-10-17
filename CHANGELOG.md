@@ -1,3 +1,19 @@
+### 0.6.40
+#### New options
+  - Show loading indicator on popup open. Intended to improve situations when new popup is just a blank square during page loading, and shows animation meanwhile 
+  - Show spotlight on selected element on the page (applied when page dim is enabled) – _disabled_ by default
+  - New option "None (system)" for popup window position, which also disables width/height configuration
+
+#### Features
+- Image viewer tries to open URL when image load fails + shows image loading
+- Removed option "When image is wrapped in link, prefer link". Now, when url is the same, extension opens as image. If it differs, as link.
+- Page dim is now removed when user scrolls the page while popup is open
+- Small design improvements for the options page - it's got a little too crowded, so icons were added for easier navigation
+
+#### Fixes
+- Fixed incorrect popup placement on a secondary screen (thanks faxa0-0)
+- Fixed popups remembering new size when snapped to the side of the screen
+
 ### 0.6.31
 - Added static context menu items to the extension icon in the navigation bar. It will allow users to use them even if they disabled such actions in the page context menu. Also, it allows to open settings popup if main click action is set to something else. List of actions: 
   - Search in popup window
