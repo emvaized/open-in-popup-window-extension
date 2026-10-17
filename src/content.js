@@ -9,8 +9,9 @@ loadUserConfigs(function(c) {
     /// Cache screen size for the background script
     const { width: screenWidth, height: screenHeight } = window.screen;
     const { availLeft, availTop } = getScreenArea();
+    const differs = (a, b) => Math.abs(a - b) > 20;
 
-    if (configs.screenWidth !== screenWidth || configs.availLeft !== availLeft || configs.availTop !== availTop) {
+    if (differs(configs.screenWidth, screenWidth) || differs(configs.availLeft, availLeft) || differs(configs.availTop, availTop)){
         const newValues = { screenWidth, screenHeight, availLeft, availTop };
         Object.assign(configs, newValues);
         chrome.storage.sync.set(newValues);
