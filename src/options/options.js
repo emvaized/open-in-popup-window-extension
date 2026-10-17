@@ -124,15 +124,21 @@ function updateDisabledOptions() {
         document.getElementById("popupWindowLocation").value == "mousePosition" || 
         document.getElementById("popupWindowLocation").value == "nearMousePosition" 
             ? 'enabled-option' : 'disabled-option';
+            
+    document.getElementById("popupHeight").parentNode.className = document.getElementById("popupWindowLocation").value == "noPosition" ? 'disabled-option' : 'enabled-option';
+    document.getElementById("popupWidth").parentNode.className = document.getElementById("popupWindowLocation").value == "noPosition" ? 'disabled-option' : 'enabled-option';
+    let rememberWindowResize = document.getElementById("rememberWindowResize");
+    if (rememberWindowResize)
+        rememberWindowResize.parentNode.className = document.getElementById("popupWindowLocation").value == "noPosition" ? 'disabled-option' : 'enabled-option';
 
     try {
         let isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
         if (isFirefox){
-            /// Remove options that are not available in Firefox
+            /// Manage options not available in Firefox
             document.getElementById("rememberWindowResize").parentNode.parentNode.remove();
             document.getElementById("moveToMainWindowOnMaximize").parentNode.parentNode.remove();
         } else {
-            /// Remove options that are not available in Chromium-based browsers
+            /// Manage options not available in Chromium-based browsers
             // document.getElementById("showAddressbarIcon").parentNode.parentNode.remove();
             document.getElementById("enableOpenTabInPopupWindow").parentNode.parentNode.remove();
         }

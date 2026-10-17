@@ -610,14 +610,12 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         
         /// create popup window
         const createParams = {
-            'type': 'popup', 
-            'width': width, 'height': height
+            'type': 'popup',
         };
 
         /// prevent setting dimensions if user opts out
         if (configs.popupWindowLocation !== 'noPosition'){
-            createParams.top = dy;
-            createParams.left = dx;
+            Object.assign(createParams, {top: dy, left: dx, width: width, height: height});
         }
 
         if (tabToCopy) {
