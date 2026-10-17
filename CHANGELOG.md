@@ -11,7 +11,7 @@
 - Small design improvements for the options page - it's got a little too crowded, so icons were added for easier navigation
 
 #### Fixes
-- Fixed incorrect popup placement on a secondary screen (thanks faxa0-0)
+- Fixed incorrect popup placement on a secondary screen (thanks [faxa0-0](https://github.com/faxa0-0))
 - Fixed popups remembering new size when snapped to the side of the screen
 
 ### 0.6.31
