@@ -223,10 +223,11 @@ function onTrigger(e, type){
         if (imgElement && linkElement) {
             /// Image wrapped in link
             const linkUrl = linkElement.href,
-                imageUrl = imgElement.currentSrc || imgElement.src;
+                imageUrl = imgElement.currentSrc || imgElement.src, 
+                linkUrlLowered = linkUrl?.toLowerCase();
 
-            if (linkUrl == imageUrl){
-                /// the same url, prefer image
+            if (linkUrl == imageUrl || ['.jpg','.jpeg','.png','.gif'].some(x => linkUrlLowered.includes(x))){
+                /// the same url or leads to image, prefer image
                 nodeName = imgElement.nodeName;
                 link = imageUrl;
                 isViewer = true;
