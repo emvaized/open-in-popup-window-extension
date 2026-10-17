@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Add option to open page in popup window"
   },
+  "addPageDimSpotlight":{
+    "message": "Show spotlight on selected element on the page"
+  },
   "autoCloseOnlyOverlapping": {
     "message": "Close only popups which cover the main window"
   },
@@ -104,6 +107,9 @@
   "nearMousePosition": {
     "message": "Near mouse cursor"
   },
+  "noPosition": {
+    "message": "None (system)"
+  },
   "openByDragAndDrop": {
     "message": "Use drag and drop on empty place"
   },
@@ -187,6 +193,9 @@
   },
   "showExtensionSettings": {
     "message": "Show extension settings"
+  },
+  "showLoadingSpinnerLinks": {
+    "message": "Show loading indicator on popup open"
   },
   "textDragAction": {
     "message": "Action for the selected text"

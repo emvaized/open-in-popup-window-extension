@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Agregar opción para abrir la página en una ventana emergente"
   },
+  "addPageDimSpotlight":{
+    "message": "Mostrar el resaltado en el elemento seleccionado"
+  },
   "autoCloseOnlyOverlapping": {
     "message": "Cerrar solo las ventanas que se superponen a la ventana principal"
   },
@@ -104,6 +107,9 @@
   "nearMousePosition": {
     "message": "Cerca del cursor"
   },
+  "noPosition": {
+    "message": "Ninguna (sistema)"
+  },
   "openByDragAndDrop": {
     "message": "Arrastra y suelta en un espacio vacío"
   },
@@ -187,6 +193,9 @@
   },
   "showExtensionSettings": {
     "message": "Mostrar configuración"
+  },
+  "showLoadingSpinnerLinks": {
+    "message": "Mostrar indicador de carga al abrir ventanas emergentes"
   },
   "textDragAction": {
     "message": "Acción para el texto seleccionado"

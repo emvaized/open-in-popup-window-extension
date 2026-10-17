@@ -20,7 +20,7 @@ const configs = {
     'reopenAutoCreatedTabAsPopup': false,
     'reopenAutoCreatedTabsOnlyPinned': true,
     'popupWindowLocation': 'nearMousePosition', /// possible values: mousePositon,nearMousePosition,center,etc
-    'imageWithLinkPreferLink': false,
+    'imageWithLinkPreferLink': true,
     'fallbackPopupWindowLocation': 'center',
     'debugMode': false,
     'openDragAndDropUnderMouse': true,
@@ -30,6 +30,7 @@ const configs = {
     'screenWidth': 1920,
     'screenHeight': 1080,
     'availLeft': 0,
+    'availTop': 0,
     'rememberWindowResize': false,
     'moveToMainWindowOnMaximize': true,
     'changeDragCursor': true,
@@ -44,6 +45,8 @@ const configs = {
     'autoCloseOnlyOverlapping': false,
     'reuseExistingPopup': false,
     'reusePopupOnlyIfNoOverlap': false,
+    'showLoadingSpinnerLinks': true,
+    'addPageDimSpotlight': false,
     'textDragAction': 'searchInPopupWindow', /// possible values: searchInPopupWindow,translateInPopupWindow
     'toolbarIconClickAction': 'showExtensionSettings', /// possible values: showExtensionSettings,openPageInPopupWindow,searchInPopupWindow
 }

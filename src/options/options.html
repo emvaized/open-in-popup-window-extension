@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <div><h5 id="generalSettings">General settings</h5> <hr /></div>
+    <div><img src="./icons/settings.svg"> <h5 id="generalSettings">General settings</h5> <hr /></div>
 
     <div class='option'>
         <label><select id="popupWindowLocation">
@@ -19,6 +19,7 @@
             <option value="topRight">Top right</option>
             <option value="bottomLeft">Bottom left</option>
             <option value="bottomRight">Bottom right</option>
+            <option value="noPosition">None</option>
         </select></label>
     </div>
 
@@ -54,9 +55,20 @@
         <!-- <span class="hint">?</span> -->
     </div>
 
+    <hr/>
+    <div class='option'>
+        <label><input type="checkbox" id="showLoadingSpinnerLinks"></input></label>
+    </div>
+
     <div class='option'>
         <label><input type="checkbox" id="dimPageOnPopupOpen"></input></label>
         <input title="% (0.0 - 1.0)" style="margin-left: 4px; max-width:45px" type="number" max="1.0" min="0.05" step="0.05" id="dimPageAmount"></input>
+    </div>
+
+    <div class="subgroup">
+        <div class='option'>
+            <label><input type="checkbox" id="addPageDimSpotlight"></input></label>
+        </div>
     </div>
 
     <div class='option'>
@@ -72,7 +84,7 @@
         </select></label>
     </div>
 
-    <div><h5 id="popupWindowSize">Popup window size</h5> <hr /></div>
+    <div><img src="./icons/crop.svg"> <h5 id="popupWindowSize">Popup window size</h5> <hr /></div>
 
     <div style="margin: 8px 0;">
         <span class='option'>
@@ -87,7 +99,7 @@
         <label><input type="checkbox" id="rememberWindowResize"></input></label>
     </div>
 
-    <div><h5 id="activationSettings">Additional activation methods</h5> <hr/></div>
+    <div><img src="./icons/drag_click.svg"> <h5 id="activationSettings">Additional activation methods</h5> <hr/></div>
 
     <div class='option'>
         <label><input type="checkbox" id="openByModClick"></input></label>
@@ -153,7 +165,7 @@
         </div>
     </div>
 
-   <div><h5 id="imageViewer">Image viewer</h5> <hr /> </div>
+   <div><img src="./icons/image.svg"> <h5 id="imageViewer">Image viewer</h5> <hr /> </div>
 
     <div class='option'>
         <label><input type="checkbox" id="viewInPopupEnabled"></input></label>
@@ -172,12 +184,12 @@
             <label><input type="checkbox" id="useBuiltInImageViewer"></input></label>
         </div>
 
-        <div class='option'>
+        <!-- <div class='option'>
             <label><input type="checkbox" id="imageWithLinkPreferLink"></input></label>
-        </div>
+        </div> -->
     </div>
 
-   <div><h5 id="textSelectionHeader">Text selection</h5> <hr /> </div>
+   <div><img src="./icons/text_snippet.svg"> <h5 id="textSelectionHeader">Text selection</h5> <hr /> </div>
 
     <div class='option'>
         <label><input type="checkbox" id="searchInPopupEnabled"></input></label>
@@ -199,7 +211,7 @@
         </div>
     </div>
 
-    <div><h5 id="openPageInPopupWindowHeader">Open page in popup window</h5> <hr /> </div>
+    <div><img src="./icons/open_in_new.svg"> <h5 id="openPageInPopupWindowHeader">Open page in popup window</h5> <hr /> </div>
 
     <div class='option'>
         <label><input type="checkbox" id="addOptionOpenPageInPopupWindow"></input></label>
@@ -222,8 +234,7 @@
         <label><input type="checkbox" id="showAddressbarIcon"></input></label>
     </div> -->   
     
-    <!-- <div><h5 id="reopenSettings">Reopening settings</h5> <hr /></div> -->
-    <div><h5 id="automationSettings">Automation settings</h5> <hr /></div>
+    <div><img src="./icons/sync_alt.svg"> <h5 id="automationSettings">Automation settings</h5> <hr /></div>
 
     <div class='option'>
         <label><input type="checkbox" id="reuseExistingPopup"></input></label>

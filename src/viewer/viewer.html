@@ -4,12 +4,14 @@
   <meta charset="utf-8">
   <link rel="icon" type="image/png" href="../icon_new.png" />
   <link rel="stylesheet" href="viewer.css" />
+  <link rel="stylesheet" href="loading/loading.css">
   <title>Image Viewer</title>
 </head>
 
 <body>
-    <div class="backgroundPattern"></div>
+    <div class="backgroundPattern hidden"></div>
     <div id="wrapper">
+      <div id="loadingIndicator" role="status" aria-label="Loading image" hidden></div>
       <img id="oipImageViewer">
       <canvas id="gifCanvas"></canvas>
     </div>
@@ -25,7 +27,7 @@
       </button>
     </div>
 
-    <div id="imageControls">
+    <div id="imageControls" class="hidden">
       <button id="resetZoomButton" type="button" title="Fit to screen">
         <img src="icons/aspect_ratio.svg" alt="Fit to screen">
       </button>

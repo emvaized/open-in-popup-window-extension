@@ -13,6 +13,10 @@ body {
     height: 100vh;
     z-index: -1;
     opacity: 0.1;
+    transition: opacity 100ms ease;
+}
+.hidden{
+    opacity: 0;
 }
 
 .backgroundPattern::before {
@@ -120,6 +124,7 @@ body {
     z-index: 10;
     box-sizing: border-box;
     border: 1px solid rgba(123,123,123,0.4);
+    transition: opacity 200ms ease;
 }
 
 #imageControls input[type="range"] {
@@ -169,12 +174,6 @@ body {
 @media (max-width: 275px) or (max-height: 50px) {
     #imageControls {
         display: none !important;
-    }
-}
-
-@media (prefers-color-scheme: dark) {
-    body {
-        background: black;
     }
 }
 

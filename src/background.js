@@ -1,5 +1,5 @@
 let mouseX, mouseY, elementHeight, elementWidth, lastPopupId, lastNormalWindowId;
-let textSelection, availWidth, availHeight, availLeft;
+let textSelection, availWidth, availHeight, availLeft, availTop;
 let preventWindowResizeListener = false;
 let preventNewTabListeners = false;
 let openedPopupWindows;  /// cached Map<id, {type, ...}>
@@ -136,6 +136,10 @@ function onMessageReceived(request, sender, sendResponse) {
                     availWidth = request.availWidth;
                     availHeight = request.availHeight;
                 }
+                if (request.availLeft !== undefined) {
+                    availLeft = request.availLeft;
+                    availTop = request.availTop;
+                }
 
                 const titleBarHeight = request.titleBarHeight ?? 32;
                 const toolbarWidth = request.toolbarWidth ?? 0;
@@ -155,12 +159,7 @@ function onMessageReceived(request, sender, sendResponse) {
                 dx -= Math.round((newWidth - w.width) / 2);
                 dy -= Math.round((newHeight - w.height) / 2);
 
-                if (dx + newWidth > availWidth)
-                    dx -= (dx + newWidth - availWidth);
-                if (dx < 0) dx = 0;
-                if (dy + newHeight > availHeight) 
-                    dy -= (dy + newHeight - availHeight);
-                if (dy < 0) dy = 0;
+                [dx, dy] = fitIntoScreen(dx, dy, newWidth, newHeight);
 
                 preventWindowResizeListener = true;
                 chrome.windows.update(lastPopupId, {
@@ -189,6 +188,7 @@ function onMessageReceived(request, sender, sendResponse) {
     availWidth = request.availWidth;
     availHeight = request.availHeight;
     availLeft = request.availLeft;
+    availTop = request.availTop;
 
     if (request.type == 'drag' || request.type == 'modClick') {
         // if (request.type == 'drag' && configs.openByDragAndDrop == false) return;
@@ -429,6 +429,10 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                         (configs.textDragAction === 'searchInPopupWindow' ? configs.popupSearchUrl : configs.popupTranslateUrl).replace('%s', textSelection)
                         : 'about:blank');
 
+        const popupUrlToOpen = !isViewer && popupUrl !== 'about:blank' && configs.showLoadingSpinnerLinks
+            ? chrome.runtime.getURL('viewer/loading/loading.html') + '?url=' + encodeURIComponent(popupUrl)
+            : popupUrl;
+
         /// Reuse existing popup window if the option is enabled and there's already one open
         if (configs.reuseExistingPopup) {
             let popupWindows = await getPopupWindows();
@@ -496,11 +500,14 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         if (isDragEvent && configs.openDragAndDropUnderMouse) popupLocation = 'mousePosition';
 
         /// Try to get current screen size (not supported in Manifest v3)
-        try {
-            availWidth = window.screen.width;
-            availHeight = window.screen.height;
-        } catch(e){}
-        if (!availLeft) availLeft = configs.availLeft ?? 0;
+        // try {
+        //     availWidth = window.screen.width;
+        //     availHeight = window.screen.height;
+        // } catch(e){}
+        
+        /// 0 is a valid offset for the primary screen, so only fall back when the value is missing
+        if (availLeft === undefined) availLeft = configs.availLeft ?? 0;
+        if (availTop === undefined) availTop = configs.availTop ?? 0;
         if (!availWidth) availWidth = configs.screenWidth;
         if (!availHeight) availHeight = configs.screenHeight;
 
@@ -530,13 +537,13 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                         const horizontalPadding = 15;
                         dx = mouseX - (width / 2), dy = mouseY - height - verticalPadding;
     
-                        if (dy < 0) dy = mouseY + verticalPadding;
-                        if (dy + height > availHeight) {
+                        if (dy < availTop) dy = mouseY + verticalPadding;
+                        if (dy + height > availTop + availHeight) {
                             dy = mouseY - (height / 2);
                             dx = mouseX - width - horizontalPadding;
     
-                            if (dx < 0) dx = mouseX + horizontalPadding;
-                            if (dx + width > availWidth){
+                            if (dx < availLeft) dx = mouseX + horizontalPadding;
+                            if (dx + width > availLeft + availWidth){
                                 /// if nothing works, open centered in mouse position
                                 setFallbackPopupLocation();
                             }
@@ -545,29 +552,29 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                 } break;
                 case 'topRight': {
                     dx = availLeft + availWidth - width, 
-                    dy = 0;
+                    dy = availTop;
                 } break;
                 case 'topLeft': {
                     dx = availLeft, 
-                    dy = 0;
+                    dy = availTop;
                 } break;
                 case 'topCenter': {
                     dx = availWidth ? (availLeft + availWidth / 2) : availLeft;
                     dx -= width / 2;
-                    dy = 0;
+                    dy = availTop;
                 } break;
                 case 'bottomRight': {
                     dx = availLeft + availWidth - width, 
-                    dy = availHeight - height;
+                    dy = availTop + availHeight - height;
                 } break;
                 case 'bottomLeft': {
                     dx = availLeft, 
-                    dy = availHeight - height;
+                    dy = availTop + availHeight - height;
                 } break;
                 default: {
                     /// open at center of screen
                     dx = availWidth ? availLeft + availWidth / 2 : availLeft;
-                    dy = availHeight ? availHeight / 2 : 0;
+                    dy = availHeight ? availTop + availHeight / 2 : availTop;
                     dx -= width / 2;
                     dy -= height / 2;
                 } break;
@@ -586,6 +593,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
             console.log('availWidth: ', availWidth);
             console.log('availHeight: ', availHeight);
             console.log('availLeft: ', availLeft);
+            console.log('availTop: ', availTop);
             console.log('Selected popup window placement: ', popupLocation);
             console.log('Calculated popup window dx: ', dx);
             console.log('Calculated popup window dy: ', dy);
@@ -593,12 +601,7 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         }
     
         /// check for screen overflow
-        if (!dx) dx = 0;
-        if (availLeft >= 0 && dx < 0) dx = 0;
-        if (!dy || dy < 0) dy = 0;
-        if (dy + height > availHeight) dy = dy - (dy + height - availHeight);
-        dx = parseInt(dx); dy = parseInt(dy);
-        if (dx + width > availWidth) dx = dx - (dx + width - availWidth);
+        [dx, dy] = fitIntoScreen(dx ?? availLeft, dy ?? availTop, width, height);
 
         if (configs.debugMode){
             console.log('Calucated dx after checking: ', dx);
@@ -606,120 +609,126 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
         }
         
         /// create popup window
-        // setTimeout(function () {
-            const createParams = {
-                'type': 'popup', 
-                'width': width, 'height': height, 
-                'top': dy, 'left': dx
-            };
+        const createParams = {
+            'type': 'popup',
+        };
 
-            if (tabToCopy) {
-                createParams.tabId = tabToCopy.id;
-            } else {
-                createParams['url'] = popupUrl;
+        /// prevent setting dimensions if user opts out
+        if (configs.popupWindowLocation !== 'noPosition'){
+            Object.assign(createParams, {top: dy, left: dx, width: width, height: height});
+        }
+
+        if (tabToCopy) {
+            createParams.tabId = tabToCopy.id;
+        } else {
+            createParams['url'] = popupUrlToOpen;
+        }
+
+        /// Preserve Firefox container
+        if (senderTab && senderTab.cookieStoreId) {
+            createParams['cookieStoreId'] = senderTab.cookieStoreId;
+        }
+
+        preventNewTabListeners = true;
+        chrome.windows.create(createParams, function (popupWindow) {
+            if (chrome.runtime.lastError || !popupWindow) {
+                if (configs.debugMode) console.warn('Failed to create popup window:', chrome.runtime.lastError.message);
+                return;
             }
 
-            /// Preserve Firefox container
-            if (senderTab && senderTab.cookieStoreId) {
-                createParams['cookieStoreId'] = senderTab.cookieStoreId;
+            let popupWindowId = popupWindow.id;
+
+            if (configs.debugMode){
+                console.log('Created popup window:', popupWindow);
+                console.log('End logging ~~~');
             }
 
-            preventNewTabListeners = true;
-            chrome.windows.create(createParams, function (popupWindow) {
-                if (chrome.runtime.lastError || !popupWindow) {
-                    if (configs.debugMode) console.warn('Failed to create popup window:', chrome.runtime.lastError.message);
-                    return;
-                }
+            /// set coordinates again (workaround for old firefox bug)
+            if (popupWindow.left !== dx && configs.popupWindowLocation !== 'noPosition')
+                chrome.windows.update(popupWindowId, {
+                    'top': dy, 'left': dx, 'width': width, 'height': height
+                });
 
-                let popupWindowId = popupWindow.id;
+            /// Dim page for main window
+            if (configs.dimPageOnPopupOpen && senderTab && senderTab.id && !isCurrentPage) {
+                chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
+            }
 
-                if (configs.debugMode){
-                    console.log('Created popup window:', popupWindow);
-                    console.log('End logging ~~~');
-                }
+            /* remember dimensions on window resize 
+            [onBoundsChanged is not supported in Firefox]
+            {@link https://bugzilla.mozilla.org/show_bug.cgi?id=1762975}
+            */
+            if (chrome.windows.onBoundsChanged && (configs.rememberWindowResize || configs.moveToMainWindowOnMaximize)) {
+                function resizeListener(w){
+                    if (configs.debugMode) console.log('Popup window moved/resized: ', w);
+                    if (preventWindowResizeListener) return;
+                    if (w.type !== 'popup') return;
 
-                /// set coordinates again (workaround for old firefox bug)
-                if (popupWindow.left !== dx)
-                    chrome.windows.update(popupWindowId, {
-                        'top': dy, 'left': dx, 'width': width, 'height': height
-                    });
+                    if (w.state == 'maximized'){
+                        /// Move to main window on popup maximize
+                        if (configs.moveToMainWindowOnMaximize) 
+                            chrome.tabs.query({windowId: w.id}, (tabs) => {
+                                if (tabs && tabs.length > 0) {
+                                    const tab = tabs[0];
+                                    if (tab.id && tab.id > -1) 
+                                        moveTabToRegularWindow(tab);
+                                }
+                            });
+                    } else {
+                        /// Save new popup window size
+                        if (configs.rememberWindowResize){
+                            if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
+                            if (Math.abs(w.height - configs.popupHeight) <= 2 && Math.abs(w.width - configs.popupWidth) <= 2) return;
 
-                /// Dim page for main window
-                if (configs.dimPageOnPopupOpen && senderTab && senderTab.id && !isCurrentPage) {
-                    chrome.tabs.sendMessage(senderTab.id, { action: 'dimPage' });
-                }
+                            /// prevent size storing on automated popup placement (maximized, snapped to side etc)
+                            const tolerance = 20; /// maximized windows may slightly exceed screen bounds
+                            if (Math.abs(availHeight - w.height) < tolerance) return;
 
-                /* remember dimensions on window resize 
-                [onBoundsChanged is not supported in Firefox]
-                {@link https://bugzilla.mozilla.org/show_bug.cgi?id=1762975}
-                */
-                if (chrome.windows.onBoundsChanged && (configs.rememberWindowResize || configs.moveToMainWindowOnMaximize)) {
-                    function resizeListener(w){
-                        if (configs.debugMode) console.log('Popup window moved/resized: ', w);
-                        if (preventWindowResizeListener) return;
-                        if (w.type !== 'popup') return;
-
-                        if (w.state == 'maximized'){
-                            /// Move to main window on popup maximize
-                            if (configs.moveToMainWindowOnMaximize) 
-                                chrome.tabs.query({windowId: w.id}, (tabs) => {
-                                    if (tabs && tabs.length > 0) {
-                                        const tab = tabs[0];
-                                        if (tab.id && tab.id > -1) 
-                                            moveTabToRegularWindow(tab);
-                                    }
-                                });
-                        } else {
-                            /// Save new popup window size
-                            if (configs.rememberWindowResize){
-                                if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
-                                if (Math.abs(w.height - configs.popupHeight) <= 2 && Math.abs(w.width - configs.popupWidth) <= 2) return;
-                                configs.popupHeight = w.height;
-                                configs.popupWidth = w.width;
-                                chrome.storage.sync.set(configs);
-                                if (configs.debugMode) console.log('New popup window size saved: ', w.height, 'x', w.width);
-                            }
+                            configs.popupHeight = w.height;
+                            configs.popupWidth = w.width;
+                            chrome.storage.sync.set(configs);
+                            if (configs.debugMode) console.log('New popup window size saved: ', w.height, 'x', w.width);
                         }
                     }
-                    function removedListener(wId){
-                        if (wId && wId > -1 && wId == popupWindow.id) {
-                            chrome.windows.onBoundsChanged.removeListener(resizeListener);
-                            chrome.windows.onRemoved.removeListener(removedListener);
-                        }
-                    }
-                    chrome.windows.onBoundsChanged.addListener(resizeListener);
-                    chrome.windows.onRemoved.addListener(removedListener);
                 }
+                function removedListener(wId){
+                    if (wId && wId > -1 && wId == popupWindow.id) {
+                        chrome.windows.onBoundsChanged.removeListener(resizeListener);
+                        chrome.windows.onRemoved.removeListener(removedListener);
+                    }
+                }
+                chrome.windows.onBoundsChanged.addListener(resizeListener);
+                chrome.windows.onRemoved.addListener(removedListener);
+            }
 
-                /// TODO:
-                /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent covering previous one
-                /// Can use the new popups persistence logic
-                // if (lastPopupId)
-                //     chrome.windows.get(lastPopupId,{}, (w) => {
-                //         if (!w) return;
-                //         let lastPopupDx = w.left, lastPopupDy = w.top, lastPopupWidth = w.width, lastPopupHeight = w.height;
-                //         if (lastPopupDx && lastPopupDy && lastPopupWidth && lastPopupHeight &&
-                //         Math.abs(dx - lastPopupDx) < 5 && Math.abs(dy - lastPopupDy) < 5 &&
-                //         Math.abs(width - lastPopupWidth) < 5 && Math.abs(height - lastPopupHeight) < 5) {
-                //             dy = lastPopupDy + (configs.titleBarHeight ?? 30);
-                //             height = lastPopupHeight - (configs.titleBarHeight ?? 30);
+            /// TODO:
+            /// If the popup is going to open in the same place as the last one, try to move it a bit to prevent covering previous one
+            /// Can use the new popups persistence logic
+            // if (lastPopupId)
+            //     chrome.windows.get(lastPopupId,{}, (w) => {
+            //         if (!w) return;
+            //         let lastPopupDx = w.left, lastPopupDy = w.top, lastPopupWidth = w.width, lastPopupHeight = w.height;
+            //         if (lastPopupDx && lastPopupDy && lastPopupWidth && lastPopupHeight &&
+            //         Math.abs(dx - lastPopupDx) < 5 && Math.abs(dy - lastPopupDy) < 5 &&
+            //         Math.abs(width - lastPopupWidth) < 5 && Math.abs(height - lastPopupHeight) < 5) {
+            //             dy = lastPopupDy + (configs.titleBarHeight ?? 30);
+            //             height = lastPopupHeight - (configs.titleBarHeight ?? 30);
 
-                //             preventWindowResizeListener = true;
-                //             chrome.windows.update(popupWindow.id, { top: dy, height: height }, ()=> preventWindowResizeListener = false);
-                //         }
-                //     });
+            //             preventWindowResizeListener = true;
+            //             chrome.windows.update(popupWindow.id, { top: dy, height: height }, ()=> preventWindowResizeListener = false);
+            //         }
+            //     });
 
-                /// Clear variables
-                elementHeight = undefined; elementWidth = undefined;
-                mouseX = undefined; mouseY = undefined;
-                textSelection = undefined;
-                preventNewTabListeners = false;
+            /// Clear variables
+            elementHeight = undefined; elementWidth = undefined;
+            mouseX = undefined; mouseY = undefined;
+            textSelection = undefined;
+            preventNewTabListeners = false;
 
-                /// Store new popup
-                lastPopupId = popupWindow.id;
-                addPopupWindow(popupWindow.id, {isCurrentPage: isCurrentPage});
-            });
-        // }, originalWindowIsFullscreen ? 600 : 0)
+            /// Store new popup
+            lastPopupId = popupWindow.id;
+            addPopupWindow(popupWindow.id, {isCurrentPage: isCurrentPage});
+        });
     })
 }
 
@@ -834,6 +843,17 @@ function moveTabToRegularWindow(tab, shouldFocusTab = true){
             });
         }
     );
+}
+
+/// Keeps the popup inside the screen of the origin window.
+/// Secondary screens have non-zero (possibly negative) availLeft/availTop, so bounds are relative to them, not to 0
+function fitIntoScreen(dx, dy, width, height) {
+    const left = availLeft ?? 0, top = availTop ?? 0;
+    if (availWidth && dx + width > left + availWidth) dx = left + availWidth - width;
+    if (availHeight && dy + height > top + availHeight) dy = top + availHeight - height;
+    if (dx < left) dx = left;
+    if (dy < top) dy = top;
+    return [parseInt(dx), parseInt(dy)];
 }
 
 function windowsOverlap(a, b, tolerance = 45) {

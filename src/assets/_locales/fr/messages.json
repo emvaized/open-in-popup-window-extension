@@ -5,6 +5,9 @@
   "addOptionOpenPageInPopupWindow": {
     "message": "Ajouter une option pour ouvrir la page dans une fenêtre popup"
   },
+  "addPageDimSpotlight":{
+    "message": "Afficher un effet de mise en avant sur l'élément sélectionné"
+  },
   "autoCloseOnlyOverlapping": {
     "message": "Fermer uniquement les fenêtres qui recouvrent la fenêtre principale"
   },
@@ -104,6 +107,9 @@
   "nearMousePosition": {
     "message": "Près du curseur"
   },
+  "noPosition": {
+    "message": "Aucune (système)"
+  },
   "openByDragAndDrop": {
     "message": "Utiliser le glisser-déposer sur un espace vide"
   },
@@ -172,6 +178,9 @@
   },
   "reusePopupOnlyIfNoOverlap": {
     "message": "À condition qu'il ne recouvre pas la fenêtre ouverte"
+  },
+  "showLoadingSpinnerLinks": {
+    "message": "Afficher l'indicateur de chargement à l'ouverture des pop-ups"
   },
   "searchInPopupEnabled": {
     "message": "Activer l’option de recherche dans une popup"

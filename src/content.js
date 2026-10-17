@@ -1,6 +1,5 @@
 document.addEventListener("contextmenu",(e=>onTrigger(e,'context')));
 chrome.storage.onChanged.addListener((c) => {
-    // loadUserConfigs((c) => setMouseListeners())
     applyUserConfigs(c, undefined, () => setMouseListeners());
 });
 
@@ -8,11 +7,14 @@ loadUserConfigs(function(c) {
     setMouseListeners();
 
     /// Cache screen size for the background script
-    if (configs.screenWidth !== window.screen.width || configs.availLeft !== window.screen.availLeft) {
-        configs.screenWidth = window.screen.width;
-        configs.screenHeight = window.screen.height;
-        configs.availLeft = window.screen.availLeft;
-        chrome.storage.sync.set(configs);
+    const { width: screenWidth, height: screenHeight } = window.screen;
+    const { availLeft, availTop } = getScreenArea();
+    const differs = (a, b) => Math.abs(a - b) > 20;
+
+    if (differs(configs.screenWidth, screenWidth) || differs(configs.availLeft, availLeft) || differs(configs.availTop, availTop)){
+        const newValues = { screenWidth, screenHeight, availLeft, availTop };
+        Object.assign(configs, newValues);
+        chrome.storage.sync.set(newValues);
     }
 })
 
@@ -164,7 +166,7 @@ function doubleModKeyUpListener(e){
         const currentTime = Date.now();
         if (currentTime - lastKeypressTime < doublePressDelay) {
             if (!elementIsValid(lastMouseOverData.target, true)) return;
-            // lastMouseOverData.target.focus(); /// shows the focus ring to indicate which element will be opened
+            lastMouseOverData.target.focus(); /// shows the focus ring to indicate which element will be opened
             onTrigger(undefined, 'modClick');
             return;
         }
@@ -195,17 +197,22 @@ function onClickListener(e){
 }
 
 /* Common trigger callback */
+let lastUsedTarget;
+
 function onTrigger(e, type){
     const t = e ? e.target : lastMouseOverData.target;
+    lastUsedTarget = t;
     const selectedText = getSelectedText();
 
+    const { availLeft, availTop, availHeight, availWidth } = getScreenArea();
     const message = {
         mouseX: e ? e.screenX : lastMouseOverData.x, mouseY: e ? e.screenY : lastMouseOverData.y,
         elementHeight: t.naturalHeight ?? t.clientHeight > 0 ? t.clientHeight : t.offsetHeight,
         elementWidth: t.naturalWidth ?? t.clientWidth > 0 ? t.clientWidth : t.offsetWidth,
-        availHeight: window.screen.availHeight, availWidth: window.screen.availWidth,
+        availHeight: availHeight, availWidth: availWidth,
         selectedText: selectedText,
-        availLeft: window.screen.availLeft, type: type
+        availLeft: availLeft, availTop: availTop, 
+        type: type
     }
 
     let link, isViewer = false;
@@ -215,13 +222,19 @@ function onTrigger(e, type){
 
         if (imgElement && linkElement) {
             /// Image wrapped in link
-            if (configs.imageWithLinkPreferLink){
+            const linkUrl = linkElement.href,
+                imageUrl = imgElement.currentSrc || imgElement.src, 
+                linkUrlLowered = linkUrl?.toLowerCase();
+
+            if (linkUrl == imageUrl || ['.jpg','.jpeg','.png','.gif'].some(x => linkUrlLowered.includes(x))){
+                /// the same url or leads to image, prefer image
+                nodeName = imgElement.nodeName;
+                link = imageUrl;
+                isViewer = true;
+            } else {
+                /// different url, prefer link
                 nodeName = linkElement.nodeName;
                 link = linkElement.href;
-            } else {
-                nodeName = imgElement.nodeName;
-                link = imgElement.currentSrc || imgElement.src;
-                isViewer = true;
             }
         } else if (imgElement){
             /// Image
@@ -248,6 +261,20 @@ function onTrigger(e, type){
     chrome.runtime.sendMessage(message)
 }
 
+/* Available area of the screen the browser window is on, in global desktop coordinates.
+Firefox may report availLeft/availTop relative to the current screen instead (e.g. for a screen placed above the primary one),
+so if the window appears to be outside of the reported area, use the browser window bounds, which are always global */
+function getScreenArea(){
+    const { availLeft, availTop, availWidth, availHeight } = window.screen;
+    const tolerance = 50; /// maximized windows may slightly exceed screen bounds
+    const windowIsOnScreen =
+        window.screenX >= availLeft - tolerance && window.screenX < availLeft + availWidth &&
+        window.screenY >= availTop - tolerance && window.screenY < availTop + availHeight;
+
+    if (windowIsOnScreen) return { availLeft, availTop, availWidth, availHeight };
+    return { availLeft: window.screenX, availTop: window.screenY, availWidth: window.outerWidth, availHeight: window.outerHeight };
+}
+
 /* Check if element under cursor is an image or a link */
 const elementIsValid = (el, shouldCheckSelection = false) => { 
     return (el.closest && el.closest('a, img')) || (shouldCheckSelection && elementWithinSelection(el));
@@ -256,8 +283,8 @@ const elementIsValid = (el, shouldCheckSelection = false) => {
 const elementWithinSelection = (el) => {
     const selection = window.getSelection();
     const isSelectedText = selection && 
-    selection.toString().trim() !== '' && 
-    selection.containsNode(el, true);  /// true = allow partial containment
+        selection.toString().trim() !== '' && 
+        selection.containsNode(el, true);  /// true = allow partial containment
     return isSelectedText;
 }
 
@@ -271,10 +298,20 @@ function dimPage(){
     if (dimOverlay) dimOverlay.remove();
     dimOverlay = document.createElement('div');
     dimOverlay.id = 'oip-dim-overlay';
+
+    const rect = configs.addPageDimSpotlight && lastUsedTarget && lastUsedTarget.getBoundingClientRect ? 
+        lastUsedTarget.getBoundingClientRect() : undefined;
+
+    dimOverlay.style.left = `${rect?.left ?? 0}px`;
+    dimOverlay.style.top = `${rect?.top ?? 0}px`;
+    dimOverlay.style.width = `${rect?.width ?? 0}px`;
+    dimOverlay.style.height = `${rect?.height ?? 0}px`;
+    
     dimOverlay.style.animation = `fadeIn ${dimAnimDuration}ms ease-in forwards`;
     document.body.appendChild(dimOverlay);
 
     setTimeout(() => window.addEventListener('focus', undimPage),100);
+    document.addEventListener('wheel', onScrollListener, {passive: true});
 }
 function undimPage(){
     if (dimOverlay && dimOverlay.isConnected) {
@@ -282,7 +319,14 @@ function undimPage(){
         dimOverlay.style.animation = `fadeOut ${dimAnimDuration}ms ease-out forwards`;
         setTimeout(() => dimOverlay.remove(), dimAnimDuration);
     }
-    window.removeEventListener('focus', undimPage)
+    lastUsedTarget = undefined;
+    window.removeEventListener('focus', undimPage);
+    document.removeEventListener('wheel', onScrollListener);
+}
+function onScrollListener(){
+   if (dimOverlay && dimOverlay.isConnected) {
+        undimPage();
+   } 
 }
 
 /* Looks for hight-res image source in srcset or data attributes */
