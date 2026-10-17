@@ -316,6 +316,7 @@ function dimPage(){
     document.body.appendChild(dimOverlay);
 
     setTimeout(() => window.addEventListener('focus', undimPage),100);
+    document.addEventListener('wheel', onScrollListener, {passive: true});
 }
 function undimPage(){
     if (dimOverlay && dimOverlay.isConnected) {
@@ -324,7 +325,13 @@ function undimPage(){
         setTimeout(() => dimOverlay.remove(), dimAnimDuration);
     }
     lastUsedTarget = undefined;
-    window.removeEventListener('focus', undimPage)
+    window.removeEventListener('focus', undimPage);
+    document.removeEventListener('wheel', onScrollListener);
+}
+function onScrollListener(){
+   if (dimOverlay && dimOverlay.isConnected) {
+        undimPage();
+   } 
 }
 
 /* Looks for hight-res image source in srcset or data attributes */
