@@ -681,6 +681,11 @@ function openPopupWindowForLink(link, isViewer = false, isDragEvent, tabToCopy, 
                         if (configs.rememberWindowResize){
                             if (isViewer && configs.tryFitWindowSizeToImage) return; /// don't save size for automatically resized image viewer
                             if (Math.abs(w.height - configs.popupHeight) <= 2 && Math.abs(w.width - configs.popupWidth) <= 2) return;
+
+                            /// prevent size storing on automated popup placement (maximized, snapped to side etc)
+                            const tolerance = 20; /// maximized windows may slightly exceed screen bounds
+                            if (Math.abs(availHeight - w.height) < tolerance) return;
+
                             configs.popupHeight = w.height;
                             configs.popupWidth = w.width;
                             chrome.storage.sync.set(configs);
