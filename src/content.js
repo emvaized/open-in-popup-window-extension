@@ -323,8 +323,8 @@ function removeOpenInTabButton(){
 }
 
 const popupButtonIcons = {
-    splitPopupWithOriginTab: '<rect x="1" y="2" width="10" height="8" rx="1.5"/><path d="M6 2v8"/>',
     openPopupInMainWindow: '<path d="M4.5 1.5h6v6M10.5 1.5 4 8M8.5 7v3.5h-7v-7H5"/>',
+    splitPopupWithOriginTab: '<rect x="1" y="2" width="10" height="8" rx="1.5"/><path d="M6 2v8"/>',
     returnTabToPopup: '<path d="M7.5 10.5h-6v-6M1.5 10.5 8 4M3.5 5V1.5h7v7H7"/>'
 };
 
@@ -347,63 +347,68 @@ function setupOpenInTabButton(){
         shadow.innerHTML = `
             <style>
                 .bar {
-                    position: fixed; top: 10px; right: 12px; z-index: 2147483647;
-                    display: flex; gap: 6px; pointer-events: none;
-                    opacity: 0; transform: translateY(-4px); transition: opacity .15s ease, transform .15s ease;
+                    position: fixed; bottom:0px; right:0px; z-index: 2147483647;
+                    display: flex; gap: 2px;
+                    opacity: 0; transition: opacity 200ms ease;
+                    border-top: 1px solid gray; border-left: 1px solid gray;
+                    background: Background; border-radius: 6px 0 0;
+                    font-family: sans-serif; font-size: 13px;
                 }
-                .bar.visible { opacity: 1; transform: none; }
+                .bar.visible { opacity: 1;}
                 .bar.visible button { pointer-events: auto; }
                 button {
-                    position: relative; display: flex; align-items: center; gap: 6px;
-                    padding: 6px 12px; border: 0; border-radius: 999px;
-                    font: 500 13px/1.2 system-ui, -apple-system, sans-serif;
-                    color: #fff; background: rgba(28, 28, 30, 0.82);
-                    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
-                    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+                    position: relative; display: flex; align-items: center;
+                    padding: 4px; border: 0; border-radius: 3px;
+                    background: transparent;
                     cursor: pointer; pointer-events: none; user-select: none;
                 }
                 /* larger invisible hit area, so clicks near the rounded edges are not lost */
-                button::before { content: ''; position: absolute; inset: -8px -3px; border-radius: 999px; }
-                button:hover { background: rgba(28, 28, 30, 0.95); }
-                svg { width: 12px; height: 12px; }
+                button:hover { background: AccentColor; }
+                svg { width: 15px; height: 15px; }
+                .url{
+                    padding: 4px 2px;
+                    margin-left:2px;
+                    opacity: 0.65;
+                    color: inherit;
+                    border-right: 1px solid grey;
+                }
             </style>
-            <div class="bar"></div>`;
+            <div class="wrapper"><span class="url"></span><div class="bar"></div></div>`;
         const bar = shadow.querySelector('.bar');
+
+        /// Show url on the bar
+        const urlLabel = document.createElement('span');
+        urlLabel.className = 'url';
+        setUrlLabel();
+        bar.appendChild(urlLabel);
+        window.navigation.addEventListener("navigate", ()=>setUrlLabel());
+
+        function setUrlLabel(){
+            const url = decodeURI(window.location.href.replace('https://','')), maxLength = 35;
+            urlLabel.textContent = url.length > maxLength ? url.substring(0,maxLength) + '...' : url;
+            urlLabel.title = url;
+        }
+
+        /// Add buttons
         for (const [action, label] of buttons) {
             const button = document.createElement('button');
             button.type = 'button';
             button.innerHTML = `<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">${popupButtonIcons[action] ?? ''}</svg><span></span>`;
-            button.querySelector('span').textContent = label;
+            button.title = label;
             /// Act on press: in Firefox "click" is lost if the pointer moves slightly between press and release
-            button.addEventListener('pointerdown', (e) => {
-                if (e.button !== 0) return;
+            button.addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation();
                 chrome.runtime.sendMessage({ action: action });
             });
             bar.appendChild(button);
         }
-        document.documentElement.appendChild(host);
-        openInTabButtonListeners = new AbortController();
-        const signal = openInTabButtonListeners.signal;
 
-        const topZone = 60;
-        let hideTimeout;
+        /// Attach to the document
+        document.documentElement.appendChild(host);
         const setVisible = (visible) => bar.classList.toggle('visible', visible && !document.fullscreenElement);
 
         /// Show briefly, so the user knows the buttons exist
-        setVisible(true);
-        hideTimeout = setTimeout(() => setVisible(false), 1500);
-
-        document.addEventListener('mousemove', (e) => {
-            clearTimeout(hideTimeout);
-            setVisible(e.clientY < topZone);
-        }, { passive: true, signal });
-        /// The title bar is outside of the page, so it can't be hovered directly:
-        /// if mouse leaves the page through the top edge, it went to the title bar — keep the buttons visible
-        document.documentElement.addEventListener('mouseleave', (e) => {
-            clearTimeout(hideTimeout);
-            setVisible(e.clientY < 5);
-        }, { signal });
+        setTimeout(()=>setVisible(true), 10);
     }).catch(() => {});
 }
 
