@@ -127,18 +127,6 @@ function onMessageReceived(request, sender, sendResponse) {
         return;
     }
 
-    /// Popup was maximized in Firefox (sent from content script, as windows.onBoundsChanged is not supported there)
-    if (request.action == 'windowMaximized') {
-        if (chrome.windows.onBoundsChanged || !configs.moveToMainWindowOnMaximize || !sender.tab) return;
-        chrome.windows.get(sender.tab.windowId, (w) => {
-            /// Ignore fullscreen (macOS green button, fullscreen video): closing a window during
-            /// the fullscreen transition leaves a "ghost" window on macOS
-            if (chrome.runtime.lastError || !w || w.type !== 'popup' || w.state === 'fullscreen') return;
-            moveTabToRegularWindow(sender.tab);
-        });
-        return;
-    }
-
     /// Content script asks whether its page is in a popup window or came from one (to show "Open in tab" / "Back to popup")
     if (request.action == 'isPopupWindow') {
         if (!sender.tab) return;
