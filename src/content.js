@@ -344,12 +344,12 @@ function setupOpenInTabButton(){
                 }
                 /* larger invisible hit area, so clicks near the rounded edges are not lost */
                 button:hover { background: AccentColor; }
-                svg { width: 15px; height: 15px; }
+                svg { width: 15px; height: 15px; opacity:0.75; }
                 .url{
                     padding: 4px 2px;
                     margin-left:2px;
                     opacity: 0.65;
-                    color: inherit;
+                    color: currentColor;
                     border-right: 1px solid grey;
                 }
             </style>
@@ -364,8 +364,8 @@ function setupOpenInTabButton(){
         window.navigation.addEventListener("navigate", ()=>setUrlLabel());
 
         function setUrlLabel(){
-            const url = decodeURI(window.location.href.replace('https://','')), maxLength = 35;
-            urlLabel.textContent = url.length > maxLength ? url.substring(0,maxLength) + '...' : url;
+            const url = decodeURI(window.location.href.replace('https://','')), maxLength = 30;
+            urlLabel.textContent = url.length > maxLength ? url.substring(0,maxLength) + '...' : url + ' ';
             urlLabel.title = url;
         }
 
@@ -373,9 +373,8 @@ function setupOpenInTabButton(){
         for (const [action, label] of buttons) {
             const button = document.createElement('button');
             button.type = 'button';
-            button.innerHTML = `<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6">${popupButtonIcons[action] ?? ''}</svg><span></span>`;
+            button.innerHTML = `<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.0">${popupButtonIcons[action] ?? ''}</svg><span></span>`;
             button.title = label;
-            /// Act on press: in Firefox "click" is lost if the pointer moves slightly between press and release
             button.addEventListener('click', (e) => {
                 e.preventDefault(); e.stopPropagation();
                 chrome.runtime.sendMessage({ action: action });
