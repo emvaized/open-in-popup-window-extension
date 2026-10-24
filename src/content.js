@@ -316,9 +316,9 @@ function setupOpenInTabButton(){
         if (!response) return;
 
         const buttons = [];
-        if (response.isPopup && response.canSplit) buttons.push(['splitPopupWithOriginTab', chrome.i18n.getMessage('splitViewButton') || 'Split view']);
         if (response.isPopup) buttons.push(['openPopupInMainWindow', chrome.i18n.getMessage('openInTabButton') || 'Open in tab']);
         else if (response.cameFromPopup) buttons.push(['returnTabToPopup', chrome.i18n.getMessage('returnToPopupButton') || 'Back to popup']);
+        if (response.isPopup && response.canSplit) buttons.push(['splitPopupWithOriginTab', chrome.i18n.getMessage('splitViewButton') || 'Split view']);
         if (!buttons.length) return;
 
         const host = openInTabButtonHost = document.createElement('div');
@@ -329,28 +329,25 @@ function setupOpenInTabButton(){
                 .bar {
                     position: fixed; bottom:0px; right:0px; z-index: 2147483647;
                     display: flex; gap: 2px;
-                    opacity: 0; transition: opacity 200ms ease;
-                    border-top: 1px solid gray; border-left: 1px solid gray;
+                    opacity: 1; transition: opacity 200ms ease;
+                    border-top: 1px solid lightgray; border-left: 1px solid lightgray;
                     background: Background; border-radius: 6px 0 0;
                     font-family: sans-serif; font-size: 13px;
                 }
-                .bar.visible { opacity: 1;}
-                .bar.visible button { pointer-events: auto; }
                 button {
                     position: relative; display: flex; align-items: center;
                     padding: 4px; border: 0; border-radius: 3px;
                     background: transparent;
-                    cursor: pointer; pointer-events: none; user-select: none;
+                    cursor: pointer; user-select: none;
                 }
                 /* larger invisible hit area, so clicks near the rounded edges are not lost */
-                button:hover { background: AccentColor; }
-                svg { width: 15px; height: 15px; opacity:0.75; }
+                button:hover { background: color-mix(in srgb, currentColor 50%, transparent); }
+                svg { width: 15px; height: 15px; }
                 .url{
                     padding: 4px 2px;
                     margin-left:2px;
-                    opacity: 0.65;
                     color: currentColor;
-                    border-right: 1px solid grey;
+                    border-right: 1px solid lightgray;
                 }
             </style>
             <div class="wrapper"><span class="url"></span><div class="bar"></div></div>`;
@@ -384,10 +381,6 @@ function setupOpenInTabButton(){
 
         /// Attach to the document
         document.documentElement.appendChild(host);
-        const setVisible = (visible) => bar.classList.toggle('visible', visible && !document.fullscreenElement);
-
-        /// Show briefly, so the user knows the buttons exist
-        setTimeout(()=>setVisible(true), 10);
     }).catch(() => {});
 }
 
