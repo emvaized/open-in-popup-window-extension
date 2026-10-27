@@ -1,3 +1,13 @@
+### 0.6.41
+- Added error handling on the new loading screen
+- Changed some default settings: 
+    - popup width and height to 900px
+    - `rememberWindowResize` to true
+    - dim page amount to `0.2`
+- Removed "look up for higher res image" feature for now, as it wasn't do much anyway
+- Added some submenu context icons for Firefox
+- Improved performance of the script
+
 ### 0.6.40
 #### New options
   - Show loading indicator on popup open. Intended to improve situations when new popup is just a blank square during page loading, and shows animation meanwhile 
