@@ -15,6 +15,36 @@
 #loadingIndicator[hidden] {
     display: none;
 }
+#errorText{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 360px;
+    width: calc(100vw - 32px);
+    padding: 20px 24px;
+    box-sizing: border-box;
+    text-align: center;
+    overflow-wrap: anywhere;
+    color: #333;
+    font: 14px/1.5 system-ui, sans-serif;
+    margin: 0;
+}
+#errorText:not([hidden])::before {
+    content: "!";
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: #fce8e6;
+    color: #b3261e;
+    font: 600 18px/1 system-ui, sans-serif;
+}
+#errorText[hidden]{
+    display: none;
+}
 
 @keyframes loadingSpin {
     to { transform: rotate(360deg); }
@@ -22,6 +52,9 @@
 
 @media (prefers-color-scheme: dark) {
     body {
-        background: black;
+        background: #121314;
+    }
+    #errorText {
+        color: #eee;
     }
 }

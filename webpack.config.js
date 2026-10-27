@@ -39,6 +39,7 @@ module.exports = env => ({
       patterns: [
         { from: "src/content.css", to: "content.css" },
         { from: "src/assets/_locales", to: "_locales" },
+        { from: "src/assets/icons", to: "icons" },
         { from: "src/assets/icon_new.png", to: "icon_new.png" },
         { from: "src/options", to: "options" },
         { from: "src/viewer", to: "viewer" },

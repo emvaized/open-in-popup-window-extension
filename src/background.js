@@ -3,6 +3,7 @@ let textSelection, availWidth, availHeight, availLeft, availTop;
 let preventWindowResizeListener = false;
 let preventNewTabListeners = false;
 let openedPopupWindows;  /// cached Map<id, {type, ...}>
+const isFirefox = navigator.userAgent.indexOf("Firefox") > -1;
 
 /// Register listeners
 chrome.tabs.onCreated.addListener(onTabCreated);
@@ -68,6 +69,19 @@ const iconContextSettings = {
     "title": chrome.i18n.getMessage('showExtensionSettings'),
     "contexts": ["action"]
 }
+const openTabInPopupWindow = {
+    "id": "openTabInPopupWindow",
+    "title": chrome.i18n.getMessage('openTabInPopupWindow'),
+    "contexts": ["tab"]
+}
+
+/// Add icons, visilbe only in Firefox when item is in submenu
+if (isFirefox){
+    openLinkContextMenuItem.icons = { 16: "icons/link.svg" };
+    viewImageContextMenuItem.icons = { 16: "icons/image.svg" };
+    translateInPopupContextMenuItem.icons = { 16: "icons/translate.svg" };
+    searchInPopupContextMenuItem.icons = { 16: "icons/search.svg" };
+}
 
 try {
     chrome.contextMenus.create(openLinkContextMenuItem);
@@ -83,12 +97,7 @@ try {
     chrome.contextMenus.create(iconContextSettings);
 
     /// Draft for "Open tab in popup window" in Firefox
-    if (navigator.userAgent.indexOf("Firefox") > -1){
-        const openTabInPopupWindow = {
-            "id": "openTabInPopupWindow",
-            "title": chrome.i18n.getMessage('openTabInPopupWindow'),
-            "contexts": ["tab"]
-        } 
+    if (isFirefox){
         chrome.contextMenus.create(openTabInPopupWindow);
     }
 } catch(e){}
@@ -913,7 +922,7 @@ function updateContextMenuVisibility() {
     chrome.contextMenus.update("translateInPopupWindow", {"visible": configs.translateInPopupEnabled });
     chrome.contextMenus.update("viewInPopupWindow", {"visible": configs.viewInPopupEnabled });
     chrome.contextMenus.update("openPageInPopupWindow", {"visible": configs.addOptionOpenPageInPopupWindow });
-    if (navigator.userAgent.indexOf("Firefox") > -1) {
+    if (isFirefox) {
         chrome.contextMenus.update("openTabInPopupWindow", {"visible": configs.enableOpenTabInPopupWindow });
     }
 }
