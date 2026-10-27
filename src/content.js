@@ -241,11 +241,6 @@ function onTrigger(e, type){
             nodeName = imgElement.nodeName;
             link = imgElement.currentSrc || imgElement.src;
             isViewer = true;
-
-            if (configs.lookUpHighResImages){
-                const hiResLink = getHiResImg(t);
-                if (hiResLink) link = hiResLink;
-            }
         } else if (linkElement){
             /// Link
             nodeName = linkElement.nodeName;
@@ -328,37 +323,6 @@ function onScrollListener(){
         undimPage();
    } 
 }
-
-/* Looks for hight-res image source in srcset or data attributes */
-const getHiResImg = (img) => {
-  const parseSrcset = (str) => {
-    if (!str) return null;
-    return str.split(',')
-      .map(s => {
-        const [url, desc] = s.trim().split(/\s+/);
-        return { url, val: parseFloat(desc) || 0 };
-      })
-      .sort((a, b) => b.val - a.val)[0]?.url;
-  };
-
-  /// Check <source> tags and <img> attributes
-  const pictureSources = Array.from(img.closest('picture')?.querySelectorAll('source') || []);
-  const rawUrl = 
-    parseSrcset(img.getAttribute('srcset') || img.getAttribute('data-srcset')) ||
-    pictureSources.map(s => parseSrcset(s.getAttribute('srcset') || s.getAttribute('data-srcset'))).find(u => u) ||
-    img.getAttribute(img.getAttributeNames().find(a => /data-(src|orig|full|hi|lazy|large|img)/i.test(a))) ||
-    img.src;
-
-  /// Resolve the URL to be absolute (Fixes // and relative paths)
-  let url = new URL(rawUrl, window.location.href).href;
-
-  /// 3. Strip query params and thumbnail suffixes
-  return url
-    .replace(/([?&])(w|width|h|height|size|resize|fit|quality|q|scale)=\d+/gi, '$1')
-    .replace(/[-_]\d+x\d+(?=\.[a-z]+(\?|$))/i, '')
-    .replace(/[?&]$|([?&])&+/g, '$1') /// Clean up trailing ?/& or double &&
-    .replace(/[?&]$/, '');
-};
 
 /* Extract selected text from page */
 const getSelectedText = () => {
