@@ -81,6 +81,10 @@ if (isFirefox){
     viewImageContextMenuItem.icons = { 16: "icons/image.svg" };
     translateInPopupContextMenuItem.icons = { 16: "icons/translate.svg" };
     searchInPopupContextMenuItem.icons = { 16: "icons/search.svg" };
+
+    iconContextSearch.icons = { 16: "icons/search.svg" };
+    iconContextTranslate.icons = { 16: "icons/translate.svg" };
+    iconContextOpenPage.icons = { 16: "icon_new.png" };
 }
 
 try {
